@@ -26,10 +26,6 @@ public class Project implements ISynchronizableData
   private boolean m_active;
   /** Flag if the project is deleted. */
   private boolean m_deleted;
-  /** Flag if the project has sub-projects. */
-  private boolean m_hasSubProjects;
-  /** Flag if the project has tasks. */
-  private boolean m_hasTasks;
   /** Map of all meta properties of the project. */
   private List<MetaProperty> m_metaProperties;
 
@@ -120,26 +116,6 @@ public class Project implements ISynchronizableData
   public Long getParentId()
   {
     return m_parentId;
-  }
-
-  public boolean isHasSubProjects()
-  {
-    return m_hasSubProjects;
-  }
-
-  public void setHasSubProjects(final boolean hasSubProjects)
-  {
-    m_hasSubProjects = hasSubProjects;
-  }
-
-  public boolean isHasTasks()
-  {
-    return m_hasTasks;
-  }
-
-  public void setHasTasks(final boolean hasTasks)
-  {
-    m_hasTasks = hasTasks;
   }
 
   /**

@@ -11,7 +11,9 @@ import org.hibernate.dialect.DerbyDialect;
 import de.objectcode.time4u.client.store.StorePlugin;
 import de.objectcode.time4u.client.store.api.IProjectRepository;
 import de.objectcode.time4u.client.store.api.IRepository;
+import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
 import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
+import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.ProjectProperty;
@@ -45,6 +47,18 @@ public class HibernateRepository implements IRepository
   public IProjectRepository getProjectRepository()
   {
     return m_projectRepository;
+  }
+
+  public void addRepositoryListener(final RepositoryEventType eventType, final IRepositoryListener listener)
+  {
+    // TODO Auto-generated method stub
+
+  }
+
+  public void removeRepositoryListener(final RepositoryEventType eventType, final IRepositoryListener listener)
+  {
+    // TODO Auto-generated method stub
+
   }
 
   void fireRepositoryEvent(final RepositoryEvent event)

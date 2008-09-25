@@ -65,9 +65,9 @@ public class HibernateRepositoryTest
   @DataProvider(name = "rootProjects")
   public Object[][] getRootProjects() throws Exception
   {
-    final Object[][] result = new Object[10][];
+    final Object[][] result = new Object[5][];
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 5; i++) {
       final Project project = new Project();
       project.setName("TestProject " + (i + 1));
       project.setDescription("DescTestProject " + (i + 1));
@@ -82,14 +82,14 @@ public class HibernateRepositoryTest
   @DataProvider(name = "subProjects")
   public Object[][] getSubProjects() throws Exception
   {
-    final Object[][] result = new Object[10 * 10][];
+    final Object[][] result = new Object[5 * 5][];
 
-    for (int i = 0; i < 10 * 10; i++) {
+    for (int i = 0; i < 5 * 5; i++) {
       final Project project = new Project();
       project.setName("TestSubProject " + (i + 1));
       project.setDescription("DescTestSubProject " + (i + 1));
       project.setActive(true);
-      project.setParentId(rootProjects.get(i % 10).getId());
+      project.setParentId(rootProjects.get(i % 5).getId());
 
       result[i] = new Object[] { project };
     }

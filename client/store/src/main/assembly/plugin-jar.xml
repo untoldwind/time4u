@@ -6,6 +6,10 @@
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<fileSets>
 		<fileSet>
+			<directory>schema</directory>
+			<outputDirectory>/schema</outputDirectory>
+		</fileSet>
+		<fileSet>
 			<directory>target/classes</directory>
 			<outputDirectory>/</outputDirectory>
 		</fileSet>
@@ -18,4 +22,10 @@
 			</excludes>
 		</fileSet>
 	</fileSets>
+	<files>
+		<file>
+			<source>plugin.xml</source>
+			<outputDirectory>/</outputDirectory>
+		</file>
+	</files>
 </assembly>

@@ -12,4 +12,12 @@ public class ProjectRepositoryEvent extends RepositoryEvent
     m_project = project;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public RepositoryEventType getEventType()
+  {
+    return RepositoryEventType.PROJECT;
+  }
 }
