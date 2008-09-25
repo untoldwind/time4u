@@ -20,8 +20,10 @@ Bundle-ClassPath: .,
  target/dependency/dom4j.jar,
  target/dependency/commons-logging.jar,
  target/dependency/persistence-api.jar,
- target/dependency/commons-collections.jar
+ target/dependency/commons-collections.jar,
+ target/dependency/jta.jar
 Export-Package: de.objectcode.time4u.client.store.api,
  de.objectcode.time4u.client.store.api.event,
+ de.objectcode.time4u.client.store.api.meta,
  de.objectcode.time4u.server.api,
  de.objectcode.time4u.server.api.data

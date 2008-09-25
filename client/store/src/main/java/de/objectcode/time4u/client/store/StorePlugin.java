@@ -5,6 +5,7 @@ import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 
 import de.objectcode.time4u.client.store.api.IRepository;
+import de.objectcode.time4u.client.store.api.meta.MetaRepository;
 import de.objectcode.time4u.client.store.impl.hibernate.HibernateRepository;
 
 /**
@@ -19,7 +20,8 @@ public class StorePlugin extends Plugin
   /** The shared instance */
   private static StorePlugin plugin;
 
-  private IRepository repository;
+  private IRepository m_repository;
+  private MetaRepository m_metaRepository;
 
   /**
    * The constructor
@@ -38,7 +40,8 @@ public class StorePlugin extends Plugin
     plugin = this;
 
     System.out.println(">> Hubba");
-    repository = new HibernateRepository(getStateLocation().toFile());
+    m_repository = new HibernateRepository(getStateLocation().toFile());
+    m_metaRepository = new MetaRepository();
   }
 
   /**
@@ -74,7 +77,12 @@ public class StorePlugin extends Plugin
 
   public IRepository getRepository()
   {
-    return repository;
+    return m_repository;
+  }
+
+  public MetaRepository getMetaRepository()
+  {
+    return m_metaRepository;
   }
 
 }

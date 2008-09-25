@@ -219,13 +219,13 @@ public class ProjectEntity implements Comparable<ProjectEntity>
     if (m_metaProperties != null) {
       for (final ProjectProperty property : m_metaProperties.values()) {
         if (property.getBoolValue() != null) {
-          project.addMetaProperties(new MetaProperty(property.getName(), property.getBoolValue()));
+          project.setMetaProperty(new MetaProperty(property.getName(), property.getBoolValue()));
         } else if (property.getStrValue() != null) {
-          project.addMetaProperties(new MetaProperty(property.getName(), property.getStrValue()));
+          project.setMetaProperty(new MetaProperty(property.getName(), property.getStrValue()));
         } else if (property.getDateValue() != null) {
-          project.addMetaProperties(new MetaProperty(property.getName(), property.getDateValue()));
+          project.setMetaProperty(new MetaProperty(property.getName(), property.getDateValue()));
         } else if (property.getIntValue() != null) {
-          project.addMetaProperties(new MetaProperty(property.getName(), property.getIntValue()));
+          project.setMetaProperty(new MetaProperty(property.getName(), property.getIntValue()));
         }
       }
     }
@@ -245,7 +245,7 @@ public class ProjectEntity implements Comparable<ProjectEntity>
     }
 
     if (project.getMetaProperties() != null) {
-      for (final MetaProperty property : project.getMetaProperties()) {
+      for (final MetaProperty property : project.getMetaProperties().values()) {
         ProjectProperty projectProperty = m_metaProperties.get(property.getName());
 
         if (projectProperty == null) {

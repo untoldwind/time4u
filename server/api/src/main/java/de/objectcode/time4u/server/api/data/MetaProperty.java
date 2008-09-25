@@ -27,6 +27,23 @@ public class MetaProperty implements Serializable
   {
   }
 
+  public MetaProperty(final String name, final MetaType type, final Object value)
+  {
+    m_name = name;
+    m_type = type;
+
+    switch (type) {
+      case BOOLEAN:
+      case INTEGER:
+      case STRING:
+        m_valueAsString = value.toString();
+        break;
+      case DATE:
+        m_valueAsString = g_format.format(value);
+        break;
+    }
+  }
+
   public MetaProperty(final String name, final String type, final String value)
   {
     m_name = name;

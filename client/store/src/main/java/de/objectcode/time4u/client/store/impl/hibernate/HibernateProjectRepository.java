@@ -137,4 +137,14 @@ public class HibernateProjectRepository implements IProjectRepository
 
     return result;
   }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void deleteProject(final Project project) throws RepositoryException
+  {
+    // TODO Auto-generated method stub
+
+  }
+
 }

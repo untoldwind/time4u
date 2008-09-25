@@ -11,6 +11,7 @@ import org.hibernate.dialect.DerbyDialect;
 import de.objectcode.time4u.client.store.StorePlugin;
 import de.objectcode.time4u.client.store.api.IProjectRepository;
 import de.objectcode.time4u.client.store.api.IRepository;
+import de.objectcode.time4u.client.store.api.ITaskRepository;
 import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
 import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
@@ -18,6 +19,8 @@ import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.ProjectProperty;
 import de.objectcode.time4u.server.entities.RoleEntity;
+import de.objectcode.time4u.server.entities.TaskEntity;
+import de.objectcode.time4u.server.entities.TaskProperty;
 import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
 
@@ -33,12 +36,14 @@ public class HibernateRepository implements IRepository
   private final HibernateTemplate m_hibernateTemplate;
 
   private final HibernateProjectRepository m_projectRepository;
+  private final HibernateTaskRepository m_taskRepository;
 
   public HibernateRepository(final File directory)
   {
     m_hibernateTemplate = new HibernateTemplate(buildSessionFactory(directory));
 
     m_projectRepository = new HibernateProjectRepository(this, m_hibernateTemplate);
+    m_taskRepository = new HibernateTaskRepository(this, m_hibernateTemplate);
   }
 
   /**
@@ -47,6 +52,14 @@ public class HibernateRepository implements IRepository
   public IProjectRepository getProjectRepository()
   {
     return m_projectRepository;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public ITaskRepository getTaskRepository()
+  {
+    return m_taskRepository;
   }
 
   public void addRepositoryListener(final RepositoryEventType eventType, final IRepositoryListener listener)
@@ -90,6 +103,8 @@ public class HibernateRepository implements IRepository
       cfg.addAnnotatedClass(TeamEntity.class);
       cfg.addAnnotatedClass(ProjectEntity.class);
       cfg.addAnnotatedClass(ProjectProperty.class);
+      cfg.addAnnotatedClass(TaskEntity.class);
+      cfg.addAnnotatedClass(TaskProperty.class);
 
       return cfg.buildSessionFactory();
     } catch (final Exception e) {

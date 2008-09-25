@@ -43,4 +43,14 @@ public interface IProjectRepository
    *           on error
    */
   Project storeProject(Project project) throws RepositoryException;
+
+  /**
+   * Delete a project. Only the deleted flag of the project is set for the project and all its sub projects and tasks.
+   * 
+   * @param project
+   *          The project to be deleted
+   * @throws RepositoryException
+   *           on error
+   */
+  void deleteProject(Project project) throws RepositoryException;
 }

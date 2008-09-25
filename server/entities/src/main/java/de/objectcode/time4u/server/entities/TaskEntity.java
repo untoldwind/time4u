@@ -177,13 +177,13 @@ public class TaskEntity implements Comparable<TaskEntity>
     if (m_metaProperties != null) {
       for (final TaskProperty property : m_metaProperties.values()) {
         if (property.getBoolValue() != null) {
-          task.addMetaProperties(new MetaProperty(property.getName(), property.getBoolValue()));
+          task.setMetaProperty(new MetaProperty(property.getName(), property.getBoolValue()));
         } else if (property.getStrValue() != null) {
-          task.addMetaProperties(new MetaProperty(property.getName(), property.getStrValue()));
+          task.setMetaProperty(new MetaProperty(property.getName(), property.getStrValue()));
         } else if (property.getDateValue() != null) {
-          task.addMetaProperties(new MetaProperty(property.getName(), property.getDateValue()));
+          task.setMetaProperty(new MetaProperty(property.getName(), property.getDateValue()));
         } else if (property.getIntValue() != null) {
-          task.addMetaProperties(new MetaProperty(property.getName(), property.getIntValue()));
+          task.setMetaProperty(new MetaProperty(property.getName(), property.getIntValue()));
         }
       }
     }
@@ -206,7 +206,7 @@ public class TaskEntity implements Comparable<TaskEntity>
     }
 
     if (task.getMetaProperties() != null) {
-      for (final MetaProperty property : task.getMetaProperties()) {
+      for (final MetaProperty property : task.getMetaProperties().values()) {
         TaskProperty taskProperty = m_metaProperties.get(property.getName());
 
         if (taskProperty == null) {

@@ -1,7 +1,8 @@
 package de.objectcode.time4u.server.api.data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Task DTO object.
@@ -27,7 +28,7 @@ public class Task implements ISynchronizableData
   /** Flag if the task is deleted. */
   private boolean m_deleted;
   /** Map of a meta properties. */
-  private List<MetaProperty> m_metaProperties;
+  private Map<String, MetaProperty> m_metaProperties;
 
   /**
    * @return the active
@@ -127,22 +128,33 @@ public class Task implements ISynchronizableData
     m_projectId = projectId;
   }
 
-  public List<MetaProperty> getMetaProperties()
+  public Map<String, MetaProperty> getMetaProperties()
   {
+    if (m_metaProperties == null) {
+      return Collections.emptyMap();
+    }
     return m_metaProperties;
   }
 
-  public void setMetaProperties(final List<MetaProperty> metaProperties)
+  public void setMetaProperties(final Map<String, MetaProperty> metaProperties)
   {
     m_metaProperties = metaProperties;
   }
 
-  public void addMetaProperties(final MetaProperty metaProperty)
+  public void setMetaProperty(final MetaProperty metaProperty)
   {
     if (m_metaProperties == null) {
-      m_metaProperties = new ArrayList<MetaProperty>();
+      m_metaProperties = new HashMap<String, MetaProperty>();
     }
-    m_metaProperties.add(metaProperty);
+    m_metaProperties.put(metaProperty.getName(), metaProperty);
+  }
+
+  public MetaProperty getMetaProperty(final String name)
+  {
+    if (m_metaProperties != null) {
+      return m_metaProperties.get(name);
+    }
+    return null;
   }
 
   @Override

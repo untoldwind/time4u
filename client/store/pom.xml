@@ -56,7 +56,7 @@
 						</goals>
 						<configuration>
 							<stripVersion>true</stripVersion>
-							<includeGroupIds>commons-logging,commons-collections,org.apache.derby,javax.persistence,org.hibernate,dom4j,cglib,asm,de.objectcode.time4u.server,org.testng</includeGroupIds>
+							<includeGroupIds>commons-logging,commons-collections,org.apache.derby,javax.transaction,javax.persistence,org.hibernate,dom4j,cglib,asm,de.objectcode.time4u.server,org.testng</includeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

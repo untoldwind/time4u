@@ -28,6 +28,12 @@
             id="de.objectcode.client.ui.view.projectTree"
             name="%projectView.title"/>
       <view
+            allowMultiple="false"
+            class="de.objectcode.time4u.client.ui.views.TaskListView"
+            icon="icons/Task.gif"
+            id="de.objectcode.client.ui.view.taskList"
+            name="%taskView.title"/>
+      <view
             name="Message"
             allowMultiple="true"
             icon="icons/sample2.gif"
