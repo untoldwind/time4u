@@ -158,7 +158,7 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
 
   public void selectionChanged(final IAction action, final ISelection selection)
   {
-
+    System.out.println(">>>" + selection);
     if (selection instanceof IStructuredSelection) {
       final Object obj = ((IStructuredSelection) selection).getFirstElement();
 

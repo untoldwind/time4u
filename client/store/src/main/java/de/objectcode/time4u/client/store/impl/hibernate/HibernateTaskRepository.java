@@ -11,8 +11,10 @@ import org.hibernate.criterion.Restrictions;
 import de.objectcode.time4u.client.store.api.ITaskRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.client.store.api.data.ClientTask;
+import de.objectcode.time4u.client.store.api.data.ClientTaskSummary;
 import de.objectcode.time4u.client.store.api.event.TaskRepositoryEvent;
 import de.objectcode.time4u.server.api.data.Task;
+import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.filter.TaskFilter;
 import de.objectcode.time4u.server.entities.TaskEntity;
 import de.objectcode.time4u.server.entities.context.SessionPersistenceContext;
@@ -95,6 +97,54 @@ public class HibernateTaskRepository implements ITaskRepository
           final ClientTask task = new ClientTask();
 
           ((TaskEntity) row).toDTO(task);
+
+          result.add(task);
+        }
+
+        return result;
+      }
+
+    });
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public List<TaskSummary> getTaskSummaries(final TaskFilter filter) throws RepositoryException
+  {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<List<TaskSummary>>() {
+      public List<TaskSummary> perform(final Session session)
+      {
+        final Criteria criteria = session.createCriteria(TaskEntity.class);
+
+        if (filter.getActive() != null) {
+          criteria.add(Restrictions.eq("active", filter.getActive()));
+        }
+        if (filter.getDeleted() != null) {
+          criteria.add(Restrictions.eq("deleted", filter.getDeleted()));
+        }
+        if (filter.getProject() != null) {
+          criteria.add(Restrictions.eq("project.id", filter.getProject()));
+        }
+        if (filter.getMinRevision() != null) {
+          criteria.add(Restrictions.ge("revision", filter.getMinRevision()));
+        }
+        switch (filter.getOrder()) {
+          case ID:
+            criteria.addOrder(Order.asc("id"));
+            break;
+          case NAME:
+            criteria.addOrder(Order.asc("name"));
+            criteria.addOrder(Order.asc("id"));
+            break;
+        }
+
+        final List<TaskSummary> result = new ArrayList<TaskSummary>();
+
+        for (final Object row : criteria.list()) {
+          final ClientTaskSummary task = new ClientTaskSummary();
+
+          ((TaskEntity) row).toSummaryDTO(task);
 
           result.add(task);
         }

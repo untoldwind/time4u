@@ -2,14 +2,14 @@ package de.objectcode.time4u.client.ui.provider;
 
 import java.util.Collection;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 import de.objectcode.time4u.client.store.api.ITaskRepository;
 import de.objectcode.time4u.client.ui.UIPlugin;
-import de.objectcode.time4u.client.ui.dnd.ProjectTaskHolder;
-import de.objectcode.time4u.server.api.data.Project;
-import de.objectcode.time4u.server.api.data.Task;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
+import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.filter.TaskFilter;
 
 public class TaskContentProvider implements IStructuredContentProvider
@@ -29,38 +29,12 @@ public class TaskContentProvider implements IStructuredContentProvider
   public Object[] getElements(final Object inputElement)
   {
     try {
-      if (inputElement instanceof ProjectTaskHolder) {
-        final TaskFilter filter = new TaskFilter();
-        filter.setDeleted(false);
-        filter.setProject(((ProjectTaskHolder) inputElement).getProject().getId());
-        if (m_onlyActive) {
-          filter.setActive(true);
-        }
-        final Collection<Task> tasks = m_taskRepository.getTasks(filter);
+      if (inputElement instanceof IAdaptable) {
+        final ProjectSummary projectSummary = (ProjectSummary) ((IAdaptable) inputElement)
+            .getAdapter(ProjectSummary.class);
 
-        if (tasks != null) {
-          return tasks.toArray();
-        }
-      } else if (inputElement instanceof Project) {
-        final TaskFilter filter = new TaskFilter();
-        filter.setDeleted(false);
-        filter.setProject(((Project) inputElement).getId());
-        if (m_onlyActive) {
-          filter.setActive(true);
-        }
-        final Collection<Task> tasks = m_taskRepository.getTasks(filter);
-
-        if (tasks != null) {
-          return tasks.toArray();
-        }
-      } else if (inputElement instanceof Task) {
-        final TaskFilter filter = new TaskFilter();
-        filter.setDeleted(false);
-        filter.setProject(((Task) inputElement).getProjectId());
-        if (m_onlyActive) {
-          filter.setActive(true);
-        }
-        final Collection<Task> tasks = m_taskRepository.getTasks(filter);
+        final Collection<TaskSummary> tasks = m_taskRepository.getTaskSummaries(TaskFilter.filterProjectTasks(
+            projectSummary.getId(), m_onlyActive));
 
         if (tasks != null) {
           return tasks.toArray();

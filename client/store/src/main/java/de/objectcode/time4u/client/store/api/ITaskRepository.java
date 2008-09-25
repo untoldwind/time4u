@@ -3,6 +3,7 @@ package de.objectcode.time4u.client.store.api;
 import java.util.List;
 
 import de.objectcode.time4u.server.api.data.Task;
+import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.filter.TaskFilter;
 
 /**
@@ -33,6 +34,17 @@ public interface ITaskRepository
    *           on error
    */
   List<Task> getTasks(TaskFilter filter) throws RepositoryException;
+
+  /**
+   * Get all taks matching a filter condition.
+   * 
+   * @param filter
+   *          The filter condition
+   * @return A tasks matching <tt>filter</tt>
+   * @throws RepositoryException
+   *           on error
+   */
+  List<TaskSummary> getTaskSummaries(TaskFilter filter) throws RepositoryException;
 
   /**
    * Store a task. This method either inserts a new tasks or updates an existing one.
