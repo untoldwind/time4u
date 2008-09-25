@@ -34,6 +34,8 @@ public class WorkItemEntity
   private int m_end;
   /** Workitem comment. */
   private String m_comment;
+  /** Flag if the workitem is valid. */
+  private boolean m_valid;
   /** The project the workitem belongs to. */
   private ProjectEntity m_project;
   /** The task the workitem belongs to. */
@@ -85,6 +87,16 @@ public class WorkItemEntity
   public void setComment(final String comment)
   {
     m_comment = comment;
+  }
+
+  public boolean isValid()
+  {
+    return m_valid;
+  }
+
+  public void setValid(final boolean valid)
+  {
+    m_valid = valid;
   }
 
   @ManyToOne

@@ -25,6 +25,17 @@ public interface IProjectRepository
   Project getProject(long projectId) throws RepositoryException;
 
   /**
+   * Get a project summary by its identifier.
+   * 
+   * @param projectId
+   *          The project id
+   * @return The project summary with of <tt>>projectId</tt> or <tt>null</tt>
+   * @throws RepositoryException
+   *           on error
+   */
+  ProjectSummary getProjectSummary(long projectId) throws RepositoryException;
+
+  /**
    * Get all projects that match a filter condition.
    * 
    * @param filter

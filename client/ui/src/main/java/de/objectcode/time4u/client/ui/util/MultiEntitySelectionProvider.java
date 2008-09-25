@@ -61,8 +61,10 @@ public class MultiEntitySelectionProvider implements IPostSelectionProvider, ISe
    * @param event
    *          the selection changed event
    */
-  public void fireSelectionChanged(final SelectionChangedEvent event)
+  public void fireSelectionChanged()
   {
+    final SelectionChangedEvent event = new SelectionChangedEvent(this, m_selection);
+
     final Object[] listeners = this.listeners.getListeners();
     fireEventChange(event, listeners);
   }
@@ -74,8 +76,10 @@ public class MultiEntitySelectionProvider implements IPostSelectionProvider, ISe
    *          the event to propogate.
    * @since 3.2
    */
-  public void firePostSelectionChanged(final SelectionChangedEvent event)
+  public void firePostSelectionChanged()
   {
+    final SelectionChangedEvent event = new SelectionChangedEvent(this, m_selection);
+
     final Object[] listeners = postListeners.getListeners();
     fireEventChange(event, listeners);
   }
@@ -155,7 +159,7 @@ public class MultiEntitySelectionProvider implements IPostSelectionProvider, ISe
         if (selection instanceof IStructuredSelection) {
           m_selection.setSelection(type, ((IStructuredSelection) selection).getFirstElement());
 
-          fireSelectionChanged(new SelectionChangedEvent(MultiEntitySelectionProvider.this, m_selection));
+          fireSelectionChanged();
         }
       }
     });
@@ -179,7 +183,7 @@ public class MultiEntitySelectionProvider implements IPostSelectionProvider, ISe
         if (selection instanceof IStructuredSelection) {
           m_selection.setSelection(type, ((IStructuredSelection) selection).getFirstElement());
 
-          fireSelectionChanged(new SelectionChangedEvent(MultiEntitySelectionProvider.this, m_selection));
+          fireSelectionChanged();
         }
       }
     });
@@ -191,7 +195,7 @@ public class MultiEntitySelectionProvider implements IPostSelectionProvider, ISe
         if (selection instanceof IStructuredSelection) {
           m_selection.setSelection(type, ((IStructuredSelection) selection).getFirstElement());
 
-          firePostSelectionChanged(new SelectionChangedEvent(MultiEntitySelectionProvider.this, m_selection));
+          firePostSelectionChanged();
         }
       }
     });

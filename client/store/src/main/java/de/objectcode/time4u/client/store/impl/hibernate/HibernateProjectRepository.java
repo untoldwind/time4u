@@ -55,6 +55,27 @@ public class HibernateProjectRepository implements IProjectRepository
   /**
    * {@inheritDoc}
    */
+  public ProjectSummary getProjectSummary(final long projectId) throws RepositoryException
+  {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<ProjectSummary>() {
+      public ProjectSummary perform(final Session session)
+      {
+        final ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, projectId);
+
+        if (projectEntity != null) {
+          final ProjectSummary project = new ProjectSummary();
+          projectEntity.toSummaryDTO(project);
+
+          return project;
+        }
+        return null;
+      }
+    });
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   public List<Project> getProjects(final ProjectFilter filter) throws RepositoryException
   {
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<List<Project>>() {

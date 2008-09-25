@@ -41,6 +41,30 @@
             name="%calendarView.title"
             restorable="true">
       </view>
+      <view
+            allowMultiple="false"
+            class="de.objectcode.time4u.client.ui.views.WorkItemView"
+            icon="icons/WorkItem.gif"
+            id="de.objectcode.client.ui.view.workItemListView"
+            name="%workItemView.title"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            class="de.objectcode.time4u.client.ui.views.StatisticsView"
+            icon="icons/WorkItem.gif"
+            id="de.objectcode.client.ui.view.statisticsView"
+            name="%statisticsView.title"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            class="de.objectcode.time4u.client.ui.views.PunchView"
+            icon="icons/Time4U.gif"
+            id="de.objectcode.client.ui.view.punchView"
+            name="%punchView.title"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

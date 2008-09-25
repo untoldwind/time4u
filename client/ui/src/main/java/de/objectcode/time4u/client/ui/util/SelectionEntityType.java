@@ -10,6 +10,7 @@ public enum SelectionEntityType
   PROJECT,
   TASK(PROJECT),
   WORKITEM(PROJECT, TASK),
+  CALENDARDAY,
   TODO;
 
   private Set<SelectionEntityType> m_depends;

@@ -109,6 +109,9 @@ public class CalendarDay implements Serializable, Comparable<CalendarDay>
     return m_day == castObj.m_day && m_month == castObj.m_month && m_year == castObj.m_year;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public int compareTo(final CalendarDay o)
   {
     if (m_year != o.m_year) {
@@ -124,5 +127,19 @@ public class CalendarDay implements Serializable, Comparable<CalendarDay>
     }
 
     return 0;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String toString()
+  {
+    final StringBuffer buffer = new StringBuffer("CalendarDay(");
+    buffer.append("year=").append(m_year);
+    buffer.append(", month=").append(m_month);
+    buffer.append(", day=").append(m_day);
+    buffer.append(")");
+    return buffer.toString();
   }
 }

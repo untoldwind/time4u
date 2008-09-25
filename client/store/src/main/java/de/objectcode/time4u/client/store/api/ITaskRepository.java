@@ -25,6 +25,17 @@ public interface ITaskRepository
   Task getTask(long taskId) throws RepositoryException;
 
   /**
+   * Get a task summary by its identifier.
+   * 
+   * @param taskId
+   *          The task id
+   * @return The task summary with of <tt>>taskId</tt> or <tt>null</tt>
+   * @throws RepositoryException
+   *           on error
+   */
+  TaskSummary getTaskSummary(long taskId) throws RepositoryException;
+
+  /**
    * Get all taks matching a filter condition.
    * 
    * @param filter

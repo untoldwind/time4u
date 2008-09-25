@@ -23,6 +23,8 @@ public class WorkItem implements Comparable<WorkItem>
   private int m_end;
   /** Workitem comment. */
   private String m_comment;
+  /** Flag if the workitem is valid. */
+  private boolean m_valid;
   /** Optional server id of the todo this workitem belongs to. */
   private Long m_todoId;
 
@@ -109,6 +111,21 @@ public class WorkItem implements Comparable<WorkItem>
   public void setEnd(final int end)
   {
     m_end = end;
+  }
+
+  public int getDuration()
+  {
+    return m_end - m_begin;
+  }
+
+  public boolean isValid()
+  {
+    return m_valid;
+  }
+
+  public void setValid(final boolean valid)
+  {
+    m_valid = valid;
   }
 
   public long getProjectId()

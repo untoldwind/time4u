@@ -60,6 +60,27 @@ public class HibernateTaskRepository implements ITaskRepository
   /**
    * {@inheritDoc}
    */
+  public TaskSummary getTaskSummary(final long taskId) throws RepositoryException
+  {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<TaskSummary>() {
+      public TaskSummary perform(final Session session)
+      {
+        final TaskEntity taskEntity = (TaskEntity) session.get(TaskEntity.class, taskId);
+
+        if (taskEntity != null) {
+          final TaskSummary task = new TaskSummary();
+          taskEntity.toSummaryDTO(task);
+
+          return task;
+        }
+        return null;
+      }
+    });
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   public List<Task> getTasks(final TaskFilter filter) throws RepositoryException
   {
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<List<Task>>() {

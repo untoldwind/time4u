@@ -152,6 +152,15 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
   }
 
   /**
+   * {@inheritDoc}
+   */
+  public WorkItem getActiveWorkItem()
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /**
    * Create a dayinfo in a separate transaction.
    * 
    * Note that this might fail in a multi-thread environment.
@@ -182,4 +191,5 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
       }
     });
   }
+
 }
