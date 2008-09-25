@@ -22,6 +22,7 @@ import org.hibernate.annotations.Parameter;
 import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.MetaType;
 import de.objectcode.time4u.server.api.data.Project;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 
 /**
@@ -204,6 +205,19 @@ public class ProjectEntity implements Comparable<ProjectEntity>
     }
 
     return 0;
+  }
+
+  public ProjectSummary toSummaryDTO()
+  {
+    final ProjectSummary summary = new ProjectSummary();
+
+    summary.setId(m_id);
+    summary.setRevision(m_revision);
+    summary.setActive(m_active);
+    summary.setDeleted(m_deleted);
+    summary.setName(m_name);
+
+    return summary;
   }
 
   public void toDTO(final Project project)

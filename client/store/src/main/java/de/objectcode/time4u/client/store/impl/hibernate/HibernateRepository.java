@@ -19,6 +19,8 @@ import de.objectcode.time4u.client.store.api.ITaskRepository;
 import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
 import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
+import de.objectcode.time4u.server.entities.DayInfoEntity;
+import de.objectcode.time4u.server.entities.DayTagEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.ProjectProperty;
@@ -26,6 +28,9 @@ import de.objectcode.time4u.server.entities.RoleEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
 import de.objectcode.time4u.server.entities.TaskProperty;
 import de.objectcode.time4u.server.entities.TeamEntity;
+import de.objectcode.time4u.server.entities.TodoEntity;
+import de.objectcode.time4u.server.entities.TodoProperty;
+import de.objectcode.time4u.server.entities.WorkItemEntity;
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
 
 /**
@@ -144,6 +149,11 @@ public class HibernateRepository implements IRepository
       cfg.addAnnotatedClass(ProjectProperty.class);
       cfg.addAnnotatedClass(TaskEntity.class);
       cfg.addAnnotatedClass(TaskProperty.class);
+      cfg.addAnnotatedClass(DayInfoEntity.class);
+      cfg.addAnnotatedClass(DayTagEntity.class);
+      cfg.addAnnotatedClass(WorkItemEntity.class);
+      cfg.addAnnotatedClass(TodoEntity.class);
+      cfg.addAnnotatedClass(TodoProperty.class);
 
       return cfg.buildSessionFactory();
     } catch (final Exception e) {

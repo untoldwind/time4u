@@ -1,30 +1,26 @@
 package de.objectcode.time4u.server.api.data;
 
-import java.util.Date;
-
 /**
  * WorkItem DTO object.
  * 
  * @author junglas
  */
-public class WorkItem implements ISynchronizableData, Comparable<WorkItem>
+public class WorkItem implements Comparable<WorkItem>
 {
   private static final long serialVersionUID = -3834849041983216580L;
 
   /** Internal server id of the workitem. */
   private long m_id;
-  /** Revision number. */
-  private long m_revision;
-  /** Server id of the person owning the workitem. */
-  private long m_personId;
+  /** Server id of the day of the workitem. */
+  private long m_dayInfoId;
   /** Server id of the project the workitem belongs to. */
   private long m_projectId;
   /** Server id of the task the workitem belongs to. */
   private long m_taskId;
-  /** Timestamp when the workitem begun. */
-  private Date m_begin;
-  /** Timestamp when the workitem ended. */
-  private Date m_end;
+  /** Time the workitem begun (in seconds starting from midnight 00:00:00). */
+  private int m_begin;
+  /** Time the workitem ended (in seconds starting from midnight 00:00:00) */
+  private int m_end;
   /** Workitem comment. */
   private String m_comment;
   /** Optional server id of the todo this workitem belongs to. */
@@ -45,16 +41,6 @@ public class WorkItem implements ISynchronizableData, Comparable<WorkItem>
   public void setId(final long id)
   {
     m_id = id;
-  }
-
-  public long getRevision()
-  {
-    return m_revision;
-  }
-
-  public void setRevision(final long revision)
-  {
-    m_revision = revision;
   }
 
   /**
@@ -94,7 +80,7 @@ public class WorkItem implements ISynchronizableData, Comparable<WorkItem>
   /**
    * @return the begin
    */
-  public Date getBegin()
+  public int getBegin()
   {
     return m_begin;
   }
@@ -103,7 +89,7 @@ public class WorkItem implements ISynchronizableData, Comparable<WorkItem>
    * @param begin
    *          the begin to set
    */
-  public void setBegin(final Date begin)
+  public void setBegin(final int begin)
   {
     m_begin = begin;
   }
@@ -111,7 +97,7 @@ public class WorkItem implements ISynchronizableData, Comparable<WorkItem>
   /**
    * @return the end
    */
-  public Date getEnd()
+  public int getEnd()
   {
     return m_end;
   }
@@ -120,7 +106,7 @@ public class WorkItem implements ISynchronizableData, Comparable<WorkItem>
    * @param end
    *          the end to set
    */
-  public void setEnd(final Date end)
+  public void setEnd(final int end)
   {
     m_end = end;
   }
@@ -145,14 +131,14 @@ public class WorkItem implements ISynchronizableData, Comparable<WorkItem>
     m_todoId = todoId;
   }
 
-  public long getPersonId()
+  public long getDayInfoId()
   {
-    return m_personId;
+    return m_dayInfoId;
   }
 
-  public void setPersonId(final long personId)
+  public void setDayInfoId(final long dayInfoId)
   {
-    m_personId = personId;
+    m_dayInfoId = dayInfoId;
   }
 
   /**
@@ -183,11 +169,11 @@ public class WorkItem implements ISynchronizableData, Comparable<WorkItem>
       return 0;
     }
 
-    if (m_begin.compareTo(o.m_begin) != 0) {
-      return m_begin.compareTo(o.m_begin);
+    if (m_begin != o.m_begin) {
+      return m_begin < o.m_begin ? -1 : 1;
     }
-    if (m_end.compareTo(o.m_end) != 0) {
-      return m_end.compareTo(o.m_end);
+    if (m_end != o.m_end) {
+      return m_end < o.m_end ? -1 : 1;
     }
 
     if (m_id != o.m_id) {

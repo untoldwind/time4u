@@ -1,43 +1,40 @@
 package de.objectcode.time4u.server.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 @Entity
 @Table(name = "T4U_DAYTAGS")
 public class DayTagEntity
 {
   /** Primary key */
-  private long m_id;
-  /** Revision number (increased every time something has changed) */
-  private long m_revision;
+  private String m_name;
+  /** Tag description */
+  private String m_description;
 
   @Id
-  @GeneratedValue(generator = "SEQ_T4U_DAYTAGS")
-  @GenericGenerator(name = "SEQ_T4U_DAYTAGS", strategy = "native", parameters = @Parameter(name = "sequence", value = "SEQ_T4U_DAYTAGS"))
-  public long getId()
+  @Column(length = 50)
+  public String getName()
   {
-    return m_id;
+    return m_name;
   }
 
-  public void setId(final long id)
+  public void setName(final String name)
   {
-    m_id = id;
+    m_name = name;
   }
 
-  public long getRevision()
+  @Column(length = 200, nullable = false)
+  public String getDescription()
   {
-    return m_revision;
+    return m_description;
   }
 
-  public void setRevision(final long revision)
+  public void setDescription(final String description)
   {
-    m_revision = revision;
+    m_description = description;
   }
 
 }

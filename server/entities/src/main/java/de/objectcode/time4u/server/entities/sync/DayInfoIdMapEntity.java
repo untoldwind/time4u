@@ -11,16 +11,16 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import de.objectcode.time4u.server.entities.TaskEntity;
+import de.objectcode.time4u.server.entities.DayInfoEntity;
 
 @Entity
-@Table(name = "T4U_TASKS_IDMAP")
-public class TaskIdMapEntity
+@Table(name = "T4U_DAYINFOS_IDMAP")
+public class DayInfoIdMapEntity
 {
   /** Primary key */
   private long m_id;
   ServerEntity m_server;
-  TaskEntity m_task;
+  DayInfoEntity m_dayInfo;
   /** Id on the server */
   private long m_serverId;
   /** Revision on the client (known to the server). */
@@ -29,8 +29,8 @@ public class TaskIdMapEntity
   private long m_serverRevision;
 
   @Id
-  @GeneratedValue(generator = "SEQ_T4U_TASKS_IDMAP")
-  @GenericGenerator(name = "SEQ_T4U_TASKS_IDMAP", strategy = "native", parameters = @Parameter(name = "sequence", value = "SEQ_T4U_TASKS_IDMAP"))
+  @GeneratedValue(generator = "SEQ_T4U_DAYINFOS_IDMAP")
+  @GenericGenerator(name = "SEQ_T4U_DAYINFOS_IDMAP", strategy = "native", parameters = @Parameter(name = "sequence", value = "SEQ_T4U_DAYINFOS_IDMAP"))
   public long getId()
   {
     return m_id;
@@ -54,15 +54,15 @@ public class TaskIdMapEntity
   }
 
   @ManyToOne
-  @JoinColumn(name = "task_id", nullable = false)
-  public TaskEntity getTask()
+  @JoinColumn(name = "dayinfo_id", nullable = false)
+  public DayInfoEntity getDayInfo()
   {
-    return m_task;
+    return m_dayInfo;
   }
 
-  public void setTask(final TaskEntity task)
+  public void setDayInfo(final DayInfoEntity dayInfo)
   {
-    m_task = task;
+    m_dayInfo = dayInfo;
   }
 
   public long getServerId()

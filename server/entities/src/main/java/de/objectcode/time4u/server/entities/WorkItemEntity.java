@@ -1,7 +1,5 @@
 package de.objectcode.time4u.server.entities;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,22 +25,20 @@ public class WorkItemEntity
 {
   /** Primary key. */
   private long m_id;
-  /** Timestamp the workitem begun. */
-  private Date m_begin;
-  /** Timestamp the workitem ended. */
-  private Date m_end;
+  /** The day of the workitem (and thereby the person the workitem belongs too). */
+  private DayInfoEntity m_dayInfo;
+  /** Time the workitem begun (in seconds starting from midnight 00:00:00). */
+  private int m_begin;
+  /** Time the workitem ended (in seconds starting from midnight 00:00:00) */
+  private int m_end;
   /** Workitem comment. */
   private String m_comment;
   /** The project the workitem belongs to. */
   private ProjectEntity m_project;
   /** The task the workitem belongs to. */
   private TaskEntity m_task;
-  /** The person the workitem belongs to. */
-  private PersonEntity m_person;
   /** The todo the workitem belongs to (optional) */
   private TodoEntity m_todo;
-  /** Revision number (increased every time something has changed) */
-  private long m_revision;
 
   @Id
   @GeneratedValue(generator = "SEQ_T4U_WORKITEMS")
@@ -58,23 +54,23 @@ public class WorkItemEntity
   }
 
   @Column(name = "wBegin", nullable = false)
-  public Date getBegin()
+  public int getBegin()
   {
     return m_begin;
   }
 
-  public void setBegin(final Date begin)
+  public void setBegin(final int begin)
   {
     m_begin = begin;
   }
 
   @Column(name = "wEnd", nullable = false)
-  public Date getEnd()
+  public int getEnd()
   {
     return m_end;
   }
 
-  public void setEnd(final Date end)
+  public void setEnd(final int end)
   {
     m_end = end;
   }
@@ -115,15 +111,15 @@ public class WorkItemEntity
   }
 
   @ManyToOne
-  @JoinColumn(name = "person_id", nullable = false)
-  public PersonEntity getPerson()
+  @JoinColumn(name = "dayinfo_id", nullable = false)
+  public DayInfoEntity getDayInfo()
   {
-    return m_person;
+    return m_dayInfo;
   }
 
-  public void setPerson(final PersonEntity person)
+  public void setDayInfo(final DayInfoEntity dayInfo)
   {
-    m_person = person;
+    m_dayInfo = dayInfo;
   }
 
   @ManyToOne
@@ -136,16 +132,6 @@ public class WorkItemEntity
   public void setTodo(final TodoEntity todo)
   {
     m_todo = todo;
-  }
-
-  public long getRevision()
-  {
-    return m_revision;
-  }
-
-  public void setRevision(final long revision)
-  {
-    m_revision = revision;
   }
 
   @Override
@@ -167,13 +153,12 @@ public class WorkItemEntity
   public void toDTO(final WorkItem workItem)
   {
     workItem.setId(m_id);
-    workItem.setRevision(m_revision);
     workItem.setBegin(m_begin);
     workItem.setEnd(m_end);
     workItem.setComment(m_comment);
     workItem.setProjectId(m_project.getId());
     workItem.setTaskId(m_task.getId());
-    workItem.setPersonId(m_person.getId());
+    workItem.setDayInfoId(m_dayInfo.getId());
 
     if (m_todo != null) {
       workItem.setTodoId(m_todo.getId());
@@ -193,7 +178,6 @@ public class WorkItemEntity
     }
     m_project = context.findProject(workItem.getProjectId());
     m_task = context.findTask(workItem.getTaskId());
-    m_person = context.findPerson(workItem.getPersonId());
     if (workItem.getTodoId() != null) {
       m_todo = context.findTodo(workItem.getTodoId());
     } else {

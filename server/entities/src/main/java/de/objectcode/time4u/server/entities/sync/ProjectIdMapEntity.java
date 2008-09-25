@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -21,9 +22,11 @@ public class ProjectIdMapEntity
   ServerEntity m_server;
   ProjectEntity m_project;
   /** Id on the server */
-  private long serverId;
+  private long m_serverId;
+  /** Revision on the client (known to the server). */
+  private long m_clientRevision;
   /** Revision on the server */
-  private long serverRevision;
+  private long m_serverRevision;
 
   @Id
   @GeneratedValue(generator = "SEQ_T4U_PROJECTS_IDMAP")
@@ -51,7 +54,7 @@ public class ProjectIdMapEntity
   }
 
   @ManyToOne
-  @Column(name = "project_id", nullable = false)
+  @JoinColumn(name = "project_id", nullable = false)
   public ProjectEntity getProject()
   {
     return m_project;
@@ -64,22 +67,32 @@ public class ProjectIdMapEntity
 
   public long getServerId()
   {
-    return serverId;
+    return m_serverId;
   }
 
   public void setServerId(final long serverId)
   {
-    this.serverId = serverId;
+    m_serverId = serverId;
+  }
+
+  public long getClientRevision()
+  {
+    return m_clientRevision;
+  }
+
+  public void setClientRevision(final long clientRevision)
+  {
+    m_clientRevision = clientRevision;
   }
 
   public long getServerRevision()
   {
-    return serverRevision;
+    return m_serverRevision;
   }
 
   public void setServerRevision(final long serverRevision)
   {
-    this.serverRevision = serverRevision;
+    m_serverRevision = serverRevision;
   }
 
 }

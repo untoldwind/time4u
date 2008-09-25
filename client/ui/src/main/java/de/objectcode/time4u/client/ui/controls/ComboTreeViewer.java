@@ -45,7 +45,7 @@ public class ComboTreeViewer extends Composite
 {
   Text text;
   TreeViewer viewer;
-  int visibleItemCount = 5;
+  int visibleItemCount = 10;
   Shell popup;
   Button arrow;
   boolean hasFocus;
@@ -87,9 +87,9 @@ public class ComboTreeViewer extends Composite
    * @see SWT#FLAT
    * @see Widget#getStyle()
    */
-  public ComboTreeViewer(final Composite parent, int style)
+  public ComboTreeViewer(final Composite parent, final int style)
   {
-    super(parent, style = checkStyle(style));
+    super(parent, checkStyle(style));
 
     int textStyle = SWT.SINGLE;
     if ((style & SWT.READ_ONLY) != 0) {
@@ -98,6 +98,10 @@ public class ComboTreeViewer extends Composite
     if ((style & SWT.FLAT) != 0) {
       textStyle |= SWT.FLAT;
     }
+    if ((style & SWT.BORDER) != 0) {
+      textStyle |= SWT.BORDER;
+    }
+
     text = new Text(this, textStyle);
     int arrowStyle = SWT.ARROW | SWT.DOWN;
     if ((style & SWT.FLAT) != 0) {
@@ -164,7 +168,7 @@ public class ComboTreeViewer extends Composite
 
   static int checkStyle(final int style)
   {
-    final int mask = SWT.BORDER | SWT.READ_ONLY | SWT.FLAT | SWT.LEFT_TO_RIGHT | SWT.RIGHT_TO_LEFT;
+    final int mask = SWT.READ_ONLY | SWT.FLAT | SWT.LEFT_TO_RIGHT | SWT.RIGHT_TO_LEFT;
     return style & mask;
   }
 
@@ -429,9 +433,9 @@ public class ComboTreeViewer extends Composite
     }
 
     final Point size = getSize();
-    int itemCount = viewer.getTree().getItemCount();
-    itemCount = itemCount == 0 ? visibleItemCount : Math.min(visibleItemCount, itemCount);
-    final int itemHeight = viewer.getTree().getItemHeight() * itemCount;
+    //    int itemCount = viewer.getTree().getItemCount();
+    //    itemCount = itemCount == 0 ? visibleItemCount : Math.min(visibleItemCount, itemCount);
+    final int itemHeight = viewer.getTree().getItemHeight() * visibleItemCount;
     final Point listSize = viewer.getTree().computeSize(SWT.DEFAULT, itemHeight, false);
     viewer.getTree().setBounds(1, 1, Math.max(size.x - 2, listSize.x), listSize.y);
 
