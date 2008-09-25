@@ -2,7 +2,6 @@ package de.objectcode.time4u.client.ui.provider;
 
 import java.util.Collection;
 
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -29,9 +28,8 @@ public class TaskContentProvider implements IStructuredContentProvider
   public Object[] getElements(final Object inputElement)
   {
     try {
-      if (inputElement instanceof IAdaptable) {
-        final ProjectSummary projectSummary = (ProjectSummary) ((IAdaptable) inputElement)
-            .getAdapter(ProjectSummary.class);
+      if (inputElement instanceof ProjectSummary) {
+        final ProjectSummary projectSummary = (ProjectSummary) inputElement;
 
         final Collection<TaskSummary> tasks = m_taskRepository.getTaskSummaries(TaskFilter.filterProjectTasks(
             projectSummary.getId(), m_onlyActive));

@@ -1,6 +1,6 @@
 package de.objectcode.time4u.server.entities.revision;
 
-import org.hibernate.LockMode;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -18,21 +18,24 @@ public class SessionRevisionGenerator implements IRevisionGenerator
    */
   public long getNextRevision(final EntityType entityType, final long part)
   {
-    final RevisionEntityKey key = new RevisionEntityKey(entityType, part);
-    RevisionEntity revisionEntity = (RevisionEntity) m_session.get(RevisionEntity.class, key, LockMode.UPGRADE);
+    final Query updateQuery = m_session
+        .createSQLQuery("update T4U_REVISIONS set latestRevision = latestRevision + 1 where entityKeyValue=:entityKeyValue and part=:part");
+    updateQuery.setInteger("entityKeyValue", entityType.getValue());
+    updateQuery.setLong("part", part);
 
-    if (revisionEntity == null) {
+    if (updateQuery.executeUpdate() != 1) {
       createInOwnTransaction(entityType, part);
 
-      revisionEntity = (RevisionEntity) m_session.get(RevisionEntity.class, key, LockMode.UPGRADE);
+      updateQuery.setInteger("entityKeyValue", entityType.getValue());
+      updateQuery.setLong("part", part);
 
-      if (revisionEntity == null) {
+      if (updateQuery.executeUpdate() != 1) {
         throw new RuntimeException("Failed to get next revision number");
       }
     }
 
-    revisionEntity.setLatestRevision(revisionEntity.getLatestRevision() + 1);
-    m_session.flush();
+    final RevisionEntity revisionEntity = (RevisionEntity) m_session.get(RevisionEntity.class, new RevisionEntityKey(
+        entityType, part));
 
     return revisionEntity.getLatestRevision();
   }

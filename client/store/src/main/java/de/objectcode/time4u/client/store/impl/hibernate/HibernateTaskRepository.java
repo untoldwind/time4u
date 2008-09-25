@@ -10,8 +10,6 @@ import org.hibernate.criterion.Restrictions;
 
 import de.objectcode.time4u.client.store.api.ITaskRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
-import de.objectcode.time4u.client.store.api.data.ClientTask;
-import de.objectcode.time4u.client.store.api.data.ClientTaskSummary;
 import de.objectcode.time4u.client.store.api.event.TaskRepositoryEvent;
 import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.data.TaskSummary;
@@ -43,13 +41,13 @@ public class HibernateTaskRepository implements ITaskRepository
    */
   public Task getTask(final long taskId) throws RepositoryException
   {
-    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<ClientTask>() {
-      public ClientTask perform(final Session session)
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Task>() {
+      public Task perform(final Session session)
       {
         final TaskEntity taskEntity = (TaskEntity) session.get(TaskEntity.class, taskId);
 
         if (taskEntity != null) {
-          final ClientTask task = new ClientTask();
+          final Task task = new Task();
           taskEntity.toDTO(task);
 
           return task;
@@ -94,7 +92,7 @@ public class HibernateTaskRepository implements ITaskRepository
         final List<Task> result = new ArrayList<Task>();
 
         for (final Object row : criteria.list()) {
-          final ClientTask task = new ClientTask();
+          final Task task = new Task();
 
           ((TaskEntity) row).toDTO(task);
 
@@ -142,7 +140,7 @@ public class HibernateTaskRepository implements ITaskRepository
         final List<TaskSummary> result = new ArrayList<TaskSummary>();
 
         for (final Object row : criteria.list()) {
-          final ClientTaskSummary task = new ClientTaskSummary();
+          final TaskSummary task = new TaskSummary();
 
           ((TaskEntity) row).toSummaryDTO(task);
 
@@ -185,7 +183,7 @@ public class HibernateTaskRepository implements ITaskRepository
           session.persist(taskEntity);
         }
 
-        final ClientTask result = new ClientTask();
+        final Task result = new Task();
 
         taskEntity.toDTO(result);
 
@@ -205,6 +203,15 @@ public class HibernateTaskRepository implements ITaskRepository
   {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void deleteTask(final Task task) throws RepositoryException
+  {
+    // TODO Auto-generated method stub
+
   }
 
 }

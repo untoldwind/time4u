@@ -94,7 +94,30 @@
    <extension
          point="org.eclipse.ui.popupMenus">
       <viewerContribution
-            id="de.objectcode.client.ui.view.projectTreeContribution"
+            id="de.objectcode.client.ui.view.projectTreeContribution2"
+            targetID="de.objectcode.client.ui.view.projectTree">
+         <visibility>
+            <and>
+               <objectClass
+                     name="de.objectcode.time4u.client.ui.util.MultiEntitySelection">
+               </objectClass>
+               <objectState
+                     name="has"
+                     value="PROJECT">
+               </objectState>
+            </and>
+         </visibility>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"
+               icon="icons/Project.gif"
+               id="de.objectcode.time4u.client.ui.project.edit"
+               label="%action.project.edit.label"
+               menubarPath="objectGroup"
+               tooltip="%action.project.edit.tooltip">
+         </action>
+      </viewerContribution>
+      <viewerContribution
+            id="de.objectcode.client.ui.view.projectTreeContribution1"
             targetID="de.objectcode.client.ui.view.projectTree">
          <action
                class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"
@@ -105,26 +128,75 @@
                tooltip="%action.project.new.tooltip">
          </action>
       </viewerContribution>
+      <viewerContribution
+            id="de.objectcode.client.ui.view.taskListContribution1"
+            targetID="de.objectcode.client.ui.view.taskList">
+         <visibility>
+            <and>
+               <objectClass
+                     name="de.objectcode.time4u.client.ui.util.MultiEntitySelection">
+               </objectClass>
+               <objectState
+                     name="has"
+                     value="TASK">
+               </objectState>
+            </and>
+         </visibility>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TaskActionDelegate"
+               icon="icons/Task.gif"
+               id="de.objectcode.time4u.client.ui.task.edit"
+               label="%action.task.edit.label"
+               menubarPath="objectGroup"
+               tooltip="%action.task.edit.tooltip">
+         </action>
+      </viewerContribution>
+      <viewerContribution
+            id="de.objectcode.client.ui.view.taskListContribution2"
+            targetID="de.objectcode.client.ui.view.taskList">
+         <visibility>
+            <and>
+               <objectClass
+                     name="de.objectcode.time4u.client.ui.util.MultiEntitySelection">
+               </objectClass>
+               <objectState
+                     name="has"
+                     value="PROJECT">
+               </objectState>
+            </and>
+         </visibility>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TaskActionDelegate"
+               icon="icons/NewTask.gif"
+               id="de.objectcode.time4u.client.ui.task.new"
+               label="%action.task.new.label"
+               menubarPath="objectGroup"
+               tooltip="%action.task.new.tooltip">
+         </action>
+      </viewerContribution>
    </extension>
    <extension
 
          point="org.eclipse.core.runtime.adapters">
 
+
       <factory
-            adaptableType="de.objectcode.time4u.server.api.data.ProjectSummary"
-            class="de.objectcode.time4u.client.ui.adapter.ProjectAdapterFactory">
-         <adapter type="org.eclipse.ui.IActionFilter"/>
+            adaptableType="de.objectcode.time4u.client.ui.util.MultiEntitySelection"
+            class="de.objectcode.time4u.client.ui.adapter.MultiEntitySelectionAdapterFactory">
+         <adapter
+               type="org.eclipse.ui.IActionFilter">
+         </adapter>
+         <adapter
+               type="de.objectcode.time4u.server.api.data.ProjectSummary">
+         </adapter>
          <adapter
                type="de.objectcode.time4u.server.api.data.Project">
          </adapter>
-      </factory>
-
-      <factory
-            adaptableType="de.objectcode.time4u.server.api.data.TaskSummary"
-            class="de.objectcode.time4u.client.ui.adapter.TaskAdapterFactory">
-         <adapter type="org.eclipse.ui.IActionFilter"/>
          <adapter
                type="de.objectcode.time4u.server.api.data.Task">
+         </adapter>
+         <adapter
+               type="de.objectcode.time4u.server.api.data.TaskSummary">
          </adapter>
       </factory>
       <factory
@@ -191,6 +263,48 @@
                style="push"
                toolbarPath="projectGroup"
                tooltip="%action.project.new.tooltip"/>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TaskActionDelegate"
+               icon="icons/Task.gif"
+               id="de.objectcode.time4u.client.ui.task.edit"
+               label="%action.task.edit.label"
+               menubarPath="projectMenu/taskGroup"
+               style="push"
+               toolbarPath="taskGroup"
+               tooltip="%action.task.edit.tooltip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.MultiEntitySelection">
+                  </objectClass>
+                  <objectState
+                        name="has"
+                        value="TASK">
+                  </objectState>
+               </and>
+            </enablement>
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TaskActionDelegate"
+               icon="icons/NewTask.gif"
+               id="de.objectcode.time4u.client.ui.task.new"
+               label="%action.task.new.label"
+               menubarPath="projectMenu/taskGroup"
+               style="push"
+               toolbarPath="taskGroup"
+               tooltip="%action.task.new.tooltip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.MultiEntitySelection">
+                  </objectClass>
+                  <objectState
+                        name="has"
+                        value="PROJECT">
+                  </objectState>
+               </and>
+            </enablement>
+         </action>
 
       </actionSet>
    </extension>

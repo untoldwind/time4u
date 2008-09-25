@@ -66,4 +66,6 @@ public interface ITaskRepository
    *           on error
    */
   List<Task> storeTask(List<Task> tasks) throws RepositoryException;
+
+  void deleteTask(Task task) throws RepositoryException;
 }

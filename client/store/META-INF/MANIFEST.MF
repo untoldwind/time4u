@@ -23,7 +23,6 @@ Bundle-ClassPath: .,
  target/dependency/commons-collections.jar,
  target/dependency/jta.jar
 Export-Package: de.objectcode.time4u.client.store.api,
- de.objectcode.time4u.client.store.api.data,
  de.objectcode.time4u.client.store.api.event,
  de.objectcode.time4u.client.store.api.meta,
  de.objectcode.time4u.server.api,

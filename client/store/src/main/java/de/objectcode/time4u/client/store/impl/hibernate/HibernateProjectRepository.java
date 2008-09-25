@@ -10,8 +10,6 @@ import org.hibernate.criterion.Restrictions;
 
 import de.objectcode.time4u.client.store.api.IProjectRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
-import de.objectcode.time4u.client.store.api.data.ClientProject;
-import de.objectcode.time4u.client.store.api.data.ClientProjectSummary;
 import de.objectcode.time4u.client.store.api.event.ProjectRepositoryEvent;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
@@ -38,13 +36,13 @@ public class HibernateProjectRepository implements IProjectRepository
    */
   public Project getProject(final long projectId) throws RepositoryException
   {
-    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<ClientProject>() {
-      public ClientProject perform(final Session session)
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Project>() {
+      public Project perform(final Session session)
       {
         final ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, projectId);
 
         if (projectEntity != null) {
-          final ClientProject project = new ClientProject();
+          final Project project = new Project();
           projectEntity.toDTO(project);
 
           return project;
@@ -93,7 +91,7 @@ public class HibernateProjectRepository implements IProjectRepository
         final List<Project> result = new ArrayList<Project>();
 
         for (final Object row : criteria.list()) {
-          final ClientProject project = new ClientProject();
+          final Project project = new Project();
 
           ((ProjectEntity) row).toDTO(project);
 
@@ -145,7 +143,7 @@ public class HibernateProjectRepository implements IProjectRepository
         final List<ProjectSummary> result = new ArrayList<ProjectSummary>();
 
         for (final Object row : criteria.list()) {
-          final ClientProjectSummary project = new ClientProjectSummary();
+          final ProjectSummary project = new ProjectSummary();
 
           ((ProjectEntity) row).toSummaryDTO(project);
 
@@ -163,39 +161,38 @@ public class HibernateProjectRepository implements IProjectRepository
    */
   public Project storeProject(final Project project) throws RepositoryException
   {
-    final ClientProject result = m_hibernateTemplate
-        .executeInTransaction(new HibernateTemplate.Operation<ClientProject>() {
-          public ClientProject perform(final Session session)
-          {
-            final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
+    final Project result = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Project>() {
+      public Project perform(final Session session)
+      {
+        final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
 
-            final long nextRevision = revisionGenerator.getNextRevision(EntityType.PROJECT, -1L);
+        final long nextRevision = revisionGenerator.getNextRevision(EntityType.PROJECT, -1L);
 
-            ProjectEntity projectEntity;
+        ProjectEntity projectEntity;
 
-            if (project.getId() > 0L) {
-              projectEntity = (ProjectEntity) session.get(ProjectEntity.class, project.getId());
+        if (project.getId() > 0L) {
+          projectEntity = (ProjectEntity) session.get(ProjectEntity.class, project.getId());
 
-              projectEntity.fromDTO(new SessionPersistenceContext(session), project);
-              projectEntity.setRevision(nextRevision);
+          projectEntity.fromDTO(new SessionPersistenceContext(session), project);
+          projectEntity.setRevision(nextRevision);
 
-              session.flush();
-            } else {
-              projectEntity = new ProjectEntity();
+          session.flush();
+        } else {
+          projectEntity = new ProjectEntity();
 
-              projectEntity.fromDTO(new SessionPersistenceContext(session), project);
-              projectEntity.setRevision(nextRevision);
+          projectEntity.fromDTO(new SessionPersistenceContext(session), project);
+          projectEntity.setRevision(nextRevision);
 
-              session.persist(projectEntity);
-            }
+          session.persist(projectEntity);
+        }
 
-            final ClientProject result = new ClientProject();
+        final Project result = new Project();
 
-            projectEntity.toDTO(result);
+        projectEntity.toDTO(result);
 
-            return result;
-          }
-        });
+        return result;
+      }
+    });
 
     m_repository.fireRepositoryEvent(new ProjectRepositoryEvent(project));
 

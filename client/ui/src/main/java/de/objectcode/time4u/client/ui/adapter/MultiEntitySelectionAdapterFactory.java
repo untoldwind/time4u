@@ -10,6 +10,8 @@ import de.objectcode.time4u.client.ui.util.MultiEntitySelection;
 import de.objectcode.time4u.client.ui.util.SelectionEntityType;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
+import de.objectcode.time4u.server.api.data.Task;
+import de.objectcode.time4u.server.api.data.TaskSummary;
 
 public class MultiEntitySelectionAdapterFactory implements IAdapterFactory
 {
@@ -42,14 +44,33 @@ public class MultiEntitySelectionAdapterFactory implements IAdapterFactory
       if (sel instanceof ProjectSummary) {
         return sel;
       }
+    } else if (Task.class.isAssignableFrom(adapterType)) {
+      final Object sel = selection.getSelection(SelectionEntityType.TASK);
+
+      if (sel instanceof Task) {
+        return sel;
+      } else if (sel instanceof TaskSummary) {
+        try {
+          return RepositoryFactory.getRepository().getTaskRepository().getTask(((TaskSummary) sel).getId());
+        } catch (final RepositoryException e) {
+          UIPlugin.getDefault().log(e);
+        }
+      }
+    } else if (TaskSummary.class.isAssignableFrom(adapterType)) {
+      final Object sel = selection.getSelection(SelectionEntityType.TASK);
+
+      if (sel instanceof TaskSummary) {
+        return sel;
+      }
     }
+
     return null;
   }
 
   @SuppressWarnings("unchecked")
   public Class[] getAdapterList()
   {
-    return new Class[] { IActionFilter.class, Project.class, ProjectSummary.class };
+    return new Class[] { IActionFilter.class, Project.class, ProjectSummary.class, Task.class, TaskSummary.class };
   }
 
   static class MultiEntitySelectionActionFilter implements IActionFilter

@@ -95,7 +95,7 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
         copyProject(selectedProject, dialog.getNewName(), dialog.getNewParent(), dialog.isCopyTasks(), dialog
             .isCopySubProjects());
       }
-    } else if ("de.objectcode.time4u.client.project.delete".equals(id)) {
+    } else if ("de.objectcode.time4u.client.ui.project.delete".equals(id)) {
       if (selectedProject != null) {
         try {
           final Collection<ProjectSummary> children = RepositoryFactory.getRepository().getProjectRepository()
@@ -149,7 +149,7 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
           UIPlugin.getDefault().log(e);
         }
       }
-    } else if ("de.objectcode.time4u.client.project.onlyActive".equals(id)) {
+    } else if ("de.objectcode.time4u.client.ui.project.onlyActive".equals(id)) {
       if (m_view != null) {
         m_view.setShowOnlyActive(action.isChecked());
       }
@@ -170,7 +170,7 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
       }
     }
 
-    if ("de.objectcode.time4u.client.project.onlyActive".equals(action.getId())) {
+    if ("de.objectcode.time4u.client.ui.project.onlyActive".equals(action.getId())) {
       if (m_view != null) {
         action.setChecked(m_view.isShowOnlyActive());
       }

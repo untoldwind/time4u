@@ -2,6 +2,7 @@ package de.objectcode.time4u.client.ui.views;
 
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -35,19 +36,23 @@ import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.dnd.TaskTransfer;
 import de.objectcode.time4u.client.ui.provider.TaskContentProvider;
 import de.objectcode.time4u.client.ui.provider.TaskLabelProvider;
+import de.objectcode.time4u.client.ui.util.MultiEntitySelectionProvider;
+import de.objectcode.time4u.client.ui.util.SelectionEntityType;
 import de.objectcode.time4u.server.api.data.Project;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.data.Task;
 
 public class TaskListView extends ViewPart implements IRepositoryListener, ISelectionListener
 {
   public static final String ID = "de.objectcode.client.ui.view.taskList";
 
-  private Project m_selectedProject;
+  private ProjectSummary m_selectedProject;
   private TableViewer m_viewer;
   private ITaskRepository m_taskRepository;
   private boolean m_showOnlyActive;
 
   private int m_refreshCounter = 0;
+  private MultiEntitySelectionProvider m_selectionProvider;
 
   @Override
   public void init(final IViewSite site, final IMemento memento) throws PartInitException
@@ -95,15 +100,16 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
       }
     });
 
-    getSite().setSelectionProvider(m_viewer);
+    m_selectionProvider = new MultiEntitySelectionProvider();
+    m_selectionProvider.addPostSelectionProvider(SelectionEntityType.TASK, m_viewer);
+    getSite().setSelectionProvider(m_selectionProvider);
+    getSite().getPage().addSelectionListener(m_selectionProvider);
 
     final MenuManager menuMgr = new MenuManager();
     menuMgr.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
     final Menu menu = menuMgr.createContextMenu(m_viewer.getControl());
     m_viewer.getControl().setMenu(menu);
-    getSite().registerContextMenu(menuMgr,
-        getSite().getPage().findView(ProjectTreeView.ID).getSite().getSelectionProvider());
-    getSite().registerContextMenu(menuMgr, m_viewer);
+    getSite().registerContextMenu(menuMgr, m_selectionProvider);
 
     m_viewer.addDoubleClickListener(new IDoubleClickListener() {
       public void doubleClick(final DoubleClickEvent event)
@@ -139,11 +145,6 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
       m_viewer.refresh();
       m_viewer.setSelection(selection);
     }
-  }
-
-  public Project getSelectedProject()
-  {
-    return m_selectedProject;
   }
 
   public Task getSelectedTask()
@@ -209,7 +210,13 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
 
   public void selectionChanged(final IWorkbenchPart part, final ISelection selection)
   {
-    if (selection instanceof IStructuredSelection) {
+    System.out.println(">> bla: " + selection);
+    if (selection instanceof IAdaptable) {
+      m_selectedProject = (ProjectSummary) ((IAdaptable) selection).getAdapter(ProjectSummary.class);
+      System.out.println(">>> blue: " + m_selectedProject);
+      m_viewer.setInput(m_selectedProject);
+      return;
+    } else if (selection instanceof IStructuredSelection) {
       final Object sel = ((IStructuredSelection) selection).getFirstElement();
 
       if (sel != null && sel instanceof Project) {
