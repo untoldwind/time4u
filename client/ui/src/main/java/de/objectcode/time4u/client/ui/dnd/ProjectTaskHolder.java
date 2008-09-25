@@ -1,25 +1,25 @@
 package de.objectcode.time4u.client.ui.dnd;
 
-import de.objectcode.time4u.server.api.data.Project;
-import de.objectcode.time4u.server.api.data.Task;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
+import de.objectcode.time4u.server.api.data.TaskSummary;
 
 public class ProjectTaskHolder
 {
-  Project m_project;
-  Task m_task;
+  private final ProjectSummary m_project;
+  private final TaskSummary m_task;
 
-  ProjectTaskHolder(final Project project, final Task task)
+  public ProjectTaskHolder(final ProjectSummary project, final TaskSummary task)
   {
     m_project = project;
     m_task = task;
   }
 
-  public Project getProject()
+  public ProjectSummary getProject()
   {
     return m_project;
   }
 
-  public Task getTask()
+  public TaskSummary getTask()
   {
     return m_task;
   }

@@ -1,6 +1,7 @@
 package de.objectcode.time4u.client.ui.views;
 
 import java.util.Calendar;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
@@ -34,7 +35,7 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
   int m_currentMonth;
   int m_currentYear;
 
-  private final int m_refreshCounter = 0;
+  AtomicInteger m_refreshCounter = new AtomicInteger(0);
 
   private MultiEntitySelectionProvider m_selectionProvider;
 

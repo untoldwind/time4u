@@ -1,7 +1,5 @@
 package de.objectcode.time4u.client.ui.provider;
 
-import java.util.Collection;
-
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -9,7 +7,6 @@ import de.objectcode.time4u.client.store.api.IWorkItemRepository;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
-import de.objectcode.time4u.server.api.data.WorkItem;
 
 public class WorkItemTableContentProvider implements IStructuredContentProvider
 {
@@ -27,10 +24,9 @@ public class WorkItemTableContentProvider implements IStructuredContentProvider
 
       try {
         final DayInfo dayInfo = m_workItemRepository.getDayInfo(calendarDay);
-        final Collection<WorkItem> workItems = dayInfo.getWorkItems();
 
-        if (workItems != null) {
-          return workItems.toArray();
+        if (dayInfo != null) {
+          return dayInfo.getWorkItems().toArray();
         }
       } catch (final Exception e) {
         UIPlugin.getDefault().log(e);

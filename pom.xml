@@ -12,9 +12,9 @@
 		<module>assemblies</module>
 	</modules>
 	<scm>
-		<connection>scm:svn:http://time4u.googlecode.com/svn/overhaul/trunk</connection>
-		<developerConnection>scm:svn:https://time4u.googlecode.com/svn/overhaul/trunk</developerConnection>
-		<url>http://code.google.com/p/time4u/source/browse</url>
+		<connection>scm:svn:https://time4u.svn.sourceforge.net/svnroot/time4u/overhaul/trunk</connection>
+		<developerConnection>scm:svn:https://time4u.svn.sourceforge.net/svnroot/time4u/overhaul/trunk</developerConnection>
+		<url>http://sourceforge.net/projects/time4u</url>
 	</scm>
 	<build>
 		<plugins>
