@@ -25,5 +25,12 @@
       	<include>mysql:mysql-connector-java</include>
       </includes>
     </dependencySet>
+    <dependencySet>
+      <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
+      <outputDirectory>/db/derby/driver</outputDirectory>
+      <includes>
+      	<include>org.apache.derby:derby</include>
+      </includes>
+    </dependencySet>
   </dependencySets>
 </assembly>

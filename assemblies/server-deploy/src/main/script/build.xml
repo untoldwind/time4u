@@ -46,6 +46,9 @@
 		<copy todir="${jboss.home}/server/${jboss.config}/deploy/jboss-messaging.sar">
 			<fileset dir="db/${db.engine}" includes="*-persistence-service.xml"/>
 		</copy>
+		<copy todir="${jboss.home}/bin">
+			<fileset dir="." includes="run.conf"/>
+		</copy>
 	</target>
 
 	<target name="deploy" depends="checkprereq" description="Deploy Time4U server">
