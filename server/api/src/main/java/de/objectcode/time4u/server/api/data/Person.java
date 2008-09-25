@@ -13,6 +13,8 @@ public class Person implements ISynchronizableData
 
   /** Internal server id of the person. */
   private long m_id;
+  /** Revision number. */
+  private int m_revision;
   /** User id of the person. */
   private String m_userId;
   /** Real name of the person. */
@@ -30,6 +32,16 @@ public class Person implements ISynchronizableData
   public void setId(final long id)
   {
     m_id = id;
+  }
+
+  public int getRevision()
+  {
+    return m_revision;
+  }
+
+  public void setRevision(final int revision)
+  {
+    m_revision = revision;
   }
 
   public String getName()

@@ -14,6 +14,8 @@ public class Task implements ISynchronizableData
 
   /** Internal server id of the task. */
   private long m_id;
+  /** Revision number. */
+  private int m_revision;
   /** Internal server id of the project owning the task. */
   private Long m_projectId;
   /** Task name. */
@@ -69,6 +71,16 @@ public class Task implements ISynchronizableData
   public void setId(final long id)
   {
     m_id = id;
+  }
+
+  public int getRevision()
+  {
+    return m_revision;
+  }
+
+  public void setRevision(final int revision)
+  {
+    m_revision = revision;
   }
 
   /**

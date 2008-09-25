@@ -13,6 +13,8 @@ public class WorkItem implements ISynchronizableData, Comparable<WorkItem>
 
   /** Internal server id of the workitem. */
   private long m_id;
+  /** Revision number. */
+  private int m_revision;
   /** Server id of the person owning the workitem. */
   private long m_personId;
   /** Server id of the project the workitem belongs to. */
@@ -43,6 +45,16 @@ public class WorkItem implements ISynchronizableData, Comparable<WorkItem>
   public void setId(final long id)
   {
     m_id = id;
+  }
+
+  public int getRevision()
+  {
+    return m_revision;
+  }
+
+  public void setRevision(final int revision)
+  {
+    m_revision = revision;
   }
 
   /**

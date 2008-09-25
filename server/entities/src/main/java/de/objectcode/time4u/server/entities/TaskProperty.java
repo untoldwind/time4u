@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 /**
  * Task meta property entity.
  * 
@@ -35,7 +38,8 @@ public class TaskProperty
   private TaskEntity m_task;
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(generator = "SEQ_T4U_TASK_PROPERTIES")
+  @GenericGenerator(name = "SEQ_T4U_TASK_PROPERTIES", strategy = "native", parameters = @Parameter(name = "sequence", value = "SEQ_T4U_TASK_PROPERTIES"))
   public long getId()
   {
     return m_id;

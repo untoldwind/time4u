@@ -15,4 +15,11 @@ public interface ISynchronizableData extends Serializable
    * @return The server id of the data
    */
   long getId();
+
+  /**
+   * Revision number.
+   * 
+   * @return The revision number
+   */
+  int getRevision();
 }

@@ -14,6 +14,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 import de.objectcode.time4u.server.api.data.Person;
 
 /**
@@ -44,10 +47,11 @@ public class PersonEntity
   /** Timestamp of the last synchronization */
   private Date m_lastSynchronize;
   /** Revision number (increased every time something has changed) */
-  private long m_revision;
+  private int m_revision;
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(generator = "SEQ_T4U_PERSONS")
+  @GenericGenerator(name = "SEQ_T4U_PERSONS", strategy = "native", parameters = @Parameter(name = "sequence", value = "SEQ_T4U_PERSONS"))
   public long getId()
   {
     return m_id;
@@ -147,18 +151,14 @@ public class PersonEntity
     m_lastSynchronize = lastSynchronize;
   }
 
-  public Long getRevision()
+  public int getRevision()
   {
     return m_revision;
   }
 
-  public void setRevision(final Long revision)
+  public void setRevision(final int revision)
   {
-    if (revision != null) {
-      m_revision = revision;
-    } else {
-      m_revision = -1L;
-    }
+    m_revision = revision;
   }
 
   @Override
@@ -186,6 +186,7 @@ public class PersonEntity
   public void toDTO(final Person person)
   {
     person.setId(m_id);
+    person.setRevision(m_revision);
     person.setName(m_name);
     person.setUserId(m_userId);
     person.setEmail(m_email);

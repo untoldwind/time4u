@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 /**
  * User role entity.
  * 
@@ -23,7 +26,8 @@ public class RoleEntity
   private String m_name;
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(generator = "SEQ_T4U_ROLES")
+  @GenericGenerator(name = "SEQ_T4U_ROLES", strategy = "native", parameters = @Parameter(name = "sequence", value = "SEQ_T4U_ROLES"))
   public long getId()
   {
     return m_id;

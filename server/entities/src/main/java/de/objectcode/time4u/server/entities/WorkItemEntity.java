@@ -11,6 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 import de.objectcode.time4u.server.api.data.WorkItem;
 
 /**
@@ -38,9 +41,12 @@ public class WorkItemEntity
   private PersonEntity m_person;
   /** The todo the workitem belongs to (optional) */
   private TodoEntity m_todo;
+  /** Revision number (increased every time something has changed) */
+  private int m_revision;
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(generator = "SEQ_T4U_WORKITEMS")
+  @GenericGenerator(name = "SEQ_T4U_WORKITEMS", strategy = "native", parameters = @Parameter(name = "sequence", value = "SEQ_T4U_WORKITEMS"))
   public long getId()
   {
     return m_id;
@@ -132,6 +138,16 @@ public class WorkItemEntity
     m_todo = todo;
   }
 
+  public int getRevision()
+  {
+    return m_revision;
+  }
+
+  public void setRevision(final int revision)
+  {
+    m_revision = revision;
+  }
+
   @Override
   public boolean equals(final Object obj)
   {
@@ -151,6 +167,7 @@ public class WorkItemEntity
   public void toDTO(final WorkItem workItem)
   {
     workItem.setId(m_id);
+    workItem.setRevision(m_revision);
     workItem.setBegin(m_begin);
     workItem.setEnd(m_end);
     workItem.setComment(m_comment);
