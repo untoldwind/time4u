@@ -77,7 +77,7 @@
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            application="de.objectcode.time4u.ui.application"
+            application="de.objectcode.time4u.client.ui.application"
             name="Time4U">
          <property
                name="aboutText"

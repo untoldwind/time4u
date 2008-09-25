@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
 	<groupId>de.objectcode.time4u</groupId>
-	<artifactId>time4u</artifactId>
+	<artifactId>base</artifactId>
     <version>0.9.0-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.objectcode.time4u.client</groupId>
-  <artifactId>time4u-client</artifactId>
+  <artifactId>base</artifactId>
   <name>time4u-client</name>
   <packaging>pom</packaging>
   <modules>

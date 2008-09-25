@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.4"?>
 
-<product name="Time4U" id="de.objectcode.time4u.ui.product" application="de.objectcode.time4u.ui.application" version="0.9.0" useFeatures="true">
+<product name="Time4U" id="de.objectcode.time4u.client.ui.product" application="de.objectcode.time4u.client.ui.application" version="0.9.0" useFeatures="true">
 
    <aboutInfo>
       <image path="product_lg.gif"/>
@@ -20,7 +20,7 @@
    <windowImages i16="/time4u-client-ui/icons/Time4U.gif" i32="/time4u-client-ui/icons/Time4U_32.gif" i48="/time4u-client-ui/icons/Time4U_48.gif" i64="/time4u-client-ui/icons/Time4U_64.gif" i128="/time4u-client-ui/icons/Time4U_128.gif"/>
 
    <splash
-      location="de.objectcode.time4u.ui"
+      location="de.objectcode.time4u.client.ui"
       startupProgressRect="285,5,160,15"
       startupMessageRect="290,25,155,15"
       startupForegroundColor="000000" />
@@ -31,7 +31,6 @@
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>

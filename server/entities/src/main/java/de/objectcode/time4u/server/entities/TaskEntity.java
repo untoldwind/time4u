@@ -17,6 +17,9 @@ import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.MetaType;
 import de.objectcode.time4u.server.api.data.Task;
@@ -45,10 +48,11 @@ public class TaskEntity implements Comparable<TaskEntity>
   /** All meta properties of the task. */
   private Map<String, TaskProperty> m_metaProperties;
   /** Revision number (increased every time something has changed) */
-  private long m_revision;
+  private int m_revision;
 
-  @GeneratedValue
   @Id
+  @GeneratedValue(generator = "SEQ_T4U_TASKS")
+  @GenericGenerator(name = "SEQ_T4U_TASKS", strategy = "native", parameters = @Parameter(name = "sequence", value = "SEQ_T4U_TASKS"))
   public long getId()
   {
     return m_id;
@@ -125,18 +129,14 @@ public class TaskEntity implements Comparable<TaskEntity>
     m_metaProperties = metaProperties;
   }
 
-  public Long getRevision()
+  public int getRevision()
   {
     return m_revision;
   }
 
-  public void setRevision(final Long revision)
+  public void setRevision(final int revision)
   {
-    if (revision != null) {
-      m_revision = revision;
-    } else {
-      m_revision = -1L;
-    }
+    m_revision = revision;
   }
 
   @Override
@@ -167,6 +167,7 @@ public class TaskEntity implements Comparable<TaskEntity>
   public void toDTO(final Task task)
   {
     task.setId(m_id);
+    task.setRevision(m_revision);
     task.setActive(m_active);
     task.setDeleted(m_deleted);
     task.setName(m_name);

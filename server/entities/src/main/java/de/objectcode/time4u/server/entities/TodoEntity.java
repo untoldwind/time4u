@@ -17,6 +17,9 @@ import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.MetaType;
 import de.objectcode.time4u.server.api.data.Todo;
@@ -57,10 +60,11 @@ public class TodoEntity
   /** All meta properties of the todo. */
   private Map<String, TodoProperty> m_metaProperties;
   /** Revision number (increased every time something has changed) */
-  private long m_revision;
+  private int m_revision;
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(generator = "SEQ_T4U_TODOS")
+  @GenericGenerator(name = "SEQ_T4U_TODOS", strategy = "native", parameters = @Parameter(name = "sequence", value = "SEQ_T4U_TODOS"))
   public long getId()
   {
     return m_id;
@@ -208,18 +212,14 @@ public class TodoEntity
     m_metaProperties = metaProperties;
   }
 
-  public Long getRevision()
+  public int getRevision()
   {
     return m_revision;
   }
 
-  public void setRevision(final Long revision)
+  public void setRevision(final int revision)
   {
-    if (revision != null) {
-      m_revision = revision;
-    } else {
-      m_revision = -1L;
-    }
+    m_revision = revision;
   }
 
   public void fromDTO(final EntityManager entityManager, final Todo todo)
@@ -293,6 +293,7 @@ public class TodoEntity
   public void toDTO(final Todo todo)
   {
     todo.setId(m_id);
+    todo.setRevision(m_revision);
     todo.setTaskId(m_task.getId());
     todo.setCreatedAt(m_createdAt);
     if (m_reporter != null) {

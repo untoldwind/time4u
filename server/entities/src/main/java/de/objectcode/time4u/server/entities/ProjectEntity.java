@@ -17,6 +17,9 @@ import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.MetaType;
 import de.objectcode.time4u.server.api.data.Project;
@@ -45,12 +48,13 @@ public class ProjectEntity implements Comparable<ProjectEntity>
   /** Meta properties of the project */
   private Map<String, ProjectProperty> m_metaProperties;
   /** Revision number (increased every time something has changed) */
-  private long m_revision;
+  private int m_revision;
   /** Helper string containing all primary keys of all parent projects (usefull for querying all sub-projects. */
   private String m_parentKey;
 
-  @GeneratedValue
   @Id
+  @GeneratedValue(generator = "SEQ_T4U_PROJECTS")
+  @GenericGenerator(name = "SEQ_T4U_PROJECTS", strategy = "native", parameters = @Parameter(name = "sequence", value = "SEQ_T4U_PROJECTS"))
   public long getId()
   {
     return m_id;
@@ -140,18 +144,14 @@ public class ProjectEntity implements Comparable<ProjectEntity>
     return false;
   }
 
-  public Long getRevision()
+  public int getRevision()
   {
     return m_revision;
   }
 
-  public void setRevision(final Long revision)
+  public void setRevision(final int revision)
   {
-    if (revision != null) {
-      m_revision = revision;
-    } else {
-      m_revision = -1L;
-    }
+    m_revision = revision;
   }
 
   @Column(name = "parentKey", length = 300)
@@ -209,6 +209,7 @@ public class ProjectEntity implements Comparable<ProjectEntity>
   public void toDTO(final Project project)
   {
     project.setId(m_id);
+    project.setRevision(m_revision);
     project.setActive(m_active);
     project.setDeleted(m_deleted);
     project.setName(m_name);

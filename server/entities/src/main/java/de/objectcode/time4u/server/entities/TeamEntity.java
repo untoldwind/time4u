@@ -16,6 +16,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 import de.objectcode.time4u.server.api.data.Team;
 
 /**
@@ -36,10 +39,11 @@ public class TeamEntity
   /** All members of the team. */
   private Set<PersonEntity> m_members;
   /** Revision number (increased every time something has changed) */
-  private long m_revision;
+  private int m_revision;
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(generator = "SEQ_T4U_TEAMS")
+  @GenericGenerator(name = "SEQ_T4U_TEAMS", strategy = "native", parameters = @Parameter(name = "sequence", value = "SEQ_T4U_TEAMS"))
   public long getId()
   {
     return m_id;
@@ -85,17 +89,14 @@ public class TeamEntity
     m_members = members;
   }
 
-  public Long getRevision()
+  public int getRevision()
   {
     return m_revision;
   }
 
-  public void setRevision(final Long revision)
+  public void setRevision(final int revision)
   {
-    if (revision != null) {
-      m_revision = revision;
-    }
-    m_revision = 0;
+    m_revision = revision;
   }
 
   @Override
@@ -123,6 +124,7 @@ public class TeamEntity
   public void toDTO(final Team team)
   {
     team.setId(m_id);
+    team.setRevision(m_revision);
     team.setName(m_name);
     final List<Long> ownerIds = new ArrayList<Long>();
 
