@@ -1,0 +1,10 @@
+<jboss-web>
+  <context-root>/time4u</context-root>
+  <security-domain>java:/jaas/time4u</security-domain>
+  <class-loading java2ClassLoadingCompliance="false">
+    <loader-repository>
+      jboss.esb.util.logstore:loader=LogStoreServiceLoader
+      <loader-repository-config>java2ParentDelegation=false</loader-repository-config>
+    </loader-repository>
+  </class-loading>
+</jboss-web>
