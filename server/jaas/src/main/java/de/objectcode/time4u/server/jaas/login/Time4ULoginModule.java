@@ -69,6 +69,7 @@ public class Time4ULoginModule implements LoginModule
     final Time4UGroup roles = new Time4UGroup("Roles");
     principals.add(roles);
     roles.addMember(new Time4UPrincipal("time4u-user"));
+    roles.addMember(new Time4UPrincipal("user"));
     roles.addMember(new Time4UPrincipal("USER"));
 
     return true;

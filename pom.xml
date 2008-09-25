@@ -119,6 +119,18 @@
 				<version>4.2.3.GA</version>
 				<scope>provided</scope>
 			</dependency>
+			<dependency>
+				<groupId>jboss</groupId>
+				<artifactId>jboss-ejb3</artifactId>
+				<version>4.2.3.GA</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.jws</groupId>
+				<artifactId>jsr181-api</artifactId>
+				<version>1.0-MR1</version>
+				<scope>provided</scope>
+			</dependency>
 			
 			<!-- Seam -->
 			<dependency>
