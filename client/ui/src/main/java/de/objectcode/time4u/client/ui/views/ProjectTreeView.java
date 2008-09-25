@@ -19,6 +19,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.part.ViewPart;
 
+import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
 import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
@@ -28,6 +29,7 @@ import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.provider.ProjectContentProvider;
 import de.objectcode.time4u.client.ui.provider.ProjectLabelProvider;
 import de.objectcode.time4u.server.api.data.Project;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
 
 public class ProjectTreeView extends ViewPart implements IRepositoryListener
 {
@@ -75,7 +77,6 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
           command.executeWithChecks(new ExecutionEvent());
         } catch (final Exception e) {
           UIPlugin.getDefault().log(e);
-
         }
 
       }
@@ -115,8 +116,16 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
     if (selection instanceof IStructuredSelection) {
       final Object obj = ((IStructuredSelection) selection).getFirstElement();
 
-      if (obj != null && obj instanceof Project) {
-        return (Project) obj;
+      if (obj != null) {
+        if (obj instanceof Project) {
+          return (Project) obj;
+        } else if (obj instanceof ProjectSummary) {
+          try {
+            return RepositoryFactory.getRepository().getProjectRepository().getProject(((ProjectSummary) obj).getId());
+          } catch (final RepositoryException e) {
+            UIPlugin.getDefault().log(e);
+          }
+        }
       }
     }
 

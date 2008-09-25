@@ -6,11 +6,11 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 import de.objectcode.time4u.client.store.api.ITaskRepository;
-import de.objectcode.time4u.client.store.api.TaskFilter;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.dnd.ProjectTaskHolder;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.Task;
+import de.objectcode.time4u.server.api.filter.TaskFilter;
 
 public class TaskContentProvider implements IStructuredContentProvider
 {

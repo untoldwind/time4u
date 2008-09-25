@@ -3,6 +3,8 @@ package de.objectcode.time4u.client.store.api;
 import java.util.List;
 
 import de.objectcode.time4u.server.api.data.Project;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
+import de.objectcode.time4u.server.api.filter.ProjectFilter;
 
 /**
  * Interface to the client side project repository.
@@ -32,6 +34,17 @@ public interface IProjectRepository
    *           on error
    */
   List<Project> getProjects(ProjectFilter filter) throws RepositoryException;
+
+  /**
+   * Get summaries of all projects that match a filter condition.
+   * 
+   * @param filter
+   *          The filter condition
+   * @return All projects matching <tt>filter</tt>
+   * @throws RepositoryException
+   *           on error
+   */
+  List<ProjectSummary> getProjectSumaries(ProjectFilter filter) throws RepositoryException;
 
   /**
    * Store a project. This method either updates an existing project or inserts a new one.

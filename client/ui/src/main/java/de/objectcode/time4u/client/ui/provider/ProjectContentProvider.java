@@ -5,9 +5,10 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 import de.objectcode.time4u.client.store.api.IProjectRepository;
-import de.objectcode.time4u.client.store.api.ProjectFilter;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.server.api.data.Project;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
+import de.objectcode.time4u.server.api.filter.ProjectFilter;
 
 /**
  * Project content provider.
@@ -38,13 +39,12 @@ public class ProjectContentProvider implements IStructuredContentProvider, ITree
         filter.setActive(true);
       }
 
-      if (parentElement instanceof Project) {
-        filter.setParentProject(((Project) parentElement).getId());
+      if (parentElement instanceof ProjectSummary) {
+        return m_projectRepository.getProjectSumaries(
+            ProjectFilter.filterChildProjects(((ProjectSummary) parentElement).getId(), m_onlyActive)).toArray();
       } else {
-        filter.setParentProject(0L);
+        return m_projectRepository.getProjectSumaries(ProjectFilter.filterRootProjects(m_onlyActive)).toArray();
       }
-
-      return m_projectRepository.getProjects(filter).toArray();
     } catch (final Exception e) {
       UIPlugin.getDefault().log(e);
     }
@@ -58,8 +58,8 @@ public class ProjectContentProvider implements IStructuredContentProvider, ITree
   public Object getParent(final Object element)
   {
     try {
-      if (element instanceof Project) {
-        if (((Project) element).getParentId() != null) {
+      if (element instanceof ProjectSummary) {
+        if (((ProjectSummary) element).getParentId() != null) {
           return m_projectRepository.getProject(((Project) element).getParentId());
         }
       }

@@ -15,8 +15,6 @@ public class Project extends ProjectSummary
 
   /** Project description. */
   private String m_description;
-  /** Internal id of the parent project (<tt>null</tt> for root level projects) */
-  private Long m_parentId;
   /** Map of all meta properties of the project. */
   private Map<String, MetaProperty> m_metaProperties;
 
@@ -28,23 +26,6 @@ public class Project extends ProjectSummary
   public void setDescription(final String description)
   {
     m_description = description;
-  }
-
-  /**
-   * @return the parentId
-   */
-  public Long getParentId()
-  {
-    return m_parentId;
-  }
-
-  /**
-   * @param parentId
-   *          the parentId to set
-   */
-  public void setParentId(final Long parentId)
-  {
-    m_parentId = parentId;
   }
 
   public Map<String, MetaProperty> getMetaProperties()

@@ -18,9 +18,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 import de.objectcode.time4u.client.store.api.IProjectRepository;
 import de.objectcode.time4u.client.store.api.ITaskRepository;
-import de.objectcode.time4u.client.store.api.ProjectFilter;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
-import de.objectcode.time4u.client.store.api.TaskFilter;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.dialogs.ProjectCopyDialog;
 import de.objectcode.time4u.client.ui.dialogs.ProjectDeleteDialog;
@@ -28,7 +26,10 @@ import de.objectcode.time4u.client.ui.dialogs.ProjectDialog;
 import de.objectcode.time4u.client.ui.preferences.PreferenceConstants;
 import de.objectcode.time4u.client.ui.views.ProjectTreeView;
 import de.objectcode.time4u.server.api.data.Project;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.data.Task;
+import de.objectcode.time4u.server.api.filter.ProjectFilter;
+import de.objectcode.time4u.server.api.filter.TaskFilter;
 
 public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IViewActionDelegate
 {
@@ -95,11 +96,8 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
     } else if ("de.objectcode.time4u.client.project.delete".equals(id)) {
       if (selectedProject != null) {
         try {
-          final ProjectFilter filter = new ProjectFilter();
-          filter.setDeleted(false);
-          filter.setParentProject(selectedProject.getId());
-          final Collection<Project> children = RepositoryFactory.getRepository().getProjectRepository().getProjects(
-              filter);
+          final Collection<ProjectSummary> children = RepositoryFactory.getRepository().getProjectRepository()
+              .getProjectSumaries(ProjectFilter.filterChildProjects(selectedProject.getId(), false));
 
           if (children != null && children.size() > 0) {
             MessageDialog.openInformation(m_shellProvider.getShell(), "Project delete",
@@ -218,10 +216,8 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
       }
 
       if (copySubProjects) {
-        final ProjectFilter projectFilter = new ProjectFilter();
-        projectFilter.setDeleted(false);
-        projectFilter.setParentProject(project.getId());
-        for (final Project toCopy : projectRepository.getProjects(projectFilter)) {
+        for (final Project toCopy : projectRepository.getProjects(ProjectFilter.filterChildProjects(project.getId(),
+            false))) {
           copyProject(toCopy, null, newProject, copyTasks, copySubProjects);
         }
       }

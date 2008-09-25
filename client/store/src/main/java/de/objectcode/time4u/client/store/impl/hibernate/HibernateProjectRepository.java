@@ -9,10 +9,11 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import de.objectcode.time4u.client.store.api.IProjectRepository;
-import de.objectcode.time4u.client.store.api.ProjectFilter;
 import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.client.store.api.event.ProjectRepositoryEvent;
 import de.objectcode.time4u.server.api.data.Project;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
+import de.objectcode.time4u.server.api.filter.ProjectFilter;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.context.SessionPersistenceContext;
 import de.objectcode.time4u.server.entities.revision.EntityType;
@@ -77,7 +78,15 @@ public class HibernateProjectRepository implements IProjectRepository
         if (filter.getMinRevision() != null) {
           criteria.add(Restrictions.ge("revision", filter.getMinRevision()));
         }
-        criteria.addOrder(Order.asc("id"));
+        switch (filter.getOrder()) {
+          case ID:
+            criteria.addOrder(Order.asc("id"));
+            break;
+          case NAME:
+            criteria.addOrder(Order.asc("name"));
+            criteria.addOrder(Order.asc("id"));
+            break;
+        }
 
         final List<Project> result = new ArrayList<Project>();
 
@@ -87,6 +96,54 @@ public class HibernateProjectRepository implements IProjectRepository
           ((ProjectEntity) row).toDTO(project);
 
           result.add(project);
+        }
+
+        return result;
+      }
+
+    });
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public List<ProjectSummary> getProjectSumaries(final ProjectFilter filter) throws RepositoryException
+  {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<List<ProjectSummary>>() {
+      public List<ProjectSummary> perform(final Session session)
+      {
+        final Criteria criteria = session.createCriteria(ProjectEntity.class);
+
+        if (filter.getActive() != null) {
+          criteria.add(Restrictions.eq("active", filter.getActive()));
+        }
+        if (filter.getDeleted() != null) {
+          criteria.add(Restrictions.eq("deleted", filter.getDeleted()));
+        }
+        if (filter.getParentProject() != null) {
+          if (filter.getParentProject().longValue() == 0L) {
+            criteria.add(Restrictions.isNull("parent"));
+          } else {
+            criteria.add(Restrictions.eq("parent.id", filter.getParentProject()));
+          }
+        }
+        if (filter.getMinRevision() != null) {
+          criteria.add(Restrictions.ge("revision", filter.getMinRevision()));
+        }
+        switch (filter.getOrder()) {
+          case ID:
+            criteria.addOrder(Order.asc("id"));
+            break;
+          case NAME:
+            criteria.addOrder(Order.asc("name"));
+            criteria.addOrder(Order.asc("id"));
+            break;
+        }
+
+        final List<ProjectSummary> result = new ArrayList<ProjectSummary>();
+
+        for (final Object row : criteria.list()) {
+          result.add(((ProjectEntity) row).toSummaryDTO());
         }
 
         return result;

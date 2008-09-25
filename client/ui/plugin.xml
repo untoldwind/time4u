@@ -144,6 +144,17 @@
          </menu>
          <action
                class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"
+               enablesFor="1"
+               icon="icons/Project.gif"
+               id="de.objectcode.time4u.client.ui.project.edit"
+               label="%action.project.edit.label"
+               menubarPath="projectMenu/projectGroup"
+               style="push"
+               toolbarPath="projectGroup"
+               tooltip="%action.project.edit.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"
                icon="icons/NewProject.gif"
                id="de.objectcode.time4u.client.ui.project.new"
                label="%action.project.new.label"

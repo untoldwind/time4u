@@ -8,7 +8,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.PlatformUI;
 
 import de.objectcode.time4u.client.ui.UIPlugin;
-import de.objectcode.time4u.server.api.data.Project;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
 
 /**
  * Project label provider.
@@ -31,8 +31,8 @@ public class ProjectLabelProvider extends LabelProvider implements IColorProvide
    */
   public Color getForeground(final Object element)
   {
-    if (element instanceof Project) {
-      if (!((Project) element).isActive()) {
+    if (element instanceof ProjectSummary) {
+      if (!((ProjectSummary) element).isActive()) {
         return PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_GRAY);
       }
     }
@@ -46,8 +46,8 @@ public class ProjectLabelProvider extends LabelProvider implements IColorProvide
   @Override
   public String getText(final Object obj)
   {
-    if (obj instanceof Project) {
-      return ((Project) obj).getName();
+    if (obj instanceof ProjectSummary) {
+      return ((ProjectSummary) obj).getName();
     }
 
     return obj.toString();

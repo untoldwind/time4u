@@ -20,11 +20,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import de.objectcode.time4u.client.store.api.ProjectFilter;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.provider.ProjectLabelProvider;
 import de.objectcode.time4u.server.api.data.Project;
+import de.objectcode.time4u.server.api.filter.ProjectFilter;
 
 public class ProjectCopyDialog extends Dialog
 {

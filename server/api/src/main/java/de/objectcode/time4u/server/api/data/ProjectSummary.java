@@ -21,6 +21,8 @@ public class ProjectSummary implements ISynchronizableData
   private boolean m_active;
   /** Flag if the project is deleted. */
   private boolean m_deleted;
+  /** Internal id of the parent project (<tt>null</tt> for root level projects) */
+  private Long m_parentId;
 
   public long getId()
   {
@@ -70,6 +72,23 @@ public class ProjectSummary implements ISynchronizableData
   public void setDeleted(final boolean deleted)
   {
     m_deleted = deleted;
+  }
+
+  /**
+   * @return the parentId
+   */
+  public Long getParentId()
+  {
+    return m_parentId;
+  }
+
+  /**
+   * @param parentId
+   *          the parentId to set
+   */
+  public void setParentId(final Long parentId)
+  {
+    m_parentId = parentId;
   }
 
   /**

@@ -8,7 +8,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.PlatformUI;
 
 import de.objectcode.time4u.client.ui.UIPlugin;
-import de.objectcode.time4u.server.api.data.Task;
+import de.objectcode.time4u.server.api.data.TaskSummary;
 
 /**
  * Task label provider.
@@ -25,8 +25,8 @@ public class TaskLabelProvider extends LabelProvider implements IColorProvider
 
   public Color getForeground(final Object element)
   {
-    if (element instanceof Task) {
-      if (!((Task) element).isActive()) {
+    if (element instanceof TaskSummary) {
+      if (!((TaskSummary) element).isActive()) {
         return PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_GRAY);
       }
     }
@@ -36,8 +36,8 @@ public class TaskLabelProvider extends LabelProvider implements IColorProvider
   @Override
   public String getText(final Object obj)
   {
-    if (obj instanceof Task) {
-      return ((Task) obj).getName();
+    if (obj instanceof TaskSummary) {
+      return ((TaskSummary) obj).getName();
     }
 
     return obj.toString();

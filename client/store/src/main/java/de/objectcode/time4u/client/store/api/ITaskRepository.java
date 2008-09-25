@@ -3,6 +3,7 @@ package de.objectcode.time4u.client.store.api;
 import java.util.List;
 
 import de.objectcode.time4u.server.api.data.Task;
+import de.objectcode.time4u.server.api.filter.TaskFilter;
 
 /**
  * Interface of the client side task repository.

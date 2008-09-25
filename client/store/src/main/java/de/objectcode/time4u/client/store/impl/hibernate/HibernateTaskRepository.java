@@ -10,9 +10,9 @@ import org.hibernate.criterion.Restrictions;
 
 import de.objectcode.time4u.client.store.api.ITaskRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
-import de.objectcode.time4u.client.store.api.TaskFilter;
 import de.objectcode.time4u.client.store.api.event.TaskRepositoryEvent;
 import de.objectcode.time4u.server.api.data.Task;
+import de.objectcode.time4u.server.api.filter.TaskFilter;
 import de.objectcode.time4u.server.entities.TaskEntity;
 import de.objectcode.time4u.server.entities.context.SessionPersistenceContext;
 import de.objectcode.time4u.server.entities.revision.EntityType;
@@ -78,7 +78,15 @@ public class HibernateTaskRepository implements ITaskRepository
         if (filter.getMinRevision() != null) {
           criteria.add(Restrictions.ge("revision", filter.getMinRevision()));
         }
-        criteria.addOrder(Order.asc("id"));
+        switch (filter.getOrder()) {
+          case ID:
+            criteria.addOrder(Order.asc("id"));
+            break;
+          case NAME:
+            criteria.addOrder(Order.asc("name"));
+            criteria.addOrder(Order.asc("id"));
+            break;
+        }
 
         final List<Task> result = new ArrayList<Task>();
 

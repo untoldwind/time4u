@@ -26,4 +26,5 @@ Export-Package: de.objectcode.time4u.client.store.api,
  de.objectcode.time4u.client.store.api.event,
  de.objectcode.time4u.client.store.api.meta,
  de.objectcode.time4u.server.api,
- de.objectcode.time4u.server.api.data
+ de.objectcode.time4u.server.api.data,
+ de.objectcode.time4u.server.api.filter

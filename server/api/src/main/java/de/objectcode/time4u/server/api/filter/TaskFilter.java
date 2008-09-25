@@ -1,12 +1,16 @@
-package de.objectcode.time4u.client.store.api;
+package de.objectcode.time4u.server.api.filter;
+
+import java.io.Serializable;
 
 /**
  * A filter condition for querying tasks.
  * 
  * @author junglas
  */
-public class TaskFilter
+public class TaskFilter implements Serializable
 {
+  private static final long serialVersionUID = 6557945403193307426L;
+
   /** Condition for the project (optional). */
   Long m_project;
   /** Condition for the active flag (optional). */
@@ -15,17 +19,22 @@ public class TaskFilter
   Boolean m_deleted;
   /** Minimum revision number (i.e. only revisions greater or equals are returned). */
   Long m_minRevision;
+  /** Desired order. */
+  Order m_order;
 
   public TaskFilter()
   {
+    m_order = Order.ID;
   }
 
-  public TaskFilter(final Boolean active, final Boolean deleted, final Long minRevision, final Long project)
+  public TaskFilter(final Boolean active, final Boolean deleted, final Long minRevision, final Long project,
+      final Order order)
   {
     m_active = active;
     m_deleted = deleted;
     m_minRevision = minRevision;
     m_project = project;
+    m_order = order;
   }
 
   public Long getProject()
@@ -68,4 +77,24 @@ public class TaskFilter
     m_minRevision = minRevision;
   }
 
+  public Order getOrder()
+  {
+    return m_order;
+  }
+
+  public void setOrder(final Order order)
+  {
+    m_order = order;
+  }
+
+  public static TaskFilter filterProjectTasks(final long projectId, final boolean onlyActive)
+  {
+    return new TaskFilter(onlyActive ? true : null, false, null, projectId, Order.NAME);
+  }
+
+  public static enum Order
+  {
+    ID,
+    NAME;
+  }
 }

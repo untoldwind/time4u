@@ -216,6 +216,7 @@ public class ProjectEntity implements Comparable<ProjectEntity>
     summary.setActive(m_active);
     summary.setDeleted(m_deleted);
     summary.setName(m_name);
+    summary.setParentId(m_parent != null ? m_parent.getId() : null);
 
     return summary;
   }
