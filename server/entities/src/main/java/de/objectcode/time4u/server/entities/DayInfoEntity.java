@@ -1,6 +1,9 @@
 package de.objectcode.time4u.server.entities;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -12,10 +15,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import de.objectcode.time4u.server.api.data.CalendarDay;
+import de.objectcode.time4u.server.api.data.DayInfo;
+import de.objectcode.time4u.server.api.data.DayInfoSummary;
+import de.objectcode.time4u.server.api.data.WorkItem;
 
 /**
  * Day information entity.
@@ -25,7 +35,7 @@ import org.hibernate.annotations.Parameter;
  * @author junglas
  */
 @Entity
-@Table(name = "T4U_DAYINFOS")
+@Table(name = "T4U_DAYINFOS", uniqueConstraints = @UniqueConstraint(columnNames = { "person_id", "daydate" }))
 public class DayInfoEntity
 {
   /** Primary key */
@@ -40,9 +50,10 @@ public class DayInfoEntity
   private boolean m_hasInvalidWorkItems;
   private int m_totalTime;
   private int m_regularTime;
-
   /** Set of tags of the day */
   private Set<DayTagEntity> m_tags;
+  /** Set of workitem of this day. */
+  private Set<WorkItemEntity> m_workItems;
 
   @Id
   @GeneratedValue(generator = "SEQ_T4U_DAYINFOS")
@@ -142,4 +153,42 @@ public class DayInfoEntity
     m_regularTime = regularTime;
   }
 
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "dayInfo")
+  public Set<WorkItemEntity> getWorkItems()
+  {
+    return m_workItems;
+  }
+
+  public void setWorkItems(final Set<WorkItemEntity> workItems)
+  {
+    m_workItems = workItems;
+  }
+
+  public void toSummaryDTO(final DayInfoSummary dayinfo)
+  {
+    dayinfo.setId(m_id);
+    dayinfo.setRevision(m_revision);
+    dayinfo.setDay(new CalendarDay(m_date));
+  }
+
+  public void toDTO(final DayInfo dayinfo)
+  {
+    toSummaryDTO(dayinfo);
+
+    if (m_workItems != null) {
+      final List<WorkItem> workItems = new ArrayList<WorkItem>();
+      for (final WorkItemEntity entity : m_workItems) {
+        final WorkItem workItem = new WorkItem();
+
+        entity.toDTO(workItem);
+
+        workItems.add(workItem);
+      }
+      dayinfo.setWorkItems(workItems);
+    } else {
+      final List<WorkItem> workItems = Collections.emptyList();
+
+      dayinfo.setWorkItems(workItems);
+    }
+  }
 }

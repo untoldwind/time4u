@@ -87,11 +87,27 @@ public class ProjectFilter implements Serializable
     m_order = order;
   }
 
+  /**
+   * Convenient method to create a "only top level projects" filter.
+   * 
+   * @param onlyActive
+   *          <tt>true</tt> if only active projects should be filtered
+   * @return The desired filter condition
+   */
   public static ProjectFilter filterRootProjects(final boolean onlyActive)
   {
     return new ProjectFilter(onlyActive ? true : null, false, null, 0L, Order.NAME);
   }
 
+  /**
+   * Convenient method to create a "only sub-projects of a given project" filter.
+   * 
+   * @param parentProjectId
+   *          The id of the parent project
+   * @param onlyActive
+   *          <tt>true</tt> if only active projects should be filtered
+   * @return The desired filter condition
+   */
   public static ProjectFilter filterChildProjects(final long parentProjectId, final boolean onlyActive)
   {
     return new ProjectFilter(onlyActive ? true : null, false, null, parentProjectId, Order.NAME);

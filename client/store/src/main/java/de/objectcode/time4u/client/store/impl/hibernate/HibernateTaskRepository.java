@@ -199,7 +199,7 @@ public class HibernateTaskRepository implements ITaskRepository
   /**
    * {@inheritDoc}
    */
-  public List<Task> storeTask(final List<Task> tasks) throws RepositoryException
+  public List<Task> storeTasks(final List<Task> tasks) throws RepositoryException
   {
     // TODO Auto-generated method stub
     return null;

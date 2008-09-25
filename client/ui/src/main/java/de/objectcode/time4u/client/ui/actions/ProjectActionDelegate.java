@@ -207,7 +207,7 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
 
           newTasks.add(newTask);
         }
-        taskRepository.storeTask(newTasks);
+        taskRepository.storeTasks(newTasks);
       }
 
       if (copySubProjects) {

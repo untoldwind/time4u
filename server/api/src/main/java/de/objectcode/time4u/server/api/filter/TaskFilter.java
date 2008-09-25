@@ -87,6 +87,15 @@ public class TaskFilter implements Serializable
     m_order = order;
   }
 
+  /**
+   * Convenient method to create a "only tasks of a given project" filter.
+   * 
+   * @param projectId
+   *          The id of the project
+   * @param onlyActive
+   *          <tt>true</tt> if only active tasks should be filters
+   * @return The desired filter condition
+   */
   public static TaskFilter filterProjectTasks(final long projectId, final boolean onlyActive)
   {
     return new TaskFilter(onlyActive ? true : null, false, null, projectId, Order.NAME);

@@ -1,13 +1,15 @@
 package de.objectcode.time4u.server.api.data;
 
 import java.io.Serializable;
+import java.sql.Date;
+import java.util.Calendar;
 
 /**
  * A (gregorian) calendar day.
  * 
  * @author junglas
  */
-public class CalendarDay implements Serializable
+public class CalendarDay implements Serializable, Comparable<CalendarDay>
 {
   private static final long serialVersionUID = 5239789740978583628L;
 
@@ -20,6 +22,23 @@ public class CalendarDay implements Serializable
     m_day = day;
     m_month = month;
     m_year = year;
+  }
+
+  public CalendarDay(final Date date)
+  {
+    final Calendar calendar = Calendar.getInstance();
+    calendar.setTime(date);
+
+    m_day = calendar.get(Calendar.DAY_OF_MONTH);
+    m_month = calendar.get(Calendar.MONTH) + 1;
+    m_year = calendar.get(Calendar.YEAR);
+  }
+
+  public CalendarDay(final Calendar calendar)
+  {
+    m_day = calendar.get(Calendar.DAY_OF_MONTH);
+    m_month = calendar.get(Calendar.MONTH) + 1;
+    m_year = calendar.get(Calendar.YEAR);
   }
 
   public int getDay()
@@ -50,5 +69,60 @@ public class CalendarDay implements Serializable
   public void setYear(final int year)
   {
     m_year = year;
+  }
+
+  public Date getDate()
+  {
+    final Calendar calendar = Calendar.getInstance();
+
+    calendar.set(m_year, m_month - 1, m_day, 0, 0, 0);
+
+    return new Date(calendar.getTimeInMillis());
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public int hashCode()
+  {
+    return m_day + 12 * (32 * m_month + m_year);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean equals(final Object obj)
+
+  {
+    if (obj == this) {
+      return true;
+    }
+
+    if (obj == null || !(obj instanceof CalendarDay)) {
+      return false;
+    }
+
+    final CalendarDay castObj = (CalendarDay) obj;
+
+    return m_day == castObj.m_day && m_month == castObj.m_month && m_year == castObj.m_year;
+  }
+
+  public int compareTo(final CalendarDay o)
+  {
+    if (m_year != o.m_year) {
+      return m_year < o.m_year ? -1 : 1;
+    }
+
+    if (m_month != o.m_month) {
+      return m_month < o.m_month ? -1 : 1;
+    }
+
+    if (m_day != o.m_day) {
+      return m_day < o.m_day ? -1 : 1;
+    }
+
+    return 0;
   }
 }

@@ -4,7 +4,6 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +12,13 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import de.objectcode.time4u.client.store.api.IRepository;
-import de.objectcode.time4u.client.store.impl.hibernate.HibernateRepository;
 import de.objectcode.time4u.server.api.data.Project;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
+import de.objectcode.time4u.server.api.filter.ProjectFilter;
+import de.objectcode.time4u.server.api.filter.ProjectFilter.Order;
 
-@Test
-public class HibernateRepositoryTest
+@Test(groups = "project")
+public class HibernateProjectRepositoryTest
 {
   private IRepository repository;
 
@@ -56,10 +57,33 @@ public class HibernateRepositoryTest
     assertEquals(result2.getDescription(), project.getDescription());
   }
 
+  @Test(dependsOnMethods = "testCreateSub")
+  public void testFind() throws Exception
+  {
+    List<ProjectSummary> projectSummaries = repository.getProjectRepository().getProjectSumaries(
+        new ProjectFilter(null, null, null, null, Order.ID));
+
+    assertNotNull(projectSummaries);
+    assertEquals(projectSummaries.size(), 30);
+
+    projectSummaries = repository.getProjectRepository().getProjectSumaries(ProjectFilter.filterRootProjects(false));
+
+    assertNotNull(projectSummaries);
+    assertEquals(projectSummaries.size(), 5);
+
+    for (final ProjectSummary project : projectSummaries) {
+      final List<ProjectSummary> subProjectSumaries = repository.getProjectRepository().getProjectSumaries(
+          ProjectFilter.filterChildProjects(project.getId(), false));
+
+      assertNotNull(subProjectSumaries);
+      assertEquals(subProjectSumaries.size(), 5);
+    }
+  }
+
   @BeforeClass
   public void initialize() throws Exception
   {
-    repository = new HibernateRepository(new File("./target/test"));
+    repository = HibernateTestRepositoryFactory.getInstance();
   }
 
   @DataProvider(name = "rootProjects")

@@ -11,8 +11,8 @@ public class WorkItem implements Comparable<WorkItem>
 
   /** Internal server id of the workitem. */
   private long m_id;
-  /** Server id of the day of the workitem. */
-  private long m_dayInfoId;
+  /** The calendar day of the workitem (this identifies the dayinfo). */
+  private CalendarDay m_day;
   /** Server id of the project the workitem belongs to. */
   private long m_projectId;
   /** Server id of the task the workitem belongs to. */
@@ -131,14 +131,14 @@ public class WorkItem implements Comparable<WorkItem>
     m_todoId = todoId;
   }
 
-  public long getDayInfoId()
+  public CalendarDay getDay()
   {
-    return m_dayInfoId;
+    return m_day;
   }
 
-  public void setDayInfoId(final long dayInfoId)
+  public void setDay(final CalendarDay day)
   {
-    m_dayInfoId = dayInfoId;
+    m_day = day;
   }
 
   /**

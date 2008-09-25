@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.WorkItem;
 import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 
@@ -158,7 +159,7 @@ public class WorkItemEntity
     workItem.setComment(m_comment);
     workItem.setProjectId(m_project.getId());
     workItem.setTaskId(m_task.getId());
-    workItem.setDayInfoId(m_dayInfo.getId());
+    workItem.setDay(new CalendarDay(m_dayInfo.getDate()));
 
     if (m_todo != null) {
       workItem.setTodoId(m_todo.getId());

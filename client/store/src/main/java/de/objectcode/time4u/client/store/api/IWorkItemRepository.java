@@ -5,6 +5,7 @@ import java.util.List;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
+import de.objectcode.time4u.server.api.data.WorkItem;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
 
 /**
@@ -35,4 +36,16 @@ public interface IWorkItemRepository
    *           on error
    */
   List<DayInfoSummary> getDayInfoSummaries(DayInfoFilter filter) throws RepositoryException;
+
+  /**
+   * Store a single workitem.
+   * 
+   * This method also inserts a dayinfo if necessary.
+   * 
+   * @param workItem
+   *          The workitem to be stored
+   * @throws RepositoryException
+   *           on error
+   */
+  WorkItem storeWorkItem(WorkItem workItem) throws RepositoryException;
 }
