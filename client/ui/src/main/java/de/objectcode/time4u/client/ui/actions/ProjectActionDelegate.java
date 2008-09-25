@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -36,10 +37,11 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
   IShellProvider m_shellProvider;
   ProjectTreeView m_view;
 
+  IAdaptable m_selection;
+
   public void init(final IWorkbenchWindow window)
   {
     m_shellProvider = new SameShellProvider(window.getShell());
-    m_view = (ProjectTreeView) window.getActivePage().findView(ProjectTreeView.ID);
   }
 
   public void init(final IViewPart view)
@@ -58,7 +60,7 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
   {
     final String id = action.getId();
 
-    final Project selectedProject = m_view.getSelectedProject();
+    final Project selectedProject = (Project) m_selection.getAdapter(Project.class);
 
     if ("de.objectcode.time4u.client.ui.project.new".equals(id)) {
       final ProjectDialog dialog = new ProjectDialog(m_shellProvider);
@@ -156,27 +158,19 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
 
   public void selectionChanged(final IAction action, final ISelection selection)
   {
-    Project selectedProject = null;
 
     if (selection instanceof IStructuredSelection) {
       final Object obj = ((IStructuredSelection) selection).getFirstElement();
 
-      if (obj != null) {
-        if (obj instanceof Project) {
-          selectedProject = (Project) obj;
-        }
+      if (obj != null && obj instanceof IAdaptable) {
+        m_selection = (IAdaptable) obj;
       }
     }
-    final String id = action.getId();
 
     if ("de.objectcode.time4u.client.project.onlyActive".equals(action.getId())) {
       if (m_view != null) {
         action.setChecked(m_view.isShowOnlyActive());
       }
-    } else if ("de.objectcode.time4u.client.project.edit".equals(id)) {
-      action.setEnabled(selectedProject != null);
-    } else if ("de.objectcode.time4u.client.project.delete".equals(id)) {
-      action.setEnabled(selectedProject != null);
     }
   }
 

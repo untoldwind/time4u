@@ -114,12 +114,18 @@
             adaptableType="de.objectcode.time4u.server.api.data.ProjectSummary"
             class="de.objectcode.time4u.client.ui.adapter.ProjectAdapterFactory">
          <adapter type="org.eclipse.ui.IActionFilter"/>
+         <adapter
+               type="de.objectcode.time4u.server.api.data.Project">
+         </adapter>
       </factory>
 
       <factory
             adaptableType="de.objectcode.time4u.server.api.data.TaskSummary"
             class="de.objectcode.time4u.client.ui.adapter.TaskAdapterFactory">
          <adapter type="org.eclipse.ui.IActionFilter"/>
+         <adapter
+               type="de.objectcode.time4u.server.api.data.Task">
+         </adapter>
       </factory>
 	</extension>
    <extension
@@ -144,7 +150,6 @@
          </menu>
          <action
                class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"
-               enablesFor="1"
                icon="icons/Project.gif"
                id="de.objectcode.time4u.client.ui.project.edit"
                label="%action.project.edit.label"
@@ -152,6 +157,13 @@
                style="push"
                toolbarPath="projectGroup"
                tooltip="%action.project.edit.tooltip">
+            <enablement>
+               <or>
+                  <objectClass
+                        name="de.objectcode.time4u.server.api.data.ProjectSummary">
+                  </objectClass>
+               </or>
+            </enablement>
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"

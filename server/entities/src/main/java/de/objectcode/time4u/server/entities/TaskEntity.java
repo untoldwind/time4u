@@ -165,26 +165,18 @@ public class TaskEntity implements Comparable<TaskEntity>
     return 0;
   }
 
-  public TaskSummary toSummaryDTO()
-  {
-    final TaskSummary summary = new TaskSummary();
-
-    summary.setId(m_id);
-    summary.setRevision(m_revision);
-    summary.setActive(m_active);
-    summary.setDeleted(m_deleted);
-    summary.setName(m_name);
-
-    return summary;
-  }
-
-  public void toDTO(final Task task)
+  public void toSummaryDTO(final TaskSummary task)
   {
     task.setId(m_id);
     task.setRevision(m_revision);
     task.setActive(m_active);
     task.setDeleted(m_deleted);
     task.setName(m_name);
+  }
+
+  public void toDTO(final Task task)
+  {
+    toSummaryDTO(task);
     task.setProjectId(m_project != null ? m_project.getId() : null);
     task.setDescription(m_description);
 

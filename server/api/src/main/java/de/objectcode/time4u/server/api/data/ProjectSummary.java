@@ -114,7 +114,7 @@ public class ProjectSummary implements ISynchronizableData
       return false;
     }
 
-    final ProjectSummary castObj = (Project) obj;
+    final ProjectSummary castObj = (ProjectSummary) obj;
 
     return m_id == castObj.m_id;
   }

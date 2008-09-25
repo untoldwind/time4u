@@ -95,7 +95,7 @@ public class TaskSummary implements ISynchronizableData
       return false;
     }
 
-    final TaskSummary castObj = (Task) obj;
+    final TaskSummary castObj = (TaskSummary) obj;
 
     return m_id == castObj.m_id;
   }

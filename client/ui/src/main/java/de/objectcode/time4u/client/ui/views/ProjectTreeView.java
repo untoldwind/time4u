@@ -7,7 +7,6 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -19,7 +18,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.part.ViewPart;
 
-import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
 import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
@@ -28,8 +26,6 @@ import de.objectcode.time4u.client.ui.ICommandIds;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.provider.ProjectContentProvider;
 import de.objectcode.time4u.client.ui.provider.ProjectLabelProvider;
-import de.objectcode.time4u.server.api.data.Project;
-import de.objectcode.time4u.server.api.data.ProjectSummary;
 
 public class ProjectTreeView extends ViewPart implements IRepositoryListener
 {
@@ -78,20 +74,15 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
         } catch (final Exception e) {
           UIPlugin.getDefault().log(e);
         }
-
       }
-
     });
 
     RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.PROJECT, this);
   }
 
   public boolean isShowOnlyActive()
-
   {
-
     return m_showOnlyActive;
-
   }
 
   public void setShowOnlyActive(final boolean showOnlyActive)
@@ -109,29 +100,6 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
     }
   }
 
-  public Project getSelectedProject()
-  {
-    final ISelection selection = m_viewer.getSelection();
-
-    if (selection instanceof IStructuredSelection) {
-      final Object obj = ((IStructuredSelection) selection).getFirstElement();
-
-      if (obj != null) {
-        if (obj instanceof Project) {
-          return (Project) obj;
-        } else if (obj instanceof ProjectSummary) {
-          try {
-            return RepositoryFactory.getRepository().getProjectRepository().getProject(((ProjectSummary) obj).getId());
-          } catch (final RepositoryException e) {
-            UIPlugin.getDefault().log(e);
-          }
-        }
-      }
-    }
-
-    return null;
-  }
-
   /**
    * {@inheritDoc}
    */
@@ -141,7 +109,6 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
     RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.PROJECT, this);
 
     super.dispose();
-
   }
 
   /**
@@ -199,9 +166,11 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
           {
             try {
               final ISelection selection = m_viewer.getSelection();
+              final Object[] expanded = m_viewer.getExpandedElements();
 
-              m_viewer.refresh();
+              m_viewer.setInput(new Object());
 
+              m_viewer.setExpandedElements(expanded);
               m_viewer.setSelection(selection);
             } finally {
               synchronized (ProjectTreeView.this) {

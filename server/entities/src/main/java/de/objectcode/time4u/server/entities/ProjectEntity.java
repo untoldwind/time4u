@@ -207,21 +207,7 @@ public class ProjectEntity implements Comparable<ProjectEntity>
     return 0;
   }
 
-  public ProjectSummary toSummaryDTO()
-  {
-    final ProjectSummary summary = new ProjectSummary();
-
-    summary.setId(m_id);
-    summary.setRevision(m_revision);
-    summary.setActive(m_active);
-    summary.setDeleted(m_deleted);
-    summary.setName(m_name);
-    summary.setParentId(m_parent != null ? m_parent.getId() : null);
-
-    return summary;
-  }
-
-  public void toDTO(final Project project)
+  public void toSummaryDTO(final ProjectSummary project)
   {
     project.setId(m_id);
     project.setRevision(m_revision);
@@ -229,6 +215,11 @@ public class ProjectEntity implements Comparable<ProjectEntity>
     project.setDeleted(m_deleted);
     project.setName(m_name);
     project.setParentId(m_parent != null ? m_parent.getId() : null);
+  }
+
+  public void toDTO(final Project project)
+  {
+    toSummaryDTO(project);
     project.setDescription(m_description);
 
     if (m_metaProperties != null) {
