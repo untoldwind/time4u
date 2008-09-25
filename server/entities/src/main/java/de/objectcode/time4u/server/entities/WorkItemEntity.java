@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -15,6 +14,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import de.objectcode.time4u.server.api.data.WorkItem;
+import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 
 /**
  * Workitem entity.
@@ -182,7 +182,7 @@ public class WorkItemEntity
     }
   }
 
-  public void fromDTO(final EntityManager entityManager, final WorkItem workItem)
+  public void fromDTO(final IPersistenceContext context, final WorkItem workItem)
   {
     m_begin = workItem.getBegin();
     m_end = workItem.getEnd();
@@ -191,11 +191,11 @@ public class WorkItemEntity
     if (m_comment == null) {
       m_comment = "";
     }
-    m_project = entityManager.find(ProjectEntity.class, workItem.getProjectId());
-    m_task = entityManager.find(TaskEntity.class, workItem.getTaskId());
-    m_person = entityManager.find(PersonEntity.class, workItem.getPersonId());
+    m_project = context.findProject(workItem.getProjectId());
+    m_task = context.findTask(workItem.getTaskId());
+    m_person = context.findPerson(workItem.getPersonId());
     if (workItem.getTodoId() != null) {
-      m_todo = entityManager.find(TodoEntity.class, workItem.getTodoId());
+      m_todo = context.findTodo(workItem.getTodoId());
     } else {
       m_todo = null;
     }

@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -23,6 +22,7 @@ import org.hibernate.annotations.Parameter;
 import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.MetaType;
 import de.objectcode.time4u.server.api.data.Project;
+import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 
 /**
  * Project entity.
@@ -231,12 +231,12 @@ public class ProjectEntity implements Comparable<ProjectEntity>
     }
   }
 
-  public void fromDTO(final EntityManager entityManager, final Project project)
+  public void fromDTO(final IPersistenceContext context, final Project project)
   {
     m_active = project.isActive();
     m_deleted = project.isDeleted();
     m_name = project.getName() != null ? project.getName() : "";
-    m_parent = project.getParentId() != null ? entityManager.find(ProjectEntity.class, project.getParentId()) : null;
+    m_parent = project.getParentId() != null ? context.findProject(project.getParentId()) : null;
     updateParentKey();
     m_description = project.getDescription();
 

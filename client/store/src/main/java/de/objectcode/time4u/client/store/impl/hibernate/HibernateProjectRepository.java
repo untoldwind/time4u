@@ -14,6 +14,7 @@ import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.client.store.api.event.ProjectRepositoryEvent;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.entities.ProjectEntity;
+import de.objectcode.time4u.server.entities.context.SessionPersistenceContext;
 
 public class HibernateProjectRepository implements IProjectRepository
 {
@@ -99,11 +100,18 @@ public class HibernateProjectRepository implements IProjectRepository
     final Project result = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Project>() {
       public Project perform(final Session session)
       {
-        ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, project.getId());
+        ProjectEntity projectEntity;
 
-        if (projectEntity != null) {
+        if (project.getId() <= 0L) {
+          projectEntity = (ProjectEntity) session.get(ProjectEntity.class, project.getId());
+
+          projectEntity.fromDTO(new SessionPersistenceContext(session), project);
+
+          session.flush();
         } else {
           projectEntity = new ProjectEntity();
+
+          projectEntity.fromDTO(new SessionPersistenceContext(session), project);
 
           session.persist(projectEntity);
         }

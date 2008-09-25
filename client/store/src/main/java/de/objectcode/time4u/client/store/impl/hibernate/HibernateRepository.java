@@ -14,6 +14,7 @@ import de.objectcode.time4u.client.store.api.IRepository;
 import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
+import de.objectcode.time4u.server.entities.ProjectProperty;
 import de.objectcode.time4u.server.entities.RoleEntity;
 import de.objectcode.time4u.server.entities.TeamEntity;
 
@@ -71,6 +72,7 @@ public class HibernateRepository implements IRepository
       cfg.addAnnotatedClass(RoleEntity.class);
       cfg.addAnnotatedClass(TeamEntity.class);
       cfg.addAnnotatedClass(ProjectEntity.class);
+      cfg.addAnnotatedClass(ProjectProperty.class);
 
       return cfg.buildSessionFactory();
     } catch (final Exception e) {

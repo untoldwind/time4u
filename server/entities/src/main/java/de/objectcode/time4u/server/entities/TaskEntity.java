@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -23,6 +22,7 @@ import org.hibernate.annotations.Parameter;
 import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.MetaType;
 import de.objectcode.time4u.server.api.data.Task;
+import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 
 /**
  * Task entity.
@@ -189,13 +189,13 @@ public class TaskEntity implements Comparable<TaskEntity>
     }
   }
 
-  public void fromDTO(final EntityManager entityManager, final Task task)
+  public void fromDTO(final IPersistenceContext context, final Task task)
   {
     m_active = task.isActive();
     m_deleted = task.isDeleted();
     m_name = task.getName() != null ? task.getName() : "";
     if (task.getProjectId() != null) {
-      m_project = entityManager.find(ProjectEntity.class, task.getProjectId());
+      m_project = context.findProject(task.getProjectId());
     } else {
       m_project = null;
     }
