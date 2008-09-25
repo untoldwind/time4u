@@ -11,7 +11,11 @@
 		</fileSet>
 		<fileSet>
 			<directory>target/dependency</directory>
-			<outputDirectory>/target/dependency</outputDirectory>
+			<outputDirectory>/target/dependency
+			</outputDirectory>
+			<excludes>
+				<exclude>testng-jdk15</exclude>
+			</excludes>
 		</fileSet>
 	</fileSets>
 </assembly>

@@ -36,6 +36,11 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-annotations</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<classifier>jdk15</classifier>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -51,7 +56,7 @@
 						</goals>
 						<configuration>
 							<stripVersion>true</stripVersion>
-							<includeGroupIds>commons-logging,commons-collections,org.apache.derby,javax.persistence,org.hibernate,dom4j,cglib,asm,de.objectcode.time4u.server</includeGroupIds>
+							<includeGroupIds>commons-logging,commons-collections,org.apache.derby,javax.persistence,org.hibernate,dom4j,cglib,asm,de.objectcode.time4u.server,org.testng</includeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

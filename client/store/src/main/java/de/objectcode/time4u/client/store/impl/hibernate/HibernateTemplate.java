@@ -4,7 +4,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import de.objectcode.time4u.client.store.StorePlugin;
 import de.objectcode.time4u.client.store.api.RepositoryException;
 
 /**
@@ -51,7 +50,7 @@ public class HibernateTemplate
 
       return result;
     } catch (final Exception e) {
-      StorePlugin.getDefault().log(e);
+      //      StorePlugin.getDefault().log(e);
       throw new RepositoryException(e);
     } finally {
       if (trx != null && trx.isActive()) {

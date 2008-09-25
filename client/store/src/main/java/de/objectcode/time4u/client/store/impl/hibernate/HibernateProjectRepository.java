@@ -102,7 +102,7 @@ public class HibernateProjectRepository implements IProjectRepository
       {
         ProjectEntity projectEntity;
 
-        if (project.getId() <= 0L) {
+        if (project.getId() > 0L) {
           projectEntity = (ProjectEntity) session.get(ProjectEntity.class, project.getId());
 
           projectEntity.fromDTO(new SessionPersistenceContext(session), project);
