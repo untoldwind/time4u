@@ -1,4 +1,5 @@
 <assembly>
+	<id>plugin</id>
 	<formats>
 		<format>jar</format>
 	</formats>
@@ -7,6 +8,10 @@
 		<fileSet>
 			<directory>target/classes</directory>
 			<outputDirectory>/</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>target/dependency</directory>
+			<outputDirectory>/target/dependency</outputDirectory>
 		</fileSet>
 	</fileSets>
 </assembly>

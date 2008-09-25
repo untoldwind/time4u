@@ -11,6 +11,11 @@
 		<module>server</module>
 		<module>assemblies</module>
 	</modules>
+	<scm>
+		<connection>scm:svn:http://time4u.googlecode.com/svn/overhaul/trunk</connection>
+		<developerConnection>scm:svn:https://time4u.googlecode.com/svn/overhaul/trunk</developerConnection>
+		<url>http://code.google.com/p/time4u/source/browse</url>
+	</scm>
 	<build>
 		<plugins>
 			<plugin>
@@ -75,9 +80,9 @@
 				<version>3.2.1.ga</version>
 			</dependency>
 			<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
-			<version>0.9.1</version>
+				<groupId>c3p0</groupId>
+				<artifactId>c3p0</artifactId>
+				<version>0.9.1</version>
 			</dependency>
 			
 			<!-- Server -->
