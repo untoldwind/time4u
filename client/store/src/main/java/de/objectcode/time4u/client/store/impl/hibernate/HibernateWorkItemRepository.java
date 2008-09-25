@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -20,6 +19,9 @@ import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
 import de.objectcode.time4u.server.entities.context.SessionPersistenceContext;
+import de.objectcode.time4u.server.entities.revision.EntityType;
+import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
+import de.objectcode.time4u.server.entities.revision.SessionRevisionGenerator;
 
 public class HibernateWorkItemRepository implements IWorkItemRepository
 {
@@ -104,12 +106,17 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<WorkItem>() {
       public WorkItem perform(final Session session)
       {
+        final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
+
+        final long nextRevision = revisionGenerator.getNextRevision(EntityType.WORKITEM, m_repository.getOwner()
+            .getId());
+
         WorkItemEntity workItemEntity;
 
         if (workItem.getId() > 0L) {
           workItemEntity = (WorkItemEntity) session.get(WorkItemEntity.class, workItem.getId());
 
-          session.lock(workItemEntity.getDayInfo(), LockMode.UPGRADE);
+          workItemEntity.getDayInfo().setRevision(nextRevision);
 
           workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem);
 
@@ -118,20 +125,17 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
           final Criteria criteria = session.createCriteria(DayInfoEntity.class);
           criteria.add(Restrictions.eq("person.id", m_repository.getOwner().getId()));
           criteria.add(Restrictions.eq("date", workItem.getDay().getDate()));
-          criteria.setLockMode(LockMode.UPGRADE);
 
           DayInfoEntity dayInfoEntity = (DayInfoEntity) criteria.uniqueResult();
 
           if (dayInfoEntity == null) {
-            try {
-              createDayInfo(workItem.getDay());
-            } catch (final Exception e) {
-            }
-            dayInfoEntity = (DayInfoEntity) criteria.uniqueResult();
+            // This is save because the revision counter locks this section
+            dayInfoEntity = new DayInfoEntity();
+            dayInfoEntity.setDate(workItem.getDay().getDate());
+            dayInfoEntity.setPerson((PersonEntity) session.get(PersonEntity.class, m_repository.getOwner().getId()));
+            dayInfoEntity.setRevision(nextRevision);
 
-            if (dayInfoEntity == null) {
-              throw new RuntimeException("Failed to create and lock dayinfo: " + workItem.getDay());
-            }
+            session.persist(dayInfoEntity);
           }
           workItemEntity = new WorkItemEntity();
 
@@ -158,38 +162,6 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
   {
     // TODO Auto-generated method stub
     return null;
-  }
-
-  /**
-   * Create a dayinfo in a separate transaction.
-   * 
-   * Note that this might fail in a multi-thread environment.
-   * 
-   * @param day
-   *          The calendar day of the dayinfo
-   * @return The summary of the new dayinfo
-   * @throws RepositoryException
-   *           on error
-   */
-  private DayInfoSummary createDayInfo(final CalendarDay day) throws RepositoryException
-  {
-    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<DayInfoSummary>() {
-      public DayInfoSummary perform(final Session session)
-      {
-        final DayInfoEntity entity = new DayInfoEntity();
-        entity.setDate(day.getDate());
-        entity.setPerson((PersonEntity) session.get(PersonEntity.class, m_repository.getOwner().getId()));
-
-        session.persist(entity);
-        session.flush();
-
-        final DayInfoSummary dayinfo = new DayInfoSummary();
-
-        entity.toSummaryDTO(dayinfo);
-
-        return dayinfo;
-      }
-    });
   }
 
 }

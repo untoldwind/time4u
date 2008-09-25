@@ -6,7 +6,6 @@ import org.eclipse.jface.viewers.Viewer;
 
 import de.objectcode.time4u.client.store.api.IProjectRepository;
 import de.objectcode.time4u.client.ui.UIPlugin;
-import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.filter.ProjectFilter;
 
@@ -60,7 +59,7 @@ public class ProjectContentProvider implements IStructuredContentProvider, ITree
     try {
       if (element instanceof ProjectSummary) {
         if (((ProjectSummary) element).getParentId() != null) {
-          return m_projectRepository.getProject(((Project) element).getParentId());
+          return m_projectRepository.getProject(((ProjectSummary) element).getParentId());
         }
       }
     } catch (final Exception e) {

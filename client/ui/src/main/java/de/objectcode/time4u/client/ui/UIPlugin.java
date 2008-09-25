@@ -2,7 +2,9 @@ package de.objectcode.time4u.client.ui;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
@@ -26,6 +28,7 @@ public class UIPlugin extends AbstractUIPlugin
   /** The shared instance */
   private static UIPlugin plugin;
 
+  private ResourceBundle m_resourceBundle;
   private final Map<String, Image> m_images = new HashMap<String, Image>();
 
   /**
@@ -83,7 +86,15 @@ public class UIPlugin extends AbstractUIPlugin
     m_images.put(path, image);
 
     return image;
+  }
 
+  public String getString(final String key)
+  {
+    if (m_resourceBundle == null) {
+      m_resourceBundle = Platform.getResourceBundle(getBundle());
+    }
+
+    return m_resourceBundle.getString(key);
   }
 
   /**

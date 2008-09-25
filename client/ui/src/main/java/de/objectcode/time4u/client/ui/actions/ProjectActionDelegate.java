@@ -42,6 +42,7 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
   public void init(final IWorkbenchWindow window)
   {
     m_shellProvider = new SameShellProvider(window.getShell());
+    m_view = (ProjectTreeView) window.getActivePage().findView(ProjectTreeView.ID);
   }
 
   public void init(final IViewPart view)
@@ -59,6 +60,10 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
   public void run(final IAction action)
   {
     final String id = action.getId();
+
+    if (m_selection == null) {
+      m_selection = (IAdaptable) m_view.getSite().getSelectionProvider().getSelection();
+    }
 
     final Project selectedProject = (Project) m_selection.getAdapter(Project.class);
 

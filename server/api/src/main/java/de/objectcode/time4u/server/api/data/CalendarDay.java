@@ -71,6 +71,15 @@ public class CalendarDay implements Serializable, Comparable<CalendarDay>
     m_year = year;
   }
 
+  public Calendar getCalendar()
+  {
+    final Calendar calendar = Calendar.getInstance();
+
+    calendar.set(m_year, m_month - 1, m_day, 0, 0, 0);
+
+    return calendar;
+  }
+
   public Date getDate()
   {
     final Calendar calendar = Calendar.getInstance();

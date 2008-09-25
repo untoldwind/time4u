@@ -13,8 +13,6 @@ public class Task extends TaskSummary
 {
   private static final long serialVersionUID = -6761887763470951635L;
 
-  /** Internal server id of the project owning the task. */
-  private Long m_projectId;
   /** Task description. */
   private String m_description;
   /** Map of a meta properties. */
@@ -28,23 +26,6 @@ public class Task extends TaskSummary
   public void setDescription(final String description)
   {
     m_description = description;
-  }
-
-  /**
-   * @return the projectId
-   */
-  public Long getProjectId()
-  {
-    return m_projectId;
-  }
-
-  /**
-   * @param projectId
-   *          the projectId to set
-   */
-  public void setProjectId(final Long projectId)
-  {
-    m_projectId = projectId;
   }
 
   public Map<String, MetaProperty> getMetaProperties()

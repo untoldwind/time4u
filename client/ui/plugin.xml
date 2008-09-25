@@ -78,6 +78,12 @@
             description="Project Edit"
             id="de.objectcode.time4u.client.ui.project.edit"
             name="Project Edit"/>
+      <command
+            categoryId="de.objectcode.time4u.client.ui.category"
+            description="Task Edit"
+            id="de.objectcode.time4u.client.ui.task.edit"
+            name="Task Edit">
+      </command>
 
    </extension>
    <extension
@@ -218,30 +224,32 @@
          <adapter
                type="org.eclipse.ui.IActionFilter">
          </adapter>
+      </factory>
+      <factory
+            adaptableType="de.objectcode.time4u.client.ui.util.MultiEntitySelection"
+            class="de.objectcode.time4u.client.ui.adapter.MultiEntityProjectAdapterFactory">
          <adapter
                type="de.objectcode.time4u.server.api.data.ProjectSummary">
          </adapter>
          <adapter
                type="de.objectcode.time4u.server.api.data.Project">
-         </adapter>
-         <adapter
-               type="de.objectcode.time4u.server.api.data.Task">
-         </adapter>
-         <adapter
-               type="de.objectcode.time4u.server.api.data.TaskSummary">
          </adapter>
       </factory>
       <factory
             adaptableType="de.objectcode.time4u.client.ui.util.MultiEntitySelection"
-            class="de.objectcode.time4u.client.ui.adapter.MultiEntitySelectionAdapterFactory">
+            class="de.objectcode.time4u.client.ui.adapter.MultiEntityTaskAdapterFactory">
          <adapter
-               type="org.eclipse.ui.IActionFilter">
+               type="de.objectcode.time4u.server.api.data.TaskSummary">
          </adapter>
          <adapter
-               type="de.objectcode.time4u.server.api.data.ProjectSummary">
+               type="de.objectcode.time4u.server.api.data.Task">
          </adapter>
+      </factory>
+      <factory
+            adaptableType="de.objectcode.time4u.client.ui.util.MultiEntitySelection"
+            class="de.objectcode.time4u.client.ui.adapter.MultiEntityCalendarDayAdapterFactory">
          <adapter
-               type="de.objectcode.time4u.server.api.data.Project">
+               type="de.objectcode.time4u.server.api.data.CalendarDay">
          </adapter>
       </factory>
 	</extension>
@@ -267,6 +275,7 @@
          </menu>
          <action
                class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"
+               definitionId="de.objectcode.time4u.client.ui.project.edit"
                icon="icons/Project.gif"
                id="de.objectcode.time4u.client.ui.project.edit"
                label="%action.project.edit.label"
@@ -297,6 +306,7 @@
                tooltip="%action.project.new.tooltip"/>
          <action
                class="de.objectcode.time4u.client.ui.actions.TaskActionDelegate"
+               definitionId="de.objectcode.time4u.client.ui.task.edit"
                icon="icons/Task.gif"
                id="de.objectcode.time4u.client.ui.task.edit"
                label="%action.task.edit.label"
@@ -338,6 +348,48 @@
             </enablement>
          </action>
 
+      </actionSet>
+      <actionSet
+            id="de.objectcode.time4u.client.ui.workItemActionSet"
+            label="WorkItem Action Set"
+            visible="true">
+         <menu
+               id="workItemMenu"
+               label="%menu.workItem.label"
+               path="workItemAdditions">
+            <groupMarker
+                  name="workItemGroup">
+            </groupMarker>
+         </menu>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.WorkItemActionDelegate"
+               icon="icons/NewWorkItem.gif"
+               id="de.objectcode.time4u.client.ui.workitem.new"
+               label="%action.workItem.new.label"
+               menubarPath="workItemMenu/workItemGroup"
+               style="push"
+               toolbarPath="workItemGroup"
+               tooltip="%action.workItem.new.tooltip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.MultiEntitySelection">
+                  </objectClass>
+                  <objectState
+                        name="has"
+                        value="PROJECT">
+                  </objectState>
+                  <objectState
+                        name="has"
+                        value="TASK">
+                  </objectState>
+                  <objectState
+                        name="has"
+                        value="CALENDARDAY">
+                  </objectState>
+               </and>
+            </enablement>
+         </action>
       </actionSet>
    </extension>
 </plugin>

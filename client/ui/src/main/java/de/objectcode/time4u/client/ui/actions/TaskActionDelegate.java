@@ -51,6 +51,11 @@ public class TaskActionDelegate implements IWorkbenchWindowActionDelegate, IView
   public void run(final IAction action)
   {
     final String id = action.getId();
+
+    if (m_selection == null) {
+      m_selection = (IAdaptable) m_view.getSite().getSelectionProvider().getSelection();
+    }
+
     final Project selectedProject = (Project) m_selection.getAdapter(Project.class);
     final Task selectedTask = (Task) m_selection.getAdapter(Task.class);
 

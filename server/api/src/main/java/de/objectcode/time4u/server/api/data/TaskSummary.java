@@ -21,6 +21,8 @@ public class TaskSummary implements ISynchronizableData
   private boolean m_active;
   /** Flag if the task is deleted. */
   private boolean m_deleted;
+  /** Internal server id of the project owning the task. */
+  private Long m_projectId;
 
   public long getId()
   {
@@ -70,6 +72,23 @@ public class TaskSummary implements ISynchronizableData
   public void setDeleted(final boolean deleted)
   {
     m_deleted = deleted;
+  }
+
+  /**
+   * @return the projectId
+   */
+  public Long getProjectId()
+  {
+    return m_projectId;
+  }
+
+  /**
+   * @param projectId
+   *          the projectId to set
+   */
+  public void setProjectId(final Long projectId)
+  {
+    m_projectId = projectId;
   }
 
   /**

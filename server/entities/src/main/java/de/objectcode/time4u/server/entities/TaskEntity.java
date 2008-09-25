@@ -172,12 +172,12 @@ public class TaskEntity implements Comparable<TaskEntity>
     task.setActive(m_active);
     task.setDeleted(m_deleted);
     task.setName(m_name);
+    task.setProjectId(m_project != null ? m_project.getId() : null);
   }
 
   public void toDTO(final Task task)
   {
     toSummaryDTO(task);
-    task.setProjectId(m_project != null ? m_project.getId() : null);
     task.setDescription(m_description);
 
     if (m_metaProperties != null) {

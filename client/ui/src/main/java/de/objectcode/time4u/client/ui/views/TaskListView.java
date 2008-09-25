@@ -57,28 +57,6 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
   AtomicInteger m_refreshCounter = new AtomicInteger(0);
   private MultiEntitySelectionProvider m_selectionProvider;
 
-  @Override
-  public void init(final IViewSite site, final IMemento memento) throws PartInitException
-  {
-    super.init(site, memento);
-
-    if (memento != null) {
-      final Integer showOnlyActive = memento.getInteger("showOnlyActive");
-
-      if (showOnlyActive != null) {
-        m_showOnlyActive = showOnlyActive != 0;
-      }
-    }
-  }
-
-  @Override
-  public void saveState(final IMemento memento)
-  {
-    super.saveState(memento);
-
-    memento.putInteger("showOnlyActive", m_showOnlyActive ? 1 : 0);
-  }
-
   /**
    * This is a callback that will allow us to create the viewer and initialize it.
    */
@@ -230,4 +208,27 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
     m_viewer.setInput(null);
     m_selectedProject = null;
   }
+
+  @Override
+  public void init(final IViewSite site, final IMemento memento) throws PartInitException
+  {
+    super.init(site, memento);
+
+    if (memento != null) {
+      final Integer showOnlyActive = memento.getInteger("showOnlyActive");
+
+      if (showOnlyActive != null) {
+        m_showOnlyActive = showOnlyActive != 0;
+      }
+    }
+  }
+
+  @Override
+  public void saveState(final IMemento memento)
+  {
+    super.saveState(memento);
+
+    memento.putInteger("showOnlyActive", m_showOnlyActive ? 1 : 0);
+  }
+
 }

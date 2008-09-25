@@ -1,0 +1,74 @@
+package de.objectcode.time4u.client.store.test;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
+
+import java.util.Calendar;
+import java.util.List;
+
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import de.objectcode.time4u.client.store.api.IRepository;
+import de.objectcode.time4u.server.api.data.CalendarDay;
+import de.objectcode.time4u.server.api.data.TaskSummary;
+import de.objectcode.time4u.server.api.data.WorkItem;
+import de.objectcode.time4u.server.api.filter.TaskFilter;
+
+@Test(groups = "workitem", dependsOnGroups = { "project", "task" })
+public class HibernateWorkItemRepositoryTest
+{
+  private IRepository repository;
+
+  @BeforeClass
+  public void initialize() throws Exception
+  {
+    repository = HibernateTestRepositoryFactory.getInstance();
+  }
+
+  @Test(dataProvider = "workitems")
+  public void testCreate(final WorkItem workItem) throws Exception
+  {
+    final WorkItem result = repository.getWorkItemRepository().storeWorkItem(workItem);
+
+    assertNotNull(result);
+    assertTrue(result.getId() > 0);
+
+  }
+
+  @DataProvider(name = "workitems")
+  public Object[][] getWorkItems() throws Exception
+  {
+    final List<TaskSummary> taskSummaries = repository.getTaskRepository().getTaskSummaries(
+        new TaskFilter(null, null, null, null, TaskFilter.Order.ID));
+
+    assertNotNull(taskSummaries);
+    assertEquals(taskSummaries.size(), 90);
+
+    final Object[][] result = new Object[300][];
+
+    final Calendar calendar = Calendar.getInstance();
+
+    calendar.set(1980, 1, 1, 0, 0, 0);
+
+    for (int i = 0; i < 300; i++) {
+      final WorkItem workItem = new WorkItem();
+      workItem.setBegin(8 * 3600 + 3600 * (i % 3));
+      workItem.setEnd(9 * 3600 + 3600 * (i % 3));
+      workItem.setDay(new CalendarDay(calendar));
+      workItem.setComment("Testworkitem " + i);
+      workItem.setTaskId(taskSummaries.get(i % 90).getId());
+      workItem.setProjectId(taskSummaries.get(i % 90).getProjectId());
+
+      result[i] = new Object[] { workItem };
+
+      if (i % 3 == 0) {
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+      }
+    }
+
+    return result;
+  }
+}
