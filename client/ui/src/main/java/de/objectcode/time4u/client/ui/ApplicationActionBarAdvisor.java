@@ -1,6 +1,5 @@
 package de.objectcode.time4u.client.ui;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
@@ -26,8 +25,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
   private IWorkbenchAction exitAction;
   private IWorkbenchAction aboutAction;
   private IWorkbenchAction newWindowAction;
-  private OpenViewAction openViewAction;
-  private Action messagePopupAction;
 
   public ApplicationActionBarAdvisor(final IActionBarConfigurer configurer)
   {
@@ -54,12 +51,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 
     newWindowAction = ActionFactory.OPEN_NEW_WINDOW.create(window);
     register(newWindowAction);
-
-    openViewAction = new OpenViewAction(window, "Open Another Message View", View.ID);
-    register(openViewAction);
-
-    messagePopupAction = new MessagePopupAction("Open Message", window);
-    register(messagePopupAction);
   }
 
   /**
@@ -82,9 +73,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 
     // File
     fileMenu.add(newWindowAction);
-    fileMenu.add(new Separator());
-    fileMenu.add(messagePopupAction);
-    fileMenu.add(openViewAction);
     fileMenu.add(new Separator());
     fileMenu.add(exitAction);
 

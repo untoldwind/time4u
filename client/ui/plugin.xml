@@ -33,30 +33,12 @@
             icon="icons/Task.gif"
             id="de.objectcode.client.ui.view.taskList"
             name="%taskView.title"/>
-      <view
-            name="Message"
-            allowMultiple="true"
-            icon="icons/sample2.gif"
-            class="de.objectcode.time4u.client.ui.View"
-            id="de.objectcode.client.ui.view">
-      </view>
-      <view
-            name="Mailboxes"
-            allowMultiple="true"
-            icon="icons/sample3.gif"
-            class="de.objectcode.time4u.client.ui.NavigationView"
-            id="de.objectcode.client.ui.navigationView">
-      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <category
             name="Time4U"
             id="de.objectcode.time4u.client.ui.category">
-      </category>
-      <category
-            name="Mail"
-            id="de.objectcode.client.ui.category">
       </category>
 
       <command
@@ -65,36 +47,9 @@
             id="de.objectcode.time4u.client.ui.project.edit"
             name="Project Edit"/>
 
-      <command
-            name="Open Mailbox"
-            description="Opens a mailbox"
-            categoryId="de.objectcode.client.ui.category"
-            id="de.objectcode.client.ui.open">
-      </command>
-      <command
-            name="Open Message Dialog"
-            description="Open a message dialog"
-            categoryId="de.objectcode.client.ui.category"
-            id="de.objectcode.client.ui.openMessage">
-      </command>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
-      <key
-            commandId="de.objectcode.client.ui.open"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="CTRL+2">
-      </key>
-      <key
-            commandId="de.objectcode.client.ui.openMessage"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="CTRL+3">
-      </key>
-      <key
-            commandId="org.eclipse.ui.file.exit"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="CTRL+X">
-      </key>
    </extension>
    <extension
          id="product"
@@ -156,13 +111,13 @@
          point="org.eclipse.core.runtime.adapters">
 
       <factory
-            adaptableType="de.objectcode.time4u.store.Project"
+            adaptableType="de.objectcode.time4u.server.api.data.ProjectSummary"
             class="de.objectcode.time4u.client.ui.adapter.ProjectAdapterFactory">
          <adapter type="org.eclipse.ui.IActionFilter"/>
       </factory>
 
       <factory
-            adaptableType="de.objectcode.time4u.store.Task"
+            adaptableType="de.objectcode.time4u.server.api.data.TaskSummary"
             class="de.objectcode.time4u.client.ui.adapter.TaskAdapterFactory">
          <adapter type="org.eclipse.ui.IActionFilter"/>
       </factory>
