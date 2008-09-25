@@ -7,9 +7,9 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>time4u-client-store</artifactId>
+	<artifactId>time4u-client-connection</artifactId>
 	<packaging>jar</packaging>
-	<name>time4u-client-store</name>
+	<name>time4u-client-connection</name>
 	<dependencies>
 		<dependency>
 			<groupId>org.eclipse</groupId>
@@ -19,43 +19,9 @@
 			<groupId>org.eclipse.core</groupId>
 			<artifactId>runtime</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>de.objectcode.time4u.server</groupId>
-			<artifactId>time4u-server-entities</artifactId>
-			<version>${pom.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derby</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<stripVersion>true</stripVersion>
-							<includeGroupIds>commons-logging,commons-collections,org.apache.derby,javax.persistence,org.hibernate,dom4j,cglib,asm,de.objectcode.time4u.server</includeGroupIds>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>

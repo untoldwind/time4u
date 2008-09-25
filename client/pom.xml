@@ -12,6 +12,8 @@
   <packaging>pom</packaging>
   <modules>
   	<module>store</module>
+  	<module>connection</module>
   	<module>ui</module>
+  	<module>feature</module>
   </modules>
 </project>

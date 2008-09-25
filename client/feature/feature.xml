@@ -21,21 +21,21 @@
          id="de.objectcode.time4u.store"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.9.0"
          unpack="false"/>
 
    <plugin
          id="de.objectcode.time4u.ui"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.9.0"
          unpack="false"/>
 
    <plugin
          id="de.objectcode.time4u.connection"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.9.0"
          unpack="false"/>
 
 </feature>
