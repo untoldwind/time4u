@@ -1,5 +1,6 @@
 package de.objectcode.time4u.client.ui;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Status;
@@ -25,7 +26,7 @@ public class UIPlugin extends AbstractUIPlugin
   /** The shared instance */
   private static UIPlugin plugin;
 
-  private Map<String, Image> m_images;
+  private final Map<String, Image> m_images = new HashMap<String, Image>();
 
   /**
    * The constructor

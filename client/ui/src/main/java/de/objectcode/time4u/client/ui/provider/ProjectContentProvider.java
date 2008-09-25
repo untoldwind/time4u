@@ -40,6 +40,8 @@ public class ProjectContentProvider implements IStructuredContentProvider, ITree
 
       if (parentElement instanceof Project) {
         filter.setParentProject(((Project) parentElement).getId());
+      } else {
+        filter.setParentProject(0L);
       }
 
       return m_projectRepository.getProjects(filter).toArray();

@@ -1,6 +1,10 @@
 package de.objectcode.time4u.client.store.impl.hibernate;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.derby.jdbc.EmbeddedDriver;
 import org.hibernate.SessionFactory;
@@ -38,6 +42,8 @@ public class HibernateRepository implements IRepository
   private final HibernateProjectRepository m_projectRepository;
   private final HibernateTaskRepository m_taskRepository;
 
+  private final Map<RepositoryEventType, List<IRepositoryListener>> m_listeners = new HashMap<RepositoryEventType, List<IRepositoryListener>>();
+
   public HibernateRepository(final File directory)
   {
     m_hibernateTemplate = new HibernateTemplate(buildSessionFactory(directory));
@@ -62,21 +68,54 @@ public class HibernateRepository implements IRepository
     return m_taskRepository;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void addRepositoryListener(final RepositoryEventType eventType, final IRepositoryListener listener)
   {
-    // TODO Auto-generated method stub
+    synchronized (m_listeners) {
+      List<IRepositoryListener> listeners = m_listeners.get(eventType);
 
+      if (listeners == null) {
+        listeners = new ArrayList<IRepositoryListener>();
+
+        m_listeners.put(eventType, listeners);
+      }
+      listeners.add(listener);
+    }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void removeRepositoryListener(final RepositoryEventType eventType, final IRepositoryListener listener)
   {
-    // TODO Auto-generated method stub
+    synchronized (m_listeners) {
+      final List<IRepositoryListener> listeners = m_listeners.get(eventType);
 
+      if (listeners != null) {
+        listeners.remove(listener);
+      }
+    }
   }
 
   void fireRepositoryEvent(final RepositoryEvent event)
   {
-    // TODO
+    IRepositoryListener[] listenerArray;
+
+    synchronized (m_listeners) {
+      final List<IRepositoryListener> listeners = m_listeners.get(event.getEventType());
+
+      if (listeners == null) {
+        return;
+      }
+
+      listenerArray = listeners.toArray(new IRepositoryListener[listeners.size()]);
+    }
+
+    for (final IRepositoryListener listener : listenerArray) {
+      listener.handleRepositoryEvent(event);
+    }
   }
 
   private SessionFactory buildSessionFactory(final File directory)

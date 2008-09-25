@@ -8,6 +8,7 @@ import de.objectcode.time4u.client.ui.views.TaskListView;
 
 public class Perspective implements IPerspectiveFactory
 {
+  public static final String ID = "de.objectcode.client.ui.perspective";
 
   public void createInitialLayout(final IPageLayout layout)
   {

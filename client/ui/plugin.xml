@@ -51,9 +51,20 @@
    <extension
          point="org.eclipse.ui.commands">
       <category
+            name="Time4U"
+            id="de.objectcode.time4u.client.ui.category">
+      </category>
+      <category
             name="Mail"
             id="de.objectcode.client.ui.category">
       </category>
+
+      <command
+            categoryId="de.objectcode.time4u.client.ui.category"
+            description="Project Edit"
+            id="de.objectcode.time4u.client.ui.project.edit"
+            name="Project Edit"/>
+
       <command
             name="Open Mailbox"
             description="Opens a mailbox"
@@ -125,5 +136,67 @@
          </property>
       </product>
    </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <viewerContribution
+            id="de.objectcode.client.ui.view.projectTreeContribution"
+            targetID="de.objectcode.client.ui.view.projectTree">
+         <action
+               class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"
+               icon="icons/NewProject.gif"
+               id="de.objectcode.time4u.client.ui.project.new"
+               label="%action.project.new.label"
+               menubarPath="objectGroup"
+               tooltip="%action.project.new.tooltip">
+         </action>
+      </viewerContribution>
+   </extension>
+   <extension
 
+         point="org.eclipse.core.runtime.adapters">
+
+      <factory
+            adaptableType="de.objectcode.time4u.store.Project"
+            class="de.objectcode.time4u.client.ui.adapter.ProjectAdapterFactory">
+         <adapter type="org.eclipse.ui.IActionFilter"/>
+      </factory>
+
+      <factory
+            adaptableType="de.objectcode.time4u.store.Task"
+            class="de.objectcode.time4u.client.ui.adapter.TaskAdapterFactory">
+         <adapter type="org.eclipse.ui.IActionFilter"/>
+      </factory>
+	</extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="de.objectcode.time4u.ui.client.projectActionSet"
+            label="Project Action Set"
+            visible="true">
+         <menu
+               id="projectMenu"
+               label="%menu.projectTask.label"
+               path="projectAdditions">
+            <groupMarker
+                  name="projectGroup">
+            </groupMarker>
+            <separator
+                  name="time4u-client-ui.separator1">
+            </separator>
+            <groupMarker
+                  name="taskGroup">
+            </groupMarker>
+         </menu>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"
+               icon="icons/NewProject.gif"
+               id="de.objectcode.time4u.client.ui.project.new"
+               label="%action.project.new.label"
+               menubarPath="projectMenu/projectGroup"
+               style="push"
+               toolbarPath="projectGroup"
+               tooltip="%action.project.new.tooltip"/>
+
+      </actionSet>
+   </extension>
 </plugin>
