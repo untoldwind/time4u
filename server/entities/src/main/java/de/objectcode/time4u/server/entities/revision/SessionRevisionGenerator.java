@@ -2,6 +2,7 @@ package de.objectcode.time4u.server.entities.revision;
 
 import org.hibernate.LockMode;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class SessionRevisionGenerator implements IRevisionGenerator
 {
@@ -21,14 +22,12 @@ public class SessionRevisionGenerator implements IRevisionGenerator
     RevisionEntity revisionEntity = (RevisionEntity) m_session.get(RevisionEntity.class, key, LockMode.UPGRADE);
 
     if (revisionEntity == null) {
-      revisionEntity = new RevisionEntity(entityType, part);
+      createInOwnTransaction(entityType, part);
 
-      try {
-        m_session.persist(revisionEntity);
-        m_session.flush();
-      } catch (final Exception e) {
-        // This might fail once
-        revisionEntity = (RevisionEntity) m_session.get(RevisionEntity.class, key, LockMode.UPGRADE);
+      revisionEntity = (RevisionEntity) m_session.get(RevisionEntity.class, key, LockMode.UPGRADE);
+
+      if (revisionEntity == null) {
+        throw new RuntimeException("Failed to get next revision number");
       }
     }
 
@@ -36,5 +35,32 @@ public class SessionRevisionGenerator implements IRevisionGenerator
     m_session.flush();
 
     return revisionEntity.getLatestRevision();
+  }
+
+  private void createInOwnTransaction(final EntityType entityType, final long part)
+  {
+    Transaction trx = null;
+    Session session = null;
+
+    try {
+      session = m_session.getSessionFactory().openSession();
+      trx = session.beginTransaction();
+
+      final RevisionEntity revisionEntity = new RevisionEntity(entityType, part);
+
+      m_session.persist(revisionEntity);
+      m_session.flush();
+
+      trx.commit();
+    } catch (final Exception e) {
+      // This might fail for multiple threads
+    } finally {
+      if (trx != null && trx.isActive()) {
+        trx.rollback();
+      }
+      if (session != null) {
+        session.close();
+      }
+    }
   }
 }

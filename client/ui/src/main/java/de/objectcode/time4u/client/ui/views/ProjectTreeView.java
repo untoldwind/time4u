@@ -26,6 +26,8 @@ import de.objectcode.time4u.client.ui.ICommandIds;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.provider.ProjectContentProvider;
 import de.objectcode.time4u.client.ui.provider.ProjectLabelProvider;
+import de.objectcode.time4u.client.ui.util.MultiEntitySelectionProvider;
+import de.objectcode.time4u.client.ui.util.SelectionEntityType;
 
 public class ProjectTreeView extends ViewPart implements IRepositoryListener
 {
@@ -35,6 +37,8 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
   private boolean m_showOnlyActive;
 
   private int m_refreshCounter = 0;
+
+  private MultiEntitySelectionProvider m_selectionProvider;
 
   /**
    * {@inheritDoc}
@@ -49,7 +53,10 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
     m_viewer.setLabelProvider(new ProjectLabelProvider());
     m_viewer.setInput(new Object());
 
-    getSite().setSelectionProvider(m_viewer);
+    m_selectionProvider = new MultiEntitySelectionProvider();
+    m_selectionProvider.addPostSelectionProvider(SelectionEntityType.PROJECT, m_viewer);
+    getSite().setSelectionProvider(m_selectionProvider);
+    getSite().getPage().addSelectionListener(m_selectionProvider);
 
     final MenuManager menuMgr = new MenuManager();
 
@@ -59,7 +66,7 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
 
     m_viewer.getControl().setMenu(menu);
 
-    getSite().registerContextMenu(menuMgr, m_viewer);
+    getSite().registerContextMenu(menuMgr, m_selectionProvider);
 
     m_viewer.addDoubleClickListener(new IDoubleClickListener() {
       public void doubleClick(final DoubleClickEvent event)

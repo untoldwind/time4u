@@ -127,6 +127,19 @@
                type="de.objectcode.time4u.server.api.data.Task">
          </adapter>
       </factory>
+      <factory
+            adaptableType="de.objectcode.time4u.client.ui.util.MultiEntitySelection"
+            class="de.objectcode.time4u.client.ui.adapter.MultiEntitySelectionAdapterFactory">
+         <adapter
+               type="org.eclipse.ui.IActionFilter">
+         </adapter>
+         <adapter
+               type="de.objectcode.time4u.server.api.data.ProjectSummary">
+         </adapter>
+         <adapter
+               type="de.objectcode.time4u.server.api.data.Project">
+         </adapter>
+      </factory>
 	</extension>
    <extension
          point="org.eclipse.ui.actionSets">
@@ -158,11 +171,15 @@
                toolbarPath="projectGroup"
                tooltip="%action.project.edit.tooltip">
             <enablement>
-               <or>
+               <and>
                   <objectClass
-                        name="de.objectcode.time4u.server.api.data.ProjectSummary">
+                        name="de.objectcode.time4u.client.ui.util.MultiEntitySelection">
                   </objectClass>
-               </or>
+                  <objectState
+                        name="has"
+                        value="PROJECT">
+                  </objectState>
+               </and>
             </enablement>
          </action>
          <action
