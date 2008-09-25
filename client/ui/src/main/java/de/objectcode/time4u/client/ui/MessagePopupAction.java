@@ -1,4 +1,4 @@
-package de.objectcode.client.ui;
+package de.objectcode.time4u.client.ui;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -16,7 +16,7 @@ public class MessagePopupAction extends Action {
         setId(ICommandIds.CMD_OPEN_MESSAGE);
         // Associate the action with a pre-defined command, to allow key bindings.
         setActionDefinitionId(ICommandIds.CMD_OPEN_MESSAGE);
-        setImageDescriptor(de.objectcode.client.ui.UIPlugin.getImageDescriptor("/icons/sample3.gif"));
+        setImageDescriptor(de.objectcode.time4u.client.ui.UIPlugin.getImageDescriptor("/icons/sample3.gif"));
     }
 
     public void run() {

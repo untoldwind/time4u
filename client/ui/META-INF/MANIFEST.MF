@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Time4U ui plugin
 Bundle-SymbolicName: de.objectcode.time4u.client.ui;singleton:=true
 Bundle-Version: 0.9.0
-Bundle-Activator: de.objectcode.client.ui.UIPlugin
+Bundle-Activator: de.objectcode.time4u.client.ui.UIPlugin
 Bundle-Vendor: objectcode.de
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

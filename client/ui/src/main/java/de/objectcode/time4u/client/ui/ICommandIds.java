@@ -1,4 +1,4 @@
-package de.objectcode.client.ui;
+package de.objectcode.time4u.client.ui;
 
 /**
  * Interface defining the application's command IDs.

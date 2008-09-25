@@ -1,4 +1,4 @@
-package de.objectcode.client.ui;
+package de.objectcode.time4u.client.ui;
 
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.application.ActionBarAdvisor;

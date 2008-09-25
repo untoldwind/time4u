@@ -7,7 +7,7 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="de.objectcode.client.ui.Application">
+               class="de.objectcode.time4u.client.ui.Application">
          </run>
       </application>
    </extension>
@@ -15,24 +15,30 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             name="RCP Perspective"
-            class="de.objectcode.client.ui.Perspective"
+            class="de.objectcode.time4u.client.ui.Perspective"
             id="de.objectcode.client.ui.perspective">
       </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <view
+            allowMultiple="false"
+            class="de.objectcode.time4u.client.ui.views.ProjectTreeView"
+            icon="icons/Project.gif"
+            id="de.objectcode.client.ui.view.projectTree"
+            name="%projectView.title"/>
+      <view
             name="Message"
             allowMultiple="true"
             icon="icons/sample2.gif"
-            class="de.objectcode.client.ui.View"
+            class="de.objectcode.time4u.client.ui.View"
             id="de.objectcode.client.ui.view">
       </view>
       <view
             name="Mailboxes"
             allowMultiple="true"
             icon="icons/sample3.gif"
-            class="de.objectcode.client.ui.NavigationView"
+            class="de.objectcode.time4u.client.ui.NavigationView"
             id="de.objectcode.client.ui.navigationView">
       </view>
    </extension>

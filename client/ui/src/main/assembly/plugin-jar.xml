@@ -24,6 +24,10 @@
 			<outputDirectory>/</outputDirectory>
 		</file>
 		<file>
+			<source>plugin.properties</source>
+			<outputDirectory>/</outputDirectory>
+		</file>
+		<file>
 			<source>product_lg.gif</source>
 			<outputDirectory>/</outputDirectory>
 		</file>
