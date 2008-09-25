@@ -16,6 +16,9 @@ public interface IRepository
   /** Get the task repository. */
   ITaskRepository getTaskRepository();
 
+  /** Get the workitem repository */
+  IWorkItemRepository getWorkItemRepository();
+
   void addRepositoryListener(RepositoryEventType eventType, IRepositoryListener listener);
 
   void removeRepositoryListener(RepositoryEventType eventType, IRepositoryListener listener);

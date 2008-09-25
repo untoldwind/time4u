@@ -1,7 +1,11 @@
 package de.objectcode.time4u.client.store.api;
 
+import java.util.List;
+
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
+import de.objectcode.time4u.server.api.data.DayInfoSummary;
+import de.objectcode.time4u.server.api.filter.DayInfoFilter;
 
 /**
  * Interface of the client side workitem repository.
@@ -20,4 +24,15 @@ public interface IWorkItemRepository
    *           on error
    */
   DayInfo getDayInfo(final CalendarDay day) throws RepositoryException;
+
+  /**
+   * Get all dayinfo summaries that match a filter condition.
+   * 
+   * @param filter
+   *          The filter condition
+   * @return All dayinfo summary DTO that match <tt>filter</tt>
+   * @throws RepositoryException
+   *           on error
+   */
+  List<DayInfoSummary> getDayInfoSummaries(DayInfoFilter filter) throws RepositoryException;
 }

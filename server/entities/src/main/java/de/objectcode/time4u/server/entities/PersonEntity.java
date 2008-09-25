@@ -62,7 +62,7 @@ public class PersonEntity
     m_id = id;
   }
 
-  @Column(length = 100, nullable = false)
+  @Column(length = 100, nullable = true)
   public String getHashedPassword()
   {
     return m_hashedPassword;

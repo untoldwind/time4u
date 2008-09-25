@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.derby.jdbc.EmbeddedDriver;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Environment;
@@ -16,9 +17,12 @@ import de.objectcode.time4u.client.store.StorePlugin;
 import de.objectcode.time4u.client.store.api.IProjectRepository;
 import de.objectcode.time4u.client.store.api.IRepository;
 import de.objectcode.time4u.client.store.api.ITaskRepository;
+import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
 import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
+import de.objectcode.time4u.client.store.impl.hibernate.entities.ClientDataEntity;
+import de.objectcode.time4u.server.api.data.Person;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.DayTagEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
@@ -44,17 +48,22 @@ public class HibernateRepository implements IRepository
 {
   private final HibernateTemplate m_hibernateTemplate;
 
+  private Person m_owner;
+
   private final HibernateProjectRepository m_projectRepository;
   private final HibernateTaskRepository m_taskRepository;
+  private final HibernateWorkItemRepository m_workItemRepository;
 
   private final Map<RepositoryEventType, List<IRepositoryListener>> m_listeners = new HashMap<RepositoryEventType, List<IRepositoryListener>>();
 
-  public HibernateRepository(final File directory)
+  public HibernateRepository(final File directory) throws RepositoryException
   {
     m_hibernateTemplate = new HibernateTemplate(buildSessionFactory(directory));
 
+    initialize();
     m_projectRepository = new HibernateProjectRepository(this, m_hibernateTemplate);
     m_taskRepository = new HibernateTaskRepository(this, m_hibernateTemplate);
+    m_workItemRepository = new HibernateWorkItemRepository(this, m_hibernateTemplate);
   }
 
   /**
@@ -71,6 +80,14 @@ public class HibernateRepository implements IRepository
   public ITaskRepository getTaskRepository()
   {
     return m_taskRepository;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public HibernateWorkItemRepository getWorkItemRepository()
+  {
+    return m_workItemRepository;
   }
 
   /**
@@ -104,6 +121,11 @@ public class HibernateRepository implements IRepository
     }
   }
 
+  Person getOwner()
+  {
+    return m_owner;
+  }
+
   void fireRepositoryEvent(final RepositoryEvent event)
   {
     IRepositoryListener[] listenerArray;
@@ -121,6 +143,38 @@ public class HibernateRepository implements IRepository
     for (final IRepositoryListener listener : listenerArray) {
       listener.handleRepositoryEvent(event);
     }
+  }
+
+  private void initialize() throws RepositoryException
+  {
+    m_owner = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Person>() {
+      public Person perform(final Session session)
+      {
+        ClientDataEntity clientData = (ClientDataEntity) session.get(ClientDataEntity.class, 1);
+
+        if (clientData == null) {
+          final PersonEntity ownerPerson = new PersonEntity();
+          ownerPerson.setUserId(System.getProperty("user.name"));
+          ownerPerson.setName(System.getProperty("user.name"));
+
+          session.persist(ownerPerson);
+
+          clientData = new ClientDataEntity();
+          clientData.setId(1);
+          clientData.setOwnerPerson(ownerPerson);
+
+          session.persist(clientData);
+
+          session.flush();
+        }
+
+        final Person person = new Person();
+
+        clientData.getOwnerPerson().toDTO(person);
+
+        return person;
+      }
+    });
   }
 
   private SessionFactory buildSessionFactory(final File directory)
@@ -154,6 +208,7 @@ public class HibernateRepository implements IRepository
       cfg.addAnnotatedClass(WorkItemEntity.class);
       cfg.addAnnotatedClass(TodoEntity.class);
       cfg.addAnnotatedClass(TodoProperty.class);
+      cfg.addAnnotatedClass(ClientDataEntity.class);
 
       return cfg.buildSessionFactory();
     } catch (final Exception e) {

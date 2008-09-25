@@ -33,6 +33,14 @@
             icon="icons/Task.gif"
             id="de.objectcode.client.ui.view.taskList"
             name="%taskView.title"/>
+      <view
+            allowMultiple="false"
+            class="de.objectcode.time4u.client.ui.views.CalendarView"
+            icon="icons/WorkItem.gif"
+            id="de.objectcode.client.ui.view.calendarView"
+            name="%calendarView.title"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
