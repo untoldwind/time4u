@@ -15,7 +15,7 @@ public class Project implements ISynchronizableData
   /** The internal server id of the project */
   private long m_id;
   /** Revision number. */
-  private int m_revision;
+  private long m_revision;
   /** Project name. */
   private String m_name;
   /** Project description. */
@@ -77,12 +77,12 @@ public class Project implements ISynchronizableData
     m_id = id;
   }
 
-  public int getRevision()
+  public long getRevision()
   {
     return m_revision;
   }
 
-  public void setRevision(final int revision)
+  public void setRevision(final long revision)
   {
     m_revision = revision;
   }

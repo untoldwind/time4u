@@ -39,7 +39,7 @@ public class TeamEntity
   /** All members of the team. */
   private Set<PersonEntity> m_members;
   /** Revision number (increased every time something has changed) */
-  private int m_revision;
+  private long m_revision;
 
   @Id
   @GeneratedValue(generator = "SEQ_T4U_TEAMS")
@@ -89,12 +89,12 @@ public class TeamEntity
     m_members = members;
   }
 
-  public int getRevision()
+  public long getRevision()
   {
     return m_revision;
   }
 
-  public void setRevision(final int revision)
+  public void setRevision(final long revision)
   {
     m_revision = revision;
   }

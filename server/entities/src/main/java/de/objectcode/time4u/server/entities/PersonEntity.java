@@ -47,7 +47,7 @@ public class PersonEntity
   /** Timestamp of the last synchronization */
   private Date m_lastSynchronize;
   /** Revision number (increased every time something has changed) */
-  private int m_revision;
+  private long m_revision;
 
   @Id
   @GeneratedValue(generator = "SEQ_T4U_PERSONS")
@@ -151,12 +151,12 @@ public class PersonEntity
     m_lastSynchronize = lastSynchronize;
   }
 
-  public int getRevision()
+  public long getRevision()
   {
     return m_revision;
   }
 
-  public void setRevision(final int revision)
+  public void setRevision(final long revision)
   {
     m_revision = revision;
   }

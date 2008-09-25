@@ -60,7 +60,7 @@ public class TodoEntity
   /** All meta properties of the todo. */
   private Map<String, TodoProperty> m_metaProperties;
   /** Revision number (increased every time something has changed) */
-  private int m_revision;
+  private long m_revision;
 
   @Id
   @GeneratedValue(generator = "SEQ_T4U_TODOS")
@@ -212,12 +212,12 @@ public class TodoEntity
     m_metaProperties = metaProperties;
   }
 
-  public int getRevision()
+  public long getRevision()
   {
     return m_revision;
   }
 
-  public void setRevision(final int revision)
+  public void setRevision(final long revision)
   {
     m_revision = revision;
   }

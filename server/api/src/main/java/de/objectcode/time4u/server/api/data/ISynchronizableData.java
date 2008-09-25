@@ -21,5 +21,5 @@ public interface ISynchronizableData extends Serializable
    * 
    * @return The revision number
    */
-  int getRevision();
+  long getRevision();
 }

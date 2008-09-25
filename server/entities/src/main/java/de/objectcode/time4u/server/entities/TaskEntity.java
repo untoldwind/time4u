@@ -48,7 +48,7 @@ public class TaskEntity implements Comparable<TaskEntity>
   /** All meta properties of the task. */
   private Map<String, TaskProperty> m_metaProperties;
   /** Revision number (increased every time something has changed) */
-  private int m_revision;
+  private long m_revision;
 
   @Id
   @GeneratedValue(generator = "SEQ_T4U_TASKS")
@@ -129,12 +129,12 @@ public class TaskEntity implements Comparable<TaskEntity>
     m_metaProperties = metaProperties;
   }
 
-  public int getRevision()
+  public long getRevision()
   {
     return m_revision;
   }
 
-  public void setRevision(final int revision)
+  public void setRevision(final long revision)
   {
     m_revision = revision;
   }

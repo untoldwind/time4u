@@ -42,7 +42,7 @@ public class WorkItemEntity
   /** The todo the workitem belongs to (optional) */
   private TodoEntity m_todo;
   /** Revision number (increased every time something has changed) */
-  private int m_revision;
+  private long m_revision;
 
   @Id
   @GeneratedValue(generator = "SEQ_T4U_WORKITEMS")
@@ -138,12 +138,12 @@ public class WorkItemEntity
     m_todo = todo;
   }
 
-  public int getRevision()
+  public long getRevision()
   {
     return m_revision;
   }
 
-  public void setRevision(final int revision)
+  public void setRevision(final long revision)
   {
     m_revision = revision;
   }

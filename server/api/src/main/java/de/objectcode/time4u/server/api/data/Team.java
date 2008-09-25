@@ -14,7 +14,7 @@ public class Team implements ISynchronizableData
   /** Internal server id of the team. */
   private long m_id;
   /** Revision number. */
-  private int m_revision;
+  private long m_revision;
   /** Team name. */
   private String m_name;
   /** List of server ids of all persons owning/administrating the team. */
@@ -32,12 +32,12 @@ public class Team implements ISynchronizableData
     m_id = id;
   }
 
-  public int getRevision()
+  public long getRevision()
   {
     return m_revision;
   }
 
-  public void setRevision(final int revision)
+  public void setRevision(final long revision)
   {
     m_revision = revision;
   }

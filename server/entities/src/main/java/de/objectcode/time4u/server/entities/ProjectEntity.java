@@ -48,7 +48,7 @@ public class ProjectEntity implements Comparable<ProjectEntity>
   /** Meta properties of the project */
   private Map<String, ProjectProperty> m_metaProperties;
   /** Revision number (increased every time something has changed) */
-  private int m_revision;
+  private long m_revision;
   /** Helper string containing all primary keys of all parent projects (usefull for querying all sub-projects. */
   private String m_parentKey;
 
@@ -144,12 +144,12 @@ public class ProjectEntity implements Comparable<ProjectEntity>
     return false;
   }
 
-  public int getRevision()
+  public long getRevision()
   {
     return m_revision;
   }
 
-  public void setRevision(final int revision)
+  public void setRevision(final long revision)
   {
     m_revision = revision;
   }
