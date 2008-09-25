@@ -158,8 +158,6 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
 
   public void selectionChanged(final IAction action, final ISelection selection)
   {
-    System.out.println(">>>" + selection);
-
     if (selection instanceof IAdaptable) {
       m_selection = (IAdaptable) selection;
     } else if (selection instanceof IStructuredSelection) {

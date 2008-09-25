@@ -28,6 +28,7 @@ import de.objectcode.time4u.client.ui.provider.ProjectContentProvider;
 import de.objectcode.time4u.client.ui.provider.ProjectLabelProvider;
 import de.objectcode.time4u.client.ui.util.MultiEntitySelectionProvider;
 import de.objectcode.time4u.client.ui.util.SelectionEntityType;
+import de.objectcode.time4u.client.ui.util.SelectionServiceAdapter;
 
 public class ProjectTreeView extends ViewPart implements IRepositoryListener
 {
@@ -66,7 +67,7 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
 
     m_viewer.getControl().setMenu(menu);
 
-    getSite().registerContextMenu(menuMgr, m_selectionProvider);
+    getSite().registerContextMenu(menuMgr, new SelectionServiceAdapter(getSite().getPage()));
 
     m_viewer.addDoubleClickListener(new IDoubleClickListener() {
       public void doubleClick(final DoubleClickEvent event)

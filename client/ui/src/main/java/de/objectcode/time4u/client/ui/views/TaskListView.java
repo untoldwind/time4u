@@ -38,6 +38,7 @@ import de.objectcode.time4u.client.ui.provider.TaskContentProvider;
 import de.objectcode.time4u.client.ui.provider.TaskLabelProvider;
 import de.objectcode.time4u.client.ui.util.MultiEntitySelectionProvider;
 import de.objectcode.time4u.client.ui.util.SelectionEntityType;
+import de.objectcode.time4u.client.ui.util.SelectionServiceAdapter;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.data.Task;
@@ -109,7 +110,7 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
     menuMgr.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
     final Menu menu = menuMgr.createContextMenu(m_viewer.getControl());
     m_viewer.getControl().setMenu(menu);
-    getSite().registerContextMenu(menuMgr, m_selectionProvider);
+    getSite().registerContextMenu(menuMgr, new SelectionServiceAdapter(getSite().getPage()));
 
     m_viewer.addDoubleClickListener(new IDoubleClickListener() {
       public void doubleClick(final DoubleClickEvent event)
@@ -210,10 +211,8 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
 
   public void selectionChanged(final IWorkbenchPart part, final ISelection selection)
   {
-    System.out.println(">> bla: " + selection);
     if (selection instanceof IAdaptable) {
       m_selectedProject = (ProjectSummary) ((IAdaptable) selection).getAdapter(ProjectSummary.class);
-      System.out.println(">>> blue: " + m_selectedProject);
       m_viewer.setInput(m_selectedProject);
       return;
     } else if (selection instanceof IStructuredSelection) {
