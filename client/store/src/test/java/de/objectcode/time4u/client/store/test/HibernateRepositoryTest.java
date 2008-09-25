@@ -36,6 +36,24 @@ public class HibernateRepositoryTest
     assertEquals(result2.getId(), result.getId());
     assertEquals(result2.getName(), project.getName());
     assertEquals(result2.getDescription(), project.getDescription());
+
+    rootProjects.add(result);
+  }
+
+  @Test(dependsOnMethods = "testCreateRoot", dataProvider = "subProjects")
+  public void testCreateSub(final Project project) throws Exception
+  {
+    final Project result = repository.getProjectRepository().storeProject(project);
+
+    assertNotNull(result);
+    assertTrue(result.getId() > 0);
+    assertNotNull(result.getParentId());
+
+    final Project result2 = repository.getProjectRepository().getProject(result.getId());
+
+    assertEquals(result2.getId(), result.getId());
+    assertEquals(result2.getName(), project.getName());
+    assertEquals(result2.getDescription(), project.getDescription());
   }
 
   @BeforeClass
@@ -47,13 +65,31 @@ public class HibernateRepositoryTest
   @DataProvider(name = "rootProjects")
   public Object[][] getRootProjects() throws Exception
   {
-    final Object[][] result = new Object[20][];
+    final Object[][] result = new Object[10][];
 
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 10; i++) {
       final Project project = new Project();
       project.setName("TestProject " + (i + 1));
       project.setDescription("DescTestProject " + (i + 1));
       project.setActive(true);
+
+      result[i] = new Object[] { project };
+    }
+
+    return result;
+  }
+
+  @DataProvider(name = "subProjects")
+  public Object[][] getSubProjects() throws Exception
+  {
+    final Object[][] result = new Object[10 * 10][];
+
+    for (int i = 0; i < 10 * 10; i++) {
+      final Project project = new Project();
+      project.setName("TestSubProject " + (i + 1));
+      project.setDescription("DescTestSubProject " + (i + 1));
+      project.setActive(true);
+      project.setParentId(rootProjects.get(i % 10).getId());
 
       result[i] = new Object[] { project };
     }

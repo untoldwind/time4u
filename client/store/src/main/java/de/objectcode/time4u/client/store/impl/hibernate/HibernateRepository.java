@@ -17,6 +17,7 @@ import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.ProjectProperty;
 import de.objectcode.time4u.server.entities.RoleEntity;
 import de.objectcode.time4u.server.entities.TeamEntity;
+import de.objectcode.time4u.server.entities.revision.RevisionEntity;
 
 /**
  * Hibernate implementation of the repository interface.
@@ -68,6 +69,8 @@ public class HibernateRepository implements IRepository
       cfg.setProperty(Environment.DIALECT, DerbyDialect.class.getName());
       cfg.setProperty(Environment.HBM2DDL_AUTO, "update");
       cfg.setProperty(Environment.SHOW_SQL, "true");
+
+      cfg.addAnnotatedClass(RevisionEntity.class);
       cfg.addAnnotatedClass(PersonEntity.class);
       cfg.addAnnotatedClass(RoleEntity.class);
       cfg.addAnnotatedClass(TeamEntity.class);

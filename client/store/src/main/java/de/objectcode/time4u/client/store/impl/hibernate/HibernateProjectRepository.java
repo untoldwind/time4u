@@ -15,6 +15,9 @@ import de.objectcode.time4u.client.store.api.event.ProjectRepositoryEvent;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.context.SessionPersistenceContext;
+import de.objectcode.time4u.server.entities.revision.EntityType;
+import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
+import de.objectcode.time4u.server.entities.revision.SessionRevisionGenerator;
 
 public class HibernateProjectRepository implements IProjectRepository
 {
@@ -100,18 +103,24 @@ public class HibernateProjectRepository implements IProjectRepository
     final Project result = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Project>() {
       public Project perform(final Session session)
       {
+        final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
+
+        final long nextRevision = revisionGenerator.getNextRevision(EntityType.PROJECT, -1L);
+
         ProjectEntity projectEntity;
 
         if (project.getId() > 0L) {
           projectEntity = (ProjectEntity) session.get(ProjectEntity.class, project.getId());
 
           projectEntity.fromDTO(new SessionPersistenceContext(session), project);
+          projectEntity.setRevision(nextRevision);
 
           session.flush();
         } else {
           projectEntity = new ProjectEntity();
 
           projectEntity.fromDTO(new SessionPersistenceContext(session), project);
+          projectEntity.setRevision(nextRevision);
 
           session.persist(projectEntity);
         }
