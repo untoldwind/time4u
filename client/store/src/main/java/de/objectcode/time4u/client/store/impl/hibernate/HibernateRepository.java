@@ -9,8 +9,11 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.DerbyDialect;
 
 import de.objectcode.time4u.client.store.StorePlugin;
+import de.objectcode.time4u.client.store.api.IProjectRepository;
 import de.objectcode.time4u.client.store.api.IRepository;
+import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.server.entities.PersonEntity;
+import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.RoleEntity;
 import de.objectcode.time4u.server.entities.TeamEntity;
 
@@ -23,11 +26,28 @@ import de.objectcode.time4u.server.entities.TeamEntity;
  */
 public class HibernateRepository implements IRepository
 {
-  private final SessionFactory sessionFactory;
+  private final HibernateTemplate m_hibernateTemplate;
+
+  private final HibernateProjectRepository m_projectRepository;
 
   public HibernateRepository(final File directory)
   {
-    sessionFactory = buildSessionFactory(directory);
+    m_hibernateTemplate = new HibernateTemplate(buildSessionFactory(directory));
+
+    m_projectRepository = new HibernateProjectRepository(this, m_hibernateTemplate);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public IProjectRepository getProjectRepository()
+  {
+    return m_projectRepository;
+  }
+
+  void fireRepositoryEvent(final RepositoryEvent event)
+  {
+    // TODO
   }
 
   private SessionFactory buildSessionFactory(final File directory)
@@ -50,6 +70,7 @@ public class HibernateRepository implements IRepository
       cfg.addAnnotatedClass(PersonEntity.class);
       cfg.addAnnotatedClass(RoleEntity.class);
       cfg.addAnnotatedClass(TeamEntity.class);
+      cfg.addAnnotatedClass(ProjectEntity.class);
 
       return cfg.buildSessionFactory();
     } catch (final Exception e) {

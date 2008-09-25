@@ -7,5 +7,6 @@ package de.objectcode.time4u.client.store.api;
  */
 public interface IRepository
 {
-
+  /** Get the project repository. */
+  IProjectRepository getProjectRepository();
 }
