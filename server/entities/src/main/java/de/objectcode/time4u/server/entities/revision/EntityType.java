@@ -16,7 +16,8 @@ public enum EntityType
   PROJECT(2),
   TASK(3),
   TODO(4),
-  WORKITEM(5);
+  WORKITEM(5),
+  ACTIVE_WORKITEM(6);
 
   private final int m_value;
 

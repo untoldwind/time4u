@@ -17,7 +17,12 @@ public class WorkItemTableCellModifier implements ICellModifier
   public boolean canModify(final Object element, final String property)
   {
     if (element instanceof WorkItem) {
-      final WorkItem activeWorkItem = RepositoryFactory.getRepository().getWorkItemRepository().getActiveWorkItem();
+      WorkItem activeWorkItem = null;
+      try {
+        activeWorkItem = RepositoryFactory.getRepository().getWorkItemRepository().getActiveWorkItem();
+      } catch (final Exception e) {
+        UIPlugin.getDefault().log(e);
+      }
       if ("end".equals(property) && (activeWorkItem == null || activeWorkItem.getId() != ((WorkItem) element).getId())) {
         return true;
       }

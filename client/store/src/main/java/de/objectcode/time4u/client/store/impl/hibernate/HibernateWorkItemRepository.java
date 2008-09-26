@@ -17,6 +17,7 @@ import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
 import de.objectcode.time4u.server.api.data.WorkItem;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
+import de.objectcode.time4u.server.entities.ActiveWorkItemEntity;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
@@ -167,10 +168,63 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
   /**
    * {@inheritDoc}
    */
-  public WorkItem getActiveWorkItem()
+  public WorkItem getActiveWorkItem() throws RepositoryException
   {
-    // TODO Auto-generated method stub
-    return null;
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<WorkItem>() {
+      public WorkItem perform(final Session session)
+      {
+        final ActiveWorkItemEntity activeWorkItemEntity = (ActiveWorkItemEntity) session.get(
+            ActiveWorkItemEntity.class, m_repository.getOwner().getId());
+
+        if (activeWorkItemEntity != null && activeWorkItemEntity.getWorkItem() != null) {
+          final WorkItem workItem = new WorkItem();
+
+          activeWorkItemEntity.getWorkItem().toDTO(workItem);
+
+          return workItem;
+        }
+        return null;
+      }
+    });
   }
 
+  public void setActiveWorkItem(final WorkItem workItem) throws RepositoryException
+  {
+    m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Object>() {
+      public Object perform(final Session session)
+      {
+        WorkItemEntity workItemEntity = null;
+
+        if (workItem != null) {
+          workItemEntity = (WorkItemEntity) session.get(WorkItemEntity.class, workItem.getId());
+
+          if (workItemEntity == null) {
+            throw new RuntimeException("WorkItem " + workItem.getId() + " not found");
+          }
+        }
+
+        final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
+
+        final long nextRevision = revisionGenerator.getNextRevision(EntityType.ACTIVE_WORKITEM, m_repository.getOwner()
+            .getId());
+
+        ActiveWorkItemEntity activeWorkItemEntity = (ActiveWorkItemEntity) session.get(ActiveWorkItemEntity.class,
+            m_repository.getOwner().getId());
+
+        if (activeWorkItemEntity == null) {
+          // This is save because the revision counter locks this section
+          activeWorkItemEntity = new ActiveWorkItemEntity(nextRevision, (PersonEntity) session.get(PersonEntity.class,
+              m_repository.getOwner().getId()), workItemEntity);
+
+          session.persist(activeWorkItemEntity);
+        } else {
+          activeWorkItemEntity.setRevision(nextRevision);
+          activeWorkItemEntity.setWorkItem(workItemEntity);
+        }
+        session.flush();
+
+        return null;
+      }
+    });
+  }
 }

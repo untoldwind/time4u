@@ -2,6 +2,7 @@ package de.objectcode.time4u.client.store.test;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Calendar;
@@ -14,6 +15,7 @@ import org.testng.annotations.Test;
 import de.objectcode.time4u.client.store.api.IRepository;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
 import de.objectcode.time4u.server.api.data.CalendarDay;
+import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.data.WorkItem;
 import de.objectcode.time4u.server.api.filter.TaskFilter;
@@ -50,6 +52,34 @@ public class HibernateWorkItemRepositoryTest
     collector.clearEvents();
   }
 
+  @Test(dependsOnMethods = "testCreate")
+  public void testActiveWorkItem() throws Exception
+  {
+    final DayInfo dayInfo = HibernateTestRepositoryFactory.getInstance().getWorkItemRepository().getDayInfo(
+        new CalendarDay(1, 1, 1980));
+
+    assertNotNull(dayInfo);
+    assertTrue(dayInfo.getWorkItems().size() > 0);
+
+    WorkItem activeWorkItem = HibernateTestRepositoryFactory.getInstance().getWorkItemRepository().getActiveWorkItem();
+
+    assertNull(activeWorkItem);
+
+    HibernateTestRepositoryFactory.getInstance().getWorkItemRepository().setActiveWorkItem(
+        dayInfo.getWorkItems().get(0));
+
+    activeWorkItem = HibernateTestRepositoryFactory.getInstance().getWorkItemRepository().getActiveWorkItem();
+
+    assertNotNull(activeWorkItem);
+    assertEquals(activeWorkItem.getId(), dayInfo.getWorkItems().get(0).getId());
+
+    HibernateTestRepositoryFactory.getInstance().getWorkItemRepository().setActiveWorkItem(null);
+
+    activeWorkItem = HibernateTestRepositoryFactory.getInstance().getWorkItemRepository().getActiveWorkItem();
+
+    assertNull(activeWorkItem);
+  }
+
   @DataProvider(name = "workitems")
   public Object[][] getWorkItems() throws Exception
   {
@@ -63,7 +93,7 @@ public class HibernateWorkItemRepositoryTest
 
     final Calendar calendar = Calendar.getInstance();
 
-    calendar.set(1980, 1, 1, 0, 0, 0);
+    calendar.set(1980, 0, 1, 0, 0, 0);
 
     for (int i = 0; i < 300; i++) {
       final WorkItem workItem = new WorkItem();

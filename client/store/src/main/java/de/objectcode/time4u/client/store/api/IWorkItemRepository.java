@@ -15,7 +15,6 @@ import de.objectcode.time4u.server.api.filter.DayInfoFilter;
  */
 public interface IWorkItemRepository
 {
-
   /**
    * Get the dayinfo of a calendar day.
    * 
@@ -55,5 +54,10 @@ public interface IWorkItemRepository
    * 
    * @return The active workitem or <tt>null</tt> if there is none
    */
-  WorkItem getActiveWorkItem();
+  WorkItem getActiveWorkItem() throws RepositoryException;
+
+  /**
+   * Get the currenty active workitem.
+   */
+  void setActiveWorkItem(WorkItem workitem) throws RepositoryException;
 }

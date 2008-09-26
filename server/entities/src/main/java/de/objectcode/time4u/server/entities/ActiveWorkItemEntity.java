@@ -23,6 +23,20 @@ public class ActiveWorkItemEntity
   private PersonEntity m_person;
   private WorkItemEntity m_workItem;
 
+  /**
+   * Default constructor for hibernate.
+   */
+  protected ActiveWorkItemEntity()
+  {
+  }
+
+  public ActiveWorkItemEntity(final long revision, final PersonEntity person, final WorkItemEntity workItem)
+  {
+    m_person = person;
+    m_revision = revision;
+    m_workItem = workItem;
+  }
+
   @Id
   @GeneratedValue(generator = "PERSON_ID")
   @GenericGenerator(name = "PERSON_ID", strategy = "foreign", parameters = { @Parameter(name = "property", value = "person") })

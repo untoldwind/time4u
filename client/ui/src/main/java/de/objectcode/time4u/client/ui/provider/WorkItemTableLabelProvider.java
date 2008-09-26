@@ -43,11 +43,17 @@ public class WorkItemTableLabelProvider extends LabelProvider implements ITableL
 
   public Color getForeground(final Object element)
   {
+    WorkItem activeWorkItem = null;
+    try {
+      activeWorkItem = m_workItemRepository.getActiveWorkItem();
+    } catch (final Exception e) {
+      UIPlugin.getDefault().log(e);
+    }
+
     if (element instanceof WorkItem) {
       if (!((WorkItem) element).isValid()) {
         return PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_RED);
-      } else if (m_workItemRepository.getActiveWorkItem() != null
-          && m_workItemRepository.getActiveWorkItem().getId() == ((WorkItem) element).getId()) {
+      } else if (activeWorkItem != null && activeWorkItem.getId() == ((WorkItem) element).getId()) {
         return PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_DARK_GREEN);
       }
     }
