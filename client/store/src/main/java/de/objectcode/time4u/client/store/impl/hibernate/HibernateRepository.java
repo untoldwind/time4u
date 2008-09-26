@@ -23,6 +23,7 @@ import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
 import de.objectcode.time4u.client.store.impl.hibernate.entities.ClientDataEntity;
 import de.objectcode.time4u.server.api.data.Person;
+import de.objectcode.time4u.server.entities.ActiveWorkItemEntity;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.DayTagEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
@@ -209,6 +210,7 @@ public class HibernateRepository implements IRepository
       cfg.addAnnotatedClass(TodoEntity.class);
       cfg.addAnnotatedClass(TodoProperty.class);
       cfg.addAnnotatedClass(ClientDataEntity.class);
+      cfg.addAnnotatedClass(ActiveWorkItemEntity.class);
 
       return cfg.buildSessionFactory();
     } catch (final Exception e) {

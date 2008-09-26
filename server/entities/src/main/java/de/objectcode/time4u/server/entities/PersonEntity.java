@@ -30,6 +30,8 @@ public class PersonEntity
 {
   /** Primary key. */
   private long m_id;
+  /** Revision number (increased every time something has changed) */
+  private long m_revision;
   /** User id of the person. */
   private String m_userId;
   /** Encoded password of the person. */
@@ -46,8 +48,6 @@ public class PersonEntity
   private Set<TeamEntity> m_memberOf;
   /** Timestamp of the last synchronization */
   private Date m_lastSynchronize;
-  /** Revision number (increased every time something has changed) */
-  private long m_revision;
 
   @Id
   @GeneratedValue(generator = "SEQ_T4U_PERSONS")

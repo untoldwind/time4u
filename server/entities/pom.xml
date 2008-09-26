@@ -34,6 +34,15 @@
 			<groupId>javax.annotation</groupId>
 			<artifactId>jsr250-api</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derby</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<classifier>jdk15</classifier>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

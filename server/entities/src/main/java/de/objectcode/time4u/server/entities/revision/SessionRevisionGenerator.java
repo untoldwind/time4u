@@ -18,7 +18,7 @@ public class SessionRevisionGenerator implements IRevisionGenerator
    */
   public long getNextRevision(final EntityType entityType, final long part)
   {
-    final Query updateQuery = m_session
+    Query updateQuery = m_session
         .createSQLQuery("update T4U_REVISIONS set latestRevision = latestRevision + 1 where entityKeyValue=:entityKeyValue and part=:part");
     updateQuery.setInteger("entityKeyValue", entityType.getValue());
     updateQuery.setLong("part", part);
@@ -26,6 +26,8 @@ public class SessionRevisionGenerator implements IRevisionGenerator
     if (updateQuery.executeUpdate() != 1) {
       createInOwnTransaction(entityType, part);
 
+      updateQuery = m_session
+          .createSQLQuery("update T4U_REVISIONS set latestRevision = latestRevision + 1 where entityKeyValue=:entityKeyValue and part=:part");
       updateQuery.setInteger("entityKeyValue", entityType.getValue());
       updateQuery.setLong("part", part);
 
@@ -51,8 +53,8 @@ public class SessionRevisionGenerator implements IRevisionGenerator
 
       final RevisionEntity revisionEntity = new RevisionEntity(entityType, part);
 
-      m_session.persist(revisionEntity);
-      m_session.flush();
+      session.persist(revisionEntity);
+      session.flush();
 
       trx.commit();
     } catch (final Exception e) {
