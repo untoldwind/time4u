@@ -1,6 +1,7 @@
 package de.objectcode.time4u.client.ui.util;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +19,11 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 
-public class MultiEntitySelectionProvider implements IPostSelectionProvider, ISelectionListener
+import de.objectcode.time4u.server.api.data.CalendarDay;
+
+public class CompoundSelectionProvider implements IPostSelectionProvider, ISelectionListener
 {
-  MultiEntitySelection m_selection = new MultiEntitySelection();
+  CompoundSelection m_selection;
 
   /**
    * Registered selection changed listeners (element type: <code>ISelectionChangedListener</code>).
@@ -32,7 +35,12 @@ public class MultiEntitySelectionProvider implements IPostSelectionProvider, ISe
    */
   private final ListenerList postListeners = new ListenerList();
 
-  private final Map<SelectionEntityType, List<ISelectionProvider>> m_selectionProviders = new HashMap<SelectionEntityType, List<ISelectionProvider>>();
+  private final Map<CompoundSelectionEntityType, List<ISelectionProvider>> m_selectionProviders = new HashMap<CompoundSelectionEntityType, List<ISelectionProvider>>();
+
+  public CompoundSelectionProvider()
+  {
+    m_selection = createInitialSelection();
+  }
 
   /**
    * {@inheritDoc}
@@ -106,6 +114,18 @@ public class MultiEntitySelectionProvider implements IPostSelectionProvider, ISe
   }
 
   /**
+   * Convenient helper method for ((CompountSelection)selectionProvider.getSelection()).getSelection(type).
+   * 
+   * @param type
+   *          The entity type.
+   * @return The selection part or <tt>null</tt>
+   */
+  public Object getSelection(final CompoundSelectionEntityType type)
+  {
+    return m_selection.getSelection(type);
+  }
+
+  /**
    * {@inheritDoc}
    */
   public void removeSelectionChangedListener(final ISelectionChangedListener listener)
@@ -130,10 +150,11 @@ public class MultiEntitySelectionProvider implements IPostSelectionProvider, ISe
    */
   public void setSelection(final ISelection selection)
   {
-    if (selection instanceof MultiEntitySelection) {
-      m_selection = (MultiEntitySelection) selection;
+    if (selection instanceof CompoundSelection) {
+      m_selection = (CompoundSelection) selection;
 
-      for (final Map.Entry<SelectionEntityType, List<ISelectionProvider>> entry : m_selectionProviders.entrySet()) {
+      for (final Map.Entry<CompoundSelectionEntityType, List<ISelectionProvider>> entry : m_selectionProviders
+          .entrySet()) {
         for (final ISelectionProvider provider : entry.getValue()) {
           provider.setSelection(new StructuredSelection(m_selection.getSelection(entry.getKey())));
         }
@@ -141,7 +162,21 @@ public class MultiEntitySelectionProvider implements IPostSelectionProvider, ISe
     }
   }
 
-  public void addSelectionProvider(final SelectionEntityType type, final ISelectionProvider provider)
+  /**
+   * Change a part of the selection. This method also fires a selection change event.
+   * 
+   * @param type
+   *          The entity type
+   * @param selection
+   *          The new selection part
+   */
+  public void changeSelection(final CompoundSelectionEntityType type, final Object selection)
+  {
+    m_selection.setSelection(type, selection);
+    fireSelectionChanged();
+  }
+
+  public void addSelectionProvider(final CompoundSelectionEntityType type, final ISelectionProvider provider)
   {
     List<ISelectionProvider> providers = m_selectionProviders.get(type);
 
@@ -165,7 +200,7 @@ public class MultiEntitySelectionProvider implements IPostSelectionProvider, ISe
     });
   }
 
-  public void addPostSelectionProvider(final SelectionEntityType type, final IPostSelectionProvider provider)
+  public void addPostSelectionProvider(final CompoundSelectionEntityType type, final IPostSelectionProvider provider)
   {
     List<ISelectionProvider> providers = m_selectionProviders.get(type);
 
@@ -203,9 +238,24 @@ public class MultiEntitySelectionProvider implements IPostSelectionProvider, ISe
 
   public void selectionChanged(final IWorkbenchPart part, final ISelection selection)
   {
-    if (selection instanceof MultiEntitySelection) {
-      m_selection = (MultiEntitySelection) selection;
+    if (selection instanceof CompoundSelection) {
+      m_selection = (CompoundSelection) selection;
     }
   }
 
+  /**
+   * Create an initial compound selection object.
+   * 
+   * E.g. the initial selection for CALENDARDAY will be <tt>now</tt>
+   * 
+   * @return The initial compound selection
+   */
+  private CompoundSelection createInitialSelection()
+  {
+    final CompoundSelection selection = new CompoundSelection();
+
+    selection.setSelection(CompoundSelectionEntityType.CALENDARDAY, new CalendarDay(Calendar.getInstance()));
+
+    return selection;
+  }
 }

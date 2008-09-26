@@ -38,8 +38,8 @@ import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.dnd.TaskTransfer;
 import de.objectcode.time4u.client.ui.provider.TaskContentProvider;
 import de.objectcode.time4u.client.ui.provider.TaskLabelProvider;
-import de.objectcode.time4u.client.ui.util.MultiEntitySelectionProvider;
-import de.objectcode.time4u.client.ui.util.SelectionEntityType;
+import de.objectcode.time4u.client.ui.util.CompoundSelectionEntityType;
+import de.objectcode.time4u.client.ui.util.CompoundSelectionProvider;
 import de.objectcode.time4u.client.ui.util.SelectionServiceAdapter;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
@@ -55,7 +55,7 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
   private boolean m_showOnlyActive;
 
   AtomicInteger m_refreshCounter = new AtomicInteger(0);
-  private MultiEntitySelectionProvider m_selectionProvider;
+  private CompoundSelectionProvider m_selectionProvider;
 
   /**
    * This is a callback that will allow us to create the viewer and initialize it.
@@ -81,8 +81,8 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
       }
     });
 
-    m_selectionProvider = new MultiEntitySelectionProvider();
-    m_selectionProvider.addPostSelectionProvider(SelectionEntityType.TASK, m_viewer);
+    m_selectionProvider = new CompoundSelectionProvider();
+    m_selectionProvider.addPostSelectionProvider(CompoundSelectionEntityType.TASK, m_viewer);
     getSite().setSelectionProvider(m_selectionProvider);
     getSite().getPage().addSelectionListener(m_selectionProvider);
 

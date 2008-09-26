@@ -35,7 +35,7 @@ import de.objectcode.time4u.client.ui.provider.TaskLabelProvider;
 import de.objectcode.time4u.client.ui.provider.WorkItemTableCellModifier;
 import de.objectcode.time4u.client.ui.provider.WorkItemTableContentProvider;
 import de.objectcode.time4u.client.ui.provider.WorkItemTableLabelProvider;
-import de.objectcode.time4u.client.ui.util.MultiEntitySelectionProvider;
+import de.objectcode.time4u.client.ui.util.CompoundSelectionProvider;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.WorkItem;
@@ -56,7 +56,7 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
 
   AtomicInteger m_refreshCounter = new AtomicInteger(0);
 
-  private MultiEntitySelectionProvider m_selectionProvider;
+  private CompoundSelectionProvider m_selectionProvider;
 
   /**
    * {@inheritDoc}
@@ -64,7 +64,7 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
   @Override
   public void createPartControl(final Composite parent)
   {
-    m_selectionProvider = new MultiEntitySelectionProvider();
+    m_selectionProvider = new CompoundSelectionProvider();
     getSite().setSelectionProvider(m_selectionProvider);
     getSite().getPage().addSelectionListener(m_selectionProvider);
 

@@ -3,19 +3,19 @@ package de.objectcode.time4u.client.ui.adapter;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.ui.IActionFilter;
 
-import de.objectcode.time4u.client.ui.util.MultiEntitySelection;
-import de.objectcode.time4u.client.ui.util.SelectionEntityType;
+import de.objectcode.time4u.client.ui.util.CompoundSelection;
+import de.objectcode.time4u.client.ui.util.CompoundSelectionEntityType;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 
-public class MultiEntitySelectionAdapterFactory implements IAdapterFactory
+public class CompoundSelectionAdapterFactory implements IAdapterFactory
 {
   @SuppressWarnings("unchecked")
   public Object getAdapter(final Object adaptableObject, final Class adapterType)
   {
-    if (!(adaptableObject instanceof MultiEntitySelection)) {
+    if (!(adaptableObject instanceof CompoundSelection)) {
       return null;
     }
 
@@ -36,10 +36,10 @@ public class MultiEntitySelectionAdapterFactory implements IAdapterFactory
   {
     public boolean testAttribute(final Object target, final String name, final String value)
     {
-      final MultiEntitySelection selection = (MultiEntitySelection) target;
+      final CompoundSelection selection = (CompoundSelection) target;
 
       if ("has".equals(name)) {
-        return selection.getSelection(SelectionEntityType.valueOf(value)) != null;
+        return selection.getSelection(CompoundSelectionEntityType.valueOf(value)) != null;
       }
 
       return false;

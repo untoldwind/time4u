@@ -5,24 +5,24 @@ import org.eclipse.core.runtime.IAdapterFactory;
 import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.client.ui.UIPlugin;
-import de.objectcode.time4u.client.ui.util.MultiEntitySelection;
-import de.objectcode.time4u.client.ui.util.SelectionEntityType;
+import de.objectcode.time4u.client.ui.util.CompoundSelection;
+import de.objectcode.time4u.client.ui.util.CompoundSelectionEntityType;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 
-public class MultiEntityProjectAdapterFactory implements IAdapterFactory
+public class CompoundProjectAdapterFactory implements IAdapterFactory
 {
   @SuppressWarnings("unchecked")
   public Object getAdapter(final Object adaptableObject, final Class adapterType)
   {
-    if (!(adaptableObject instanceof MultiEntitySelection)) {
+    if (!(adaptableObject instanceof CompoundSelection)) {
       return null;
     }
 
-    final MultiEntitySelection selection = (MultiEntitySelection) adaptableObject;
+    final CompoundSelection selection = (CompoundSelection) adaptableObject;
 
     if (Project.class.isAssignableFrom(adapterType)) {
-      final Object sel = selection.getSelection(SelectionEntityType.PROJECT);
+      final Object sel = selection.getSelection(CompoundSelectionEntityType.PROJECT);
 
       if (sel instanceof Project) {
         return sel;
@@ -34,7 +34,7 @@ public class MultiEntityProjectAdapterFactory implements IAdapterFactory
         }
       }
     } else if (ProjectSummary.class.isAssignableFrom(adapterType)) {
-      final Object sel = selection.getSelection(SelectionEntityType.PROJECT);
+      final Object sel = selection.getSelection(CompoundSelectionEntityType.PROJECT);
 
       if (sel instanceof ProjectSummary) {
         return sel;

@@ -2,23 +2,23 @@ package de.objectcode.time4u.client.ui.adapter;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 
-import de.objectcode.time4u.client.ui.util.MultiEntitySelection;
-import de.objectcode.time4u.client.ui.util.SelectionEntityType;
+import de.objectcode.time4u.client.ui.util.CompoundSelection;
+import de.objectcode.time4u.client.ui.util.CompoundSelectionEntityType;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 
-public class MultiEntityCalendarDayAdapterFactory implements IAdapterFactory
+public class CompoundCalendarDayAdapterFactory implements IAdapterFactory
 {
   @SuppressWarnings("unchecked")
   public Object getAdapter(final Object adaptableObject, final Class adapterType)
   {
-    if (!(adaptableObject instanceof MultiEntitySelection)) {
+    if (!(adaptableObject instanceof CompoundSelection)) {
       return null;
     }
 
-    final MultiEntitySelection selection = (MultiEntitySelection) adaptableObject;
+    final CompoundSelection selection = (CompoundSelection) adaptableObject;
 
     if (CalendarDay.class.isAssignableFrom(adapterType)) {
-      final Object sel = selection.getSelection(SelectionEntityType.CALENDARDAY);
+      final Object sel = selection.getSelection(CompoundSelectionEntityType.CALENDARDAY);
 
       if (sel instanceof CalendarDay) {
         return sel;

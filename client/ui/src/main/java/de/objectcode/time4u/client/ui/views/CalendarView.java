@@ -3,6 +3,7 @@ package de.objectcode.time4u.client.ui.views;
 import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
@@ -20,9 +21,9 @@ import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
 import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
 import de.objectcode.time4u.client.ui.UIPlugin;
-import de.objectcode.time4u.client.ui.util.MultiEntitySelection;
-import de.objectcode.time4u.client.ui.util.MultiEntitySelectionProvider;
-import de.objectcode.time4u.client.ui.util.SelectionEntityType;
+import de.objectcode.time4u.client.ui.util.CompoundSelection;
+import de.objectcode.time4u.client.ui.util.CompoundSelectionEntityType;
+import de.objectcode.time4u.client.ui.util.CompoundSelectionProvider;
 import de.objectcode.time4u.client.ui.util.SelectionServiceAdapter;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 
@@ -37,7 +38,7 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
 
   AtomicInteger m_refreshCounter = new AtomicInteger(0);
 
-  private MultiEntitySelectionProvider m_selectionProvider;
+  private CompoundSelectionProvider m_selectionProvider;
 
   /**
    * This is a callback that will allow us to create the viewer and initialize it.
@@ -45,13 +46,20 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
   @Override
   public void createPartControl(final Composite parent)
   {
+    m_selectionProvider = new CompoundSelectionProvider();
+    getSite().setSelectionProvider(m_selectionProvider);
+    getSite().getPage().addSelectionListener(m_selectionProvider);
+
     m_calendar = new SWTCalendar(parent, SWTCalendar.SHOW_WEEK_NUMBERS);
     m_calendar.addSWTCalendarListener(this);
 
-    final Calendar calendar = m_calendar.getCalendar();
+    final CalendarDay selection = (CalendarDay) m_selectionProvider
+        .getSelection(CompoundSelectionEntityType.CALENDARDAY);
+    Assert.isNotNull(selection);
 
-    m_currentMonth = calendar.get(Calendar.MONTH) + 1;
-    m_currentYear = calendar.get(Calendar.YEAR);
+    m_currentMonth = selection.getMonth();
+    m_currentYear = selection.getYear();
+    m_calendar.setCalendar(selection.getCalendar());
 
     try {
       final IWorkItemRepository workItemRepository = RepositoryFactory.getRepository().getWorkItemRepository();
@@ -63,12 +71,7 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
       //      m_calendar.setFontProvider(provider);
     } catch (final Exception e) {
       UIPlugin.getDefault().log(e);
-
     }
-
-    m_selectionProvider = new MultiEntitySelectionProvider();
-    getSite().setSelectionProvider(m_selectionProvider);
-    getSite().getPage().addSelectionListener(m_selectionProvider);
 
     final MenuManager menuMgr = new MenuManager();
 
@@ -119,7 +122,7 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
       //      }
     }
 
-    ((MultiEntitySelection) m_selectionProvider.getSelection()).setSelection(SelectionEntityType.CALENDARDAY,
+    ((CompoundSelection) m_selectionProvider.getSelection()).setSelection(CompoundSelectionEntityType.CALENDARDAY,
         new CalendarDay(calendar));
     m_selectionProvider.fireSelectionChanged();
   }

@@ -7,16 +7,16 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.ISelection;
 
-public class MultiEntitySelection implements ISelection, IAdaptable
+public class CompoundSelection implements ISelection, IAdaptable
 {
-  Map<SelectionEntityType, Object> m_selections = new HashMap<SelectionEntityType, Object>();
+  Map<CompoundSelectionEntityType, Object> m_selections = new HashMap<CompoundSelectionEntityType, Object>();
 
-  public synchronized Object getSelection(final SelectionEntityType type)
+  public synchronized Object getSelection(final CompoundSelectionEntityType type)
   {
     return m_selections.get(type);
   }
 
-  public synchronized void setSelection(final SelectionEntityType type, final Object selection)
+  public synchronized void setSelection(final CompoundSelectionEntityType type, final Object selection)
   {
     if (selection == null) {
       m_selections.remove(type);

@@ -137,7 +137,7 @@
          <visibility>
             <and>
                <objectClass
-                     name="de.objectcode.time4u.client.ui.util.MultiEntitySelection">
+                     name="de.objectcode.time4u.client.ui.util.CompoundSelection">
                </objectClass>
                <objectState
                      name="has"
@@ -172,7 +172,7 @@
          <visibility>
             <and>
                <objectClass
-                     name="de.objectcode.time4u.client.ui.util.MultiEntitySelection">
+                     name="de.objectcode.time4u.client.ui.util.CompoundSelection">
                </objectClass>
                <objectState
                      name="has"
@@ -195,7 +195,7 @@
          <visibility>
             <and>
                <objectClass
-                     name="de.objectcode.time4u.client.ui.util.MultiEntitySelection">
+                     name="de.objectcode.time4u.client.ui.util.CompoundSelection">
                </objectClass>
                <objectState
                      name="has"
@@ -219,15 +219,15 @@
 
 
       <factory
-            adaptableType="de.objectcode.time4u.client.ui.util.MultiEntitySelection"
-            class="de.objectcode.time4u.client.ui.adapter.MultiEntitySelectionAdapterFactory">
+            adaptableType="de.objectcode.time4u.client.ui.util.CompoundSelection"
+            class="de.objectcode.time4u.client.ui.adapter.CompoundSelectionAdapterFactory">
          <adapter
                type="org.eclipse.ui.IActionFilter">
          </adapter>
       </factory>
       <factory
-            adaptableType="de.objectcode.time4u.client.ui.util.MultiEntitySelection"
-            class="de.objectcode.time4u.client.ui.adapter.MultiEntityProjectAdapterFactory">
+            adaptableType="de.objectcode.time4u.client.ui.util.CompoundSelection"
+            class="de.objectcode.time4u.client.ui.adapter.CompoundProjectAdapterFactory">
          <adapter
                type="de.objectcode.time4u.server.api.data.ProjectSummary">
          </adapter>
@@ -236,8 +236,8 @@
          </adapter>
       </factory>
       <factory
-            adaptableType="de.objectcode.time4u.client.ui.util.MultiEntitySelection"
-            class="de.objectcode.time4u.client.ui.adapter.MultiEntityTaskAdapterFactory">
+            adaptableType="de.objectcode.time4u.client.ui.util.CompoundSelection"
+            class="de.objectcode.time4u.client.ui.adapter.CompoundTaskAdapterFactory">
          <adapter
                type="de.objectcode.time4u.server.api.data.TaskSummary">
          </adapter>
@@ -246,8 +246,8 @@
          </adapter>
       </factory>
       <factory
-            adaptableType="de.objectcode.time4u.client.ui.util.MultiEntitySelection"
-            class="de.objectcode.time4u.client.ui.adapter.MultiEntityCalendarDayAdapterFactory">
+            adaptableType="de.objectcode.time4u.client.ui.util.CompoundSelection"
+            class="de.objectcode.time4u.client.ui.adapter.CompoundCalendarDayAdapterFactory">
          <adapter
                type="de.objectcode.time4u.server.api.data.CalendarDay">
          </adapter>
@@ -286,7 +286,7 @@
             <enablement>
                <and>
                   <objectClass
-                        name="de.objectcode.time4u.client.ui.util.MultiEntitySelection">
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
                   </objectClass>
                   <objectState
                         name="has"
@@ -317,7 +317,7 @@
             <enablement>
                <and>
                   <objectClass
-                        name="de.objectcode.time4u.client.ui.util.MultiEntitySelection">
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
                   </objectClass>
                   <objectState
                         name="has"
@@ -338,7 +338,7 @@
             <enablement>
                <and>
                   <objectClass
-                        name="de.objectcode.time4u.client.ui.util.MultiEntitySelection">
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
                   </objectClass>
                   <objectState
                         name="has"
@@ -373,7 +373,7 @@
             <enablement>
                <and>
                   <objectClass
-                        name="de.objectcode.time4u.client.ui.util.MultiEntitySelection">
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
                   </objectClass>
                   <objectState
                         name="has"
