@@ -12,6 +12,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import de.objectcode.time4u.client.store.api.IRepository;
+import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.data.WorkItem;
@@ -36,6 +37,17 @@ public class HibernateWorkItemRepositoryTest
     assertNotNull(result);
     assertTrue(result.getId() > 0);
 
+    RepositoryEventCollector collector = HibernateTestRepositoryFactory.getEventCollector(RepositoryEventType.WORKITEM);
+
+    assertNotNull(collector);
+    assertEquals(collector.getEvents().size(), 1);
+    collector.clearEvents();
+
+    collector = HibernateTestRepositoryFactory.getEventCollector(RepositoryEventType.DAYINFO);
+
+    assertNotNull(collector);
+    assertEquals(collector.getEvents().size(), 1);
+    collector.clearEvents();
   }
 
   @DataProvider(name = "workitems")

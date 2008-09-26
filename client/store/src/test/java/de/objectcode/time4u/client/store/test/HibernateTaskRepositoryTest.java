@@ -11,6 +11,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import de.objectcode.time4u.client.store.api.IRepository;
+import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.data.TaskSummary;
@@ -36,6 +37,13 @@ public class HibernateTaskRepositoryTest
 
     assertNotNull(result);
     assertTrue(result.getId() > 0);
+
+    final RepositoryEventCollector collector = HibernateTestRepositoryFactory
+        .getEventCollector(RepositoryEventType.TASK);
+
+    assertNotNull(collector);
+    assertEquals(collector.getEvents().size(), 1);
+    collector.clearEvents();
 
     final Task result2 = repository.getTaskRepository().getTask(result.getId());
 

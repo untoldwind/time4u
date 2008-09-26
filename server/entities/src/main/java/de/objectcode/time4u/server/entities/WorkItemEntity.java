@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -76,6 +77,12 @@ public class WorkItemEntity
   public void setEnd(final int end)
   {
     m_end = end;
+  }
+
+  @Transient
+  public int getDuration()
+  {
+    return m_end - m_begin;
   }
 
   @Column(name = "wComment", length = 1000, nullable = false)
@@ -172,6 +179,7 @@ public class WorkItemEntity
     workItem.setProjectId(m_project.getId());
     workItem.setTaskId(m_task.getId());
     workItem.setDay(new CalendarDay(m_dayInfo.getDate()));
+    workItem.setValid(m_valid);
 
     if (m_todo != null) {
       workItem.setTodoId(m_todo.getId());

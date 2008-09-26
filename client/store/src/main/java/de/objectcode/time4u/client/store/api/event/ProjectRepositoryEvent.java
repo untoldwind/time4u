@@ -1,12 +1,12 @@
 package de.objectcode.time4u.client.store.api.event;
 
-import de.objectcode.time4u.server.api.data.Project;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
 
 public class ProjectRepositoryEvent extends RepositoryEvent
 {
-  final Project m_project;
+  final ProjectSummary m_project;
 
-  public ProjectRepositoryEvent(final Project project)
+  public ProjectRepositoryEvent(final ProjectSummary project)
   {
     super();
     m_project = project;

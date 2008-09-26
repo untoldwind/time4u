@@ -290,8 +290,8 @@ public class WorkItemDialog extends Dialog
     final Button button = getButton(IDialogConstants.OK_ID);
 
     if (button != null) {
-      button.setEnabled(beginSelection >= 0 && beginSelection <= 24 * 60 && endSelection >= 0
-          && endSelection <= 24 * 60 && beginSelection <= endSelection && !taskSelection.isEmpty());
+      button.setEnabled(beginSelection >= 0 && beginSelection <= 24 * 3600 && endSelection >= 0
+          && endSelection <= 24 * 3600 && beginSelection <= endSelection && !taskSelection.isEmpty());
     }
   }
 }

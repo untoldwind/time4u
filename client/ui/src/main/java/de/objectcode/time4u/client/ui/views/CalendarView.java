@@ -7,6 +7,9 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -21,11 +24,12 @@ import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
 import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
 import de.objectcode.time4u.client.ui.UIPlugin;
-import de.objectcode.time4u.client.ui.util.CompoundSelection;
+import de.objectcode.time4u.client.ui.provider.DayFontColorProvider;
 import de.objectcode.time4u.client.ui.util.CompoundSelectionEntityType;
 import de.objectcode.time4u.client.ui.util.CompoundSelectionProvider;
 import de.objectcode.time4u.client.ui.util.SelectionServiceAdapter;
 import de.objectcode.time4u.server.api.data.CalendarDay;
+import de.objectcode.time4u.server.api.filter.DayInfoFilter;
 
 public class CalendarView extends ViewPart implements SWTCalendarListener, IRepositoryListener
 {
@@ -39,6 +43,8 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
   AtomicInteger m_refreshCounter = new AtomicInteger(0);
 
   private CompoundSelectionProvider m_selectionProvider;
+
+  Font m_boldFont;
 
   /**
    * This is a callback that will allow us to create the viewer and initialize it.
@@ -61,14 +67,25 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
     m_currentYear = selection.getYear();
     m_calendar.setCalendar(selection.getCalendar());
 
+    final Font originalFont = m_calendar.getFont();
+    final FontData fontData[] = originalFont.getFontData();
+
+    // Adding the bold attribute
+    for (int i = 0; i < fontData.length; i++) {
+      fontData[i].setStyle(fontData[i].getStyle() | SWT.BOLD);
+    }
+
+    m_boldFont = new Font(m_calendar.getDisplay(), fontData);
+
     try {
       final IWorkItemRepository workItemRepository = RepositoryFactory.getRepository().getWorkItemRepository();
 
-      //      final DayFontColorProvider provider = new DayFontColorProvider(workItemStore.getMonth(m_currentMonth,
-      //          m_currentYear), workItemStore.getTimePolicies());
+      final DayFontColorProvider provider = new DayFontColorProvider(m_calendar.getBackground(), m_calendar
+          .getForeground(), m_calendar.getFont(), m_boldFont, workItemRepository.getDayInfoSummaries(DayInfoFilter
+          .filterMonth(m_currentYear, m_currentMonth)), null);
 
-      //      m_calendar.setColorProvider(provider);
-      //      m_calendar.setFontProvider(provider);
+      m_calendar.setColorProvider(provider);
+      m_calendar.setFontProvider(provider);
     } catch (final Exception e) {
       UIPlugin.getDefault().log(e);
     }
@@ -85,7 +102,7 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
 
     getSite().registerContextMenu(menuMgr, new SelectionServiceAdapter(getSite().getPage()));
 
-    RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.WORKITEM, this);
+    RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.DAYINFO, this);
   }
 
   @Override
@@ -97,9 +114,25 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
   @Override
   public void dispose()
   {
-    RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.WORKITEM, this);
+    RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.DAYINFO, this);
 
     super.dispose();
+  }
+
+  public void refresh()
+  {
+    try {
+      final IWorkItemRepository workItemRepository = RepositoryFactory.getRepository().getWorkItemRepository();
+
+      final DayFontColorProvider provider = new DayFontColorProvider(m_calendar.getBackground(), m_calendar
+          .getForeground(), m_calendar.getFont(), m_boldFont, workItemRepository.getDayInfoSummaries(DayInfoFilter
+          .filterMonth(m_currentYear, m_currentMonth)), null);
+
+      m_calendar.setColorProvider(provider);
+      m_calendar.setFontProvider(provider);
+    } catch (final Exception e) {
+      UIPlugin.getDefault().log(e);
+    }
   }
 
   public void dateChanged(final SWTCalendarEvent event)
@@ -110,27 +143,39 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
       m_currentMonth = calendar.get(Calendar.MONTH) + 1;
       m_currentYear = calendar.get(Calendar.YEAR);
 
-      //      try {
-      //        final IWorkItemStore workItemStore = Activator.getDefault().getRepository().getWorkItemStore();
-      //        final DayFontColorProvider provider = new DayFontColorProvider(
-      //
-      //        workItemStore.getMonth(m_currentMonth, m_currentYear), workItemStore.getTimePolicies());
-      //        m_calendar.setColorProvider(provider);
-      //        m_calendar.setFontProvider(provider);
-      //      } catch (final Exception e) {
-      //        UIPlugin.getDefault().log(e);
-      //      }
+      refresh();
     }
 
-    ((CompoundSelection) m_selectionProvider.getSelection()).setSelection(CompoundSelectionEntityType.CALENDARDAY,
-        new CalendarDay(calendar));
-    m_selectionProvider.fireSelectionChanged();
+    m_selectionProvider.changeSelection(CompoundSelectionEntityType.CALENDARDAY, new CalendarDay(calendar));
   }
 
   public void handleRepositoryEvent(final RepositoryEvent event)
   {
-    // TODO Auto-generated method stub
+    // It's not necessary to queue more than 2 refreshes
 
+    switch (event.getEventType()) {
+      case DAYINFO:
+        synchronized (this) {
+          if (m_refreshCounter.intValue() >= 2) {
+            return;
+          }
+
+          m_refreshCounter.incrementAndGet();
+        }
+        m_calendar.getDisplay().asyncExec(new Runnable() {
+          public void run()
+          {
+            try {
+              refresh();
+            } finally {
+              synchronized (CalendarView.this) {
+                m_refreshCounter.decrementAndGet();
+              }
+            }
+          }
+        });
+        break;
+    }
   }
 
 }

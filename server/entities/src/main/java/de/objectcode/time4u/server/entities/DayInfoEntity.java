@@ -3,6 +3,7 @@ package de.objectcode.time4u.server.entities;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -54,6 +55,22 @@ public class DayInfoEntity
   private Set<DayTagEntity> m_tags;
   /** Set of workitem of this day. */
   private Set<WorkItemEntity> m_workItems;
+
+  /**
+   * Default constructor for hibernate.
+   */
+  protected DayInfoEntity()
+  {
+  }
+
+  public DayInfoEntity(final long revision, final PersonEntity person, final Date date)
+  {
+    m_revision = revision;
+    m_person = person;
+    m_date = date;
+    m_workItems = new HashSet<WorkItemEntity>();
+    m_tags = new HashSet<DayTagEntity>();
+  }
 
   @Id
   @GeneratedValue(generator = "SEQ_T4U_DAYINFOS")
@@ -164,11 +181,59 @@ public class DayInfoEntity
     m_workItems = workItems;
   }
 
+  /**
+   * Validate the dayinfo and all attached workitems.
+   * 
+   * Following checks are applied:
+   * <ul>
+   * <li>For every workitem: <tt>begin</tt> &gt;= 0 and <tt>end</tt> &gt;= 0</li>
+   * <li>For every workitem: <tt>begin</tt> &lt;= 24 * 3600 and <tt>end</tt> &lt;= 24 * 3600</li>
+   * <li>For every workitem: <tt>end</tt> &gt;= <tt>begin</tt></li>
+   * <li>The <tt>begin</tt> and <tt>end</tt> intervals of all workitems of a day must not intersect with each other</li>
+   * </ul>
+   */
+  public void validate()
+  {
+    int totalTime = 0;
+    boolean hasInvalidWorkItems = false;
+
+    for (final WorkItemEntity item1 : m_workItems) {
+      if (item1.getBegin() < 0 || item1.getEnd() > 24 * 3600 || item1.getEnd() < item1.getBegin()) {
+        item1.setValid(false);
+        hasInvalidWorkItems = true;
+      } else {
+        item1.setValid(true);
+        for (final WorkItemEntity item2 : m_workItems) {
+          if (item1.getId() != item2.getId()) {
+            if (item1.getBegin() > item2.getBegin() && item1.getBegin() < item2.getEnd()) {
+              item1.setValid(false);
+              hasInvalidWorkItems = true;
+            } else if (item1.getEnd() > item2.getBegin() && item1.getEnd() < item2.getEnd()) {
+              item1.setValid(false);
+              hasInvalidWorkItems = true;
+            }
+          }
+        }
+
+        if (item1.isValid()) {
+          totalTime += item1.getDuration();
+        }
+      }
+    }
+
+    m_hasWorkItems = !m_workItems.isEmpty();
+    m_hasInvalidWorkItems = hasInvalidWorkItems;
+    m_totalTime = totalTime;
+  }
+
   public void toSummaryDTO(final DayInfoSummary dayinfo)
   {
     dayinfo.setId(m_id);
     dayinfo.setRevision(m_revision);
     dayinfo.setDay(new CalendarDay(m_date));
+    dayinfo.setHasWorkItems(m_hasWorkItems);
+    dayinfo.setHasInvalidWorkItems(m_hasInvalidWorkItems);
+    dayinfo.setRegularTime(m_regularTime);
   }
 
   public void toDTO(final DayInfo dayinfo)
@@ -184,6 +249,7 @@ public class DayInfoEntity
 
         workItems.add(workItem);
       }
+      Collections.sort(workItems);
       dayinfo.setWorkItems(workItems);
     } else {
       final List<WorkItem> workItems = Collections.emptyList();

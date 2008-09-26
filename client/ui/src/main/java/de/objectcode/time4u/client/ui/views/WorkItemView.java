@@ -3,6 +3,7 @@ package de.objectcode.time4u.client.ui.views;
 import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ISelection;
@@ -49,7 +50,7 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
     FLAT
   };
 
-  private CalendarDay m_selectedDay;
+  private CalendarDay m_currentDay;
   private TableViewer m_tableViewer;
   private PageBook m_pageBook;
   private ViewType m_activeViewType;
@@ -108,9 +109,9 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
         .getWorkItemRepository()));
     m_tableViewer.setLabelProvider(new WorkItemTableLabelProvider(RepositoryFactory.getRepository(), false));
 
-    m_selectedDay = new CalendarDay(Calendar.getInstance());
+    m_currentDay = new CalendarDay(Calendar.getInstance());
 
-    m_tableViewer.setInput(m_selectedDay);
+    m_tableViewer.setInput(m_currentDay);
     m_tableViewer.setCellEditors(new CellEditor[] {
         new TimeComboCellEditor(m_tableViewer.getTable()),
         new TimeComboCellEditor(m_tableViewer.getTable()),
@@ -137,6 +138,8 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
     m_pageBook.showPage(m_tableViewer.getTable());
     m_activeViewType = ViewType.FLAT;
 
+    getSite().getPage().addSelectionListener(this);
+
     RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.PROJECT, this);
     RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.TASK, this);
     RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.WORKITEM, this);
@@ -159,6 +162,8 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
     RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.TASK, this);
     RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.WORKITEM, this);
     RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.ACTIVE_WORKITEM, this);
+
+    getSite().getPage().removeSelectionListener(this);
 
     super.dispose();
   }
@@ -234,8 +239,20 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
    */
   public void selectionChanged(final IWorkbenchPart part, final ISelection selection)
   {
-    // TODO Auto-generated method stub
+    if (selection != null && selection instanceof IAdaptable) {
+      final CalendarDay selectedDay = (CalendarDay) ((IAdaptable) selection).getAdapter(CalendarDay.class);
 
+      if (!m_currentDay.equals(selectedDay)) {
+        m_currentDay = selectedDay;
+
+        switch (m_activeViewType) {
+          case FLAT: {
+            m_tableViewer.setInput(m_currentDay);
+            break;
+          }
+        }
+      }
+    }
   }
 
   protected void doDropTask(final TaskTransfer.ProjectTask projectTask)
@@ -243,7 +260,7 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
     try {
       int maxTime = 0;
 
-      final DayInfo dayInfo = RepositoryFactory.getRepository().getWorkItemRepository().getDayInfo(m_selectedDay);
+      final DayInfo dayInfo = RepositoryFactory.getRepository().getWorkItemRepository().getDayInfo(m_currentDay);
 
       if (dayInfo.getWorkItems() != null) {
         for (final WorkItem workItem : dayInfo.getWorkItems()) {
@@ -262,7 +279,7 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
       workItem.setTaskId(projectTask.getTask().getId());
       workItem.setBegin(maxTime);
       workItem.setEnd(maxTime);
-      workItem.setDay(m_selectedDay);
+      workItem.setDay(m_currentDay);
       workItem.setComment("");
 
       RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem);

@@ -85,20 +85,20 @@ public class TimeChooser extends Composite implements MouseListener
   public int getSelection()
   {
     if (m_selectedHour >= 0 && m_selectedMinute >= 0) {
-      return m_selectedHour * 60 + m_selectedMinute;
+      return m_selectedHour * 3600 + m_selectedMinute * 60;
     }
     return -1;
   }
 
   public void select(final int selection)
   {
-    if (selection == m_selectedHour * 60 + m_selectedMinute) {
+    if (selection == m_selectedHour * 3600 + m_selectedMinute * 60) {
       return;
     }
 
     if (selection >= 0) {
-      m_selectedHour = selection / 60;
-      m_selectedMinute = selection % 60;
+      m_selectedHour = selection / 3600;
+      m_selectedMinute = selection / 60 % 60;
     } else {
       m_selectedHour = -1;
       m_selectedMinute = -1;
@@ -127,18 +127,18 @@ public class TimeChooser extends Composite implements MouseListener
   public void selectHour(final int hour)
   {
     if (m_selectedMinute < 0) {
-      select(hour * 60);
+      select(hour * 3600);
     } else {
-      select(hour * 60 + m_selectedMinute);
+      select(hour * 3600 + m_selectedMinute * 60);
     }
   }
 
   public void selectMinute(final int minute)
   {
     if (m_selectedHour < 0) {
-      select(minute);
+      select(minute * 60);
     } else {
-      select(m_selectedHour * 60 + minute);
+      select(m_selectedHour * 3600 + minute * 60);
     }
   }
 

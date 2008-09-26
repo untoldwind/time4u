@@ -8,7 +8,7 @@ public class WorkItemRepositoryEvent extends RepositoryEvent
 {
   List<WorkItem> m_workItems;
 
-  private WorkItemRepositoryEvent(final List<WorkItem> workItems)
+  public WorkItemRepositoryEvent(final List<WorkItem> workItems)
   {
     m_workItems = workItems;
   }

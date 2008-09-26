@@ -4,6 +4,7 @@ public enum RepositoryEventType
 {
   PROJECT,
   TASK,
+  DAYINFO,
   WORKITEM,
   ACTIVE_WORKITEM,
   TODO

@@ -10,6 +10,8 @@ import org.hibernate.criterion.Restrictions;
 
 import de.objectcode.time4u.client.store.api.IWorkItemRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
+import de.objectcode.time4u.client.store.api.event.DayInfoRepositoryEvent;
+import de.objectcode.time4u.client.store.api.event.WorkItemRepositoryEvent;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
@@ -119,7 +121,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
           workItemEntity.getDayInfo().setRevision(nextRevision);
 
           workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem);
-
+          workItemEntity.getDayInfo().validate();
           session.flush();
         } else {
           final Criteria criteria = session.createCriteria(DayInfoEntity.class);
@@ -130,10 +132,8 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
 
           if (dayInfoEntity == null) {
             // This is save because the revision counter locks this section
-            dayInfoEntity = new DayInfoEntity();
-            dayInfoEntity.setDate(workItem.getDay().getDate());
-            dayInfoEntity.setPerson((PersonEntity) session.get(PersonEntity.class, m_repository.getOwner().getId()));
-            dayInfoEntity.setRevision(nextRevision);
+            dayInfoEntity = new DayInfoEntity(nextRevision, (PersonEntity) session.get(PersonEntity.class, m_repository
+                .getOwner().getId()), workItem.getDay().getDate());
 
             session.persist(dayInfoEntity);
           }
@@ -143,8 +143,17 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
           workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem);
 
           session.persist(workItemEntity);
+          dayInfoEntity.getWorkItems().add(workItemEntity);
+          dayInfoEntity.validate();
           session.flush();
         }
+
+        final DayInfo dayInfo = new DayInfo();
+
+        workItemEntity.getDayInfo().toDTO(dayInfo);
+
+        m_repository.fireRepositoryEvent(new DayInfoRepositoryEvent(dayInfo));
+        m_repository.fireRepositoryEvent(new WorkItemRepositoryEvent(dayInfo.getWorkItems()));
 
         final WorkItem workItem = new WorkItem();
 

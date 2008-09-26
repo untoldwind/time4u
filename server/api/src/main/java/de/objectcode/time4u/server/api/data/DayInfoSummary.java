@@ -1,6 +1,5 @@
 package de.objectcode.time4u.server.api.data;
 
-
 /**
  * DayInfo DTO object.
  * 
@@ -18,6 +17,12 @@ public class DayInfoSummary implements ISynchronizableData
   private long m_revision;
   /** The calendar day of the dayinfo. */
   private CalendarDay m_day;
+  /** Flag if the day has any workitems */
+  private boolean m_hasWorkItems;
+  /** Flag if the day has invalid workitems */
+  private boolean m_hasInvalidWorkItems;
+  /** The regular working time for the day (usually calculated by time policies) */
+  private int m_regularTime;
 
   public long getId()
   {
@@ -48,4 +53,35 @@ public class DayInfoSummary implements ISynchronizableData
   {
     m_day = day;
   }
+
+  public boolean isHasWorkItems()
+  {
+    return m_hasWorkItems;
+  }
+
+  public void setHasWorkItems(final boolean hasWorkItems)
+  {
+    m_hasWorkItems = hasWorkItems;
+  }
+
+  public boolean isHasInvalidWorkItems()
+  {
+    return m_hasInvalidWorkItems;
+  }
+
+  public void setHasInvalidWorkItems(final boolean hasInvalidWorkItems)
+  {
+    m_hasInvalidWorkItems = hasInvalidWorkItems;
+  }
+
+  public int getRegularTime()
+  {
+    return m_regularTime;
+  }
+
+  public void setRegularTime(final int regularTime)
+  {
+    m_regularTime = regularTime;
+  }
+
 }

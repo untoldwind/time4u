@@ -1,14 +1,13 @@
 package de.objectcode.time4u.client.store.api.event;
 
-import de.objectcode.time4u.server.api.data.Task;
+import de.objectcode.time4u.server.api.data.TaskSummary;
 
 public class TaskRepositoryEvent extends RepositoryEvent
 {
-  Task m_task;
+  TaskSummary m_task;
 
-  public TaskRepositoryEvent(final Task task)
+  public TaskRepositoryEvent(final TaskSummary task)
   {
-    super();
     m_task = task;
   }
 

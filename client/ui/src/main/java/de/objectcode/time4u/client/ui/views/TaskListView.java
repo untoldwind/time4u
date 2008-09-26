@@ -44,6 +44,7 @@ import de.objectcode.time4u.client.ui.util.SelectionServiceAdapter;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.data.Task;
+import de.objectcode.time4u.server.api.data.TaskSummary;
 
 public class TaskListView extends ViewPart implements IRepositoryListener, ISelectionListener
 {
@@ -75,8 +76,8 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
       public void dragSetData(final DragSourceEvent event)
       {
         final IStructuredSelection selection = (IStructuredSelection) m_viewer.getSelection();
-        final TaskTransfer.ProjectTask projectTask = new TaskTransfer.ProjectTask(m_selectedProject, (Task) selection
-            .getFirstElement());
+        final TaskTransfer.ProjectTask projectTask = new TaskTransfer.ProjectTask(m_selectedProject,
+            (TaskSummary) selection.getFirstElement());
         event.data = projectTask;
       }
     });

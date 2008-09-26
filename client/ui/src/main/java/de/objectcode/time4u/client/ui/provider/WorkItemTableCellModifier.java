@@ -69,7 +69,7 @@ public class WorkItemTableCellModifier implements ICellModifier
           Assert.isTrue(value != null && value instanceof Integer);
 
           final int begin = ((Integer) value).intValue();
-          if (begin >= 0 && begin <= 24 * 60 && workItem.getBegin() != begin) {
+          if (begin >= 0 && begin <= 24 * 3600 && workItem.getBegin() != begin) {
             workItem.setBegin(begin);
             try {
               RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem);
@@ -78,13 +78,12 @@ public class WorkItemTableCellModifier implements ICellModifier
             }
 
           }
-
         } else if ("end".equals(property)) {
           Assert.isTrue(value != null && value instanceof Integer);
 
           final int end = ((Integer) value).intValue();
 
-          if (end >= 0 && end <= 24 * 60 && workItem.getEnd() != end) {
+          if (end >= 0 && end <= 24 * 3600 && workItem.getEnd() != end) {
             workItem.setEnd(end);
 
             try {
