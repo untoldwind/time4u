@@ -11,6 +11,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
@@ -62,12 +63,12 @@ public class ComboViewerCellEditor extends CellEditor
     // Workaround for focus problem in GTK
     final Composite top = new Composite(parent, SWT.NO_FOCUS);
     top.setLayout(new FillLayout());
-    m_viewer = new ComboViewer(top, getStyle());
+    m_viewer = new ComboViewer(new CCombo(top, getStyle()));
     m_viewer.setContentProvider(m_contentProvider);
     m_viewer.setLabelProvider(m_labelProvider);
     m_viewer.getControl().setFont(parent.getFont());
 
-    m_viewer.getCombo().addKeyListener(new KeyAdapter() {
+    m_viewer.getCCombo().addKeyListener(new KeyAdapter() {
       // hook key pressed - see PR 14201
       @Override
       public void keyPressed(final KeyEvent e)
@@ -76,7 +77,7 @@ public class ComboViewerCellEditor extends CellEditor
       }
     });
 
-    m_viewer.getCombo().addSelectionListener(new SelectionAdapter() {
+    m_viewer.getCCombo().addSelectionListener(new SelectionAdapter() {
       @Override
       public void widgetDefaultSelected(final SelectionEvent event)
       {
@@ -93,7 +94,7 @@ public class ComboViewerCellEditor extends CellEditor
       }
     });
 
-    m_viewer.getCombo().addTraverseListener(new TraverseListener() {
+    m_viewer.getCCombo().addTraverseListener(new TraverseListener() {
       public void keyTraversed(final TraverseEvent e)
       {
         if (e.detail == SWT.TRAVERSE_ESCAPE || e.detail == SWT.TRAVERSE_RETURN) {
@@ -102,7 +103,7 @@ public class ComboViewerCellEditor extends CellEditor
       }
     });
 
-    m_viewer.getCombo().addFocusListener(new FocusAdapter() {
+    m_viewer.getCCombo().addFocusListener(new FocusAdapter() {
       @Override
       public void focusLost(final FocusEvent e)
       {

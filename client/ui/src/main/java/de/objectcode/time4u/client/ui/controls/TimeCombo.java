@@ -590,7 +590,7 @@ public class TimeCombo extends Composite
       text.setText(""); //$NON-NLS-1$
       return;
     }
-    if (0 <= selection && selection <= 24 * 60) {
+    if (0 <= selection && selection <= 24 * 3600) {
       if (selection != getSelection()) {
         text.setText(TimeFormat.format(selection));
         m_timeChooser.select(selection);

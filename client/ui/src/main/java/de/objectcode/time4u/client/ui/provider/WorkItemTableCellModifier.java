@@ -8,7 +8,6 @@ import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.dnd.ProjectTaskHolder;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
-import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.data.WorkItem;
 
@@ -108,8 +107,7 @@ public class WorkItemTableCellModifier implements ICellModifier
 
           if (task != null) {
             if (task.getId() != workItem.getTaskId()) {
-
-              workItem.setTaskId(((Task) value).getId());
+              workItem.setTaskId(((TaskSummary) value).getId());
 
               try {
                 RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem);
