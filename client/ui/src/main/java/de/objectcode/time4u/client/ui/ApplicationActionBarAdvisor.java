@@ -3,8 +3,12 @@ package de.objectcode.time4u.client.ui;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.action.ToolBarContributionItem;
+import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
@@ -86,8 +90,14 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
   @Override
   protected void fillCoolBar(final ICoolBarManager coolBar)
   {
-    //    final IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
-    //    coolBar.add(new ToolBarContributionItem(toolbar, "main"));
+    final IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
+    coolBar.add(new ToolBarContributionItem(toolbar, "main"));
+    final IToolBarManager projectToolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
+    coolBar.add(new ToolBarContributionItem(projectToolbar, "project"));
+    final IToolBarManager taskToolBarManager = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
+    coolBar.add(new ToolBarContributionItem(taskToolBarManager, "task"));
+    final IToolBarManager workItemToolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
+    coolBar.add(new ToolBarContributionItem(workItemToolbar, "workItem"));
     //    toolbar.add(openViewAction);
     //    toolbar.add(messagePopupAction);
   }

@@ -281,7 +281,7 @@
                label="%action.project.edit.label"
                menubarPath="projectMenu/projectGroup"
                style="push"
-               toolbarPath="projectGroup"
+               toolbarPath="project/additions"
                tooltip="%action.project.edit.tooltip">
             <enablement>
                <and>
@@ -302,7 +302,7 @@
                label="%action.project.new.label"
                menubarPath="projectMenu/projectGroup"
                style="push"
-               toolbarPath="projectGroup"
+               toolbarPath="project/additions"
                tooltip="%action.project.new.tooltip"/>
          <action
                class="de.objectcode.time4u.client.ui.actions.TaskActionDelegate"
@@ -312,7 +312,7 @@
                label="%action.task.edit.label"
                menubarPath="projectMenu/taskGroup"
                style="push"
-               toolbarPath="taskGroup"
+               toolbarPath="task/additions"
                tooltip="%action.task.edit.tooltip">
             <enablement>
                <and>
@@ -333,7 +333,7 @@
                label="%action.task.new.label"
                menubarPath="projectMenu/taskGroup"
                style="push"
-               toolbarPath="taskGroup"
+               toolbarPath="task/additions"
                tooltip="%action.task.new.tooltip">
             <enablement>
                <and>
@@ -368,7 +368,7 @@
                label="%action.workItem.new.label"
                menubarPath="workItemMenu/workItemGroup"
                style="push"
-               toolbarPath="workItemGroup"
+               toolbarPath="workItem/additions"
                tooltip="%action.workItem.new.tooltip">
             <enablement>
                <and>
