@@ -19,11 +19,13 @@ import de.objectcode.time4u.server.api.data.WorkItem;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
 import de.objectcode.time4u.server.entities.ActiveWorkItemEntity;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
+import de.objectcode.time4u.server.entities.EntityKey;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
 import de.objectcode.time4u.server.entities.context.SessionPersistenceContext;
 import de.objectcode.time4u.server.entities.revision.EntityType;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
+import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 import de.objectcode.time4u.server.entities.revision.SessionRevisionGenerator;
 
 public class HibernateWorkItemRepository implements IWorkItemRepository
@@ -46,7 +48,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
       public DayInfo perform(final Session session)
       {
         final Criteria criteria = session.createCriteria(DayInfoEntity.class);
-        criteria.add(Restrictions.eq("person.id", m_repository.getOwner().getId()));
+        criteria.add(Restrictions.eq("person.id", new EntityKey(m_repository.getOwner().getId())));
         criteria.add(Restrictions.eq("date", day.getDate()));
 
         final DayInfoEntity entity = (DayInfoEntity) criteria.uniqueResult();
@@ -73,7 +75,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
       public List<DayInfoSummary> perform(final Session session)
       {
         final Criteria criteria = session.createCriteria(DayInfoEntity.class);
-        criteria.add(Restrictions.eq("person.id", m_repository.getOwner().getId()));
+        criteria.add(Restrictions.eq("person.id", new EntityKey(m_repository.getOwner().getId())));
         if (filter.getFrom() != null) {
           criteria.add(Restrictions.ge("date", filter.getFrom().getDate()));
         }
@@ -110,37 +112,38 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
       public WorkItem perform(final Session session)
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
-
-        final long nextRevision = revisionGenerator.getNextRevision(EntityType.WORKITEM, m_repository.getOwner()
-            .getId());
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.WORKITEM, m_repository
+            .getOwner().getId());
 
         WorkItemEntity workItemEntity;
 
-        if (workItem.getId() > 0L) {
-          workItemEntity = (WorkItemEntity) session.get(WorkItemEntity.class, workItem.getId());
+        if (workItem.getId() != null) {
+          workItemEntity = (WorkItemEntity) session.get(WorkItemEntity.class, new EntityKey(workItem.getId()));
 
-          workItemEntity.getDayInfo().setRevision(nextRevision);
+          workItemEntity.getDayInfo().setRevision(revisionLock.getLatestRevision());
 
           workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem);
           workItemEntity.getDayInfo().validate();
           session.flush();
         } else {
           final Criteria criteria = session.createCriteria(DayInfoEntity.class);
-          criteria.add(Restrictions.eq("person.id", m_repository.getOwner().getId()));
+          criteria.add(Restrictions.eq("person.id", new EntityKey(m_repository.getOwner().getId())));
           criteria.add(Restrictions.eq("date", workItem.getDay().getDate()));
 
           DayInfoEntity dayInfoEntity = (DayInfoEntity) criteria.uniqueResult();
 
           if (dayInfoEntity == null) {
             // This is save because the revision counter locks this section
-            dayInfoEntity = new DayInfoEntity(nextRevision, (PersonEntity) session.get(PersonEntity.class, m_repository
-                .getOwner().getId()), workItem.getDay().getDate());
+            final EntityKey dayInfoId = new EntityKey(m_repository.getClientId(), revisionLock.generateLocalId());
+
+            dayInfoEntity = new DayInfoEntity(dayInfoId, revisionLock.getLatestRevision(), (PersonEntity) session.get(
+                PersonEntity.class, new EntityKey(m_repository.getOwner().getId())), workItem.getDay().getDate());
 
             session.persist(dayInfoEntity);
           }
-          workItemEntity = new WorkItemEntity();
+          final EntityKey workItemId = new EntityKey(m_repository.getClientId(), revisionLock.generateLocalId());
+          workItemEntity = new WorkItemEntity(workItemId, dayInfoEntity);
 
-          workItemEntity.setDayInfo(dayInfoEntity);
           workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem);
 
           session.persist(workItemEntity);
@@ -174,7 +177,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
       public WorkItem perform(final Session session)
       {
         final ActiveWorkItemEntity activeWorkItemEntity = (ActiveWorkItemEntity) session.get(
-            ActiveWorkItemEntity.class, m_repository.getOwner().getId());
+            ActiveWorkItemEntity.class, new EntityKey(m_repository.getOwner().getId()));
 
         if (activeWorkItemEntity != null && activeWorkItemEntity.getWorkItem() != null) {
           final WorkItem workItem = new WorkItem();
@@ -196,7 +199,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
         WorkItemEntity workItemEntity = null;
 
         if (workItem != null) {
-          workItemEntity = (WorkItemEntity) session.get(WorkItemEntity.class, workItem.getId());
+          workItemEntity = (WorkItemEntity) session.get(WorkItemEntity.class, new EntityKey(workItem.getId()));
 
           if (workItemEntity == null) {
             throw new RuntimeException("WorkItem " + workItem.getId() + " not found");
@@ -205,20 +208,20 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
 
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
 
-        final long nextRevision = revisionGenerator.getNextRevision(EntityType.ACTIVE_WORKITEM, m_repository.getOwner()
-            .getId());
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.ACTIVE_WORKITEM, m_repository
+            .getOwner().getId());
 
         ActiveWorkItemEntity activeWorkItemEntity = (ActiveWorkItemEntity) session.get(ActiveWorkItemEntity.class,
-            m_repository.getOwner().getId());
+            new EntityKey(m_repository.getOwner().getId()));
 
         if (activeWorkItemEntity == null) {
           // This is save because the revision counter locks this section
-          activeWorkItemEntity = new ActiveWorkItemEntity(nextRevision, (PersonEntity) session.get(PersonEntity.class,
-              m_repository.getOwner().getId()), workItemEntity);
+          activeWorkItemEntity = new ActiveWorkItemEntity(revisionLock.getLatestRevision(), (PersonEntity) session.get(
+              PersonEntity.class, new EntityKey(m_repository.getOwner().getId())), workItemEntity);
 
           session.persist(activeWorkItemEntity);
         } else {
-          activeWorkItemEntity.setRevision(nextRevision);
+          activeWorkItemEntity.setRevision(revisionLock.getLatestRevision());
           activeWorkItemEntity.setWorkItem(workItemEntity);
         }
         session.flush();

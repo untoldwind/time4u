@@ -1,6 +1,7 @@
 package de.objectcode.time4u.server.api.data;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Team DTO object.
@@ -12,22 +13,22 @@ public class Team implements ISynchronizableData
   private static final long serialVersionUID = -2393342879169250933L;
 
   /** Internal server id of the team. */
-  private long m_id;
+  private UUID m_id;
   /** Revision number. */
   private long m_revision;
   /** Team name. */
   private String m_name;
   /** List of server ids of all persons owning/administrating the team. */
-  private List<Long> m_ownerIds;
+  private List<UUID> m_ownerIds;
   /** List of server ids of all team members (person). */
-  private List<Long> m_memberIds;
+  private List<UUID> m_memberIds;
 
-  public long getId()
+  public UUID getId()
   {
     return m_id;
   }
 
-  public void setId(final long id)
+  public void setId(final UUID id)
   {
     m_id = id;
   }
@@ -52,22 +53,22 @@ public class Team implements ISynchronizableData
     m_name = name;
   }
 
-  public List<Long> getOwnerIds()
+  public List<UUID> getOwnerIds()
   {
     return m_ownerIds;
   }
 
-  public void setOwnerIds(final List<Long> ownerIds)
+  public void setOwnerIds(final List<UUID> ownerIds)
   {
     m_ownerIds = ownerIds;
   }
 
-  public List<Long> getMemberIds()
+  public List<UUID> getMemberIds()
   {
     return m_memberIds;
   }
 
-  public void setMemberIds(final List<Long> memberIds)
+  public void setMemberIds(final List<UUID> memberIds)
   {
     m_memberIds = memberIds;
   }

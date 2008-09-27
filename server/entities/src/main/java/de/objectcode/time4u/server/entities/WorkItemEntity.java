@@ -2,15 +2,12 @@ package de.objectcode.time4u.server.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.WorkItem;
@@ -26,7 +23,7 @@ import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 public class WorkItemEntity
 {
   /** Primary key. */
-  private long m_id;
+  private EntityKey m_id;
   /** The day of the workitem (and thereby the person the workitem belongs too). */
   private DayInfoEntity m_dayInfo;
   /** Time the workitem begun (in seconds starting from midnight 00:00:00). */
@@ -44,15 +41,26 @@ public class WorkItemEntity
   /** The todo the workitem belongs to (optional) */
   private TodoEntity m_todo;
 
+  /**
+   * Default constructor for hibernate.
+   */
+  protected WorkItemEntity()
+  {
+  }
+
+  public WorkItemEntity(final EntityKey id, final DayInfoEntity dayInfo)
+  {
+    m_id = id;
+    m_dayInfo = dayInfo;
+  }
+
   @Id
-  @GeneratedValue(generator = "SEQ_T4U_WORKITEMS")
-  @GenericGenerator(name = "SEQ_T4U_WORKITEMS", strategy = "native", parameters = @Parameter(name = "sequence", value = "SEQ_T4U_WORKITEMS"))
-  public long getId()
+  public EntityKey getId()
   {
     return m_id;
   }
 
-  public void setId(final long id)
+  public void setId(final EntityKey id)
   {
     m_id = id;
   }
@@ -107,7 +115,7 @@ public class WorkItemEntity
   }
 
   @ManyToOne
-  @JoinColumn(name = "project_id", nullable = false)
+  @JoinColumns( { @JoinColumn(name = "project_clientId"), @JoinColumn(name = "project_localId") })
   public ProjectEntity getProject()
   {
     return m_project;
@@ -119,7 +127,7 @@ public class WorkItemEntity
   }
 
   @ManyToOne
-  @JoinColumn(name = "task_id", nullable = false)
+  @JoinColumns( { @JoinColumn(name = "task_clientId"), @JoinColumn(name = "task_localId") })
   public TaskEntity getTask()
   {
     return m_task;
@@ -131,7 +139,7 @@ public class WorkItemEntity
   }
 
   @ManyToOne
-  @JoinColumn(name = "dayinfo_id", nullable = false)
+  @JoinColumns( { @JoinColumn(name = "dayinfo_clientId"), @JoinColumn(name = "dayinfo_localId") })
   public DayInfoEntity getDayInfo()
   {
     return m_dayInfo;
@@ -142,8 +150,8 @@ public class WorkItemEntity
     m_dayInfo = dayInfo;
   }
 
-  @ManyToOne
-  @JoinColumn(name = "todo_id", nullable = true)
+  @ManyToOne(optional = true)
+  @JoinColumns( { @JoinColumn(name = "todo_clientId"), @JoinColumn(name = "todo_localId") })
   public TodoEntity getTodo()
   {
     return m_todo;
@@ -172,17 +180,17 @@ public class WorkItemEntity
 
   public void toDTO(final WorkItem workItem)
   {
-    workItem.setId(m_id);
+    workItem.setId(m_id.getUUID());
     workItem.setBegin(m_begin);
     workItem.setEnd(m_end);
     workItem.setComment(m_comment);
-    workItem.setProjectId(m_project.getId());
-    workItem.setTaskId(m_task.getId());
+    workItem.setProjectId(m_project.getId().getUUID());
+    workItem.setTaskId(m_task.getId().getUUID());
     workItem.setDay(new CalendarDay(m_dayInfo.getDate()));
     workItem.setValid(m_valid);
 
     if (m_todo != null) {
-      workItem.setTodoId(m_todo.getId());
+      workItem.setTodoId(m_todo.getId().getUUID());
     } else {
       workItem.setTodoId(null);
     }

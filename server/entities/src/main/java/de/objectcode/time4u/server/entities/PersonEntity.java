@@ -6,16 +6,12 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import de.objectcode.time4u.server.api.data.Person;
 
@@ -29,7 +25,7 @@ import de.objectcode.time4u.server.api.data.Person;
 public class PersonEntity
 {
   /** Primary key. */
-  private long m_id;
+  private EntityKey m_id;
   /** Revision number (increased every time something has changed) */
   private long m_revision;
   /** User id of the person. */
@@ -49,15 +45,23 @@ public class PersonEntity
   /** Timestamp of the last synchronization */
   private Date m_lastSynchronize;
 
+  protected PersonEntity()
+  {
+  }
+
+  public PersonEntity(final EntityKey id, final String userId)
+  {
+    m_id = id;
+    m_userId = userId;
+  }
+
   @Id
-  @GeneratedValue(generator = "SEQ_T4U_PERSONS")
-  @GenericGenerator(name = "SEQ_T4U_PERSONS", strategy = "native", parameters = @Parameter(name = "sequence", value = "SEQ_T4U_PERSONS"))
-  public long getId()
+  public EntityKey getId()
   {
     return m_id;
   }
 
-  public void setId(final long id)
+  public void setId(final EntityKey id)
   {
     m_id = id;
   }
@@ -107,7 +111,8 @@ public class PersonEntity
   }
 
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "T4U_PERSONS_ROLES", joinColumns = { @JoinColumn(name = "person_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
+  @JoinTable(name = "T4U_PERSONS_ROLES", joinColumns = { @JoinColumn(name = "person_clientId"),
+      @JoinColumn(name = "person_localId") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
   public Set<RoleEntity> getRoles()
   {
     return m_roles;
@@ -164,7 +169,7 @@ public class PersonEntity
   @Override
   public int hashCode()
   {
-    return (int) (m_id ^ m_id >>> 32);
+    return m_id.hashCode();
   }
 
   @Override
@@ -180,12 +185,12 @@ public class PersonEntity
 
     final PersonEntity castObj = (PersonEntity) obj;
 
-    return m_id == castObj.m_id;
+    return m_id.equals(castObj.m_id);
   }
 
   public void toDTO(final Person person)
   {
-    person.setId(m_id);
+    person.setId(m_id.getUUID());
     person.setRevision(m_revision);
     person.setName(m_name);
     person.setUserId(m_userId);

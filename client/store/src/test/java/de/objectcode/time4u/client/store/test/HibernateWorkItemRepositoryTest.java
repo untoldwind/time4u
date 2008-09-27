@@ -37,7 +37,7 @@ public class HibernateWorkItemRepositoryTest
     final WorkItem result = repository.getWorkItemRepository().storeWorkItem(workItem);
 
     assertNotNull(result);
-    assertTrue(result.getId() > 0);
+    assertNotNull(result.getId());
 
     RepositoryEventCollector collector = HibernateTestRepositoryFactory.getEventCollector(RepositoryEventType.WORKITEM);
 

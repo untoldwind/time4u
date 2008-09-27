@@ -1,6 +1,7 @@
 package de.objectcode.time4u.client.store.impl.hibernate;
 
 import java.io.File;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +27,7 @@ import de.objectcode.time4u.server.api.data.Person;
 import de.objectcode.time4u.server.entities.ActiveWorkItemEntity;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.DayTagEntity;
+import de.objectcode.time4u.server.entities.EntityKey;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.ProjectProperty;
@@ -36,7 +38,11 @@ import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.TodoEntity;
 import de.objectcode.time4u.server.entities.TodoProperty;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
+import de.objectcode.time4u.server.entities.revision.EntityType;
+import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
+import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
+import de.objectcode.time4u.server.entities.revision.SessionRevisionGenerator;
 
 /**
  * Hibernate implementation of the repository interface.
@@ -50,6 +56,7 @@ public class HibernateRepository implements IRepository
   private final HibernateTemplate m_hibernateTemplate;
 
   private Person m_owner;
+  private long m_clientId;
 
   private final HibernateProjectRepository m_projectRepository;
   private final HibernateTaskRepository m_taskRepository;
@@ -127,6 +134,11 @@ public class HibernateRepository implements IRepository
     return m_owner;
   }
 
+  long getClientId()
+  {
+    return m_clientId;
+  }
+
   void fireRepositoryEvent(final RepositoryEvent event)
   {
     IRepositoryListener[] listenerArray;
@@ -148,14 +160,18 @@ public class HibernateRepository implements IRepository
 
   private void initialize() throws RepositoryException
   {
-    m_owner = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Person>() {
-      public Person perform(final Session session)
+    m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Object>() {
+      public Object perform(final Session session)
       {
         ClientDataEntity clientData = (ClientDataEntity) session.get(ClientDataEntity.class, 1);
 
         if (clientData == null) {
-          final PersonEntity ownerPerson = new PersonEntity();
-          ownerPerson.setUserId(System.getProperty("user.name"));
+          // TODO: Reconsider this adhoc generation
+          final long clientId = new SecureRandom().nextLong();
+          final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
+          final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PERSON, null);
+          final EntityKey personId = new EntityKey(clientId, revisionLock.generateLocalId());
+          final PersonEntity ownerPerson = new PersonEntity(personId, System.getProperty("user.name"));
           ownerPerson.setName(System.getProperty("user.name"));
 
           session.persist(ownerPerson);
@@ -163,17 +179,18 @@ public class HibernateRepository implements IRepository
           clientData = new ClientDataEntity();
           clientData.setId(1);
           clientData.setOwnerPerson(ownerPerson);
+          clientData.setClientId(clientId);
 
           session.persist(clientData);
 
           session.flush();
         }
 
-        final Person person = new Person();
+        m_owner = new Person();
+        clientData.getOwnerPerson().toDTO(m_owner);
+        m_clientId = clientData.getClientId();
 
-        clientData.getOwnerPerson().toDTO(person);
-
-        return person;
+        return null;
       }
     });
   }

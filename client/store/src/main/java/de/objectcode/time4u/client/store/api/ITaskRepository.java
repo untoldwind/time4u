@@ -1,6 +1,7 @@
 package de.objectcode.time4u.client.store.api;
 
 import java.util.List;
+import java.util.UUID;
 
 import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.data.TaskSummary;
@@ -22,7 +23,7 @@ public interface ITaskRepository
    * @throws RepositoryException
    *           on error
    */
-  Task getTask(long taskId) throws RepositoryException;
+  Task getTask(UUID taskId) throws RepositoryException;
 
   /**
    * Get a task summary by its identifier.
@@ -33,7 +34,7 @@ public interface ITaskRepository
    * @throws RepositoryException
    *           on error
    */
-  TaskSummary getTaskSummary(long taskId) throws RepositoryException;
+  TaskSummary getTaskSummary(UUID taskId) throws RepositoryException;
 
   /**
    * Get all taks matching a filter condition.

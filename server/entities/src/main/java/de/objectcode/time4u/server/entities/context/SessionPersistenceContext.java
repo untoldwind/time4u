@@ -1,7 +1,10 @@
 package de.objectcode.time4u.server.entities.context;
 
+import java.util.UUID;
+
 import org.hibernate.Session;
 
+import de.objectcode.time4u.server.entities.EntityKey;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
@@ -19,33 +22,33 @@ public class SessionPersistenceContext implements IPersistenceContext
   /**
    * {@inheritDoc}
    */
-  public PersonEntity findPerson(final long personId)
+  public PersonEntity findPerson(final UUID personId)
   {
-    return (PersonEntity) m_session.get(PersonEntity.class, personId);
+    return (PersonEntity) m_session.get(PersonEntity.class, new EntityKey(personId));
   }
 
   /**
    * {@inheritDoc}
    */
-  public ProjectEntity findProject(final long projectId)
+  public ProjectEntity findProject(final UUID projectId)
   {
-    return (ProjectEntity) m_session.get(ProjectEntity.class, projectId);
+    return (ProjectEntity) m_session.get(ProjectEntity.class, new EntityKey(projectId));
   }
 
   /**
    * {@inheritDoc}
    */
-  public TaskEntity findTask(final long taskId)
+  public TaskEntity findTask(final UUID taskId)
   {
-    return (TaskEntity) m_session.get(TaskEntity.class, taskId);
+    return (TaskEntity) m_session.get(TaskEntity.class, new EntityKey(taskId));
   }
 
   /**
    * {@inheritDoc}
    */
-  public TodoEntity findTodo(final long todoId)
+  public TodoEntity findTodo(final UUID todoId)
   {
-    return (TodoEntity) m_session.get(TodoEntity.class, todoId);
+    return (TodoEntity) m_session.get(TodoEntity.class, new EntityKey(todoId));
   }
 
 }

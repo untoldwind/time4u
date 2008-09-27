@@ -2,6 +2,7 @@ package de.objectcode.time4u.client.store.impl.hibernate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -14,10 +15,12 @@ import de.objectcode.time4u.client.store.api.event.ProjectRepositoryEvent;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.filter.ProjectFilter;
+import de.objectcode.time4u.server.entities.EntityKey;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.context.SessionPersistenceContext;
 import de.objectcode.time4u.server.entities.revision.EntityType;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
+import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 import de.objectcode.time4u.server.entities.revision.SessionRevisionGenerator;
 
 public class HibernateProjectRepository implements IProjectRepository
@@ -34,12 +37,12 @@ public class HibernateProjectRepository implements IProjectRepository
   /**
    * {@inheritDoc}
    */
-  public Project getProject(final long projectId) throws RepositoryException
+  public Project getProject(final UUID projectId) throws RepositoryException
   {
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Project>() {
       public Project perform(final Session session)
       {
-        final ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, projectId);
+        final ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, new EntityKey(projectId));
 
         if (projectEntity != null) {
           final Project project = new Project();
@@ -55,12 +58,12 @@ public class HibernateProjectRepository implements IProjectRepository
   /**
    * {@inheritDoc}
    */
-  public ProjectSummary getProjectSummary(final long projectId) throws RepositoryException
+  public ProjectSummary getProjectSummary(final UUID projectId) throws RepositoryException
   {
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<ProjectSummary>() {
       public ProjectSummary perform(final Session session)
       {
-        final ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, projectId);
+        final ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, new EntityKey(projectId));
 
         if (projectEntity != null) {
           final ProjectSummary project = new ProjectSummary();
@@ -90,10 +93,10 @@ public class HibernateProjectRepository implements IProjectRepository
           criteria.add(Restrictions.eq("deleted", filter.getDeleted()));
         }
         if (filter.getParentProject() != null) {
-          if (filter.getParentProject().longValue() == 0L) {
+          if (filter.getParentProject().equals(new UUID(0L, 0L))) {
             criteria.add(Restrictions.isNull("parent"));
           } else {
-            criteria.add(Restrictions.eq("parent.id", filter.getParentProject()));
+            criteria.add(Restrictions.eq("parent.id", new EntityKey(filter.getParentProject())));
           }
         }
         if (filter.getMinRevision() != null) {
@@ -142,10 +145,10 @@ public class HibernateProjectRepository implements IProjectRepository
           criteria.add(Restrictions.eq("deleted", filter.getDeleted()));
         }
         if (filter.getParentProject() != null) {
-          if (filter.getParentProject().longValue() == 0L) {
+          if (filter.getParentProject().equals(new UUID(0L, 0L))) {
             criteria.add(Restrictions.isNull("parent"));
           } else {
-            criteria.add(Restrictions.eq("parent.id", filter.getParentProject()));
+            criteria.add(Restrictions.eq("parent.id", new EntityKey(filter.getParentProject())));
           }
         }
         if (filter.getMinRevision() != null) {
@@ -187,22 +190,22 @@ public class HibernateProjectRepository implements IProjectRepository
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
 
-        final long nextRevision = revisionGenerator.getNextRevision(EntityType.PROJECT, -1L);
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PROJECT, null);
 
         ProjectEntity projectEntity;
 
-        if (project.getId() > 0L) {
-          projectEntity = (ProjectEntity) session.get(ProjectEntity.class, project.getId());
+        if (project.getId() != null) {
+          projectEntity = (ProjectEntity) session.get(ProjectEntity.class, new EntityKey(project.getId()));
 
           projectEntity.fromDTO(new SessionPersistenceContext(session), project);
-          projectEntity.setRevision(nextRevision);
+          projectEntity.setRevision(revisionLock.getLatestRevision());
 
           session.flush();
         } else {
-          projectEntity = new ProjectEntity();
+          final EntityKey projectId = new EntityKey(m_repository.getClientId(), revisionLock.generateLocalId());
+          projectEntity = new ProjectEntity(projectId, revisionLock.getLatestRevision(), project.getName());
 
           projectEntity.fromDTO(new SessionPersistenceContext(session), project);
-          projectEntity.setRevision(nextRevision);
 
           session.persist(projectEntity);
         }

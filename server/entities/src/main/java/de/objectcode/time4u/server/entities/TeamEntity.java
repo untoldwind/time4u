@@ -4,20 +4,17 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import de.objectcode.time4u.server.api.data.Team;
 
@@ -31,7 +28,7 @@ import de.objectcode.time4u.server.api.data.Team;
 public class TeamEntity
 {
   /** Primary key. */
-  private long m_id;
+  private EntityKey m_id;
   /** Team name. */
   private String m_name;
   /** All owners (responsible persons) of the team. */
@@ -42,14 +39,12 @@ public class TeamEntity
   private long m_revision;
 
   @Id
-  @GeneratedValue(generator = "SEQ_T4U_TEAMS")
-  @GenericGenerator(name = "SEQ_T4U_TEAMS", strategy = "native", parameters = @Parameter(name = "sequence", value = "SEQ_T4U_TEAMS"))
-  public long getId()
+  public EntityKey getId()
   {
     return m_id;
   }
 
-  public void setId(final long id)
+  public void setId(final EntityKey id)
   {
     m_id = id;
   }
@@ -66,7 +61,9 @@ public class TeamEntity
   }
 
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "T4U_TEAMS_OWNERS", joinColumns = { @JoinColumn(name = "team_id") }, inverseJoinColumns = { @JoinColumn(name = "person_id") })
+  @JoinTable(name = "T4U_TEAMS_OWNERS", joinColumns = { @JoinColumn(name = "team_clientId"),
+      @JoinColumn(name = "team_localId") }, inverseJoinColumns = { @JoinColumn(name = "person_clientId"),
+      @JoinColumn(name = "person_localId") })
   public Set<PersonEntity> getOwners()
   {
     return m_owners;
@@ -78,7 +75,9 @@ public class TeamEntity
   }
 
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "T4U_TEAMS_MEMBERS", joinColumns = { @JoinColumn(name = "team_id") }, inverseJoinColumns = { @JoinColumn(name = "person_id") })
+  @JoinTable(name = "T4U_TEAMS_MEMBERS", joinColumns = { @JoinColumn(name = "team_clientId"),
+      @JoinColumn(name = "team_localId") }, inverseJoinColumns = { @JoinColumn(name = "person_clientId"),
+      @JoinColumn(name = "person_localId") })
   public Set<PersonEntity> getMembers()
   {
     return m_members;
@@ -102,7 +101,7 @@ public class TeamEntity
   @Override
   public int hashCode()
   {
-    return (int) (m_id ^ m_id >>> 32);
+    return m_id.hashCode();
   }
 
   @Override
@@ -118,24 +117,24 @@ public class TeamEntity
 
     final TeamEntity castObj = (TeamEntity) obj;
 
-    return m_id == castObj.m_id;
+    return m_id.equals(castObj.m_id);
   }
 
   public void toDTO(final Team team)
   {
-    team.setId(m_id);
+    team.setId(m_id.getUUID());
     team.setRevision(m_revision);
     team.setName(m_name);
-    final List<Long> ownerIds = new ArrayList<Long>();
+    final List<UUID> ownerIds = new ArrayList<UUID>();
 
     for (final PersonEntity person : m_owners) {
-      ownerIds.add(person.getId());
+      ownerIds.add(person.getId().getUUID());
     }
     team.setOwnerIds(ownerIds);
-    final List<Long> memberIds = new ArrayList<Long>();
+    final List<UUID> memberIds = new ArrayList<UUID>();
 
     for (final PersonEntity person : m_members) {
-      memberIds.add(person.getId());
+      memberIds.add(person.getId().getUUID());
     }
     team.setMemberIds(memberIds);
   }
@@ -149,7 +148,7 @@ public class TeamEntity
     }
     m_owners.clear();
     if (team.getOwnerIds() != null) {
-      for (final long id : team.getOwnerIds()) {
+      for (final UUID id : team.getOwnerIds()) {
         m_owners.add(entityManager.find(PersonEntity.class, id));
       }
     }
@@ -160,7 +159,7 @@ public class TeamEntity
 
     m_members.clear();
     if (team.getMemberIds() != null) {
-      for (final long id : team.getMemberIds()) {
+      for (final UUID id : team.getMemberIds()) {
         m_members.add(entityManager.find(PersonEntity.class, id));
       }
     }

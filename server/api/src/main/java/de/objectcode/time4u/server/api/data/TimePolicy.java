@@ -1,22 +1,24 @@
 package de.objectcode.time4u.server.api.data;
 
+import java.util.UUID;
+
 public abstract class TimePolicy implements ISynchronizableData
 {
   private static final long serialVersionUID = 5344090291753057165L;
 
   /** Internal server id of the team. */
-  private long m_id;
+  private UUID m_id;
   /** Revision number. */
   private long m_revision;
   protected CalendarDay m_validFrom;
   protected CalendarDay m_validUntil;
 
-  public long getId()
+  public UUID getId()
   {
     return m_id;
   }
 
-  public void setId(final long id)
+  public void setId(final UUID id)
   {
     m_id = id;
   }

@@ -1,6 +1,7 @@
 package de.objectcode.time4u.client.store.api;
 
 import java.util.List;
+import java.util.UUID;
 
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
@@ -22,7 +23,7 @@ public interface IProjectRepository
    * @throws RepositoryException
    *           on error
    */
-  Project getProject(long projectId) throws RepositoryException;
+  Project getProject(UUID projectId) throws RepositoryException;
 
   /**
    * Get a project summary by its identifier.
@@ -33,7 +34,7 @@ public interface IProjectRepository
    * @throws RepositoryException
    *           on error
    */
-  ProjectSummary getProjectSummary(long projectId) throws RepositoryException;
+  ProjectSummary getProjectSummary(UUID projectId) throws RepositoryException;
 
   /**
    * Get all projects that match a filter condition.

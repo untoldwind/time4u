@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.UUID;
 
 import org.eclipse.swt.dnd.ByteArrayTransfer;
 import org.eclipse.swt.dnd.TransferData;
@@ -65,8 +66,10 @@ public class TaskTransfer extends ByteArrayTransfer
     byte[] bytes = null;
 
     try {
-      out.writeLong(projectTask.getProject().getId());
-      out.writeLong(projectTask.getTask().getId());
+      out.writeLong(projectTask.getProject().getId().getMostSignificantBits());
+      out.writeLong(projectTask.getProject().getId().getLeastSignificantBits());
+      out.writeLong(projectTask.getTask().getId().getMostSignificantBits());
+      out.writeLong(projectTask.getTask().getId().getLeastSignificantBits());
       out.close();
       bytes = byteOut.toByteArray();
     } catch (final IOException e) {
@@ -79,8 +82,8 @@ public class TaskTransfer extends ByteArrayTransfer
     final DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes));
 
     try {
-      final long projectId = in.readLong();
-      final long taskId = in.readLong();
+      final UUID projectId = new UUID(in.readLong(), in.readLong());
+      final UUID taskId = new UUID(in.readLong(), in.readLong());
       return new ProjectTask(RepositoryFactory.getRepository().getProjectRepository().getProject(projectId),
           RepositoryFactory.getRepository().getTaskRepository().getTask(taskId));
     } catch (final Exception e) {

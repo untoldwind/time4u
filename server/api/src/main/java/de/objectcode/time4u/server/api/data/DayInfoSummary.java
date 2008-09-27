@@ -1,5 +1,7 @@
 package de.objectcode.time4u.server.api.data;
 
+import java.util.UUID;
+
 /**
  * DayInfo DTO object.
  * 
@@ -12,7 +14,7 @@ public class DayInfoSummary implements ISynchronizableData
   private static final long serialVersionUID = 4834724509315672372L;
 
   /** Internal server id of the dayinfo. */
-  private long m_id;
+  private UUID m_id;
   /** Revision number. */
   private long m_revision;
   /** The calendar day of the dayinfo. */
@@ -24,12 +26,12 @@ public class DayInfoSummary implements ISynchronizableData
   /** The regular working time for the day (usually calculated by time policies) */
   private int m_regularTime;
 
-  public long getId()
+  public UUID getId()
   {
     return m_id;
   }
 
-  public void setId(final long id)
+  public void setId(final UUID id)
   {
     m_id = id;
   }

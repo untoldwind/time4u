@@ -8,16 +8,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.MetaType;
@@ -32,10 +29,10 @@ import de.objectcode.time4u.server.entities.context.IPersistenceContext;
  */
 @Entity
 @Table(name = "T4U_PROJECTS")
-public class ProjectEntity implements Comparable<ProjectEntity>
+public class ProjectEntity
 {
   /** Primary key */
-  private long m_id;
+  private EntityKey m_id;
   /** Project name */
   private String m_name;
   /** Project description */
@@ -53,15 +50,27 @@ public class ProjectEntity implements Comparable<ProjectEntity>
   /** Helper string containing all primary keys of all parent projects (usefull for querying all sub-projects. */
   private String m_parentKey;
 
+  /**
+   * Default constructor for hibernate.
+   */
+  protected ProjectEntity()
+  {
+  }
+
+  public ProjectEntity(final EntityKey id, final long revsion, final String name)
+  {
+    m_id = id;
+    m_revision = revsion;
+    m_name = name;
+  }
+
   @Id
-  @GeneratedValue(generator = "SEQ_T4U_PROJECTS")
-  @GenericGenerator(name = "SEQ_T4U_PROJECTS", strategy = "native", parameters = @Parameter(name = "sequence", value = "SEQ_T4U_PROJECTS"))
-  public long getId()
+  public EntityKey getId()
   {
     return m_id;
   }
 
-  public void setId(final long id)
+  public void setId(final EntityKey id)
   {
     m_id = id;
   }
@@ -108,8 +117,8 @@ public class ProjectEntity implements Comparable<ProjectEntity>
     m_description = description;
   }
 
-  @JoinColumn(name = "parent_id", nullable = true)
-  @ManyToOne
+  @ManyToOne(optional = true)
+  @JoinColumns( { @JoinColumn(name = "parent_clientId"), @JoinColumn(name = "parent_localId") })
   public ProjectEntity getParent()
   {
     return m_parent;
@@ -194,27 +203,14 @@ public class ProjectEntity implements Comparable<ProjectEntity>
     return m_id == castObj.m_id;
   }
 
-  public int compareTo(final ProjectEntity o)
-  {
-    if (m_parentKey != null) {
-      return m_parentKey.compareTo(o.m_parentKey);
-    }
-
-    if (m_id != o.m_id) {
-      return m_id < o.m_id ? -1 : 1;
-    }
-
-    return 0;
-  }
-
   public void toSummaryDTO(final ProjectSummary project)
   {
-    project.setId(m_id);
+    project.setId(m_id.getUUID());
     project.setRevision(m_revision);
     project.setActive(m_active);
     project.setDeleted(m_deleted);
     project.setName(m_name);
-    project.setParentId(m_parent != null ? m_parent.getId() : null);
+    project.setParentId(m_parent != null ? m_parent.getId().getUUID() : null);
   }
 
   public void toDTO(final Project project)

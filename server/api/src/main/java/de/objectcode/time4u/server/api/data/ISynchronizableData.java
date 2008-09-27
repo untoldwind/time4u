@@ -1,6 +1,7 @@
 package de.objectcode.time4u.server.api.data;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * Common interface of all data objects that represent data that can be synchronized with the server.
@@ -14,7 +15,7 @@ public interface ISynchronizableData extends Serializable
    * 
    * @return The server id of the data
    */
-  long getId();
+  UUID getId();
 
   /**
    * Revision number.

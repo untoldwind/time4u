@@ -2,6 +2,7 @@ package de.objectcode.time4u.client.store.impl.hibernate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -14,10 +15,13 @@ import de.objectcode.time4u.client.store.api.event.TaskRepositoryEvent;
 import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.filter.TaskFilter;
+import de.objectcode.time4u.server.entities.EntityKey;
+import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
 import de.objectcode.time4u.server.entities.context.SessionPersistenceContext;
 import de.objectcode.time4u.server.entities.revision.EntityType;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
+import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 import de.objectcode.time4u.server.entities.revision.SessionRevisionGenerator;
 
 /**
@@ -39,12 +43,12 @@ public class HibernateTaskRepository implements ITaskRepository
   /**
    * {@inheritDoc}
    */
-  public Task getTask(final long taskId) throws RepositoryException
+  public Task getTask(final UUID taskId) throws RepositoryException
   {
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Task>() {
       public Task perform(final Session session)
       {
-        final TaskEntity taskEntity = (TaskEntity) session.get(TaskEntity.class, taskId);
+        final TaskEntity taskEntity = (TaskEntity) session.get(TaskEntity.class, new EntityKey(taskId));
 
         if (taskEntity != null) {
           final Task task = new Task();
@@ -60,12 +64,12 @@ public class HibernateTaskRepository implements ITaskRepository
   /**
    * {@inheritDoc}
    */
-  public TaskSummary getTaskSummary(final long taskId) throws RepositoryException
+  public TaskSummary getTaskSummary(final UUID taskId) throws RepositoryException
   {
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<TaskSummary>() {
       public TaskSummary perform(final Session session)
       {
-        final TaskEntity taskEntity = (TaskEntity) session.get(TaskEntity.class, taskId);
+        final TaskEntity taskEntity = (TaskEntity) session.get(TaskEntity.class, new EntityKey(taskId));
 
         if (taskEntity != null) {
           final TaskSummary task = new TaskSummary();
@@ -95,7 +99,7 @@ public class HibernateTaskRepository implements ITaskRepository
           criteria.add(Restrictions.eq("deleted", filter.getDeleted()));
         }
         if (filter.getProject() != null) {
-          criteria.add(Restrictions.eq("project.id", filter.getProject()));
+          criteria.add(Restrictions.eq("project.id", new EntityKey(filter.getProject())));
         }
         if (filter.getMinRevision() != null) {
           criteria.add(Restrictions.ge("revision", filter.getMinRevision()));
@@ -143,7 +147,7 @@ public class HibernateTaskRepository implements ITaskRepository
           criteria.add(Restrictions.eq("deleted", filter.getDeleted()));
         }
         if (filter.getProject() != null) {
-          criteria.add(Restrictions.eq("project.id", filter.getProject()));
+          criteria.add(Restrictions.eq("project.id", new EntityKey(filter.getProject())));
         }
         if (filter.getMinRevision() != null) {
           criteria.add(Restrictions.ge("revision", filter.getMinRevision()));
@@ -184,22 +188,24 @@ public class HibernateTaskRepository implements ITaskRepository
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
 
-        final long nextRevision = revisionGenerator.getNextRevision(EntityType.TASK, -1L);
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.TASK, null);
 
         TaskEntity taskEntity;
 
-        if (task.getId() > 0L) {
-          taskEntity = (TaskEntity) session.get(TaskEntity.class, task.getId());
+        if (task.getId() != null) {
+          taskEntity = (TaskEntity) session.get(TaskEntity.class, new EntityKey(task.getId()));
 
           taskEntity.fromDTO(new SessionPersistenceContext(session), task);
-          taskEntity.setRevision(nextRevision);
+          taskEntity.setRevision(revisionLock.getLatestRevision());
 
           session.flush();
         } else {
-          taskEntity = new TaskEntity();
+          final EntityKey taskId = new EntityKey(m_repository.getClientId(), revisionLock.generateLocalId());
+          final ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, new EntityKey(task
+              .getProjectId()));
+          taskEntity = new TaskEntity(taskId, revisionLock.getLatestRevision(), projectEntity, task.getName());
 
           taskEntity.fromDTO(new SessionPersistenceContext(session), task);
-          taskEntity.setRevision(nextRevision);
 
           session.persist(taskEntity);
         }

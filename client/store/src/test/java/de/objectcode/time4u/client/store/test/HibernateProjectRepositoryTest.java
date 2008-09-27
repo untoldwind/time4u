@@ -2,7 +2,6 @@ package de.objectcode.time4u.client.store.test;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,7 @@ public class HibernateProjectRepositoryTest
     final Project result = repository.getProjectRepository().storeProject(project);
 
     assertNotNull(result);
-    assertTrue(result.getId() > 0);
+    assertNotNull(result.getId());
 
     final RepositoryEventCollector collector = HibernateTestRepositoryFactory
         .getEventCollector(RepositoryEventType.PROJECT);
@@ -55,7 +54,7 @@ public class HibernateProjectRepositoryTest
     final Project result = repository.getProjectRepository().storeProject(project);
 
     assertNotNull(result);
-    assertTrue(result.getId() > 0);
+    assertNotNull(result.getId());
     assertNotNull(result.getParentId());
 
     final RepositoryEventCollector collector = HibernateTestRepositoryFactory

@@ -40,7 +40,7 @@ public class SessionRevisionGeneratorTest
 
       final IRevisionGenerator generator = new SessionRevisionGenerator(session);
 
-      final long nextRevision = generator.getNextRevision(EntityType.PROJECT, -1);
+      final long nextRevision = generator.getNextRevision(EntityType.PROJECT, null).getLatestRevision();
 
       trx.commit();
       session.close();
@@ -80,7 +80,7 @@ public class SessionRevisionGeneratorTest
 
           final IRevisionGenerator generator = new SessionRevisionGenerator(session);
 
-          revisions.add(generator.getNextRevision(EntityType.PROJECT, -1));
+          revisions.add(generator.getNextRevision(EntityType.PROJECT, null).getLatestRevision());
 
           inNextRevision.incrementAndGet();
 
@@ -168,7 +168,7 @@ public class SessionRevisionGeneratorTest
 
           final IRevisionGenerator generator = new SessionRevisionGenerator(session);
 
-          revisions.add(generator.getNextRevision(EntityType.TASK, -1));
+          revisions.add(generator.getNextRevision(EntityType.TASK, null).getLatestRevision());
 
           inNextRevision.incrementAndGet();
 

@@ -1,5 +1,7 @@
 package de.objectcode.time4u.server.api.data;
 
+import java.util.UUID;
+
 /**
  * Task DTO object.
  * 
@@ -12,7 +14,7 @@ public class TaskSummary implements ISynchronizableData
   private static final long serialVersionUID = -3947869946239621847L;
 
   /** Internal server id of the task. */
-  private long m_id;
+  private UUID m_id;
   /** Revision number. */
   private long m_revision;
   /** Task name. */
@@ -22,14 +24,14 @@ public class TaskSummary implements ISynchronizableData
   /** Flag if the task is deleted. */
   private boolean m_deleted;
   /** Internal server id of the project owning the task. */
-  private Long m_projectId;
+  private UUID m_projectId;
 
-  public long getId()
+  public UUID getId()
   {
     return m_id;
   }
 
-  public void setId(final long id)
+  public void setId(final UUID id)
   {
     m_id = id;
   }
@@ -77,7 +79,7 @@ public class TaskSummary implements ISynchronizableData
   /**
    * @return the projectId
    */
-  public Long getProjectId()
+  public UUID getProjectId()
   {
     return m_projectId;
   }
@@ -86,7 +88,7 @@ public class TaskSummary implements ISynchronizableData
    * @param projectId
    *          the projectId to set
    */
-  public void setProjectId(final Long projectId)
+  public void setProjectId(final UUID projectId)
   {
     m_projectId = projectId;
   }
@@ -97,7 +99,7 @@ public class TaskSummary implements ISynchronizableData
   @Override
   public int hashCode()
   {
-    return (int) (m_id ^ m_id >>> 32);
+    return m_id != null ? m_id.hashCode() : 0;
   }
 
   /**
@@ -116,7 +118,10 @@ public class TaskSummary implements ISynchronizableData
 
     final TaskSummary castObj = (TaskSummary) obj;
 
-    return m_id == castObj.m_id;
+    if (m_id == null) {
+      return false;
+    }
+    return m_id.equals(castObj.m_id);
   }
 
 }

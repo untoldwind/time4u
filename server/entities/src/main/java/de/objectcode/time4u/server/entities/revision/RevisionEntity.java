@@ -2,49 +2,36 @@ package de.objectcode.time4u.server.entities.revision;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "T4U_REVISIONS")
-@IdClass(RevisionEntityKey.class)
-public class RevisionEntity
+public class RevisionEntity implements IRevisionLock
 {
-  private EntityType m_entityKey;
-  private long m_part;
+  private RevisionEntityKey m_id;
   private long m_latestRevision;
+  private long m_nextLocalId;
 
   protected RevisionEntity()
   {
   }
 
-  public RevisionEntity(final EntityType entityKey, final long part)
+  public RevisionEntity(final RevisionEntityKey id)
   {
-    m_entityKey = entityKey;
-    m_part = part;
+    m_id = id;
     m_latestRevision = 0L;
+    m_nextLocalId = 1L;
   }
 
   @Id
-  public int getEntityKeyValue()
+  public RevisionEntityKey getId()
   {
-    return m_entityKey != null ? m_entityKey.getValue() : -1;
+    return m_id;
   }
 
-  public void setEntityKeyValue(final int value)
+  public void setId(final RevisionEntityKey id)
   {
-    m_entityKey = EntityType.forValue(value);
-  }
-
-  @Id
-  public long getPart()
-  {
-    return m_part;
-  }
-
-  public void setPart(final long part)
-  {
-    m_part = part;
+    m_id = id;
   }
 
   public long getLatestRevision()
@@ -55,6 +42,21 @@ public class RevisionEntity
   public void setLatestRevision(final long latestRevision)
   {
     m_latestRevision = latestRevision;
+  }
+
+  public long generateLocalId()
+  {
+    return m_nextLocalId++;
+  }
+
+  public long getNextLocalId()
+  {
+    return m_nextLocalId;
+  }
+
+  public void setNextLocalId(final long nextLocalId)
+  {
+    m_nextLocalId = nextLocalId;
   }
 
 }

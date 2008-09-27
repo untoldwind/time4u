@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -95,7 +96,7 @@ public class TodoHistoryEntity
   }
 
   @ManyToOne
-  @JoinColumn(name = "person_id", nullable = true)
+  @JoinColumns( { @JoinColumn(name = "person_clientId"), @JoinColumn(name = "person_localId") })
   public PersonEntity getAssignedToPerson()
   {
     return m_assignedToPerson;
@@ -107,7 +108,7 @@ public class TodoHistoryEntity
   }
 
   @ManyToOne
-  @JoinColumn(name = "team_id", nullable = true)
+  @JoinColumns( { @JoinColumn(name = "team_clientId"), @JoinColumn(name = "team_localId") })
   public TeamEntity getAssignedToTeam()
   {
     return m_assignedToTeam;
@@ -196,7 +197,7 @@ public class TodoHistoryEntity
   }
 
   @ManyToOne
-  @JoinColumn(name = "reporter_id", nullable = true)
+  @JoinColumns( { @JoinColumn(name = "reporter_clientId"), @JoinColumn(name = "reporter_localId") })
   public PersonEntity getReporter()
   {
     return m_reporter;
@@ -208,7 +209,7 @@ public class TodoHistoryEntity
   }
 
   @ManyToOne
-  @JoinColumn(name = "task_id", nullable = false)
+  @JoinColumns( { @JoinColumn(name = "task_clientId"), @JoinColumn(name = "task_localId") })
   public TaskEntity getTask()
   {
     return m_task;
@@ -219,8 +220,8 @@ public class TodoHistoryEntity
     m_task = task;
   }
 
-  @JoinColumn(name = "todo_id", nullable = false)
   @ManyToOne
+  @JoinColumns( { @JoinColumn(name = "todo_clientId"), @JoinColumn(name = "todo_localId") })
   public TodoEntity getTodo()
   {
     return m_todo;
@@ -231,8 +232,8 @@ public class TodoHistoryEntity
     m_todo = todo;
   }
 
-  @JoinColumn(name = "performedBy_id", nullable = false)
   @ManyToOne
+  @JoinColumns( { @JoinColumn(name = "performedBy_clientId"), @JoinColumn(name = "performedBy_localId") })
   public PersonEntity getPerformedBy()
   {
     return m_performedBy;

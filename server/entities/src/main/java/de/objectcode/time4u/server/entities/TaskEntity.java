@@ -8,16 +8,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.MetaType;
@@ -32,10 +29,10 @@ import de.objectcode.time4u.server.entities.context.IPersistenceContext;
  */
 @Entity
 @Table(name = "T4U_TASKS")
-public class TaskEntity implements Comparable<TaskEntity>
+public class TaskEntity
 {
   /** Primary key. */
-  private long m_id;
+  private EntityKey m_id;
   /** Task name. */
   private String m_name;
   /** Task description. */
@@ -51,15 +48,28 @@ public class TaskEntity implements Comparable<TaskEntity>
   /** Revision number (increased every time something has changed) */
   private long m_revision;
 
+  /**
+   * Default constructor for hibernate.
+   */
+  protected TaskEntity()
+  {
+  }
+
+  public TaskEntity(final EntityKey id, final long revision, final ProjectEntity project, final String name)
+  {
+    m_id = id;
+    m_revision = revision;
+    m_project = project;
+    m_name = name;
+  }
+
   @Id
-  @GeneratedValue(generator = "SEQ_T4U_TASKS")
-  @GenericGenerator(name = "SEQ_T4U_TASKS", strategy = "native", parameters = @Parameter(name = "sequence", value = "SEQ_T4U_TASKS"))
-  public long getId()
+  public EntityKey getId()
   {
     return m_id;
   }
 
-  public void setId(final long id)
+  public void setId(final EntityKey id)
   {
     m_id = id;
   }
@@ -106,8 +116,8 @@ public class TaskEntity implements Comparable<TaskEntity>
     m_description = description;
   }
 
-  @JoinColumn(name = "project_id", nullable = true)
   @ManyToOne
+  @JoinColumns( { @JoinColumn(name = "project_clientId"), @JoinColumn(name = "project_localId") })
   public ProjectEntity getProject()
   {
     return m_project;
@@ -156,23 +166,14 @@ public class TaskEntity implements Comparable<TaskEntity>
     return m_id == castObj.m_id;
   }
 
-  public int compareTo(final TaskEntity o)
-  {
-    if (m_id != o.m_id) {
-      return m_id < o.m_id ? -1 : 1;
-    }
-
-    return 0;
-  }
-
   public void toSummaryDTO(final TaskSummary task)
   {
-    task.setId(m_id);
+    task.setId(m_id.getUUID());
     task.setRevision(m_revision);
     task.setActive(m_active);
     task.setDeleted(m_deleted);
     task.setName(m_name);
-    task.setProjectId(m_project != null ? m_project.getId() : null);
+    task.setProjectId(m_project != null ? m_project.getId().getUUID() : null);
   }
 
   public void toDTO(final Task task)

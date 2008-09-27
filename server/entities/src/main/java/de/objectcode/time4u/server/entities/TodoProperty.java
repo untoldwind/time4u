@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -62,7 +63,7 @@ public class TodoProperty
   }
 
   @ManyToOne
-  @JoinColumn(name = "todo_id", nullable = false)
+  @JoinColumns( { @JoinColumn(name = "todo_clientId"), @JoinColumn(name = "todo_localId") })
   public TodoEntity getTodo()
   {
     return m_todo;

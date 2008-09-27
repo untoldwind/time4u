@@ -68,8 +68,8 @@ public class WorkItemDialog extends Dialog
     m_workItem = new WorkItem();
     m_workItem.setDay(calendarDay);
     m_workItem.setComment("");
-    m_workItem.setTaskId(task != null ? task.getId() : -1L);
-    m_workItem.setProjectId(project != null ? project.getId() : -1L);
+    m_workItem.setTaskId(task != null ? task.getId() : null);
+    m_workItem.setProjectId(project != null ? project.getId() : null);
     m_create = true;
     m_workItem.setBegin(0);
 
@@ -207,11 +207,11 @@ public class WorkItemDialog extends Dialog
       }
     });
     try {
-      if (m_workItem.getProjectId() >= 0L) {
+      if (m_workItem.getProjectId() != null) {
         m_projectTreeViewer.setSelection(new StructuredSelection(m_projectRepository.getProjectSummary(m_workItem
             .getProjectId())));
       }
-      if (m_workItem.getTaskId() >= 0L) {
+      if (m_workItem.getTaskId() != null) {
         m_taskViewer.setSelection(new StructuredSelection(m_taskRepository.getTaskSummary(m_workItem.getTaskId())));
       }
     } catch (final Exception e) {

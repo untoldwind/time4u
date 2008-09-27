@@ -1,5 +1,7 @@
 package de.objectcode.time4u.server.api.data;
 
+import java.util.UUID;
+
 /**
  * WorkItem DTO object.
  * 
@@ -10,13 +12,13 @@ public class WorkItem implements Comparable<WorkItem>
   private static final long serialVersionUID = -3834849041983216580L;
 
   /** Internal server id of the workitem. */
-  private long m_id;
+  private UUID m_id;
   /** The calendar day of the workitem (this identifies the dayinfo). */
   private CalendarDay m_day;
   /** Server id of the project the workitem belongs to. */
-  private long m_projectId;
+  private UUID m_projectId;
   /** Server id of the task the workitem belongs to. */
-  private long m_taskId;
+  private UUID m_taskId;
   /** Time the workitem begun (in seconds starting from midnight 00:00:00). */
   private int m_begin;
   /** Time the workitem ended (in seconds starting from midnight 00:00:00) */
@@ -26,12 +28,12 @@ public class WorkItem implements Comparable<WorkItem>
   /** Flag if the workitem is valid. */
   private boolean m_valid;
   /** Optional server id of the todo this workitem belongs to. */
-  private Long m_todoId;
+  private UUID m_todoId;
 
   /**
    * @return the id
    */
-  public long getId()
+  public UUID getId()
   {
     return m_id;
   }
@@ -40,7 +42,7 @@ public class WorkItem implements Comparable<WorkItem>
    * @param id
    *          the id to set
    */
-  public void setId(final long id)
+  public void setId(final UUID id)
   {
     m_id = id;
   }
@@ -48,7 +50,7 @@ public class WorkItem implements Comparable<WorkItem>
   /**
    * @return the todoId
    */
-  public long getTaskId()
+  public UUID getTaskId()
   {
     return m_taskId;
   }
@@ -57,7 +59,7 @@ public class WorkItem implements Comparable<WorkItem>
    * @param todoId
    *          the todoId to set
    */
-  public void setTaskId(final long taskId)
+  public void setTaskId(final UUID taskId)
   {
     m_taskId = taskId;
   }
@@ -128,22 +130,22 @@ public class WorkItem implements Comparable<WorkItem>
     m_valid = valid;
   }
 
-  public long getProjectId()
+  public UUID getProjectId()
   {
     return m_projectId;
   }
 
-  public void setProjectId(final long projectId)
+  public void setProjectId(final UUID projectId)
   {
     m_projectId = projectId;
   }
 
-  public Long getTodoId()
+  public UUID getTodoId()
   {
     return m_todoId;
   }
 
-  public void setTodoId(final Long todoId)
+  public void setTodoId(final UUID todoId)
   {
     m_todoId = todoId;
   }
@@ -182,7 +184,7 @@ public class WorkItem implements Comparable<WorkItem>
    */
   public int compareTo(final WorkItem o)
   {
-    if (m_id == o.m_id) {
+    if (m_id.equals(o.m_id)) {
       return 0;
     }
 
@@ -193,10 +195,6 @@ public class WorkItem implements Comparable<WorkItem>
       return m_end < o.m_end ? -1 : 1;
     }
 
-    if (m_id != o.m_id) {
-      return m_id < o.m_id ? -1 : 1;
-    }
-
-    return 0;
+    return m_id.compareTo(o.m_id);
   }
 }

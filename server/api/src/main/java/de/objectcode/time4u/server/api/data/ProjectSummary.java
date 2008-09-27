@@ -1,5 +1,7 @@
 package de.objectcode.time4u.server.api.data;
 
+import java.util.UUID;
+
 /**
  * Project DTO object.
  * 
@@ -12,7 +14,7 @@ public class ProjectSummary implements ISynchronizableData
   private static final long serialVersionUID = 7578389791349119895L;
 
   /** The internal server id of the project */
-  private long m_id;
+  private UUID m_id;
   /** Revision number. */
   private long m_revision;
   /** Project name. */
@@ -22,14 +24,14 @@ public class ProjectSummary implements ISynchronizableData
   /** Flag if the project is deleted. */
   private boolean m_deleted;
   /** Internal id of the parent project (<tt>null</tt> for root level projects) */
-  private Long m_parentId;
+  private UUID m_parentId;
 
-  public long getId()
+  public UUID getId()
   {
     return m_id;
   }
 
-  public void setId(final long id)
+  public void setId(final UUID id)
   {
     m_id = id;
   }
@@ -77,7 +79,7 @@ public class ProjectSummary implements ISynchronizableData
   /**
    * @return the parentId
    */
-  public Long getParentId()
+  public UUID getParentId()
   {
     return m_parentId;
   }
@@ -86,7 +88,7 @@ public class ProjectSummary implements ISynchronizableData
    * @param parentId
    *          the parentId to set
    */
-  public void setParentId(final Long parentId)
+  public void setParentId(final UUID parentId)
   {
     m_parentId = parentId;
   }
@@ -97,7 +99,7 @@ public class ProjectSummary implements ISynchronizableData
   @Override
   public int hashCode()
   {
-    return (int) (m_id ^ m_id >>> 32);
+    return m_id != null ? m_id.hashCode() : 0;
   }
 
   /**
@@ -115,8 +117,11 @@ public class ProjectSummary implements ISynchronizableData
     }
 
     final ProjectSummary castObj = (ProjectSummary) obj;
+    if (m_id == null) {
+      return false;
+    }
 
-    return m_id == castObj.m_id;
+    return m_id.equals(castObj.m_id);
   }
 
 }

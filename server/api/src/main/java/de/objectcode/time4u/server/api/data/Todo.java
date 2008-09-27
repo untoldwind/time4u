@@ -3,6 +3,7 @@ package de.objectcode.time4u.server.api.data;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Todo DTO object.
@@ -14,17 +15,17 @@ public class Todo implements ISynchronizableData
   private static final long serialVersionUID = 5927951499996904471L;
 
   /** Internal server id of the todo. */
-  private long m_id;
+  private UUID m_id;
   /** Revision number. */
   private long m_revision;
   /** The server id of the task the todo belongs to. */
-  private long m_taskId;
+  private UUID m_taskId;
   /** Optional server id of the person the todo is assigned to. */
-  private Long m_assignedToPersonId;
+  private UUID m_assignedToPersonId;
   /** Optional server id of the team the todo is assigned to. */
-  private Long m_assignedToTeamId;
+  private UUID m_assignedToTeamId;
   /** Optional server id of the person who created the todo. */
-  private Long m_reporterId;
+  private UUID m_reporterId;
   /** Priority of the todo. */
   private int m_priority;
   /** Todo header/title. */
@@ -42,32 +43,32 @@ public class Todo implements ISynchronizableData
   /** Map of all meta properties of the todo. */
   private List<MetaProperty> m_metaProperties;
 
-  public Long getReporterId()
+  public UUID getReporterId()
   {
     return m_reporterId;
   }
 
-  public void setReporterId(final Long reporterId)
+  public void setReporterId(final UUID reporterId)
   {
     m_reporterId = reporterId;
   }
 
-  public Long getAssignedToPersonId()
+  public UUID getAssignedToPersonId()
   {
     return m_assignedToPersonId;
   }
 
-  public void setAssignedToPersonId(final Long assignedToPersonId)
+  public void setAssignedToPersonId(final UUID assignedToPersonId)
   {
     m_assignedToPersonId = assignedToPersonId;
   }
 
-  public Long getAssignedToTeamId()
+  public UUID getAssignedToTeamId()
   {
     return m_assignedToTeamId;
   }
 
-  public void setAssignedToTeamId(final Long assignedToTeamId)
+  public void setAssignedToTeamId(final UUID assignedToTeamId)
   {
     m_assignedToTeamId = assignedToTeamId;
   }
@@ -132,12 +133,12 @@ public class Todo implements ISynchronizableData
     m_header = header;
   }
 
-  public long getId()
+  public UUID getId()
   {
     return m_id;
   }
 
-  public void setId(final long id)
+  public void setId(final UUID id)
   {
     m_id = id;
   }
@@ -162,12 +163,12 @@ public class Todo implements ISynchronizableData
     m_priority = priority;
   }
 
-  public long getTaskId()
+  public UUID getTaskId()
   {
     return m_taskId;
   }
 
-  public void setTaskId(final long taskId)
+  public void setTaskId(final UUID taskId)
   {
     m_taskId = taskId;
   }

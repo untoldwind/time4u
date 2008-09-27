@@ -1,5 +1,7 @@
 package de.objectcode.time4u.server.entities.context;
 
+import java.util.UUID;
+
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
@@ -19,7 +21,7 @@ public interface IPersistenceContext
    *          The project id
    * @return The project with id <tt>projectId</tt>
    */
-  ProjectEntity findProject(long projectId);
+  ProjectEntity findProject(UUID projectId);
 
   /**
    * Find a task.
@@ -28,7 +30,7 @@ public interface IPersistenceContext
    *          The task id
    * @return The task with id <tt>taskId</tt>
    */
-  TaskEntity findTask(long taskId);
+  TaskEntity findTask(UUID taskId);
 
   /**
    * Find a todo.
@@ -37,7 +39,7 @@ public interface IPersistenceContext
    *          The todo id
    * @return The todo with id <tt>todoId</tt>
    */
-  TodoEntity findTodo(long todoId);
+  TodoEntity findTodo(UUID todoId);
 
   /**
    * Find a person.
@@ -46,5 +48,5 @@ public interface IPersistenceContext
    *          The person id
    * @return The person with id <tt>personId</tt>
    */
-  PersonEntity findPerson(long personId);
+  PersonEntity findPerson(UUID personId);
 }
