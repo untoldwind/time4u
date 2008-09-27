@@ -152,12 +152,18 @@ public class PunchView extends ViewPart implements ISelectionListener, IReposito
     m_punchButton.setMenu(menu);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void setFocus()
   {
     m_punchButton.setFocus();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void dispose()
   {
@@ -170,6 +176,9 @@ public class PunchView extends ViewPart implements ISelectionListener, IReposito
     m_punchedOutImage.dispose();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void selectionChanged(final IWorkbenchPart part, final ISelection selection)
   {
     if (selection instanceof IAdaptable) {
@@ -196,6 +205,9 @@ public class PunchView extends ViewPart implements ISelectionListener, IReposito
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void handleRepositoryEvent(final RepositoryEvent event)
   {
     switch (event.getEventType()) {

@@ -144,6 +144,9 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
     return null;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void dispose()
   {
@@ -152,6 +155,9 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
     super.dispose();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void handleRepositoryEvent(final RepositoryEvent event)
   {
     switch (event.getEventType()) {
@@ -190,6 +196,9 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
     m_viewer.getControl().setFocus();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void selectionChanged(final IWorkbenchPart part, final ISelection selection)
   {
     if (selection instanceof IAdaptable) {
@@ -210,6 +219,9 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
     m_selectedProject = null;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void init(final IViewSite site, final IMemento memento) throws PartInitException
   {
@@ -224,6 +236,9 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void saveState(final IMemento memento)
   {
@@ -231,5 +246,4 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
 
     memento.putInteger("showOnlyActive", m_showOnlyActive ? 1 : 0);
   }
-
 }

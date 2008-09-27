@@ -157,6 +157,9 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
     memento.putInteger("showOnlyActive", m_showOnlyActive ? 1 : 0);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void handleRepositoryEvent(final RepositoryEvent event)
   {
     switch (event.getEventType()) {

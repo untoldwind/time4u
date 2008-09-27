@@ -155,6 +155,9 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
     m_pageBook.setFocus();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void dispose()
   {
@@ -255,6 +258,9 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   protected void doDropTask(final TaskTransfer.ProjectTask projectTask)
   {
     try {

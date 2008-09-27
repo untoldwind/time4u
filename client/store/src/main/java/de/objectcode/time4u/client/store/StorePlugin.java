@@ -39,7 +39,6 @@ public class StorePlugin extends Plugin
     super.start(context);
     plugin = this;
 
-    System.out.println(">> Hubba");
     m_repository = new HibernateRepository(getStateLocation().toFile());
     m_metaRepository = new MetaRepository();
   }

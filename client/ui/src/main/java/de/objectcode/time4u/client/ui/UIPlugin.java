@@ -22,6 +22,7 @@ import org.osgi.framework.BundleContext;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.client.ui.actions.PunchInAction;
 import de.objectcode.time4u.client.ui.dialogs.ExceptionDialog;
+import de.objectcode.time4u.client.ui.jobs.ActiveWorkItemJob;
 import de.objectcode.time4u.client.ui.preferences.PreferenceConstants;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
@@ -43,6 +44,8 @@ public class UIPlugin extends AbstractUIPlugin
   private final Map<String, Image> m_images = new HashMap<String, Image>();
   private final LinkedList<PunchInAction> m_taskHistory = new LinkedList<PunchInAction>();
 
+  private ActiveWorkItemJob m_activeWorkItemJob;
+
   /**
    * The constructor
    */
@@ -60,6 +63,8 @@ public class UIPlugin extends AbstractUIPlugin
     plugin = this;
 
     System.out.println(RepositoryFactory.getRepository());
+    m_activeWorkItemJob = new ActiveWorkItemJob();
+    m_activeWorkItemJob.schedule(1000L);
   }
 
   /**
@@ -237,6 +242,7 @@ public class UIPlugin extends AbstractUIPlugin
     } catch (final Exception e) {
       log(e);
     }
+    m_activeWorkItemJob.schedule(1000L);
 
     return workItem;
   }

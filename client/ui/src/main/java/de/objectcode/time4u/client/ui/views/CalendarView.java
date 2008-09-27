@@ -105,12 +105,18 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
     RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.DAYINFO, this);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void setFocus()
   {
     m_calendar.setFocus();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void dispose()
   {
@@ -135,6 +141,9 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void dateChanged(final SWTCalendarEvent event)
   {
     final Calendar calendar = event.getCalendar();
@@ -149,6 +158,9 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
     m_selectionProvider.changeSelection(CompoundSelectionEntityType.CALENDARDAY, new CalendarDay(calendar));
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void handleRepositoryEvent(final RepositoryEvent event)
   {
     // It's not necessary to queue more than 2 refreshes
