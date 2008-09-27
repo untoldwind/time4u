@@ -29,12 +29,18 @@ public class TaskActionDelegate implements IWorkbenchWindowActionDelegate, IView
 
   IAdaptable m_selection;
 
+  /**
+   * {@inheritDoc}
+   */
   public void init(final IWorkbenchWindow window)
   {
     m_shellProvider = new SameShellProvider(window.getShell());
     m_view = (TaskListView) window.getActivePage().findView(TaskListView.ID);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void init(final IViewPart view)
   {
     m_shellProvider = view.getSite();
@@ -44,10 +50,16 @@ public class TaskActionDelegate implements IWorkbenchWindowActionDelegate, IView
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void dispose()
   {
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void run(final IAction action)
   {
     final String id = action.getId();
@@ -117,6 +129,9 @@ public class TaskActionDelegate implements IWorkbenchWindowActionDelegate, IView
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void selectionChanged(final IAction action, final ISelection selection)
   {
     if (selection instanceof IAdaptable) {

@@ -34,12 +34,18 @@ public class PunchOutAction extends Action
     setImageDescriptor(UIPlugin.getImageDescriptor("/icons/PunchedOut.gif"));
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isEnabled()
   {
     return UIPlugin.getDefault().isPunchedIn();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void run()
   {

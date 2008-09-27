@@ -38,7 +38,7 @@ import de.objectcode.time4u.server.api.data.WorkItem;
 
 public class PunchView extends ViewPart implements ISelectionListener, IRepositoryListener
 {
-  public static final String ID = "de.objectcode.client.ui.view.punchView";
+  public static final String ID = "de.objectcode.time4u.client.ui.view.punchView";
 
   private ProjectSummary m_selectedProject;
   private TaskSummary m_selectedTask;

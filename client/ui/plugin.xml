@@ -25,19 +25,19 @@
             allowMultiple="false"
             class="de.objectcode.time4u.client.ui.views.ProjectTreeView"
             icon="icons/Project.gif"
-            id="de.objectcode.client.ui.view.projectTree"
+            id="de.objectcode.time4u.client.ui.view.projectTree"
             name="%projectView.title"/>
       <view
             allowMultiple="false"
             class="de.objectcode.time4u.client.ui.views.TaskListView"
             icon="icons/Task.gif"
-            id="de.objectcode.client.ui.view.taskList"
+            id="de.objectcode.time4u.client.ui.view.taskList"
             name="%taskView.title"/>
       <view
             allowMultiple="false"
             class="de.objectcode.time4u.client.ui.views.CalendarView"
             icon="icons/WorkItem.gif"
-            id="de.objectcode.client.ui.view.calendarView"
+            id="de.objectcode.time4u.client.ui.view.calendarView"
             name="%calendarView.title"
             restorable="true">
       </view>
@@ -45,7 +45,7 @@
             allowMultiple="false"
             class="de.objectcode.time4u.client.ui.views.WorkItemView"
             icon="icons/WorkItem.gif"
-            id="de.objectcode.client.ui.view.workItemListView"
+            id="de.objectcode.time4u.client.ui.view.workItemListView"
             name="%workItemView.title"
             restorable="true">
       </view>
@@ -53,7 +53,7 @@
             allowMultiple="false"
             class="de.objectcode.time4u.client.ui.views.StatisticsView"
             icon="icons/WorkItem.gif"
-            id="de.objectcode.client.ui.view.statisticsView"
+            id="de.objectcode.time4u.client.ui.view.statisticsView"
             name="%statisticsView.title"
             restorable="true">
       </view>
@@ -61,7 +61,7 @@
             allowMultiple="false"
             class="de.objectcode.time4u.client.ui.views.PunchView"
             icon="icons/Time4U.gif"
-            id="de.objectcode.client.ui.view.punchView"
+            id="de.objectcode.time4u.client.ui.view.punchView"
             name="%punchView.title"
             restorable="true">
       </view>
@@ -133,7 +133,7 @@
          point="org.eclipse.ui.popupMenus">
       <viewerContribution
             id="de.objectcode.client.ui.view.projectTreeContribution2"
-            targetID="de.objectcode.client.ui.view.projectTree">
+            targetID="de.objectcode.time4u.client.ui.view.projectTree">
          <visibility>
             <and>
                <objectClass
@@ -156,7 +156,7 @@
       </viewerContribution>
       <viewerContribution
             id="de.objectcode.client.ui.view.projectTreeContribution1"
-            targetID="de.objectcode.client.ui.view.projectTree">
+            targetID="de.objectcode.time4u.client.ui.view.projectTree">
          <action
                class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"
                icon="icons/NewProject.gif"
@@ -168,7 +168,7 @@
       </viewerContribution>
       <viewerContribution
             id="de.objectcode.client.ui.view.taskListContribution1"
-            targetID="de.objectcode.client.ui.view.taskList">
+            targetID="de.objectcode.time4u.client.ui.view.taskList">
          <visibility>
             <and>
                <objectClass
@@ -191,7 +191,7 @@
       </viewerContribution>
       <viewerContribution
             id="de.objectcode.client.ui.view.taskListContribution2"
-            targetID="de.objectcode.client.ui.view.taskList">
+            targetID="de.objectcode.time4u.client.ui.view.taskList">
          <visibility>
             <and>
                <objectClass
@@ -210,6 +210,68 @@
                label="%action.task.new.label"
                menubarPath="objectGroup"
                tooltip="%action.task.new.tooltip">
+         </action>
+      </viewerContribution>
+      <viewerContribution
+            id="de.objectcode.time4u.client.ui.view.workItemListViewContribution1"
+            targetID="de.objectcode.time4u.client.ui.view.workItemListView">
+         <visibility>
+            <and>
+               <objectClass
+                     name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+               </objectClass>
+               <objectState
+                     name="has"
+                     value="PROJECT">
+               </objectState>
+               <objectState
+                     name="has"
+                     value="TASK">
+               </objectState>
+               <objectState
+                     name="has"
+                     value="CALENDARDAY">
+               </objectState>
+            </and>
+         </visibility>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.WorkItemActionDelegate"
+               icon="icons/NewWorkItem.gif"
+               id="de.objectcode.time4u.client.ui.workitem.new"
+               label="%action.workItem.new.label"
+               menubarPath="objectGroup"
+               tooltip="%action.workItem.new.tooltip">
+         </action>
+      </viewerContribution>
+      <viewerContribution
+            id="de.objectcode.time4u.client.ui.view.workItemListViewContribution2"
+            targetID="de.objectcode.time4u.client.ui.view.workItemListView">
+         <visibility>
+            <and>
+               <objectClass
+                     name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+               </objectClass>
+               <objectState
+                     name="has"
+                     value="WORKITEM">
+               </objectState>
+            </and>
+         </visibility>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.WorkItemActionDelegate"
+               icon="icons/DeleteWorkItem.gif"
+               id="de.objectcode.time4u.client.ui.workitem.delete"
+               label="%action.workItem.delete.label"
+               menubarPath="objectGroup"
+               tooltip="%action.workItem.delete.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.WorkItemActionDelegate"
+               icon="icons/WorkItem.gif"
+               id="de.objectcode.time4u.client.ui.workitem.edit"
+               label="%action.workItem.edit.label"
+               menubarPath="objectGroup"
+               tooltip="%action.workItem.edit.tooltip">
          </action>
       </viewerContribution>
    </extension>
@@ -250,6 +312,13 @@
             class="de.objectcode.time4u.client.ui.adapter.CompoundCalendarDayAdapterFactory">
          <adapter
                type="de.objectcode.time4u.server.api.data.CalendarDay">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="de.objectcode.time4u.client.ui.util.CompoundSelection"
+            class="de.objectcode.time4u.client.ui.adapter.CompoundWorkItemAdapterFactory">
+         <adapter
+               type="de.objectcode.time4u.server.api.data.WorkItem">
          </adapter>
       </factory>
 	</extension>
@@ -361,6 +430,48 @@
                   name="workItemGroup">
             </groupMarker>
          </menu>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.WorkItemActionDelegate"
+               icon="icons/DeleteWorkItem.gif"
+               id="de.objectcode.time4u.client.ui.workitem.delete"
+               label="%action.workItem.delete.label"
+               menubarPath="workItemMenu/workItemGroup"
+               style="push"
+               toolbarPath="workItem/additions"
+               tooltip="%action.workItem.delete.tooltip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+                  </objectClass>
+                  <objectState
+                        name="has"
+                        value="WORKITEM">
+                  </objectState>
+               </and>
+            </enablement>
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.WorkItemActionDelegate"
+               icon="icons/WorkItem.gif"
+               id="de.objectcode.time4u.client.ui.workitem.edit"
+               label="%action.workItem.edit.label"
+               menubarPath="workItemMenu/workItemGroup"
+               style="push"
+               toolbarPath="workItem/additions"
+               tooltip="%action.workItem.edit.tooltip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+                  </objectClass>
+                  <objectState
+                        name="has"
+                        value="WORKITEM">
+                  </objectState>
+               </and>
+            </enablement>
+         </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.WorkItemActionDelegate"
                icon="icons/NewWorkItem.gif"

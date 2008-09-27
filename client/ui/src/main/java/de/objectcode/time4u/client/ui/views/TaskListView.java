@@ -48,7 +48,7 @@ import de.objectcode.time4u.server.api.data.TaskSummary;
 
 public class TaskListView extends ViewPart implements IRepositoryListener, ISelectionListener
 {
-  public static final String ID = "de.objectcode.client.ui.view.taskList";
+  public static final String ID = "de.objectcode.time4u.client.ui.view.taskList";
 
   private ProjectSummary m_selectedProject;
   private TableViewer m_viewer;

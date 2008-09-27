@@ -34,7 +34,7 @@ import de.objectcode.time4u.client.ui.util.SelectionServiceAdapter;
 
 public class ProjectTreeView extends ViewPart implements IRepositoryListener
 {
-  public static final String ID = "de.objectcode.client.ui.view.projectTree";
+  public static final String ID = "de.objectcode.time4u.client.ui.view.projectTree";
 
   private TreeViewer m_viewer;
   private boolean m_showOnlyActive;
@@ -67,7 +67,6 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
     final Menu menu = menuMgr.createContextMenu(m_viewer.getControl());
 
     m_viewer.getControl().setMenu(menu);
-
     getSite().registerContextMenu(menuMgr, new SelectionServiceAdapter(getSite().getPage()));
 
     m_viewer.addDoubleClickListener(new IDoubleClickListener() {

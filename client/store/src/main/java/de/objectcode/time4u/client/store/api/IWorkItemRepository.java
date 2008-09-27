@@ -50,6 +50,16 @@ public interface IWorkItemRepository
   WorkItem storeWorkItem(WorkItem workItem) throws RepositoryException;
 
   /**
+   * Delete a single workitem.
+   * 
+   * @param workItem
+   *          The workitem to be deleted
+   * @throws RepositoryException
+   *           on error
+   */
+  void deleteWorkItem(WorkItem workItem) throws RepositoryException;
+
+  /**
    * Get the currently active workitem.
    * 
    * @return The active workitem or <tt>null</tt> if there is none

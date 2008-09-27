@@ -48,6 +48,9 @@ public class PunchInAction extends Action
     return m_taskId;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isEnabled()
   {
@@ -62,6 +65,9 @@ public class PunchInAction extends Action
     return false;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void run()
   {

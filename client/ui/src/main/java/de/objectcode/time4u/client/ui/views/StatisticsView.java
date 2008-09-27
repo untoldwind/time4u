@@ -5,7 +5,7 @@ import org.eclipse.ui.part.ViewPart;
 
 public class StatisticsView extends ViewPart
 {
-  public static final String ID = "de.objectcode.client.ui.view.statisticsView";
+  public static final String ID = "de.objectcode.time4u.client.ui.view.statisticsView";
 
   @Override
   public void createPartControl(final Composite parent)

@@ -109,64 +109,112 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
    */
   public WorkItem storeWorkItem(final WorkItem workItem) throws RepositoryException
   {
-    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<WorkItem>() {
-      public WorkItem perform(final Session session)
+    final DayInfoWorkItemHolder dayInfoWorkItemHolder = m_hibernateTemplate
+        .executeInTransaction(new HibernateTemplate.Operation<DayInfoWorkItemHolder>() {
+          public DayInfoWorkItemHolder perform(final Session session)
+          {
+            final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
+            final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.WORKITEM, m_repository
+                .getOwner().getId());
+
+            WorkItemEntity workItemEntity;
+
+            if (workItem.getId() != null) {
+              workItemEntity = (WorkItemEntity) session.get(WorkItemEntity.class, new EntityKey(workItem.getId()));
+
+              workItemEntity.getDayInfo().setRevision(revisionLock.getLatestRevision());
+
+              workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem);
+              workItemEntity.getDayInfo().validate();
+              session.flush();
+            } else {
+              final Criteria criteria = session.createCriteria(DayInfoEntity.class);
+              criteria.add(Restrictions.eq("person.id", new EntityKey(m_repository.getOwner().getId())));
+              criteria.add(Restrictions.eq("date", workItem.getDay().getDate()));
+
+              DayInfoEntity dayInfoEntity = (DayInfoEntity) criteria.uniqueResult();
+
+              if (dayInfoEntity == null) {
+                // This is save because the revision counter locks this section
+                final EntityKey dayInfoId = new EntityKey(m_repository.getClientId(), revisionLock.generateLocalId());
+
+                dayInfoEntity = new DayInfoEntity(dayInfoId, revisionLock.getLatestRevision(), (PersonEntity) session
+                    .get(PersonEntity.class, new EntityKey(m_repository.getOwner().getId())), workItem.getDay()
+                    .getDate());
+
+                session.persist(dayInfoEntity);
+              }
+              final EntityKey workItemId = new EntityKey(m_repository.getClientId(), revisionLock.generateLocalId());
+              workItemEntity = new WorkItemEntity(workItemId, dayInfoEntity);
+
+              workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem);
+
+              session.persist(workItemEntity);
+              dayInfoEntity.getWorkItems().add(workItemEntity);
+              dayInfoEntity.validate();
+              session.flush();
+            }
+
+            final DayInfo dayInfo = new DayInfo();
+
+            workItemEntity.getDayInfo().toDTO(dayInfo);
+
+            final WorkItem workItem = new WorkItem();
+
+            workItemEntity.toDTO(workItem);
+
+            return new DayInfoWorkItemHolder(dayInfo, workItem);
+          }
+        });
+
+    m_repository.fireRepositoryEvent(new DayInfoRepositoryEvent(dayInfoWorkItemHolder.getDayInfo()));
+    m_repository.fireRepositoryEvent(new WorkItemRepositoryEvent(dayInfoWorkItemHolder.getDayInfo().getWorkItems()));
+
+    return dayInfoWorkItemHolder.getWorkItem();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void deleteWorkItem(final WorkItem workItem) throws RepositoryException
+  {
+    if (workItem.getId() == null) {
+      return;
+    }
+    final DayInfo dayInfo = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<DayInfo>() {
+      public DayInfo perform(final Session session)
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
         final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.WORKITEM, m_repository
             .getOwner().getId());
 
-        WorkItemEntity workItemEntity;
-
         if (workItem.getId() != null) {
-          workItemEntity = (WorkItemEntity) session.get(WorkItemEntity.class, new EntityKey(workItem.getId()));
+          final WorkItemEntity workItemEntity = (WorkItemEntity) session.get(WorkItemEntity.class, new EntityKey(
+              workItem.getId()));
+          final DayInfoEntity dayInfoEntity = workItemEntity.getDayInfo();
 
-          workItemEntity.getDayInfo().setRevision(revisionLock.getLatestRevision());
+          dayInfoEntity.setRevision(revisionLock.getLatestRevision());
 
-          workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem);
+          session.delete(workItemEntity);
+
+          dayInfoEntity.getWorkItems().remove(workItemEntity);
           workItemEntity.getDayInfo().validate();
           session.flush();
-        } else {
-          final Criteria criteria = session.createCriteria(DayInfoEntity.class);
-          criteria.add(Restrictions.eq("person.id", new EntityKey(m_repository.getOwner().getId())));
-          criteria.add(Restrictions.eq("date", workItem.getDay().getDate()));
 
-          DayInfoEntity dayInfoEntity = (DayInfoEntity) criteria.uniqueResult();
+          final DayInfo dayInfo = new DayInfo();
 
-          if (dayInfoEntity == null) {
-            // This is save because the revision counter locks this section
-            final EntityKey dayInfoId = new EntityKey(m_repository.getClientId(), revisionLock.generateLocalId());
+          workItemEntity.getDayInfo().toDTO(dayInfo);
 
-            dayInfoEntity = new DayInfoEntity(dayInfoId, revisionLock.getLatestRevision(), (PersonEntity) session.get(
-                PersonEntity.class, new EntityKey(m_repository.getOwner().getId())), workItem.getDay().getDate());
-
-            session.persist(dayInfoEntity);
-          }
-          final EntityKey workItemId = new EntityKey(m_repository.getClientId(), revisionLock.generateLocalId());
-          workItemEntity = new WorkItemEntity(workItemId, dayInfoEntity);
-
-          workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem);
-
-          session.persist(workItemEntity);
-          dayInfoEntity.getWorkItems().add(workItemEntity);
-          dayInfoEntity.validate();
-          session.flush();
+          return dayInfo;
         }
-
-        final DayInfo dayInfo = new DayInfo();
-
-        workItemEntity.getDayInfo().toDTO(dayInfo);
-
-        m_repository.fireRepositoryEvent(new DayInfoRepositoryEvent(dayInfo));
-        m_repository.fireRepositoryEvent(new WorkItemRepositoryEvent(dayInfo.getWorkItems()));
-
-        final WorkItem workItem = new WorkItem();
-
-        workItemEntity.toDTO(workItem);
-
-        return workItem;
+        return null;
       }
     });
+
+    if (dayInfo != null) {
+      m_repository.fireRepositoryEvent(new DayInfoRepositoryEvent(dayInfo));
+      m_repository.fireRepositoryEvent(new WorkItemRepositoryEvent(dayInfo.getWorkItems()));
+    }
   }
 
   /**
@@ -192,6 +240,9 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
     });
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void setActiveWorkItem(final WorkItem workItem) throws RepositoryException
   {
     m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Object>() {
@@ -232,5 +283,27 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
     });
 
     m_repository.fireRepositoryEvent(new ActiveWorkItemRepositoryEvent(workItem));
+  }
+
+  private static class DayInfoWorkItemHolder
+  {
+    private final DayInfo m_dayInfo;
+    private final WorkItem m_workItem;
+
+    private DayInfoWorkItemHolder(final DayInfo dayInfo, final WorkItem workItem)
+    {
+      m_dayInfo = dayInfo;
+      m_workItem = workItem;
+    }
+
+    public DayInfo getDayInfo()
+    {
+      return m_dayInfo;
+    }
+
+    public WorkItem getWorkItem()
+    {
+      return m_workItem;
+    }
   }
 }

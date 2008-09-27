@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jface.action.GroupMarker;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ISelection;
@@ -16,8 +18,10 @@ import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.ViewPart;
@@ -36,14 +40,16 @@ import de.objectcode.time4u.client.ui.provider.TaskLabelProvider;
 import de.objectcode.time4u.client.ui.provider.WorkItemTableCellModifier;
 import de.objectcode.time4u.client.ui.provider.WorkItemTableContentProvider;
 import de.objectcode.time4u.client.ui.provider.WorkItemTableLabelProvider;
+import de.objectcode.time4u.client.ui.util.CompoundSelectionEntityType;
 import de.objectcode.time4u.client.ui.util.CompoundSelectionProvider;
+import de.objectcode.time4u.client.ui.util.SelectionServiceAdapter;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.WorkItem;
 
 public class WorkItemView extends ViewPart implements IRepositoryListener, ISelectionListener
 {
-  public static final String ID = "de.objectcode.client.ui.view.workItemListView";
+  public static final String ID = "de.objectcode.time4u.client.ui.view.workItemListView";
 
   public enum ViewType
   {
@@ -134,6 +140,16 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
         doDropTask((TaskTransfer.ProjectTask) event.data);
       }
     });
+    final MenuManager menuMgr = new MenuManager();
+    menuMgr.add(new GroupMarker("objectGroup"));
+    menuMgr.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
+
+    final Menu menu = menuMgr.createContextMenu(m_tableViewer.getControl());
+
+    m_tableViewer.getControl().setMenu(menu);
+    getSite().registerContextMenu(menuMgr, new SelectionServiceAdapter(getSite().getPage()));
+
+    m_selectionProvider.addPostSelectionProvider(CompoundSelectionEntityType.WORKITEM, m_tableViewer);
 
     m_pageBook.showPage(m_tableViewer.getTable());
     m_activeViewType = ViewType.FLAT;

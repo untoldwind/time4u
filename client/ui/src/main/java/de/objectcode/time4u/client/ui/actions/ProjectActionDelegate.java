@@ -39,12 +39,18 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
 
   IAdaptable m_selection;
 
+  /**
+   * {@inheritDoc}
+   */
   public void init(final IWorkbenchWindow window)
   {
     m_shellProvider = new SameShellProvider(window.getShell());
     m_view = (ProjectTreeView) window.getActivePage().findView(ProjectTreeView.ID);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void init(final IViewPart view)
   {
     m_shellProvider = view.getSite();
@@ -53,10 +59,16 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void dispose()
   {
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void run(final IAction action)
   {
     final String id = action.getId();
@@ -161,9 +173,11 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void selectionChanged(final IAction action, final ISelection selection)
   {
-    System.out.println(">>" + selection);
     if (selection instanceof IAdaptable) {
       m_selection = (IAdaptable) selection;
     } else if (selection instanceof IStructuredSelection) {

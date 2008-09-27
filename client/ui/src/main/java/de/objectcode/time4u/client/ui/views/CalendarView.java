@@ -33,7 +33,7 @@ import de.objectcode.time4u.server.api.filter.DayInfoFilter;
 
 public class CalendarView extends ViewPart implements SWTCalendarListener, IRepositoryListener
 {
-  public static final String ID = "de.objectcode.client.ui.view.calendarView";
+  public static final String ID = "de.objectcode.time4u.client.ui.view.calendarView";
 
   SWTCalendar m_calendar;
 

@@ -2,6 +2,8 @@ package de.objectcode.time4u.client.ui.actions;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.IShellProvider;
@@ -14,6 +16,9 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.dialogs.WorkItemDialog;
+import de.objectcode.time4u.client.ui.preferences.PreferenceConstants;
+import de.objectcode.time4u.client.ui.util.DateFormat;
+import de.objectcode.time4u.client.ui.util.TimeFormat;
 import de.objectcode.time4u.client.ui.views.WorkItemView;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
@@ -27,12 +32,18 @@ public class WorkItemActionDelegate implements IWorkbenchWindowActionDelegate, I
 
   IAdaptable m_selection;
 
+  /**
+   * {@inheritDoc}
+   */
   public void init(final IWorkbenchWindow window)
   {
     m_shellProvider = new SameShellProvider(window.getShell());
     m_view = (WorkItemView) window.getActivePage().findView(WorkItemView.ID);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void init(final IViewPart view)
   {
     m_shellProvider = view.getSite();
@@ -41,10 +52,16 @@ public class WorkItemActionDelegate implements IWorkbenchWindowActionDelegate, I
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void dispose()
   {
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void run(final IAction action)
   {
     final String id = action.getId();
@@ -84,6 +101,23 @@ public class WorkItemActionDelegate implements IWorkbenchWindowActionDelegate, I
           }
         }
       }
+    } else if ("de.objectcode.time4u.client.ui.workitem.delete".equals(id)) {
+      if (selectedWorkItem != null) {
+        final IPreferenceStore store = UIPlugin.getDefault().getPreferenceStore();
+
+        if (store.getBoolean(PreferenceConstants.UI_CONFIRM_WORKITEM_DELETE)) {
+          if (!MessageDialog.openQuestion(m_view.getSite().getShell(), "WorkItem delete", "Delete WorkItem "
+              + DateFormat.format(selectedWorkItem.getDay()) + " " + TimeFormat.format(selectedWorkItem.getBegin())
+              + " - " + TimeFormat.format(selectedWorkItem.getEnd()) + " '" + selectedWorkItem.getComment() + "'")) {
+            return;
+          }
+        }
+        try {
+          RepositoryFactory.getRepository().getWorkItemRepository().deleteWorkItem(selectedWorkItem);
+        } catch (final Exception e) {
+          UIPlugin.getDefault().log(e);
+        }
+      }
       //    } else if ("time4u-client.workItem.continue".equals(id)) {
       //      if (selectedWorkItem != null && !selectedWorkItem.isActive()) {
       //        if (Activator.getDefault().isPunchedIn()) {
@@ -95,23 +129,6 @@ public class WorkItemActionDelegate implements IWorkbenchWindowActionDelegate, I
       //          final Project project = projectStore.getProject(selectedWorkItem.getProjectId());
       //          final Task task = projectStore.getTask(selectedWorkItem.getTaskId());
       //          Activator.getDefault().punchIn(project, task, selectedWorkItem.getComment());
-      //        } catch (final Exception e) {
-      //          Activator.getDefault().log(e);
-      //        }
-      //      }
-      //    } else if ("time4u-client.workItem.delete".equals(id)) {
-      //      if (selectedWorkItem != null) {
-      //        final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-      //
-      //        if (store.getBoolean(PreferenceConstants.UI_CONFIRM_WORKITEM_DELETE)) {
-      //          if (!MessageDialog.openQuestion(m_view.getSite().getShell(), "WorkItem delete", "Delete WorkItem "
-      //              + DateFormat.format(selectedWorkItem.getDay()) + " " + TimeFormat.format(selectedWorkItem.getBegin())
-      //              + " - " + TimeFormat.format(selectedWorkItem.getEnd()) + " '" + selectedWorkItem.getComment() + "'")) {
-      //            return;
-      //          }
-      //        }
-      //        try {
-      //          Activator.getDefault().getRepository().getWorkItemStore().deleteWorkItem(selectedWorkItem);
       //        } catch (final Exception e) {
       //          Activator.getDefault().log(e);
       //        }
@@ -135,6 +152,9 @@ public class WorkItemActionDelegate implements IWorkbenchWindowActionDelegate, I
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void selectionChanged(final IAction action, final ISelection selection)
   {
     if (selection instanceof IAdaptable) {
