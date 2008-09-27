@@ -10,6 +10,7 @@ import org.hibernate.criterion.Restrictions;
 
 import de.objectcode.time4u.client.store.api.IWorkItemRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
+import de.objectcode.time4u.client.store.api.event.ActiveWorkItemRepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.DayInfoRepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.WorkItemRepositoryEvent;
 import de.objectcode.time4u.server.api.data.CalendarDay;
@@ -229,5 +230,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
         return null;
       }
     });
+
+    m_repository.fireRepositoryEvent(new ActiveWorkItemRepositoryEvent(workItem));
   }
 }

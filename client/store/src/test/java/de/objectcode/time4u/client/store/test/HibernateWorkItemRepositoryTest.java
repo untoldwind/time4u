@@ -68,12 +68,22 @@ public class HibernateWorkItemRepositoryTest
     HibernateTestRepositoryFactory.getInstance().getWorkItemRepository().setActiveWorkItem(
         dayInfo.getWorkItems().get(0));
 
+    final RepositoryEventCollector collector = HibernateTestRepositoryFactory
+        .getEventCollector(RepositoryEventType.ACTIVE_WORKITEM);
+
+    assertNotNull(collector);
+    assertEquals(collector.getEvents().size(), 1);
+    collector.clearEvents();
+
     activeWorkItem = HibernateTestRepositoryFactory.getInstance().getWorkItemRepository().getActiveWorkItem();
 
     assertNotNull(activeWorkItem);
     assertEquals(activeWorkItem.getId(), dayInfo.getWorkItems().get(0).getId());
 
     HibernateTestRepositoryFactory.getInstance().getWorkItemRepository().setActiveWorkItem(null);
+
+    assertEquals(collector.getEvents().size(), 1);
+    collector.clearEvents();
 
     activeWorkItem = HibernateTestRepositoryFactory.getInstance().getWorkItemRepository().getActiveWorkItem();
 

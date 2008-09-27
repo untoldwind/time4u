@@ -1,6 +1,11 @@
 package de.objectcode.time4u.client.ui;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -15,7 +20,13 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
+import de.objectcode.time4u.client.ui.actions.PunchInAction;
 import de.objectcode.time4u.client.ui.dialogs.ExceptionDialog;
+import de.objectcode.time4u.client.ui.preferences.PreferenceConstants;
+import de.objectcode.time4u.server.api.data.CalendarDay;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
+import de.objectcode.time4u.server.api.data.TaskSummary;
+import de.objectcode.time4u.server.api.data.WorkItem;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -30,6 +41,7 @@ public class UIPlugin extends AbstractUIPlugin
 
   private ResourceBundle m_resourceBundle;
   private final Map<String, Image> m_images = new HashMap<String, Image>();
+  private final LinkedList<PunchInAction> m_taskHistory = new LinkedList<PunchInAction>();
 
   /**
    * The constructor
@@ -140,5 +152,111 @@ public class UIPlugin extends AbstractUIPlugin
   public static ImageDescriptor getImageDescriptor(final String path)
   {
     return imageDescriptorFromPlugin(PLUGIN_ID, path);
+  }
+
+  public void pushTask(final ProjectSummary project, final TaskSummary task)
+  {
+    synchronized (m_taskHistory) {
+      int count = 0;
+      final int max = getPreferenceStore().getInt(PreferenceConstants.UI_TASK_HISTORY_SIZE);
+
+      for (final Iterator<PunchInAction> it = m_taskHistory.iterator(); it.hasNext();) {
+        final PunchInAction action = it.next();
+
+        if (action.getTaskId() == task.getId() || count >= max) {
+          it.remove();
+        } else {
+          count++;
+        }
+      }
+
+      m_taskHistory.addFirst(new PunchInAction(RepositoryFactory.getRepository(), project.getId(), task.getId()));
+    }
+  }
+
+  public Collection<PunchInAction> getTaskHistory()
+  {
+    synchronized (m_taskHistory) {
+      return new ArrayList<PunchInAction>(m_taskHistory);
+    }
+  }
+
+  public boolean isPunchedIn()
+  {
+    try {
+      final WorkItem workItem = RepositoryFactory.getRepository().getWorkItemRepository().getActiveWorkItem();
+
+      if (workItem != null) {
+        return true;
+      }
+    } catch (final Exception e) {
+      log(e);
+    }
+
+    return false;
+  }
+
+  public WorkItem getPunchedInWorkitem()
+  {
+    try {
+      final WorkItem workItem = RepositoryFactory.getRepository().getWorkItemRepository().getActiveWorkItem();
+
+      return workItem;
+    } catch (final Exception e) {
+      log(e);
+    }
+
+    return null;
+  }
+
+  public WorkItem punchIn(final ProjectSummary project, final TaskSummary task)
+  {
+    return punchIn(project, task, null);
+  }
+
+  public WorkItem punchIn(final ProjectSummary project, final TaskSummary task, final String comment)
+  {
+    pushTask(project, task);
+
+    WorkItem workItem = new WorkItem();
+    final Calendar calendar = Calendar.getInstance();
+    final int hour = calendar.get(Calendar.HOUR_OF_DAY);
+    final int minute = calendar.get(Calendar.MINUTE);
+
+    workItem.setBegin(3600 * hour + 60 * minute);
+    workItem.setEnd(3600 * hour + 60 * minute);
+    workItem.setProjectId(project.getId());
+    workItem.setTaskId(task.getId());
+    workItem.setDay(new CalendarDay(calendar));
+
+    workItem.setComment(comment != null ? comment : "");
+
+    try {
+      workItem = RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem);
+      RepositoryFactory.getRepository().getWorkItemRepository().setActiveWorkItem(workItem);
+    } catch (final Exception e) {
+      log(e);
+    }
+
+    return workItem;
+  }
+
+  public void punchOut()
+  {
+    try {
+      final WorkItem workItem = RepositoryFactory.getRepository().getWorkItemRepository().getActiveWorkItem();
+
+      if (workItem != null) {
+        final Calendar calendar = Calendar.getInstance();
+        final int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        final int minute = calendar.get(Calendar.MINUTE);
+
+        workItem.setEnd(3600 * hour + 60 * minute);
+        RepositoryFactory.getRepository().getWorkItemRepository().setActiveWorkItem(null);
+        RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem);
+      }
+    } catch (final Exception e) {
+      log(e);
+    }
   }
 }

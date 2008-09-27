@@ -38,7 +38,8 @@ public class WorkItemTableLabelProvider extends LabelProvider implements ITableL
 
   public Color getBackground(final Object element)
   {
-    return PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND);
+    //    return PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND);
+    return null;
   }
 
   public Color getForeground(final Object element)
@@ -53,7 +54,7 @@ public class WorkItemTableLabelProvider extends LabelProvider implements ITableL
     if (element instanceof WorkItem) {
       if (!((WorkItem) element).isValid()) {
         return PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_RED);
-      } else if (activeWorkItem != null && activeWorkItem.getId() == ((WorkItem) element).getId()) {
+      } else if (activeWorkItem != null && activeWorkItem.getId().equals(((WorkItem) element).getId())) {
         return PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_DARK_GREEN);
       }
     }
