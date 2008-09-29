@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Generic meta property DTO object.
  * 
@@ -11,6 +14,7 @@ import java.util.Date;
  * 
  * @author junglas
  */
+@XmlType(name = "meta-property")
 public class MetaProperty implements Serializable
 {
   private static final long serialVersionUID = -218883908448368551L;
@@ -79,6 +83,7 @@ public class MetaProperty implements Serializable
     m_valueAsString = g_format.format(value);
   }
 
+  @XmlAttribute
   public String getName()
   {
     return m_name;
@@ -89,6 +94,7 @@ public class MetaProperty implements Serializable
     m_name = name;
   }
 
+  @XmlAttribute
   public String getType()
   {
     return m_type.toString();
@@ -99,6 +105,7 @@ public class MetaProperty implements Serializable
     m_type = MetaType.valueOf(type);
   }
 
+  @XmlAttribute
   public String getValue()
   {
     return m_valueAsString;

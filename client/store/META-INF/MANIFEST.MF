@@ -21,7 +21,8 @@ Bundle-ClassPath: .,
  target/dependency/commons-logging.jar,
  target/dependency/persistence-api.jar,
  target/dependency/commons-collections.jar,
- target/dependency/jta.jar
+ target/dependency/jta.jar,
+ target/dependency/jaxb-api.jar
 Export-Package: de.objectcode.time4u.client.store.api,
  de.objectcode.time4u.client.store.api.event,
  de.objectcode.time4u.client.store.api.meta,

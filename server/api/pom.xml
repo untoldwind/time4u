@@ -11,6 +11,10 @@
 	<name>time4u-server-api</name>
 	<packaging>jar</packaging>
 	<dependencies>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+		</dependency>
 	</dependencies>
 	<profiles>
 		<profile>

@@ -1,15 +1,11 @@
-package de.objectcode.time4u.server.ejb.impl;
+package de.objectcode.time4u.server.web.ws;
 
 import java.util.UUID;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.jboss.annotation.ejb.LocalBinding;
-import org.jboss.annotation.ejb.RemoteBinding;
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.jws.soap.SOAPBinding.Style;
 
 import de.objectcode.time4u.server.api.IProjectService;
 import de.objectcode.time4u.server.api.ServiceException;
@@ -18,45 +14,39 @@ import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.filter.ProjectFilter;
 
-/**
- * EJB3 implementation of the project service interface.
- * 
- * @author junglas
- */
-@Stateless
-@Remote(IProjectService.class)
-@RemoteBinding(jndiBinding = "time4u-server/ProjectServiceBean/remote")
-@Local(IProjectService.class)
-@LocalBinding(jndiBinding = "time4u-server/ProjectServiceBean/local")
-public class ProjectServiceImpl implements IProjectService
+@WebService
+@SOAPBinding(style = Style.RPC)
+public class ProjectServiceWS implements IProjectService
 {
-  @PersistenceContext(unitName = "time4u")
-  private EntityManager m_manager;
-
+  @WebMethod
   public Project getProject(final UUID projectId) throws ServiceException
   {
     // TODO Auto-generated method stub
     return null;
   }
 
+  @WebMethod
   public FilterResult<Project> getProjects(final ProjectFilter filter) throws ServiceException
   {
     // TODO Auto-generated method stub
     return null;
   }
 
+  @WebMethod
   public FilterResult<ProjectSummary> getProjectSumaries(final ProjectFilter filter) throws ServiceException
   {
     // TODO Auto-generated method stub
     return null;
   }
 
+  @WebMethod
   public ProjectSummary getProjectSummary(final UUID projectId) throws ServiceException
   {
     // TODO Auto-generated method stub
     return null;
   }
 
+  @WebMethod
   public Project storeProject(final Project project) throws ServiceException
   {
     // TODO Auto-generated method stub

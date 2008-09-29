@@ -4,11 +4,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Project DTO object.
  * 
  * @author junglas
  */
+@XmlType(name = "project")
 public class Project extends ProjectSummary
 {
   private static final long serialVersionUID = 7628044489809504348L;

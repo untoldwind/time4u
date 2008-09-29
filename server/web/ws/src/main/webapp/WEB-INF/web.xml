@@ -6,6 +6,10 @@
 		<servlet-name>PersonServiceWS</servlet-name>
 		<servlet-class>de.objectcode.time4u.server.web.ws.PersonServiceWS</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>ProjectServiceWS</servlet-name>
+		<servlet-class>de.objectcode.time4u.server.web.ws.ProjectServiceWS</servlet-class>
+	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>PersonServiceWS</servlet-name>
@@ -15,6 +19,11 @@
 	<servlet-mapping>
 		<servlet-name>PersonServiceWS</servlet-name>
 		<url-pattern>/secure/PersonService</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ProjectServiceWS</servlet-name>
+		<url-pattern>/secure/ProjectService</url-pattern>
 	</servlet-mapping>
 	
 	<security-constraint>

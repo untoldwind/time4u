@@ -32,6 +32,10 @@
 			<artifactId>swt</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>de.objectcode.time4u.client</groupId>
 			<artifactId>store</artifactId>
 			<version>${pom.version}</version>

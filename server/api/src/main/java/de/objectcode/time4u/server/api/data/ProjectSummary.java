@@ -2,6 +2,9 @@ package de.objectcode.time4u.server.api.data;
 
 import java.util.UUID;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Project DTO object.
  * 
@@ -9,6 +12,7 @@ import java.util.UUID;
  * 
  * @author junglas
  */
+@XmlType(name = "project-summary")
 public class ProjectSummary implements ISynchronizableData
 {
   private static final long serialVersionUID = 7578389791349119895L;
@@ -26,6 +30,7 @@ public class ProjectSummary implements ISynchronizableData
   /** Internal id of the parent project (<tt>null</tt> for root level projects) */
   private UUID m_parentId;
 
+  @XmlAttribute
   public UUID getId()
   {
     return m_id;
@@ -36,6 +41,7 @@ public class ProjectSummary implements ISynchronizableData
     m_id = id;
   }
 
+  @XmlAttribute
   public long getRevision()
   {
     return m_revision;
@@ -46,6 +52,7 @@ public class ProjectSummary implements ISynchronizableData
     m_revision = revision;
   }
 
+  @XmlAttribute
   public String getName()
   {
     return m_name;
@@ -56,6 +63,7 @@ public class ProjectSummary implements ISynchronizableData
     m_name = name;
   }
 
+  @XmlAttribute
   public boolean isActive()
   {
     return m_active;
@@ -66,6 +74,7 @@ public class ProjectSummary implements ISynchronizableData
     m_active = active;
   }
 
+  @XmlAttribute
   public boolean isDeleted()
   {
     return m_deleted;
@@ -79,6 +88,7 @@ public class ProjectSummary implements ISynchronizableData
   /**
    * @return the parentId
    */
+  @XmlAttribute
   public UUID getParentId()
   {
     return m_parentId;

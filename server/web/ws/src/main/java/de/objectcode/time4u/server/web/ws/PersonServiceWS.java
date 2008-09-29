@@ -12,6 +12,7 @@ import de.objectcode.time4u.server.api.data.Person;
 @SOAPBinding(style = Style.RPC)
 public class PersonServiceWS implements IPersonService
 {
+
   @WebMethod
   public boolean registerPerson(final Person person)
   {

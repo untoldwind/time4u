@@ -3,11 +3,14 @@ package de.objectcode.time4u.server.api.filter;
 import java.io.Serializable;
 import java.util.UUID;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * A filter condition for querying projects.
  * 
  * @author junglas
  */
+@XmlType(name = "project-filter")
 public class ProjectFilter implements Serializable
 {
   private static final long serialVersionUID = 4840094656452995441L;
