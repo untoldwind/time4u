@@ -35,6 +35,11 @@
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>de.objectcode.time4u.server</groupId>
+			<artifactId>time4u-server-api</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -59,4 +64,20 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>MacOS</id>
+			<activation>
+				<os>
+					<name>Mac OS X</name>
+				</os>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.eclipse.swt.carbon</groupId>
+					<artifactId>macosx</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 </project>
