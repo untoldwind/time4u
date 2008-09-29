@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="de.objectcode.tim4u.feature"
+      id="de.objectcode.time4u.client.feature"
       label="Time4U feature"
       version="0.9.0"
       provider-name="objectcode.de">

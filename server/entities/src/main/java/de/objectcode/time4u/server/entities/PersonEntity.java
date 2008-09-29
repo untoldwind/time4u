@@ -49,9 +49,10 @@ public class PersonEntity
   {
   }
 
-  public PersonEntity(final String id, final String userId)
+  public PersonEntity(final String id, final long revision, final String userId)
   {
     m_id = id;
+    m_revision = revision;
     m_userId = userId;
   }
 

@@ -41,6 +41,10 @@
 			<artifactId>jaxb-api</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>javax.jws</groupId>
+			<artifactId>jsr181-api</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>persistence-api</artifactId>
 		</dependency>

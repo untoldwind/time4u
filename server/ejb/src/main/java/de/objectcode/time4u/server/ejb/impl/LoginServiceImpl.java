@@ -2,9 +2,10 @@ package de.objectcode.time4u.server.ejb.impl;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
+import javax.ejb.EJB;
 import javax.ejb.Local;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -12,9 +13,14 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.jboss.annotation.ejb.LocalBinding;
+import org.jboss.annotation.ejb.RemoteBinding;
 
+import de.objectcode.time4u.server.api.ILoginService;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.RoleEntity;
+import de.objectcode.time4u.server.entities.revision.EntityType;
+import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
+import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 import de.objectcode.time4u.server.jaas.service.ILoginServiceLocal;
 import de.objectcode.time4u.server.jaas.service.LoginLocal;
 import de.objectcode.time4u.server.utils.DefaultPasswordEncoder;
@@ -22,11 +28,55 @@ import de.objectcode.time4u.server.utils.IPasswordEncoder;
 
 @Stateless
 @Local(ILoginServiceLocal.class)
-@LocalBinding(jndiBinding = "time4u-server/LoginServiceBean/local")
-public class LoginServiceImpl implements ILoginServiceLocal
+@LocalBinding(jndiBinding = "time4u-server/LoginService/local")
+@Remote(ILoginService.class)
+@RemoteBinding(jndiBinding = "time4u-server/LoginService/remote")
+public class LoginServiceImpl implements ILoginServiceLocal, ILoginService
 {
   @PersistenceContext(unitName = "time4u")
   private EntityManager m_manager;
+
+  @EJB
+  private IRevisionGenerator revisionGenerator;
+
+  /**
+   * {@inheritDoc}
+   */
+  public boolean checkLogin(final String userId)
+  {
+    final Query query = m_manager.createQuery("from " + PersonEntity.class.getName() + " p where p.userId = :userId");
+
+    query.setParameter("userId", userId);
+    try {
+      final PersonEntity person = (PersonEntity) query.getSingleResult();
+
+      return person != null;
+    } catch (final NoResultException e) {
+    }
+
+    return false;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public boolean registerLogin(final String userId, final String password, final String name, final String email)
+  {
+    final Query query = m_manager.createQuery("from " + PersonEntity.class.getName() + " p where p.userId = :userId");
+
+    query.setParameter("userId", userId);
+    try {
+      final PersonEntity person = (PersonEntity) query.getSingleResult();
+
+      if (person != null) {
+        return false;
+      }
+    } catch (final NoResultException e) {
+    }
+
+    // TODO Auto-generated method stub
+    return false;
+  }
 
   /**
    * {@inheritDoc}
@@ -60,8 +110,9 @@ public class LoginServiceImpl implements ILoginServiceLocal
     final IPasswordEncoder encoder = new DefaultPasswordEncoder();
 
     // TODO: Find a place for serverid
-    final String personId = new UUID(1L, 1L).toString();
-    final PersonEntity person = new PersonEntity(personId, "admin");
+    final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PERSON, null);
+    final String personId = revisionLock.generateId(1L);
+    final PersonEntity person = new PersonEntity(personId, revisionLock.getLatestRevision(), "admin");
 
     person.setHashedPassword(encoder.encrypt("admin".toCharArray()));
     person.setName("admin");

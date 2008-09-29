@@ -7,6 +7,10 @@
 		<servlet-class>de.objectcode.time4u.server.web.ws.PingServiceWS</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>LoginServiceWS</servlet-name>
+		<servlet-class>de.objectcode.time4u.server.web.ws.LoginServiceWS</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>PersonServiceWS</servlet-name>
 		<servlet-class>de.objectcode.time4u.server.web.ws.PersonServiceWS</servlet-class>
 	</servlet>
@@ -18,6 +22,11 @@
 	<servlet-mapping>
 		<servlet-name>PingServiceWS</servlet-name>
 		<url-pattern>/PingService</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>LoginServiceWS</servlet-name>
+		<url-pattern>/LoginService</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>

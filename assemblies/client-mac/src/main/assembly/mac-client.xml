@@ -40,24 +40,11 @@
 				${artifact.groupId}.${artifact.artifactId}_${artifact.version}.${artifact.extension}
 			</outputFileNameMapping>
 			<outputDirectory>
-				Time4U.app/Contents/Resources/Java/features/de.objectcode.tim4u.feature_${pom.version}
+				Time4U.app/Contents/Resources/Java/features/de.objectcode.time4u.client.feature_${pom.version}
 			</outputDirectory>
 			<unpack>true</unpack>
 			<includes>
-				<include>de.objectcode.time4u.client:time4u-client-feature
-				</include>
-			</includes>
-		</dependencySet>
-		<dependencySet>
-			<outputFileNameMapping>
-				${artifact.groupId}.${artifact.artifactId}_${artifact.version}.${artifact.extension}
-			</outputFileNameMapping>
-			<outputDirectory>
-				Time4U.app/Contents/Resources/Java/features/de.objectcode.tim4u.feature_${pom.version}
-			</outputDirectory>
-			<unpack>true</unpack>
-			<includes>
-				<include>de.objectcode.time4u.client:time4u-client-feature
+				<include>de.objectcode.time4u.client:feature:jar:feature
 				</include>
 			</includes>
 		</dependencySet>

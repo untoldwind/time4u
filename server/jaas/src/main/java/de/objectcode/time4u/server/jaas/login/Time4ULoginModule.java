@@ -111,7 +111,7 @@ public class Time4ULoginModule implements LoginModule
     try {
       final InitialContext ctx = new InitialContext();
 
-      final ILoginServiceLocal loginService = (ILoginServiceLocal) ctx.lookup("time4u-server/LoginServiceBean/local");
+      final ILoginServiceLocal loginService = (ILoginServiceLocal) ctx.lookup("time4u-server/LoginService/local");
       final LoginLocal login = loginService.findLogin(username);
 
       final IPasswordEncoder encoder = new DefaultPasswordEncoder();

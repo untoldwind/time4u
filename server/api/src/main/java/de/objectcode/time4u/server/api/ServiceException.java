@@ -1,5 +1,6 @@
 package de.objectcode.time4u.server.api;
 
+
 /**
  * Generic service exception.
  * 

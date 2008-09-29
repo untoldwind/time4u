@@ -17,7 +17,6 @@
 			<version>${pom.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		
 		<dependency>
 			<groupId>javax.jws</groupId>
 			<artifactId>jsr181-api</artifactId>
@@ -25,6 +24,10 @@
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
 		</dependency>
 	</dependencies>
 	<profiles>
