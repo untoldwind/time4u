@@ -16,6 +16,24 @@
 		<developerConnection>scm:svn:https://time4u.svn.sourceforge.net/svnroot/time4u/overhaul/trunk</developerConnection>
 		<url>http://sourceforge.net/projects/time4u</url>
 	</scm>
+	<repositories>
+		<repository>
+			<id>repository.jboss.org</id>
+			<name>JBoss repository for Maven 2</name>
+			<url>http://repository.jboss.org/maven2/</url>
+		</repository>
+		<repository>
+			<id>maven-repository.dev.java.net</id>
+			<name>Java.net Repository for Maven 1</name>
+			<url>http://download.java.net/maven/1/</url>
+			<layout>legacy</layout>
+		</repository>
+		<repository>
+			<id>maven2-repository.dev.java.net</id>
+			<name>Java.net Repository for Maven 2</name>
+			<url>http://download.java.net/maven/2/</url>
+		</repository>
+	</repositories>
 	<build>
 		<plugins>
 			<plugin>

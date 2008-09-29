@@ -14,7 +14,7 @@ import de.objectcode.time4u.server.api.data.PingResult;
  * 
  * @author junglas
  */
-@WebService
+@WebService(targetNamespace = "http://objectcode.de/time4u/api/ws")
 @SOAPBinding(style = Style.RPC)
 public interface IPingService
 {
@@ -26,5 +26,5 @@ public interface IPingService
    *           on error
    */
   @WebMethod
-  PingResult ping() throws ServiceException;
+  PingResult ping();
 }
