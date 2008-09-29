@@ -17,7 +17,8 @@ import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.RoleEntity;
 import de.objectcode.time4u.server.jaas.service.ILoginServiceLocal;
 import de.objectcode.time4u.server.jaas.service.LoginLocal;
-import de.objectcode.time4u.server.utils.PasswordEncoder;
+import de.objectcode.time4u.server.utils.DefaultPasswordEncoder;
+import de.objectcode.time4u.server.utils.IPasswordEncoder;
 
 @Stateless
 @Local(ILoginServiceLocal.class)
@@ -56,11 +57,13 @@ public class LoginServiceImpl implements ILoginServiceLocal
    */
   private PersonEntity initializeAdmin()
   {
+    final IPasswordEncoder encoder = new DefaultPasswordEncoder();
+
     // TODO: Find a place for serverid
     final String personId = new UUID(1L, 1L).toString();
     final PersonEntity person = new PersonEntity(personId, "admin");
 
-    person.setHashedPassword(PasswordEncoder.encrypt("admin"));
+    person.setHashedPassword(encoder.encrypt("admin".toCharArray()));
     person.setName("admin");
 
     final Query roleQuery = m_manager.createQuery("from " + RoleEntity.class.getName() + " r where r.roleId = :roleId");

@@ -17,7 +17,9 @@ import org.hibernate.dialect.DerbyDialect;
 import de.objectcode.time4u.client.store.StorePlugin;
 import de.objectcode.time4u.client.store.api.IProjectRepository;
 import de.objectcode.time4u.client.store.api.IRepository;
+import de.objectcode.time4u.client.store.api.IServerConnectionRepository;
 import de.objectcode.time4u.client.store.api.ITaskRepository;
+import de.objectcode.time4u.client.store.api.IWorkItemRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
 import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
@@ -42,6 +44,10 @@ import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
 import de.objectcode.time4u.server.entities.revision.SessionRevisionGenerator;
+import de.objectcode.time4u.server.entities.sync.ServerConnectionEntity;
+import de.objectcode.time4u.server.utils.Base64;
+import de.objectcode.time4u.server.utils.DefaultKeyChainEncoder;
+import de.objectcode.time4u.server.utils.IKeyChainEncoder;
 
 /**
  * Hibernate implementation of the repository interface.
@@ -56,21 +62,26 @@ public class HibernateRepository implements IRepository
 
   private Person m_owner;
   private long m_clientId;
+  private final IKeyChainEncoder m_keyChainEncoder;
 
   private final HibernateProjectRepository m_projectRepository;
   private final HibernateTaskRepository m_taskRepository;
   private final HibernateWorkItemRepository m_workItemRepository;
+  private final HibernateServerConnectionRepository m_serverConnectionRepository;
 
   private final Map<RepositoryEventType, List<IRepositoryListener>> m_listeners = new HashMap<RepositoryEventType, List<IRepositoryListener>>();
 
   public HibernateRepository(final File directory) throws RepositoryException
   {
     m_hibernateTemplate = new HibernateTemplate(buildSessionFactory(directory));
+    m_keyChainEncoder = new DefaultKeyChainEncoder();
 
     initialize();
+
     m_projectRepository = new HibernateProjectRepository(this, m_hibernateTemplate);
     m_taskRepository = new HibernateTaskRepository(this, m_hibernateTemplate);
     m_workItemRepository = new HibernateWorkItemRepository(this, m_hibernateTemplate);
+    m_serverConnectionRepository = new HibernateServerConnectionRepository(this, m_hibernateTemplate);
   }
 
   /**
@@ -92,9 +103,22 @@ public class HibernateRepository implements IRepository
   /**
    * {@inheritDoc}
    */
-  public HibernateWorkItemRepository getWorkItemRepository()
+  public IWorkItemRepository getWorkItemRepository()
   {
     return m_workItemRepository;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public IServerConnectionRepository getServerConnectionRepository()
+  {
+    return m_serverConnectionRepository;
+  }
+
+  IKeyChainEncoder getKeyChainEncoder()
+  {
+    return m_keyChainEncoder;
   }
 
   /**
@@ -179,6 +203,7 @@ public class HibernateRepository implements IRepository
           clientData.setId(1);
           clientData.setOwnerPerson(ownerPerson);
           clientData.setClientId(clientId);
+          clientData.setKeyChainKey(new String(Base64.encode(m_keyChainEncoder.generateKeyData())));
 
           session.persist(clientData);
 
@@ -188,6 +213,7 @@ public class HibernateRepository implements IRepository
         m_owner = new Person();
         clientData.getOwnerPerson().toDTO(m_owner);
         m_clientId = clientData.getClientId();
+        m_keyChainEncoder.init(Base64.decode(clientData.getKeyChainKey().toCharArray()));
 
         return null;
       }
@@ -227,6 +253,7 @@ public class HibernateRepository implements IRepository
       cfg.addAnnotatedClass(TodoProperty.class);
       cfg.addAnnotatedClass(ClientDataEntity.class);
       cfg.addAnnotatedClass(ActiveWorkItemEntity.class);
+      cfg.addAnnotatedClass(ServerConnectionEntity.class);
 
       return cfg.buildSessionFactory();
     } catch (final Exception e) {

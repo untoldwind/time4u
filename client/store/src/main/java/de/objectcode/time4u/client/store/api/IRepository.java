@@ -19,6 +19,8 @@ public interface IRepository
   /** Get the workitem repository */
   IWorkItemRepository getWorkItemRepository();
 
+  IServerConnectionRepository getServerConnectionRepository();
+
   void addRepositoryListener(RepositoryEventType eventType, IRepositoryListener listener);
 
   void removeRepositoryListener(RepositoryEventType eventType, IRepositoryListener listener);

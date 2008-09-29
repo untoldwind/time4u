@@ -21,7 +21,8 @@ import org.apache.commons.logging.LogFactory;
 
 import de.objectcode.time4u.server.jaas.service.ILoginServiceLocal;
 import de.objectcode.time4u.server.jaas.service.LoginLocal;
-import de.objectcode.time4u.server.utils.PasswordEncoder;
+import de.objectcode.time4u.server.utils.DefaultPasswordEncoder;
+import de.objectcode.time4u.server.utils.IPasswordEncoder;
 
 public class Time4ULoginModule implements LoginModule
 {
@@ -113,7 +114,9 @@ public class Time4ULoginModule implements LoginModule
       final ILoginServiceLocal loginService = (ILoginServiceLocal) ctx.lookup("time4u-server/LoginServiceBean/local");
       final LoginLocal login = loginService.findLogin(username);
 
-      if (login == null || !PasswordEncoder.verify(password, login.getHashedPassword())) {
+      final IPasswordEncoder encoder = new DefaultPasswordEncoder();
+
+      if (login == null || !encoder.verify(password.toCharArray(), login.getHashedPassword())) {
         throw new FailedLoginException("Password Incorrect/Password Required");
       }
 

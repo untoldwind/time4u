@@ -1,5 +1,6 @@
 package de.objectcode.time4u.client.store.impl.hibernate.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -15,6 +16,7 @@ public class ClientDataEntity
   private int m_id;
   private PersonEntity m_ownerPerson;
   private long m_clientId;
+  private String m_keyChainKey;
 
   @Id
   public int getId()
@@ -47,6 +49,17 @@ public class ClientDataEntity
   public void setClientId(final long clientId)
   {
     m_clientId = clientId;
+  }
+
+  @Column(length = 100)
+  public String getKeyChainKey()
+  {
+    return m_keyChainKey;
+  }
+
+  public void setKeyChainKey(final String keyChainKey)
+  {
+    m_keyChainKey = keyChainKey;
   }
 
 }

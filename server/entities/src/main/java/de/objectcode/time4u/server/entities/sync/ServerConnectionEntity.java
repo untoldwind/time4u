@@ -11,7 +11,10 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import de.objectcode.time4u.server.api.data.ServerConnection;
 import de.objectcode.time4u.server.entities.ProjectEntity;
+import de.objectcode.time4u.server.entities.context.IPersistenceContext;
+import de.objectcode.time4u.server.utils.IKeyChainEncoder;
 
 /**
  * Server entity.
@@ -22,20 +25,16 @@ import de.objectcode.time4u.server.entities.ProjectEntity;
  */
 @Entity
 @Table(name = "T4U_SERVERS")
-public class ServerEntity
+public class ServerConnectionEntity
 {
   /** Primary key */
   private long m_id;
-  /** Revision number (increased every time something has changed) */
-  private long m_revision;
   /** Root project to be synchronized */
   private ProjectEntity m_rootProject;
   /** Connection url */
   private String m_url;
-  /** User id */
-  private String m_username;
-  /** Crypted password */
-  private String m_crypedPassword;
+  /** Server credentials */
+  private String m_credentials;
 
   @Id
   @GeneratedValue(generator = "SEQ_T4U_SERVERS")
@@ -48,16 +47,6 @@ public class ServerEntity
   public void setId(final long id)
   {
     m_id = id;
-  }
-
-  public long getRevision()
-  {
-    return m_revision;
-  }
-
-  public void setRevision(final long revision)
-  {
-    m_revision = revision;
   }
 
   @ManyToOne
@@ -83,26 +72,31 @@ public class ServerEntity
     m_url = url;
   }
 
-  @Column(length = 50, nullable = false)
-  public String getUsername()
+  @Column(length = 1000, nullable = false)
+  public String getCredentials()
   {
-    return m_username;
+    return m_credentials;
   }
 
-  public void setUsername(final String username)
+  public void setCredentials(final String credentials)
   {
-    m_username = username;
+    m_credentials = credentials;
   }
 
-  @Column(length = 100, nullable = false)
-  public String getCrypedPassword()
+  public void toDTO(final ServerConnection serverConnection, final IKeyChainEncoder encoder)
   {
-    return m_crypedPassword;
+    serverConnection.setId(m_id);
+    serverConnection.setRootProjectId(m_rootProject != null ? m_rootProject.getId() : null);
+    serverConnection.setUrl(m_url);
+    serverConnection.setCredentials(encoder.decrypt(m_credentials));
   }
 
-  public void setCrypedPassword(final String crypedPassword)
+  public void fromDTO(final IPersistenceContext context, final ServerConnection serverConnection,
+      final IKeyChainEncoder encoder)
   {
-    m_crypedPassword = crypedPassword;
+    m_rootProject = serverConnection.getRootProjectId() != null ? context.findProject(serverConnection
+        .getRootProjectId()) : null;
+    m_url = serverConnection.getUrl();
+    m_credentials = encoder.encrypt(serverConnection.getCredentials());
   }
-
 }
