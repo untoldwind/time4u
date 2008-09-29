@@ -38,4 +38,11 @@
          version="0.9.0"
          unpack="false"/>
 
+   <plugin
+         id="de.objectcode.time4u.client.connection.ui"
+         download-size="0"
+         install-size="0"
+         version="0.9.0"
+         unpack="false"/>
+
 </feature>

@@ -71,7 +71,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     menuBar.add(new GroupMarker("projectAdditions"));
     menuBar.add(new GroupMarker("todoAdditions"));
     menuBar.add(new GroupMarker("workItemAdditions"));
-    menuBar.add(new GroupMarker("synchronizeAdditions"));
+    menuBar.add(new GroupMarker("connectionAdditions"));
     menuBar.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
     menuBar.add(helpMenu);
 

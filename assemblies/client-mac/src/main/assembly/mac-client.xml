@@ -29,6 +29,8 @@
 				</include>
 				<include>de.objectcode.time4u.client:connection:jar:plugin
 				</include>
+				<include>de.objectcode.time4u.client:connection-ui:jar:plugin
+				</include>
 				<include>de.objectcode.time4u.client:ui:jar:plugin
 				</include>
 			</includes>

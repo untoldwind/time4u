@@ -13,6 +13,7 @@
   <modules>
   	<module>store</module>
   	<module>connection</module>
+  	<module>connection-ui</module>
   	<module>ui</module>
   	<module>feature</module>
   </modules>

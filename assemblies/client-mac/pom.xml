@@ -25,6 +25,12 @@
 		</dependency>
 		<dependency>
 			<groupId>de.objectcode.time4u.client</groupId>
+			<artifactId>connection-ui</artifactId>
+			<version>${pom.version}</version>
+			<classifier>plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>de.objectcode.time4u.client</groupId>
 			<artifactId>ui</artifactId>
 			<version>${pom.version}</version>
 			<classifier>plugin</classifier>

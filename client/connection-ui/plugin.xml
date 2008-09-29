@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="de.objectcode.time4u.ui.client.connection.ui.serverActionSet"
+            label="Service Connection ActionSet"
+            visible="true">
+         <menu
+               id="serverMenu"
+               label="%menu.server.label"
+               path="connectionAdditions">
+            <groupMarker
+                  name="serverGroup">
+            </groupMarker>
+         </menu>
+         <action
+               class="de.objectcode.time4u.client.connection.ui.actions.ConnectionActionDelegate"
+               id="de.objectcode.time4u.client.connection.new"
+               label="%action.connection.new.label"
+               menubarPath="serverMenu/serverGroup"
+               style="push"
+               tooltip="%action.connection.new.tooltip">
+         </action>
+      </actionSet>
+   </extension>
+
+</plugin>

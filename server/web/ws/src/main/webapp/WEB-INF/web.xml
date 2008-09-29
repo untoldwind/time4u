@@ -3,6 +3,10 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
 	version="2.4">
 	<servlet>
+		<servlet-name>PingServiceWS</servlet-name>
+		<servlet-class>de.objectcode.time4u.server.web.ws.PingServiceWS</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>PersonServiceWS</servlet-name>
 		<servlet-class>de.objectcode.time4u.server.web.ws.PersonServiceWS</servlet-class>
 	</servlet>
@@ -10,6 +14,11 @@
 		<servlet-name>ProjectServiceWS</servlet-name>
 		<servlet-class>de.objectcode.time4u.server.web.ws.ProjectServiceWS</servlet-class>
 	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>PingServiceWS</servlet-name>
+		<url-pattern>/PingService</url-pattern>
+	</servlet-mapping>
 	
 	<servlet-mapping>
 		<servlet-name>PersonServiceWS</servlet-name>
