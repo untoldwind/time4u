@@ -40,6 +40,12 @@
 			<version>${pom.version}</version>
 			<type>war</type>
 		</dependency>
+		<dependency>
+			<groupId>de.objectcode.time4u.server.web</groupId>
+			<artifactId>time4u-server-web-ws</artifactId>
+			<version>${pom.version}</version>
+			<type>war</type>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -58,7 +64,7 @@
 						</ejbModule>
 						<ejbModule>
 							<groupId>de.objectcode.time4u.server</groupId>
-							<artifactId>time4u-server-entities</artifactId>
+							<artifactId>time4u-server-ejb</artifactId>
 						</ejbModule>
 						<sarModule>
 							<groupId>de.objectcode.time4u.server</groupId>
@@ -68,6 +74,11 @@
 							<groupId>de.objectcode.time4u.server.web</groupId>
 							<artifactId>time4u-server-web-ui</artifactId>
 							<contextRoot>/time4u</contextRoot>
+						</webModule>
+						<webModule>
+							<groupId>de.objectcode.time4u.server.web</groupId>
+							<artifactId>time4u-server-web-ws</artifactId>
+							<contextRoot>/time4u-ws</contextRoot>
 						</webModule>
 					</modules>
 				</configuration>
