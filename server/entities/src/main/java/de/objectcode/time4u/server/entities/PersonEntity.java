@@ -25,7 +25,7 @@ import de.objectcode.time4u.server.api.data.Person;
 public class PersonEntity
 {
   /** Primary key. */
-  private EntityKey m_id;
+  private String m_id;
   /** Revision number (increased every time something has changed) */
   private long m_revision;
   /** User id of the person. */
@@ -49,19 +49,20 @@ public class PersonEntity
   {
   }
 
-  public PersonEntity(final EntityKey id, final String userId)
+  public PersonEntity(final String id, final String userId)
   {
     m_id = id;
     m_userId = userId;
   }
 
   @Id
-  public EntityKey getId()
+  @Column(length = 36)
+  public String getId()
   {
     return m_id;
   }
 
-  public void setId(final EntityKey id)
+  public void setId(final String id)
   {
     m_id = id;
   }
@@ -111,8 +112,7 @@ public class PersonEntity
   }
 
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "T4U_PERSONS_ROLES", joinColumns = { @JoinColumn(name = "person_clientId"),
-      @JoinColumn(name = "person_localId") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
+  @JoinTable(name = "T4U_PERSONS_ROLES", joinColumns = { @JoinColumn(name = "person_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
   public Set<RoleEntity> getRoles()
   {
     return m_roles;
@@ -190,7 +190,7 @@ public class PersonEntity
 
   public void toDTO(final Person person)
   {
-    person.setId(m_id.getUUID());
+    person.setId(m_id);
     person.setRevision(m_revision);
     person.setName(m_name);
     person.setUserId(m_userId);

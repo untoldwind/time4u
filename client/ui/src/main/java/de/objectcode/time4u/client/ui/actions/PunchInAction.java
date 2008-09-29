@@ -1,7 +1,5 @@
 package de.objectcode.time4u.client.ui.actions;
 
-import java.util.UUID;
-
 import org.eclipse.jface.action.Action;
 
 import de.objectcode.time4u.client.store.api.IProjectRepository;
@@ -16,10 +14,10 @@ public class PunchInAction extends Action
 {
   private final IProjectRepository m_projectRepository;
   private final ITaskRepository m_taskRepository;
-  private final UUID m_projectId;
-  private final UUID m_taskId;
+  private final String m_projectId;
+  private final String m_taskId;
 
-  public PunchInAction(final IRepository repository, final UUID projectId, final UUID taskId)
+  public PunchInAction(final IRepository repository, final String projectId, final String taskId)
   {
     m_projectRepository = repository.getProjectRepository();
     m_taskRepository = repository.getTaskRepository();
@@ -38,12 +36,12 @@ public class PunchInAction extends Action
     setImageDescriptor(UIPlugin.getImageDescriptor("/icons/PunchedIn.gif"));
   }
 
-  public UUID getProjectId()
+  public String getProjectId()
   {
     return m_projectId;
   }
 
-  public UUID getTaskId()
+  public String getTaskId()
   {
     return m_taskId;
   }

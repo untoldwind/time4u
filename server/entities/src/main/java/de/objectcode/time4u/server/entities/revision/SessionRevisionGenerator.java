@@ -1,7 +1,5 @@
 package de.objectcode.time4u.server.entities.revision;
 
-import java.util.UUID;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -18,30 +16,27 @@ public class SessionRevisionGenerator implements IRevisionGenerator
   /**
    * {@inheritDoc}
    */
-  public IRevisionLock getNextRevision(final EntityType entityType, final UUID part)
+  public IRevisionLock getNextRevision(final EntityType entityType, final String part)
   {
-    final RevisionEntityKey key = new RevisionEntityKey(entityType, part);
+    final RevisionEntityKey key = new RevisionEntityKey(entityType, part != null ? part : "<default>");
 
     final Query updateQuery = m_session
-        .createSQLQuery("update T4U_REVISIONS set latestRevision = latestRevision + 1 where entityKeyValue=:entityKeyValue and clientPart=:clientPart and localPart=:localPart");
+        .createSQLQuery("update T4U_REVISIONS set latestRevision = latestRevision + 1 where entityKeyValue=:entityKeyValue and part=:part");
     updateQuery.setInteger("entityKeyValue", key.getEntityKeyValue());
-    updateQuery.setLong("clientPart", key.getClientPart());
-    updateQuery.setLong("localPart", key.getLocalPart());
+    updateQuery.setString("part", key.getPart());
 
     if (updateQuery.executeUpdate() != 1) {
       createInOwnTransaction(key);
 
       updateQuery.setInteger("entityKeyValue", key.getEntityKeyValue());
-      updateQuery.setLong("clientPart", key.getClientPart());
-      updateQuery.setLong("localPart", key.getLocalPart());
+      updateQuery.setString("part", key.getPart());
 
       if (updateQuery.executeUpdate() != 1) {
         throw new RuntimeException("Failed to get next revision number");
       }
     }
 
-    final RevisionEntity revisionEntity = (RevisionEntity) m_session.get(RevisionEntity.class, new RevisionEntityKey(
-        entityType, part));
+    final RevisionEntity revisionEntity = (RevisionEntity) m_session.get(RevisionEntity.class, key);
 
     return revisionEntity;
   }

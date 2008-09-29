@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
@@ -32,7 +31,7 @@ import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 public class ProjectEntity
 {
   /** Primary key */
-  private EntityKey m_id;
+  private String m_id;
   /** Project name */
   private String m_name;
   /** Project description */
@@ -57,7 +56,7 @@ public class ProjectEntity
   {
   }
 
-  public ProjectEntity(final EntityKey id, final long revsion, final String name)
+  public ProjectEntity(final String id, final long revsion, final String name)
   {
     m_id = id;
     m_revision = revsion;
@@ -65,12 +64,13 @@ public class ProjectEntity
   }
 
   @Id
-  public EntityKey getId()
+  @Column(length = 36)
+  public String getId()
   {
     return m_id;
   }
 
-  public void setId(final EntityKey id)
+  public void setId(final String id)
   {
     m_id = id;
   }
@@ -118,7 +118,7 @@ public class ProjectEntity
   }
 
   @ManyToOne(optional = true)
-  @JoinColumns( { @JoinColumn(name = "parent_clientId"), @JoinColumn(name = "parent_localId") })
+  @JoinColumn(name = "parent_id")
   public ProjectEntity getParent()
   {
     return m_parent;
@@ -164,7 +164,7 @@ public class ProjectEntity
     m_revision = revision;
   }
 
-  @Column(name = "parentKey", length = 300)
+  @Column(name = "parentKey", length = 740)
   public String getParentKey()
   {
     return m_parentKey;
@@ -178,7 +178,7 @@ public class ProjectEntity
   public void updateParentKey()
   {
     if (m_parent == null) {
-      m_parentKey = String.valueOf(m_id);
+      m_parentKey = m_id;
     } else {
       if (m_parent.getParentKey() == null) {
         m_parent.updateParentKey();
@@ -205,12 +205,12 @@ public class ProjectEntity
 
   public void toSummaryDTO(final ProjectSummary project)
   {
-    project.setId(m_id.getUUID());
+    project.setId(m_id);
     project.setRevision(m_revision);
     project.setActive(m_active);
     project.setDeleted(m_deleted);
     project.setName(m_name);
-    project.setParentId(m_parent != null ? m_parent.getId().getUUID() : null);
+    project.setParentId(m_parent != null ? m_parent.getId() : null);
   }
 
   public void toDTO(final Project project)

@@ -1,6 +1,5 @@
 package de.objectcode.time4u.server.api.data;
 
-import java.util.UUID;
 
 /**
  * Task DTO object.
@@ -14,7 +13,7 @@ public class TaskSummary implements ISynchronizableData
   private static final long serialVersionUID = -3947869946239621847L;
 
   /** Internal server id of the task. */
-  private UUID m_id;
+  private String m_id;
   /** Revision number. */
   private long m_revision;
   /** Task name. */
@@ -24,14 +23,14 @@ public class TaskSummary implements ISynchronizableData
   /** Flag if the task is deleted. */
   private boolean m_deleted;
   /** Internal server id of the project owning the task. */
-  private UUID m_projectId;
+  private String m_projectId;
 
-  public UUID getId()
+  public String getId()
   {
     return m_id;
   }
 
-  public void setId(final UUID id)
+  public void setId(final String id)
   {
     m_id = id;
   }
@@ -79,7 +78,7 @@ public class TaskSummary implements ISynchronizableData
   /**
    * @return the projectId
    */
-  public UUID getProjectId()
+  public String getProjectId()
   {
     return m_projectId;
   }
@@ -88,7 +87,7 @@ public class TaskSummary implements ISynchronizableData
    * @param projectId
    *          the projectId to set
    */
-  public void setProjectId(final UUID projectId)
+  public void setProjectId(final String projectId)
   {
     m_projectId = projectId;
   }

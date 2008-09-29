@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +27,7 @@ import de.objectcode.time4u.server.api.data.Team;
 public class TeamEntity
 {
   /** Primary key. */
-  private EntityKey m_id;
+  private String m_id;
   /** Team name. */
   private String m_name;
   /** All owners (responsible persons) of the team. */
@@ -39,12 +38,13 @@ public class TeamEntity
   private long m_revision;
 
   @Id
-  public EntityKey getId()
+  @Column(length = 36)
+  public String getId()
   {
     return m_id;
   }
 
-  public void setId(final EntityKey id)
+  public void setId(final String id)
   {
     m_id = id;
   }
@@ -61,9 +61,7 @@ public class TeamEntity
   }
 
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "T4U_TEAMS_OWNERS", joinColumns = { @JoinColumn(name = "team_clientId"),
-      @JoinColumn(name = "team_localId") }, inverseJoinColumns = { @JoinColumn(name = "person_clientId"),
-      @JoinColumn(name = "person_localId") })
+  @JoinTable(name = "T4U_TEAMS_OWNERS", joinColumns = { @JoinColumn(name = "team_id") }, inverseJoinColumns = { @JoinColumn(name = "person_id") })
   public Set<PersonEntity> getOwners()
   {
     return m_owners;
@@ -75,9 +73,7 @@ public class TeamEntity
   }
 
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "T4U_TEAMS_MEMBERS", joinColumns = { @JoinColumn(name = "team_clientId"),
-      @JoinColumn(name = "team_localId") }, inverseJoinColumns = { @JoinColumn(name = "person_clientId"),
-      @JoinColumn(name = "person_localId") })
+  @JoinTable(name = "T4U_TEAMS_MEMBERS", joinColumns = { @JoinColumn(name = "team_id") }, inverseJoinColumns = { @JoinColumn(name = "person_id") })
   public Set<PersonEntity> getMembers()
   {
     return m_members;
@@ -122,19 +118,19 @@ public class TeamEntity
 
   public void toDTO(final Team team)
   {
-    team.setId(m_id.getUUID());
+    team.setId(m_id);
     team.setRevision(m_revision);
     team.setName(m_name);
-    final List<UUID> ownerIds = new ArrayList<UUID>();
+    final List<String> ownerIds = new ArrayList<String>();
 
     for (final PersonEntity person : m_owners) {
-      ownerIds.add(person.getId().getUUID());
+      ownerIds.add(person.getId());
     }
     team.setOwnerIds(ownerIds);
-    final List<UUID> memberIds = new ArrayList<UUID>();
+    final List<String> memberIds = new ArrayList<String>();
 
     for (final PersonEntity person : m_members) {
-      memberIds.add(person.getId().getUUID());
+      memberIds.add(person.getId());
     }
     team.setMemberIds(memberIds);
   }
@@ -148,7 +144,7 @@ public class TeamEntity
     }
     m_owners.clear();
     if (team.getOwnerIds() != null) {
-      for (final UUID id : team.getOwnerIds()) {
+      for (final String id : team.getOwnerIds()) {
         m_owners.add(entityManager.find(PersonEntity.class, id));
       }
     }
@@ -159,7 +155,7 @@ public class TeamEntity
 
     m_members.clear();
     if (team.getMemberIds() != null) {
-      for (final UUID id : team.getMemberIds()) {
+      for (final String id : team.getMemberIds()) {
         m_members.add(entityManager.find(PersonEntity.class, id));
       }
     }

@@ -3,7 +3,6 @@ package de.objectcode.time4u.client.store.impl.hibernate.entities;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -29,7 +28,7 @@ public class ClientDataEntity
   }
 
   @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "owner_person_clientId"), @JoinColumn(name = "owner_person_localId") })
+  @JoinColumn(name = "owner_person_id")
   public PersonEntity getOwnerPerson()
   {
     return m_ownerPerson;

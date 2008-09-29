@@ -4,5 +4,5 @@ public interface IRevisionLock
 {
   long getLatestRevision();
 
-  long generateLocalId();
+  String generateId(long clientId);
 }

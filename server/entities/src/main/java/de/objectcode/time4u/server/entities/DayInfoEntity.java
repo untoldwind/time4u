@@ -12,7 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -33,12 +32,11 @@ import de.objectcode.time4u.server.api.data.WorkItem;
  * @author junglas
  */
 @Entity
-@Table(name = "T4U_DAYINFOS", uniqueConstraints = @UniqueConstraint(columnNames = { "person_clientId",
-    "person_localId", "daydate" }))
+@Table(name = "T4U_DAYINFOS", uniqueConstraints = @UniqueConstraint(columnNames = { "person_id", "daydate" }))
 public class DayInfoEntity
 {
   /** Primary key */
-  private EntityKey m_id;
+  private String m_id;
   /** Revision number (increased every time something has changed) */
   private long m_revision;
   /** The person this day belongs too. */
@@ -61,7 +59,7 @@ public class DayInfoEntity
   {
   }
 
-  public DayInfoEntity(final EntityKey id, final long revision, final PersonEntity person, final Date date)
+  public DayInfoEntity(final String id, final long revision, final PersonEntity person, final Date date)
   {
     m_id = id;
     m_revision = revision;
@@ -72,12 +70,13 @@ public class DayInfoEntity
   }
 
   @Id
-  public EntityKey getId()
+  @Column(length = 36)
+  public String getId()
   {
     return m_id;
   }
 
-  public void setId(final EntityKey id)
+  public void setId(final String id)
   {
     m_id = id;
   }
@@ -93,7 +92,7 @@ public class DayInfoEntity
   }
 
   @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "person_clientId"), @JoinColumn(name = "person_localId") })
+  @JoinColumn(name = "person_id")
   public PersonEntity getPerson()
   {
     return m_person;
@@ -116,8 +115,7 @@ public class DayInfoEntity
   }
 
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "T4U_DAYINFOS_TAGS", joinColumns = { @JoinColumn(name = "dayinfo_clientId"),
-      @JoinColumn(name = "dayinfo_localId") }, inverseJoinColumns = { @JoinColumn(name = "tag_name") })
+  @JoinTable(name = "T4U_DAYINFOS_TAGS", joinColumns = { @JoinColumn(name = "dayinfo_id") }, inverseJoinColumns = { @JoinColumn(name = "tag_name") })
   public Set<DayTagEntity> getTags()
   {
     return m_tags;
@@ -202,7 +200,7 @@ public class DayInfoEntity
       } else {
         item1.setValid(true);
         for (final WorkItemEntity item2 : m_workItems) {
-          if (item1.getId() != item2.getId()) {
+          if (!item1.getId().equals(item2.getId())) {
             if (item1.getBegin() > item2.getBegin() && item1.getBegin() < item2.getEnd()) {
               item1.setValid(false);
               hasInvalidWorkItems = true;
@@ -226,7 +224,7 @@ public class DayInfoEntity
 
   public void toSummaryDTO(final DayInfoSummary dayinfo)
   {
-    dayinfo.setId(m_id.getUUID());
+    dayinfo.setId(m_id);
     dayinfo.setRevision(m_revision);
     dayinfo.setDay(new CalendarDay(m_date));
     dayinfo.setHasWorkItems(m_hasWorkItems);

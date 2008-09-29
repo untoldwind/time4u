@@ -1,6 +1,5 @@
 package de.objectcode.time4u.server.entities.revision;
 
-import java.util.UUID;
 
 /**
  * Revision number generator.
@@ -9,5 +8,5 @@ import java.util.UUID;
  */
 public interface IRevisionGenerator
 {
-  IRevisionLock getNextRevision(EntityType entityType, UUID part);
+  IRevisionLock getNextRevision(EntityType entityType, String part);
 }

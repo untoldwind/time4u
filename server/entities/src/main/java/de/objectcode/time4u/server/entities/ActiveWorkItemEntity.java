@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -18,7 +17,7 @@ import org.hibernate.annotations.Parameter;
 public class ActiveWorkItemEntity
 {
   /** Primary key. */
-  private EntityKey m_id;
+  private String m_id;
   /** Revision number (increased every time something has changed) */
   private long m_revision;
   private PersonEntity m_person;
@@ -41,12 +40,12 @@ public class ActiveWorkItemEntity
   @Id
   @GeneratedValue(generator = "PERSON_ID")
   @GenericGenerator(name = "PERSON_ID", strategy = "foreign", parameters = { @Parameter(name = "property", value = "person") })
-  public EntityKey getId()
+  public String getId()
   {
     return m_id;
   }
 
-  public void setId(final EntityKey id)
+  public void setId(final String id)
   {
     m_id = id;
   }
@@ -74,7 +73,7 @@ public class ActiveWorkItemEntity
   }
 
   @ManyToOne(optional = true)
-  @JoinColumns( { @JoinColumn(name = "workitem_clientId"), @JoinColumn(name = "workitem_localId") })
+  @JoinColumn(name = "workitem_id")
   public WorkItemEntity getWorkItem()
   {
     return m_workItem;

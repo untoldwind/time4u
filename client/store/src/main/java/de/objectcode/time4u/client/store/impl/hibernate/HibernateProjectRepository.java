@@ -2,7 +2,6 @@ package de.objectcode.time4u.client.store.impl.hibernate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -15,7 +14,6 @@ import de.objectcode.time4u.client.store.api.event.ProjectRepositoryEvent;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.filter.ProjectFilter;
-import de.objectcode.time4u.server.entities.EntityKey;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.context.SessionPersistenceContext;
 import de.objectcode.time4u.server.entities.revision.EntityType;
@@ -37,12 +35,12 @@ public class HibernateProjectRepository implements IProjectRepository
   /**
    * {@inheritDoc}
    */
-  public Project getProject(final UUID projectId) throws RepositoryException
+  public Project getProject(final String projectId) throws RepositoryException
   {
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Project>() {
       public Project perform(final Session session)
       {
-        final ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, new EntityKey(projectId));
+        final ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, projectId);
 
         if (projectEntity != null) {
           final Project project = new Project();
@@ -58,12 +56,12 @@ public class HibernateProjectRepository implements IProjectRepository
   /**
    * {@inheritDoc}
    */
-  public ProjectSummary getProjectSummary(final UUID projectId) throws RepositoryException
+  public ProjectSummary getProjectSummary(final String projectId) throws RepositoryException
   {
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<ProjectSummary>() {
       public ProjectSummary perform(final Session session)
       {
-        final ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, new EntityKey(projectId));
+        final ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, projectId);
 
         if (projectEntity != null) {
           final ProjectSummary project = new ProjectSummary();
@@ -93,10 +91,10 @@ public class HibernateProjectRepository implements IProjectRepository
           criteria.add(Restrictions.eq("deleted", filter.getDeleted()));
         }
         if (filter.getParentProject() != null) {
-          if (filter.getParentProject().equals(new UUID(0L, 0L))) {
+          if (filter.getParentProject().equals("")) {
             criteria.add(Restrictions.isNull("parent"));
           } else {
-            criteria.add(Restrictions.eq("parent.id", new EntityKey(filter.getParentProject())));
+            criteria.add(Restrictions.eq("parent.id", filter.getParentProject()));
           }
         }
         if (filter.getMinRevision() != null) {
@@ -145,10 +143,10 @@ public class HibernateProjectRepository implements IProjectRepository
           criteria.add(Restrictions.eq("deleted", filter.getDeleted()));
         }
         if (filter.getParentProject() != null) {
-          if (filter.getParentProject().equals(new UUID(0L, 0L))) {
+          if (filter.getParentProject().equals("")) {
             criteria.add(Restrictions.isNull("parent"));
           } else {
-            criteria.add(Restrictions.eq("parent.id", new EntityKey(filter.getParentProject())));
+            criteria.add(Restrictions.eq("parent.id", filter.getParentProject()));
           }
         }
         if (filter.getMinRevision() != null) {
@@ -195,14 +193,14 @@ public class HibernateProjectRepository implements IProjectRepository
         ProjectEntity projectEntity;
 
         if (project.getId() != null) {
-          projectEntity = (ProjectEntity) session.get(ProjectEntity.class, new EntityKey(project.getId()));
+          projectEntity = (ProjectEntity) session.get(ProjectEntity.class, project.getId());
 
           projectEntity.fromDTO(new SessionPersistenceContext(session), project);
           projectEntity.setRevision(revisionLock.getLatestRevision());
 
           session.flush();
         } else {
-          final EntityKey projectId = new EntityKey(m_repository.getClientId(), revisionLock.generateLocalId());
+          final String projectId = revisionLock.generateId(m_repository.getClientId());
           projectEntity = new ProjectEntity(projectId, revisionLock.getLatestRevision(), project.getName());
 
           projectEntity.fromDTO(new SessionPersistenceContext(session), project);

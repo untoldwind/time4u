@@ -1,7 +1,6 @@
 package de.objectcode.time4u.server.api.data;
 
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * Person DTO object.
@@ -13,7 +12,7 @@ public class Person implements ISynchronizableData
   private static final long serialVersionUID = -4022407515199667835L;
 
   /** Internal server id of the person. */
-  private UUID m_id;
+  private String m_id;
   /** Revision number. */
   private long m_revision;
   /** User id of the person. */
@@ -25,12 +24,12 @@ public class Person implements ISynchronizableData
   /** Timestamp of the last synchronization of that person. */
   private Date m_lastSynchronize;
 
-  public UUID getId()
+  public String getId()
   {
     return m_id;
   }
 
-  public void setId(final UUID id)
+  public void setId(final String id)
   {
     m_id = id;
   }

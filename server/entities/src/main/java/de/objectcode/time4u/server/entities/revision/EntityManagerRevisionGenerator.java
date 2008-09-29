@@ -1,7 +1,5 @@
 package de.objectcode.time4u.server.entities.revision;
 
-import java.util.UUID;
-
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 
@@ -17,7 +15,7 @@ public class EntityManagerRevisionGenerator implements IRevisionGenerator
   /**
    * {@inheritDoc}
    */
-  public IRevisionLock getNextRevision(final EntityType entityType, final UUID part)
+  public IRevisionLock getNextRevision(final EntityType entityType, final String part)
   {
     final RevisionEntityKey key = new RevisionEntityKey(entityType, part);
     RevisionEntity revisionEntity = m_entityManager.find(RevisionEntity.class, key);

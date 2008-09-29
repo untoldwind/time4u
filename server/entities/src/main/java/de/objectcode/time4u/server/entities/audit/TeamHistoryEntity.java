@@ -10,7 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -74,8 +73,8 @@ public class TeamHistoryEntity
     m_id = id;
   }
 
-  @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "team_clientId"), @JoinColumn(name = "team_localId") })
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "team_id")
   public TeamEntity getTeam()
   {
     return m_team;
@@ -98,8 +97,7 @@ public class TeamHistoryEntity
   }
 
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "T4U_TEAMS_HISTORY_OWNERS", joinColumns = { @JoinColumn(name = "teamhistory_id") }, inverseJoinColumns = {
-      @JoinColumn(name = "person_clientId"), @JoinColumn(name = "person_localId") })
+  @JoinTable(name = "T4U_TEAMS_HISTORY_OWNERS", joinColumns = { @JoinColumn(name = "teamhistory_id") }, inverseJoinColumns = { @JoinColumn(name = "person_id") })
   public Set<PersonEntity> getOwner()
   {
     return m_owners;
@@ -111,8 +109,7 @@ public class TeamHistoryEntity
   }
 
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "T4U_TEAMS_HISTORY_MEMBERS", joinColumns = { @JoinColumn(name = "teamhistory_id") }, inverseJoinColumns = {
-      @JoinColumn(name = "person_clientId"), @JoinColumn(name = "person_localId") })
+  @JoinTable(name = "T4U_TEAMS_HISTORY_MEMBERS", joinColumns = { @JoinColumn(name = "teamhistory_id") }, inverseJoinColumns = { @JoinColumn(name = "person_id") })
   public Set<PersonEntity> getMembers()
   {
     return m_members;
@@ -123,8 +120,8 @@ public class TeamHistoryEntity
     m_members = members;
   }
 
-  @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "performedBy_clientId"), @JoinColumn(name = "performedBy_localId") })
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "performedBy_id")
   public PersonEntity getPerformedBy()
   {
     return m_performedBy;

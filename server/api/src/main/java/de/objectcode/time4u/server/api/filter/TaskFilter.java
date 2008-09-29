@@ -1,7 +1,6 @@
 package de.objectcode.time4u.server.api.filter;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * A filter condition for querying tasks.
@@ -13,7 +12,7 @@ public class TaskFilter implements Serializable
   private static final long serialVersionUID = 6557945403193307426L;
 
   /** Condition for the project (optional). */
-  UUID m_project;
+  String m_project;
   /** Condition for the active flag (optional). */
   Boolean m_active;
   /** Condition for the delete flag (optional). */
@@ -28,7 +27,7 @@ public class TaskFilter implements Serializable
     m_order = Order.ID;
   }
 
-  public TaskFilter(final Boolean active, final Boolean deleted, final Long minRevision, final UUID project,
+  public TaskFilter(final Boolean active, final Boolean deleted, final Long minRevision, final String project,
       final Order order)
   {
     m_active = active;
@@ -38,12 +37,12 @@ public class TaskFilter implements Serializable
     m_order = order;
   }
 
-  public UUID getProject()
+  public String getProject()
   {
     return m_project;
   }
 
-  public void setProject(final UUID project)
+  public void setProject(final String project)
   {
     m_project = project;
   }
@@ -97,7 +96,7 @@ public class TaskFilter implements Serializable
    *          <tt>true</tt> if only active tasks should be filters
    * @return The desired filter condition
    */
-  public static TaskFilter filterProjectTasks(final UUID projectId, final boolean onlyActive)
+  public static TaskFilter filterProjectTasks(final String projectId, final boolean onlyActive)
   {
     return new TaskFilter(onlyActive ? true : null, false, null, projectId, Order.NAME);
   }

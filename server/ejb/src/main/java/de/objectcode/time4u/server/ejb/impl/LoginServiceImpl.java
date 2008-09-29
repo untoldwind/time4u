@@ -2,6 +2,7 @@ package de.objectcode.time4u.server.ejb.impl;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -12,7 +13,6 @@ import javax.persistence.Query;
 
 import org.jboss.annotation.ejb.LocalBinding;
 
-import de.objectcode.time4u.server.entities.EntityKey;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.RoleEntity;
 import de.objectcode.time4u.server.jaas.service.ILoginServiceLocal;
@@ -39,12 +39,12 @@ public class LoginServiceImpl implements ILoginServiceLocal
     try {
       final PersonEntity person = (PersonEntity) query.getSingleResult();
 
-      return new LoginLocal(person.getId().getUUID(), person.getUserId(), person.getHashedPassword());
+      return new LoginLocal(person.getId(), person.getUserId(), person.getHashedPassword());
     } catch (final NoResultException e) {
       if ("admin".equals(userId)) {
         final PersonEntity person = initializeAdmin();
 
-        return new LoginLocal(person.getId().getUUID(), person.getUserId(), person.getHashedPassword());
+        return new LoginLocal(person.getId(), person.getUserId(), person.getHashedPassword());
       }
 
       return null;
@@ -57,7 +57,7 @@ public class LoginServiceImpl implements ILoginServiceLocal
   private PersonEntity initializeAdmin()
   {
     // TODO: Find a place for serverid
-    final EntityKey personId = new EntityKey(1L, 1L);
+    final String personId = new UUID(1L, 1L).toString();
     final PersonEntity person = new PersonEntity(personId, "admin");
 
     person.setHashedPassword(PasswordEncoder.encrypt("admin"));

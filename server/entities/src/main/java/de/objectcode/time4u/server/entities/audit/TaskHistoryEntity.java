@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -119,8 +118,7 @@ public class TaskHistoryEntity
   }
 
   @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "project_clientId", nullable = true),
-      @JoinColumn(name = "project_localId", nullable = true) })
+  @JoinColumn(name = "project_id")
   public ProjectEntity getProject()
   {
     return m_project;
@@ -132,7 +130,7 @@ public class TaskHistoryEntity
   }
 
   @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "task_clientId"), @JoinColumn(name = "task_localId") })
+  @JoinColumn(name = "task_id")
   public TaskEntity getTask()
   {
     return m_task;
@@ -144,7 +142,7 @@ public class TaskHistoryEntity
   }
 
   @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "performedBy_clientId"), @JoinColumn(name = "performedBy_localId") })
+  @JoinColumn(name = "performedBy_id")
   public PersonEntity getPerformedBy()
   {
     return m_performedBy;

@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -106,8 +105,8 @@ public class ProjectProperty
     m_intValue = intValue;
   }
 
-  @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "project_clientId"), @JoinColumn(name = "project_localId") })
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "project_id")
   public ProjectEntity getProject()
   {
     return m_project;

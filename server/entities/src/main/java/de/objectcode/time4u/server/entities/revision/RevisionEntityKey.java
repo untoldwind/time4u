@@ -1,7 +1,6 @@
 package de.objectcode.time4u.server.entities.revision;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import javax.persistence.Embeddable;
 
@@ -11,25 +10,16 @@ public class RevisionEntityKey implements Serializable
   private static final long serialVersionUID = -143072929625119307L;
 
   private EntityType m_entityKey;
-  private long m_clientPart;
-  private long m_localPart;
+  private String m_part;
 
   protected RevisionEntityKey()
   {
   }
 
-  public RevisionEntityKey(final EntityType entityKey, final UUID uuid)
+  public RevisionEntityKey(final EntityType entityKey, final String part)
   {
-    m_clientPart = uuid != null ? uuid.getMostSignificantBits() : -1L;
-    m_localPart = uuid != null ? uuid.getLeastSignificantBits() : -1L;
+    m_part = part;
     m_entityKey = entityKey;
-  }
-
-  public RevisionEntityKey(final EntityType entityKey, final long clientPart, final long localPart)
-  {
-    m_clientPart = clientPart;
-    m_entityKey = entityKey;
-    m_localPart = localPart;
   }
 
   public int getEntityKeyValue()
@@ -42,24 +32,14 @@ public class RevisionEntityKey implements Serializable
     m_entityKey = EntityType.forValue(value);
   }
 
-  public long getClientPart()
+  public String getPart()
   {
-    return m_clientPart;
+    return m_part;
   }
 
-  public void setClientPart(final long clientPart)
+  public void setPart(final String part)
   {
-    m_clientPart = clientPart;
-  }
-
-  public long getLocalPart()
-  {
-    return m_localPart;
-  }
-
-  public void setLocalPart(final long localPart)
-  {
-    m_localPart = localPart;
+    m_part = part;
   }
 
   @Override
@@ -71,8 +51,7 @@ public class RevisionEntityKey implements Serializable
 
     final RevisionEntityKey castObj = (RevisionEntityKey) obj;
 
-    return m_entityKey == castObj.m_entityKey && m_clientPart == castObj.m_clientPart
-        && m_localPart == castObj.m_localPart;
+    return m_entityKey == castObj.m_entityKey && m_part.equals(castObj.m_part);
   }
 
   @Override
@@ -80,7 +59,7 @@ public class RevisionEntityKey implements Serializable
   {
     int hash = m_entityKey != null ? m_entityKey.getValue() : -1;
 
-    hash = hash + 13 * (int) (m_clientPart ^ m_clientPart >>> 32 ^ m_localPart ^ m_localPart >>> 32);
+    hash = hash + 13 * m_part.hashCode();
 
     return hash;
   }
@@ -90,8 +69,7 @@ public class RevisionEntityKey implements Serializable
   {
     final StringBuffer buffer = new StringBuffer("RevisionEntityKey(");
     buffer.append("entityKey=").append(m_entityKey);
-    buffer.append(", clientPart=").append(m_clientPart);
-    buffer.append(", localPart=").append(m_localPart);
+    buffer.append(", part=").append(m_part);
     buffer.append(")");
 
     return buffer.toString();

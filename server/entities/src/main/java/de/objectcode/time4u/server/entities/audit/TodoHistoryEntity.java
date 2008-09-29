@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -96,7 +95,7 @@ public class TodoHistoryEntity
   }
 
   @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "person_clientId"), @JoinColumn(name = "person_localId") })
+  @JoinColumn(name = "person_id")
   public PersonEntity getAssignedToPerson()
   {
     return m_assignedToPerson;
@@ -108,7 +107,7 @@ public class TodoHistoryEntity
   }
 
   @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "team_clientId"), @JoinColumn(name = "team_localId") })
+  @JoinColumn(name = "team_id")
   public TeamEntity getAssignedToTeam()
   {
     return m_assignedToTeam;
@@ -197,7 +196,7 @@ public class TodoHistoryEntity
   }
 
   @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "reporter_clientId"), @JoinColumn(name = "reporter_localId") })
+  @JoinColumn(name = "reporter_id")
   public PersonEntity getReporter()
   {
     return m_reporter;
@@ -208,8 +207,8 @@ public class TodoHistoryEntity
     m_reporter = reporter;
   }
 
-  @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "task_clientId"), @JoinColumn(name = "task_localId") })
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "task_id")
   public TaskEntity getTask()
   {
     return m_task;
@@ -220,8 +219,8 @@ public class TodoHistoryEntity
     m_task = task;
   }
 
-  @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "todo_clientId"), @JoinColumn(name = "todo_localId") })
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "todo_id")
   public TodoEntity getTodo()
   {
     return m_todo;
@@ -232,8 +231,8 @@ public class TodoHistoryEntity
     m_todo = todo;
   }
 
-  @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "performedBy_clientId"), @JoinColumn(name = "performedBy_localId") })
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "performedBy_id")
   public PersonEntity getPerformedBy()
   {
     return m_performedBy;

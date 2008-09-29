@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
@@ -32,7 +31,7 @@ import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 public class TaskEntity
 {
   /** Primary key. */
-  private EntityKey m_id;
+  private String m_id;
   /** Task name. */
   private String m_name;
   /** Task description. */
@@ -55,7 +54,7 @@ public class TaskEntity
   {
   }
 
-  public TaskEntity(final EntityKey id, final long revision, final ProjectEntity project, final String name)
+  public TaskEntity(final String id, final long revision, final ProjectEntity project, final String name)
   {
     m_id = id;
     m_revision = revision;
@@ -64,12 +63,13 @@ public class TaskEntity
   }
 
   @Id
-  public EntityKey getId()
+  @Column(length = 36)
+  public String getId()
   {
     return m_id;
   }
 
-  public void setId(final EntityKey id)
+  public void setId(final String id)
   {
     m_id = id;
   }
@@ -117,7 +117,7 @@ public class TaskEntity
   }
 
   @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "project_clientId"), @JoinColumn(name = "project_localId") })
+  @JoinColumn(name = "project_id")
   public ProjectEntity getProject()
   {
     return m_project;
@@ -168,12 +168,12 @@ public class TaskEntity
 
   public void toSummaryDTO(final TaskSummary task)
   {
-    task.setId(m_id.getUUID());
+    task.setId(m_id);
     task.setRevision(m_revision);
     task.setActive(m_active);
     task.setDeleted(m_deleted);
     task.setName(m_name);
-    task.setProjectId(m_project != null ? m_project.getId().getUUID() : null);
+    task.setProjectId(m_project != null ? m_project.getId() : null);
   }
 
   public void toDTO(final Task task)

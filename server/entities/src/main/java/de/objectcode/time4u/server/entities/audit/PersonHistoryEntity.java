@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -87,8 +86,8 @@ public class PersonHistoryEntity
     m_email = email;
   }
 
-  @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "person_clientId"), @JoinColumn(name = "person_localId") })
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "person_id")
   public PersonEntity getPerson()
   {
     return m_person;
@@ -99,8 +98,8 @@ public class PersonHistoryEntity
     m_person = person;
   }
 
-  @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "performedBy_clientId"), @JoinColumn(name = "performedBy_localId") })
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "performedBy_id")
   public PersonEntity getPerformedBy()
   {
     return m_performedBy;

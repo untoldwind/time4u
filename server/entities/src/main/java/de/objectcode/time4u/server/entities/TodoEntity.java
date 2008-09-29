@@ -11,7 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
@@ -31,7 +30,7 @@ import de.objectcode.time4u.server.api.data.Todo;
 public class TodoEntity
 {
   /** Primary key. */
-  private EntityKey m_id;
+  private String m_id;
   /** The task the todo belongs to. */
   private TaskEntity m_task;
   /** Person the todo is assigned to (optional) */
@@ -60,19 +59,19 @@ public class TodoEntity
   private long m_revision;
 
   @Id
-  public EntityKey getId()
+  @Column(length = 36)
+  public String getId()
   {
     return m_id;
   }
 
-  public void setId(final EntityKey id)
+  public void setId(final String id)
   {
     m_id = id;
   }
 
   @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "person_clientId", nullable = true),
-      @JoinColumn(name = "person_localId", nullable = true) })
+  @JoinColumn(name = "person_id")
   public PersonEntity getAssignedToPerson()
   {
     return m_assignedToPerson;
@@ -84,8 +83,7 @@ public class TodoEntity
   }
 
   @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "team_clientId", nullable = true),
-      @JoinColumn(name = "team_localId", nullable = true) })
+  @JoinColumn(name = "team_id")
   public TeamEntity getAssignedToTeam()
   {
     return m_assignedToTeam;
@@ -174,8 +172,7 @@ public class TodoEntity
   }
 
   @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "reporter_clientId", nullable = true),
-      @JoinColumn(name = "reporter_localId", nullable = true) })
+  @JoinColumn(name = "reporter_id")
   public PersonEntity getReporter()
   {
     return m_reporter;
@@ -186,9 +183,8 @@ public class TodoEntity
     m_reporter = reporter;
   }
 
-  @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "task_clientId", nullable = true),
-      @JoinColumn(name = "task_localId", nullable = true) })
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "task_id")
   public TaskEntity getTask()
   {
     return m_task;
@@ -290,22 +286,22 @@ public class TodoEntity
 
   public void toDTO(final Todo todo)
   {
-    todo.setId(m_id.getUUID());
+    todo.setId(m_id);
     todo.setRevision(m_revision);
-    todo.setTaskId(m_task.getId().getUUID());
+    todo.setTaskId(m_task.getId());
     todo.setCreatedAt(m_createdAt);
     if (m_reporter != null) {
-      todo.setReporterId(m_reporter.getId().getUUID());
+      todo.setReporterId(m_reporter.getId());
     } else {
       todo.setReporterId(null);
     }
     if (m_assignedToPerson != null) {
-      todo.setAssignedToPersonId(m_assignedToPerson.getId().getUUID());
+      todo.setAssignedToPersonId(m_assignedToPerson.getId());
     } else {
       todo.setAssignedToPersonId(null);
     }
     if (m_assignedToTeam != null) {
-      todo.setAssignedToTeamId(m_assignedToTeam.getId().getUUID());
+      todo.setAssignedToTeamId(m_assignedToTeam.getId());
     } else {
       todo.setAssignedToTeamId(null);
     }

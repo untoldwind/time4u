@@ -1,7 +1,6 @@
 package de.objectcode.time4u.server.api.filter;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlType;
 
@@ -16,7 +15,7 @@ public class ProjectFilter implements Serializable
   private static final long serialVersionUID = 4840094656452995441L;
 
   /** Condition for the parent project (optional, 0L = root project). */
-  UUID m_parentProject;
+  String m_parentProject;
   /** Condition for the active flag (optional). */
   Boolean m_active;
   /** Condition for the delete flag (optional). */
@@ -31,7 +30,7 @@ public class ProjectFilter implements Serializable
     m_order = Order.ID;
   }
 
-  public ProjectFilter(final Boolean active, final Boolean deleted, final Long minRevision, final UUID parentProject,
+  public ProjectFilter(final Boolean active, final Boolean deleted, final Long minRevision, final String parentProject,
       final Order order)
   {
     m_active = active;
@@ -41,7 +40,7 @@ public class ProjectFilter implements Serializable
     m_order = order;
   }
 
-  public UUID getParentProject()
+  public String getParentProject()
   {
     return m_parentProject;
   }
@@ -61,7 +60,7 @@ public class ProjectFilter implements Serializable
     return m_minRevision;
   }
 
-  public void setParentProject(final UUID parentProject)
+  public void setParentProject(final String parentProject)
   {
     m_parentProject = parentProject;
   }
@@ -100,7 +99,7 @@ public class ProjectFilter implements Serializable
    */
   public static ProjectFilter filterRootProjects(final boolean onlyActive)
   {
-    return new ProjectFilter(onlyActive ? true : null, false, null, new UUID(0L, 0L), Order.NAME);
+    return new ProjectFilter(onlyActive ? true : null, false, null, "", Order.NAME);
   }
 
   /**
@@ -112,7 +111,7 @@ public class ProjectFilter implements Serializable
    *          <tt>true</tt> if only active projects should be filtered
    * @return The desired filter condition
    */
-  public static ProjectFilter filterChildProjects(final UUID parentProjectId, final boolean onlyActive)
+  public static ProjectFilter filterChildProjects(final String parentProjectId, final boolean onlyActive)
   {
     return new ProjectFilter(onlyActive ? true : null, false, null, parentProjectId, Order.NAME);
   }

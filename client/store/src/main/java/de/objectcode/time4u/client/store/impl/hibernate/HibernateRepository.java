@@ -27,7 +27,6 @@ import de.objectcode.time4u.server.api.data.Person;
 import de.objectcode.time4u.server.entities.ActiveWorkItemEntity;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.DayTagEntity;
-import de.objectcode.time4u.server.entities.EntityKey;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.ProjectProperty;
@@ -170,7 +169,7 @@ public class HibernateRepository implements IRepository
           final long clientId = new SecureRandom().nextLong();
           final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
           final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PERSON, null);
-          final EntityKey personId = new EntityKey(clientId, revisionLock.generateLocalId());
+          final String personId = revisionLock.generateId(clientId);
           final PersonEntity ownerPerson = new PersonEntity(personId, System.getProperty("user.name"));
           ownerPerson.setName(System.getProperty("user.name"));
 

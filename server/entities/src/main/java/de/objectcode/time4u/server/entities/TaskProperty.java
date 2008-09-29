@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -62,8 +61,8 @@ public class TaskProperty
     m_name = name;
   }
 
-  @ManyToOne
-  @JoinColumns( { @JoinColumn(name = "task_clientId"), @JoinColumn(name = "task_localId") })
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "task_id")
   public TaskEntity getTask()
   {
     return m_task;

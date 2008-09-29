@@ -20,7 +20,7 @@ public class RevisionEntity implements IRevisionLock
   {
     m_id = id;
     m_latestRevision = 0L;
-    m_nextLocalId = 1L;
+    m_nextLocalId = (long) id.getEntityKeyValue() << 56 | 1L;
   }
 
   @Id
@@ -44,9 +44,25 @@ public class RevisionEntity implements IRevisionLock
     m_latestRevision = latestRevision;
   }
 
-  public long generateLocalId()
+  public String generateId(final long clientId)
   {
-    return m_nextLocalId++;
+    final long localId = m_nextLocalId++;
+    final StringBuffer buffer = new StringBuffer();
+
+    buffer.append(digits(clientId >> 32, 8));
+    buffer.append(digits(clientId, 8));
+    buffer.append('-');
+    buffer.append(digits(localId >> 56, 2));
+    buffer.append('-');
+    buffer.append(digits(localId, 14));
+
+    return buffer.toString();
+  }
+
+  private static String digits(final long val, final int digits)
+  {
+    final long hi = 1L << digits * 4;
+    return Long.toHexString(hi | val & hi - 1).substring(1);
   }
 
   public long getNextLocalId()
