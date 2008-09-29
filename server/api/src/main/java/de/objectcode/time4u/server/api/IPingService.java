@@ -1,5 +1,10 @@
 package de.objectcode.time4u.server.api;
 
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.jws.soap.SOAPBinding.Style;
+
 import de.objectcode.time4u.server.api.data.PingResult;
 
 /**
@@ -9,6 +14,8 @@ import de.objectcode.time4u.server.api.data.PingResult;
  * 
  * @author junglas
  */
+@WebService
+@SOAPBinding(style = Style.RPC)
 public interface IPingService
 {
   /**
@@ -18,5 +25,6 @@ public interface IPingService
    * @throws ServiceException
    *           on error
    */
+  @WebMethod
   PingResult ping() throws ServiceException;
 }
