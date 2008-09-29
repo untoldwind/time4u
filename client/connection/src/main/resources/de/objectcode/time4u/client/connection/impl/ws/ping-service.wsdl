@@ -1,0 +1,61 @@
+<definitions name='PingServiceWSService' targetNamespace='http://ws.web.server.time4u.objectcode.de/' xmlns='http://schemas.xmlsoap.org/wsdl/' xmlns:ns1='http://objectcode.de/time4u/api/data' xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' xmlns:tns='http://ws.web.server.time4u.objectcode.de/' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+ <types>
+  <xs:schema targetNamespace='http://ws.web.server.time4u.objectcode.de/' version='1.0' xmlns:tns='http://ws.web.server.time4u.objectcode.de/' xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+   <xs:element name='ServiceException' type='tns:ServiceException'/>
+   <xs:complexType name='ServiceException'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='message' type='xs:string'/>
+    </xs:sequence>
+   </xs:complexType>
+
+  </xs:schema>
+  <xs:schema targetNamespace='http://objectcode.de/time4u/api/data' version='1.0' xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+   <xs:complexType name='ping-result'>
+    <xs:sequence>
+     <xs:element name='apiVersionMajor' type='xs:int'/>
+     <xs:element name='apiVersionMinor' type='xs:int'/>
+     <xs:element minOccurs='0' name='serverVersion' type='xs:string'/>
+    </xs:sequence>
+   </xs:complexType>
+
+  </xs:schema>
+ </types>
+ <message name='PingServiceWS_ping'></message>
+ <message name='PingServiceWS_pingResponse'>
+  <part name='return' type='ns1:ping-result'></part>
+ </message>
+ <message name='ServiceException'>
+  <part element='tns:ServiceException' name='ServiceException'></part>
+ </message>
+
+ <portType name='PingServiceWS'>
+  <operation name='ping'>
+   <input message='tns:PingServiceWS_ping'></input>
+   <output message='tns:PingServiceWS_pingResponse'></output>
+   <fault message='tns:ServiceException' name='ServiceException'></fault>
+  </operation>
+ </portType>
+ <binding name='PingServiceWSBinding' type='tns:PingServiceWS'>
+  <soap:binding style='rpc' transport='http://schemas.xmlsoap.org/soap/http'/>
+
+  <operation name='ping'>
+   <soap:operation soapAction=''/>
+   <input>
+    <soap:body namespace='http://ws.web.server.time4u.objectcode.de/' use='literal'/>
+   </input>
+   <output>
+    <soap:body namespace='http://ws.web.server.time4u.objectcode.de/' use='literal'/>
+   </output>
+   <fault name='ServiceException'>
+
+    <soap:fault name='ServiceException' use='literal'/>
+   </fault>
+  </operation>
+ </binding>
+ <service name='PingServiceWSService'>
+  <port binding='tns:PingServiceWSBinding' name='PingServiceWSPort'>
+   <soap:address location='http://127.0.0.1:8080/time4u-ws/PingService'/>
+  </port>
+ </service>
+
+</definitions>
