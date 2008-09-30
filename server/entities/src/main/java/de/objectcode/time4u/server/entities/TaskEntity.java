@@ -46,6 +46,8 @@ public class TaskEntity
   private Map<String, TaskProperty> m_metaProperties;
   /** Revision number (increased every time something has changed) */
   private long m_revision;
+  /** Client id of the last modification */
+  private long m_lastModifiedByClient;
 
   /**
    * Default constructor for hibernate.
@@ -54,10 +56,12 @@ public class TaskEntity
   {
   }
 
-  public TaskEntity(final String id, final long revision, final ProjectEntity project, final String name)
+  public TaskEntity(final String id, final long revision, final long lastModifiedByClient, final ProjectEntity project,
+      final String name)
   {
     m_id = id;
     m_revision = revision;
+    m_lastModifiedByClient = lastModifiedByClient;
     m_project = project;
     m_name = name;
   }
@@ -150,6 +154,16 @@ public class TaskEntity
     m_revision = revision;
   }
 
+  public long getLastModifiedByClient()
+  {
+    return m_lastModifiedByClient;
+  }
+
+  public void setLastModifiedByClient(final long lastModifiedByClient)
+  {
+    m_lastModifiedByClient = lastModifiedByClient;
+  }
+
   @Override
   public boolean equals(final Object obj)
   {
@@ -170,6 +184,7 @@ public class TaskEntity
   {
     task.setId(m_id);
     task.setRevision(m_revision);
+    task.setLastModifiedByClient(m_lastModifiedByClient);
     task.setActive(m_active);
     task.setDeleted(m_deleted);
     task.setName(m_name);
@@ -198,6 +213,7 @@ public class TaskEntity
 
   public void fromDTO(final IPersistenceContext context, final Task task)
   {
+    m_lastModifiedByClient = task.getLastModifiedByClient();
     m_active = task.isActive();
     m_deleted = task.isDeleted();
     m_name = task.getName() != null ? task.getName() : "";

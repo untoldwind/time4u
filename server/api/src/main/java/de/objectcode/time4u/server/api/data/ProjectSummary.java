@@ -19,6 +19,8 @@ public class ProjectSummary implements ISynchronizableData
   private String m_id;
   /** Revision number. */
   private long m_revision;
+  /** Client id of the last modification */
+  private long m_lastModifiedByClient;
   /** Project name. */
   private String m_name;
   /** Flag if the project is active. */
@@ -48,6 +50,16 @@ public class ProjectSummary implements ISynchronizableData
   public void setRevision(final long revision)
   {
     m_revision = revision;
+  }
+
+  public long getLastModifiedByClient()
+  {
+    return m_lastModifiedByClient;
+  }
+
+  public void setLastModifiedByClient(final long lastModifiedByClient)
+  {
+    m_lastModifiedByClient = lastModifiedByClient;
   }
 
   @XmlAttribute

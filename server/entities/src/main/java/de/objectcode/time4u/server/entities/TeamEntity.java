@@ -36,6 +36,8 @@ public class TeamEntity
   private Set<PersonEntity> m_members;
   /** Revision number (increased every time something has changed) */
   private long m_revision;
+  /** Client id of the last modification */
+  private long m_lastModifiedByClient;
 
   @Id
   @Column(length = 36)
@@ -94,6 +96,16 @@ public class TeamEntity
     m_revision = revision;
   }
 
+  public long getLastModifiedByClient()
+  {
+    return m_lastModifiedByClient;
+  }
+
+  public void setLastModifiedByClient(final long lastModifiedByClient)
+  {
+    m_lastModifiedByClient = lastModifiedByClient;
+  }
+
   @Override
   public int hashCode()
   {
@@ -120,6 +132,7 @@ public class TeamEntity
   {
     team.setId(m_id);
     team.setRevision(m_revision);
+    team.setLastModifiedByClient(m_lastModifiedByClient);
     team.setName(m_name);
     final List<String> ownerIds = new ArrayList<String>();
 
@@ -137,6 +150,7 @@ public class TeamEntity
 
   public void fromDTO(final EntityManager entityManager, final Team team)
   {
+    m_lastModifiedByClient = team.getLastModifiedByClient();
     m_name = team.getName();
 
     if (m_owners == null) {

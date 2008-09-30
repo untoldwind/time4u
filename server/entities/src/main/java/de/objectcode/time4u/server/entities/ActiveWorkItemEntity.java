@@ -20,6 +20,8 @@ public class ActiveWorkItemEntity
   private String m_id;
   /** Revision number (increased every time something has changed) */
   private long m_revision;
+  /** Client id of the last modification */
+  private long m_lastModifiedByClient;
   private PersonEntity m_person;
   private WorkItemEntity m_workItem;
 
@@ -58,6 +60,16 @@ public class ActiveWorkItemEntity
   public void setRevision(final long revision)
   {
     m_revision = revision;
+  }
+
+  public long getLastModifiedByClient()
+  {
+    return m_lastModifiedByClient;
+  }
+
+  public void setLastModifiedByClient(final long lastModifiedByClient)
+  {
+    m_lastModifiedByClient = lastModifiedByClient;
   }
 
   @OneToOne

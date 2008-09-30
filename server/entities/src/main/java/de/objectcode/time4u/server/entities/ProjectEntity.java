@@ -46,6 +46,8 @@ public class ProjectEntity
   private Map<String, ProjectProperty> m_metaProperties;
   /** Revision number (increased every time something has changed) */
   private long m_revision;
+  /** Client id of the last modification */
+  private long m_lastModifiedByClient;
   /** Helper string containing all primary keys of all parent projects (usefull for querying all sub-projects. */
   private String m_parentKey;
 
@@ -56,10 +58,11 @@ public class ProjectEntity
   {
   }
 
-  public ProjectEntity(final String id, final long revsion, final String name)
+  public ProjectEntity(final String id, final long revsion, final long lastModifiedByClient, final String name)
   {
     m_id = id;
     m_revision = revsion;
+    m_lastModifiedByClient = lastModifiedByClient;
     m_name = name;
   }
 
@@ -164,6 +167,16 @@ public class ProjectEntity
     m_revision = revision;
   }
 
+  public long getLastModifiedByClient()
+  {
+    return m_lastModifiedByClient;
+  }
+
+  public void setLastModifiedByClient(final long lastModifiedByClient)
+  {
+    m_lastModifiedByClient = lastModifiedByClient;
+  }
+
   @Column(name = "parentKey", length = 740)
   public String getParentKey()
   {
@@ -207,6 +220,7 @@ public class ProjectEntity
   {
     project.setId(m_id);
     project.setRevision(m_revision);
+    project.setLastModifiedByClient(m_lastModifiedByClient);
     project.setActive(m_active);
     project.setDeleted(m_deleted);
     project.setName(m_name);
@@ -235,6 +249,7 @@ public class ProjectEntity
 
   public void fromDTO(final IPersistenceContext context, final Project project)
   {
+    m_lastModifiedByClient = project.getLastModifiedByClient();
     m_active = project.isActive();
     m_deleted = project.isDeleted();
     m_name = project.getName() != null ? project.getName() : "";

@@ -197,11 +197,13 @@ public class HibernateProjectRepository implements IProjectRepository
 
           projectEntity.fromDTO(new SessionPersistenceContext(session), project);
           projectEntity.setRevision(revisionLock.getLatestRevision());
+          projectEntity.setLastModifiedByClient(m_repository.getClientId());
 
           session.flush();
         } else {
           final String projectId = revisionLock.generateId(m_repository.getClientId());
-          projectEntity = new ProjectEntity(projectId, revisionLock.getLatestRevision(), project.getName());
+          projectEntity = new ProjectEntity(projectId, revisionLock.getLatestRevision(), m_repository.getClientId(),
+              project.getName());
 
           projectEntity.fromDTO(new SessionPersistenceContext(session), project);
 

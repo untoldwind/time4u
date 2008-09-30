@@ -57,6 +57,8 @@ public class TodoEntity
   private Map<String, TodoProperty> m_metaProperties;
   /** Revision number (increased every time something has changed) */
   private long m_revision;
+  /** Client id of the last modification */
+  private long m_lastModifiedByClient;
 
   @Id
   @Column(length = 36)
@@ -217,8 +219,19 @@ public class TodoEntity
     m_revision = revision;
   }
 
+  public long getLastModifiedByClient()
+  {
+    return m_lastModifiedByClient;
+  }
+
+  public void setLastModifiedByClient(final long lastModifiedByClient)
+  {
+    m_lastModifiedByClient = lastModifiedByClient;
+  }
+
   public void fromDTO(final EntityManager entityManager, final Todo todo)
   {
+    m_lastModifiedByClient = todo.getLastModifiedByClient();
     m_task = entityManager.find(TaskEntity.class, todo.getTaskId());
     m_createdAt = todo.getCreatedAt();
     m_header = todo.getHeader();
@@ -288,6 +301,7 @@ public class TodoEntity
   {
     todo.setId(m_id);
     todo.setRevision(m_revision);
+    todo.setLastModifiedByClient(m_lastModifiedByClient);
     todo.setTaskId(m_task.getId());
     todo.setCreatedAt(m_createdAt);
     if (m_reporter != null) {

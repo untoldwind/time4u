@@ -1,6 +1,5 @@
 package de.objectcode.time4u.server.api.data;
 
-
 /**
  * DayInfo DTO object.
  * 
@@ -16,6 +15,8 @@ public class DayInfoSummary implements ISynchronizableData
   private String m_id;
   /** Revision number. */
   private long m_revision;
+  /** Client id of the last modification */
+  private long m_lastModifiedByClient;
   /** The calendar day of the dayinfo. */
   private CalendarDay m_day;
   /** Flag if the day has any workitems */
@@ -43,6 +44,16 @@ public class DayInfoSummary implements ISynchronizableData
   public void setRevision(final long revision)
   {
     m_revision = revision;
+  }
+
+  public long getLastModifiedByClient()
+  {
+    return m_lastModifiedByClient;
+  }
+
+  public void setLastModifiedByClient(final long lastModifiedByClient)
+  {
+    m_lastModifiedByClient = lastModifiedByClient;
   }
 
   public CalendarDay getDay()

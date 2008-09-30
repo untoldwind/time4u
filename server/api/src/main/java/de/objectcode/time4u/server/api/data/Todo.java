@@ -17,6 +17,8 @@ public class Todo implements ISynchronizableData
   private String m_id;
   /** Revision number. */
   private long m_revision;
+  /** Client id of the last modification */
+  private long m_lastModifiedByClient;
   /** The server id of the task the todo belongs to. */
   private String m_taskId;
   /** Optional server id of the person the todo is assigned to. */
@@ -150,6 +152,16 @@ public class Todo implements ISynchronizableData
   public void setRevision(final long revision)
   {
     m_revision = revision;
+  }
+
+  public long getLastModifiedByClient()
+  {
+    return m_lastModifiedByClient;
+  }
+
+  public void setLastModifiedByClient(final long lastModifiedByClient)
+  {
+    m_lastModifiedByClient = lastModifiedByClient;
   }
 
   public int getPriority()

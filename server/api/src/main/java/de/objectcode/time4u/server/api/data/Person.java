@@ -15,6 +15,8 @@ public class Person implements ISynchronizableData
   private String m_id;
   /** Revision number. */
   private long m_revision;
+  /** Client id of the last modification */
+  private long m_lastModifiedByClient;
   /** User id of the person. */
   private String m_userId;
   /** Real name of the person. */
@@ -47,6 +49,16 @@ public class Person implements ISynchronizableData
   public String getName()
   {
     return m_name;
+  }
+
+  public long getLastModifiedByClient()
+  {
+    return m_lastModifiedByClient;
+  }
+
+  public void setLastModifiedByClient(final long lastModifiedByClient)
+  {
+    m_lastModifiedByClient = lastModifiedByClient;
   }
 
   public void setName(final String name)

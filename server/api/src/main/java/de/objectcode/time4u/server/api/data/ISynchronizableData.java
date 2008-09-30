@@ -22,4 +22,11 @@ public interface ISynchronizableData extends Serializable
    * @return The revision number
    */
   long getRevision();
+
+  /**
+   * Get the id of the client performing the last modification.
+   * 
+   * @return Id of the client performing the last modification
+   */
+  long getLastModifiedByClient();
 }

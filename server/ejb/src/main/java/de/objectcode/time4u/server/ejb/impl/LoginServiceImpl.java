@@ -89,7 +89,7 @@ public class LoginServiceImpl implements ILoginServiceLocal, ILoginService
 
     final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PERSON, null);
     final PersonEntity person = new PersonEntity(registrationInfo.getPersonId(), revisionLock.getLatestRevision(),
-        registrationInfo.getUserId());
+        registrationInfo.getClientId(), registrationInfo.getUserId());
     person.setHashedPassword(registrationInfo.getHashedPassword());
     person.setName(registrationInfo.getName());
     person.setEmail(registrationInfo.getEmail());
@@ -140,7 +140,7 @@ public class LoginServiceImpl implements ILoginServiceLocal, ILoginService
     final long serverId = configService.getServerId();
     final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PERSON, null);
     final String personId = revisionLock.generateId(serverId);
-    final PersonEntity person = new PersonEntity(personId, revisionLock.getLatestRevision(), "admin");
+    final PersonEntity person = new PersonEntity(personId, revisionLock.getLatestRevision(), serverId, "admin");
 
     person.setHashedPassword(encoder.encrypt("admin".toCharArray()));
     person.setName("admin");

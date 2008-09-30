@@ -39,6 +39,8 @@ public class DayInfoEntity
   private String m_id;
   /** Revision number (increased every time something has changed) */
   private long m_revision;
+  /** Client id of the last modification */
+  private long m_lastModifiedByClient;
   /** The person this day belongs too. */
   private PersonEntity m_person;
   /** Date of the day */
@@ -59,10 +61,12 @@ public class DayInfoEntity
   {
   }
 
-  public DayInfoEntity(final String id, final long revision, final PersonEntity person, final Date date)
+  public DayInfoEntity(final String id, final long revision, final long lastModifiedByClient,
+      final PersonEntity person, final Date date)
   {
     m_id = id;
     m_revision = revision;
+    m_lastModifiedByClient = lastModifiedByClient;
     m_person = person;
     m_date = date;
     m_workItems = new HashSet<WorkItemEntity>();
@@ -89,6 +93,16 @@ public class DayInfoEntity
   public void setRevision(final long revision)
   {
     m_revision = revision;
+  }
+
+  public long getLastModifiedByClient()
+  {
+    return m_lastModifiedByClient;
+  }
+
+  public void setLastModifiedByClient(final long lastModifiedByClient)
+  {
+    m_lastModifiedByClient = lastModifiedByClient;
   }
 
   @ManyToOne
@@ -226,6 +240,7 @@ public class DayInfoEntity
   {
     dayinfo.setId(m_id);
     dayinfo.setRevision(m_revision);
+    dayinfo.setLastModifiedByClient(m_lastModifiedByClient);
     dayinfo.setDay(new CalendarDay(m_date));
     dayinfo.setHasWorkItems(m_hasWorkItems);
     dayinfo.setHasInvalidWorkItems(m_hasInvalidWorkItems);

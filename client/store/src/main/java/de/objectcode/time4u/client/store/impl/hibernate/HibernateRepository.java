@@ -194,8 +194,8 @@ public class HibernateRepository implements IRepository
           final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
           final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PERSON, null);
           final String personId = revisionLock.generateId(clientId);
-          final PersonEntity ownerPerson = new PersonEntity(personId, revisionLock.getLatestRevision(), System
-              .getProperty("user.name"));
+          final PersonEntity ownerPerson = new PersonEntity(personId, revisionLock.getLatestRevision(), clientId,
+              System.getProperty("user.name"));
           ownerPerson.setName(System.getProperty("user.name"));
 
           session.persist(ownerPerson);

@@ -1,6 +1,5 @@
 package de.objectcode.time4u.server.api.data;
 
-
 public abstract class TimePolicy implements ISynchronizableData
 {
   private static final long serialVersionUID = 5344090291753057165L;
@@ -9,6 +8,8 @@ public abstract class TimePolicy implements ISynchronizableData
   private String m_id;
   /** Revision number. */
   private long m_revision;
+  /** Client id of the last modification */
+  private long m_lastModifiedByClient;
   protected CalendarDay m_validFrom;
   protected CalendarDay m_validUntil;
 
@@ -30,6 +31,16 @@ public abstract class TimePolicy implements ISynchronizableData
   public void setRevision(final long revision)
   {
     m_revision = revision;
+  }
+
+  public long getLastModifiedByClient()
+  {
+    return m_lastModifiedByClient;
+  }
+
+  public void setLastModifiedByClient(final long lastModifiedByClient)
+  {
+    m_lastModifiedByClient = lastModifiedByClient;
   }
 
   public CalendarDay getValidFrom()

@@ -28,6 +28,8 @@ public class PersonEntity
   private String m_id;
   /** Revision number (increased every time something has changed) */
   private long m_revision;
+  /** Client id of the last modification */
+  private long m_lastModifiedByClient;
   /** User id of the person. */
   private String m_userId;
   /** Encoded password of the person. */
@@ -49,10 +51,11 @@ public class PersonEntity
   {
   }
 
-  public PersonEntity(final String id, final long revision, final String userId)
+  public PersonEntity(final String id, final long revision, final long lastModifiedByClient, final String userId)
   {
     m_id = id;
     m_revision = revision;
+    m_lastModifiedByClient = lastModifiedByClient;
     m_userId = userId;
   }
 
@@ -167,6 +170,16 @@ public class PersonEntity
     m_revision = revision;
   }
 
+  public long getLastModifiedByClient()
+  {
+    return m_lastModifiedByClient;
+  }
+
+  public void setLastModifiedByClient(final long lastModifiedByClient)
+  {
+    m_lastModifiedByClient = lastModifiedByClient;
+  }
+
   @Override
   public int hashCode()
   {
@@ -193,6 +206,7 @@ public class PersonEntity
   {
     person.setId(m_id);
     person.setRevision(m_revision);
+    person.setLastModifiedByClient(m_lastModifiedByClient);
     person.setName(m_name);
     person.setUserId(m_userId);
     person.setEmail(m_email);
@@ -201,6 +215,7 @@ public class PersonEntity
 
   public void fromDTO(final Person person)
   {
+    m_lastModifiedByClient = person.getLastModifiedByClient();
     m_name = person.getName();
     m_email = person.getEmail();
   }

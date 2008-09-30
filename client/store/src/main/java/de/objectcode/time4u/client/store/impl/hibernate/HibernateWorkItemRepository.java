@@ -137,8 +137,9 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
                 // This is save because the revision counter locks this section
                 final String dayInfoId = revisionLock.generateId(m_repository.getClientId());
 
-                dayInfoEntity = new DayInfoEntity(dayInfoId, revisionLock.getLatestRevision(), (PersonEntity) session
-                    .get(PersonEntity.class, m_repository.getOwner().getId()), workItem.getDay().getDate());
+                dayInfoEntity = new DayInfoEntity(dayInfoId, revisionLock.getLatestRevision(), m_repository
+                    .getClientId(), (PersonEntity) session.get(PersonEntity.class, m_repository.getOwner().getId()),
+                    workItem.getDay().getDate());
 
                 session.persist(dayInfoEntity);
               }
@@ -271,6 +272,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
           session.persist(activeWorkItemEntity);
         } else {
           activeWorkItemEntity.setRevision(revisionLock.getLatestRevision());
+          activeWorkItemEntity.setLastModifiedByClient(m_repository.getClientId());
           activeWorkItemEntity.setWorkItem(workItemEntity);
         }
         session.flush();
