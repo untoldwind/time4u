@@ -2,6 +2,8 @@ package de.objectcode.time4u.server.api.filter;
 
 import java.util.Calendar;
 
+import javax.xml.bind.annotation.XmlType;
+
 import de.objectcode.time4u.server.api.data.CalendarDay;
 
 /**
@@ -9,14 +11,17 @@ import de.objectcode.time4u.server.api.data.CalendarDay;
  * 
  * @author junglas
  */
+@XmlType(name = "dayinfo-filter")
 public class DayInfoFilter
 {
   /** From calendar day (inclusively). */
   CalendarDay m_from;
   /** To calendar day (exclusively). */
   CalendarDay m_to;
-  /** Minimum revision number (i.e. only revisions greater or equals are returned). */
+  /** Minimum (inclusive) revision number (i.e. only revisions greater or equals are returned). */
   Long m_minRevision;
+  /** Maximum (exclusive) revision number (i.e. only revisions less then are returned). */
+  Long m_maxRevision;
   /** Client id of the last modification */
   Long m_lastModifiedByClient;
 
@@ -59,6 +64,16 @@ public class DayInfoFilter
   public void setMinRevision(final Long minRevision)
   {
     m_minRevision = minRevision;
+  }
+
+  public Long getMaxRevision()
+  {
+    return m_maxRevision;
+  }
+
+  public void setMaxRevision(final Long maxRevision)
+  {
+    m_maxRevision = maxRevision;
   }
 
   public Long getLastModifiedByClient()

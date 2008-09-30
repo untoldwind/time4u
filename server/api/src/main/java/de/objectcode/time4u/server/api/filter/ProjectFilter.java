@@ -20,8 +20,10 @@ public class ProjectFilter implements Serializable
   Boolean m_active;
   /** Condition for the delete flag (optional). */
   Boolean m_deleted;
-  /** Minimum revision number (i.e. only revisions greater or equals are returned). */
+  /** Minimum (inclusive) revision number (i.e. only revisions greater or equals are returned). */
   Long m_minRevision;
+  /** Maximum (exclusive) revision number (i.e. only revisions less then are returned). */
+  Long m_maxRevision;
   /** Client id of the last modification */
   Long m_lastModifiedByClient;
   /** Desired order */
@@ -80,6 +82,16 @@ public class ProjectFilter implements Serializable
   public void setMinRevision(final Long minRevision)
   {
     m_minRevision = minRevision;
+  }
+
+  public Long getMaxRevision()
+  {
+    return m_maxRevision;
+  }
+
+  public void setMaxRevision(final Long maxRevision)
+  {
+    m_maxRevision = maxRevision;
   }
 
   public Long getLastModifiedByClient()

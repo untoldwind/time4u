@@ -2,11 +2,14 @@ package de.objectcode.time4u.server.api.filter;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * A filter condition for querying tasks.
  * 
  * @author junglas
  */
+@XmlType(name = "task-filter")
 public class TaskFilter implements Serializable
 {
   private static final long serialVersionUID = 6557945403193307426L;
@@ -17,8 +20,10 @@ public class TaskFilter implements Serializable
   Boolean m_active;
   /** Condition for the delete flag (optional). */
   Boolean m_deleted;
-  /** Minimum revision number (i.e. only revisions greater or equals are returned). */
+  /** Minimum (inclusive) revision number (i.e. only revisions greater or equals are returned). */
   Long m_minRevision;
+  /** Maximum (exclusive) revision number (i.e. only revisions less then are returned). */
+  Long m_maxRevision;
   /** Client id of the last modification */
   Long m_lastModifiedByClient;
   /** Desired order. */
@@ -77,6 +82,16 @@ public class TaskFilter implements Serializable
   public void setMinRevision(final Long minRevision)
   {
     m_minRevision = minRevision;
+  }
+
+  public Long getMaxRevision()
+  {
+    return m_maxRevision;
+  }
+
+  public void setMaxRevision(final Long maxRevision)
+  {
+    m_maxRevision = maxRevision;
   }
 
   public Long getLastModifiedByClient()

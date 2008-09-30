@@ -107,7 +107,7 @@ public class ProjectServiceImpl implements IProjectService
   private Query createQuery(final ProjectFilter filter)
   {
     String combineStr = " where ";
-    final StringBuffer queryStr = new StringBuffer("from " + ProjectEntity.class + " p");
+    final StringBuffer queryStr = new StringBuffer("from " + ProjectEntity.class.getName() + " p");
 
     if (filter.getActive() != null) {
       queryStr.append(combineStr);
@@ -131,6 +131,11 @@ public class ProjectServiceImpl implements IProjectService
     if (filter.getMinRevision() != null) {
       queryStr.append(combineStr);
       queryStr.append("p.revision >= :minRevision");
+      combineStr = " and ";
+    }
+    if (filter.getMaxRevision() != null) {
+      queryStr.append(combineStr);
+      queryStr.append("p.revision < :maxRevision");
       combineStr = " and ";
     }
     if (filter.getLastModifiedByClient() != null) {
@@ -163,6 +168,9 @@ public class ProjectServiceImpl implements IProjectService
     }
     if (filter.getMinRevision() != null) {
       query.setParameter("minRevision", filter.getMinRevision());
+    }
+    if (filter.getMaxRevision() != null) {
+      query.setParameter("maxRevision", filter.getMaxRevision());
     }
     if (filter.getLastModifiedByClient() != null) {
       query.setParameter("lastModifiedByClient", filter.getLastModifiedByClient());

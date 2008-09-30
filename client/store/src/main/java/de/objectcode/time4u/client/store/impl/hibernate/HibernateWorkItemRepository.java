@@ -85,6 +85,9 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
         if (filter.getMinRevision() != null) {
           criteria.add(Restrictions.ge("revision", filter.getMinRevision()));
         }
+        if (filter.getMaxRevision() != null) {
+          criteria.add(Restrictions.lt("revision", filter.getMaxRevision()));
+        }
         if (filter.getLastModifiedByClient() != null) {
           criteria.add(Restrictions.eq("lastModifiedByClient", filter.getLastModifiedByClient()));
         }

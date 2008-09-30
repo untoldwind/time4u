@@ -99,7 +99,7 @@ public class TaskServiceImpl implements ITaskService
   private Query createQuery(final TaskFilter filter)
   {
     String combineStr = " where ";
-    final StringBuffer queryStr = new StringBuffer("from " + TaskEntity.class + " t");
+    final StringBuffer queryStr = new StringBuffer("from " + TaskEntity.class.getName() + " t");
 
     if (filter.getActive() != null) {
       queryStr.append(combineStr);
@@ -119,6 +119,11 @@ public class TaskServiceImpl implements ITaskService
     if (filter.getMinRevision() != null) {
       queryStr.append(combineStr);
       queryStr.append("t.revision >= :minRevision");
+      combineStr = " and ";
+    }
+    if (filter.getMaxRevision() != null) {
+      queryStr.append(combineStr);
+      queryStr.append("t.revision < :maxRevision");
       combineStr = " and ";
     }
     if (filter.getLastModifiedByClient() != null) {
@@ -149,6 +154,9 @@ public class TaskServiceImpl implements ITaskService
     }
     if (filter.getMinRevision() != null) {
       query.setParameter("minRevision", filter.getMinRevision());
+    }
+    if (filter.getMaxRevision() != null) {
+      query.setParameter("maxRevision", filter.getMaxRevision());
     }
     if (filter.getLastModifiedByClient() != null) {
       query.setParameter("lastModifiedByClient", filter.getLastModifiedByClient());
