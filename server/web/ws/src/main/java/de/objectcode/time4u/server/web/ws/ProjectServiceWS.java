@@ -1,56 +1,75 @@
 package de.objectcode.time4u.server.web.ws;
 
-import java.util.UUID;
-
-import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
+import javax.naming.InitialContext;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import de.objectcode.time4u.server.api.IProjectService;
-import de.objectcode.time4u.server.api.ServiceException;
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.filter.ProjectFilter;
 
-@WebService
+@WebService(targetNamespace = "http://objectcode.de/time4u/api/ws", endpointInterface = "de.objectcode.time4u.server.api.IProjectService")
 @SOAPBinding(style = Style.RPC)
 public class ProjectServiceWS implements IProjectService
 {
-  @WebMethod
-  public Project getProject(final UUID projectId) throws ServiceException
+  private static final Log LOG = LogFactory.getLog(ProjectServiceWS.class);
+
+  private final IProjectService m_projectService;
+
+  public ProjectServiceWS() throws Exception
   {
-    // TODO Auto-generated method stub
-    return null;
+    final InitialContext ctx = new InitialContext();
+
+    m_projectService = (IProjectService) ctx.lookup("time4u-server/ProjectService/remote");
   }
 
-  @WebMethod
-  public FilterResult<Project> getProjects(final ProjectFilter filter) throws ServiceException
+  public Project getProject(final String projectId)
   {
-    // TODO Auto-generated method stub
-    return null;
+    if (LOG.isInfoEnabled()) {
+      LOG.info("getProject: " + projectId);
+    }
+
+    return m_projectService.getProject(projectId);
   }
 
-  @WebMethod
-  public FilterResult<ProjectSummary> getProjectSumaries(final ProjectFilter filter) throws ServiceException
+  public ProjectSummary getProjectSummary(final String projectId)
   {
-    // TODO Auto-generated method stub
-    return null;
+    if (LOG.isInfoEnabled()) {
+      LOG.info("getProjectSummary: " + projectId);
+    }
+
+    return m_projectService.getProjectSummary(projectId);
   }
 
-  @WebMethod
-  public ProjectSummary getProjectSummary(final UUID projectId) throws ServiceException
+  public FilterResult<Project> getProjects(final ProjectFilter filter)
   {
-    // TODO Auto-generated method stub
-    return null;
+    if (LOG.isInfoEnabled()) {
+      LOG.info("getProjects: " + filter);
+    }
+
+    return m_projectService.getProjects(filter);
   }
 
-  @WebMethod
-  public Project storeProject(final Project project) throws ServiceException
+  public FilterResult<ProjectSummary> getProjectSumaries(final ProjectFilter filter)
   {
-    // TODO Auto-generated method stub
-    return null;
+    if (LOG.isInfoEnabled()) {
+      LOG.info("getProjectSummaries: " + filter);
+    }
+    return m_projectService.getProjectSumaries(filter);
   }
 
+  public Project storeProject(final Project project)
+  {
+    if (LOG.isInfoEnabled()) {
+      LOG.info("storeProject: " + project);
+    }
+
+    return m_projectService.storeProject(project);
+  }
 }

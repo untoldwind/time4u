@@ -79,7 +79,7 @@ public class TaskActionDelegate implements IWorkbenchWindowActionDelegate, IView
 
         if (dialog.open() == TaskDialog.OK) {
           try {
-            RepositoryFactory.getRepository().getTaskRepository().storeTask(dialog.getTask());
+            RepositoryFactory.getRepository().getTaskRepository().storeTask(dialog.getTask(), true);
           } catch (final Exception e) {
             UIPlugin.getDefault().log(e);
           }
@@ -91,7 +91,7 @@ public class TaskActionDelegate implements IWorkbenchWindowActionDelegate, IView
 
         if (dialog.open() == TaskDialog.OK) {
           try {
-            RepositoryFactory.getRepository().getTaskRepository().storeTask(dialog.getTask());
+            RepositoryFactory.getRepository().getTaskRepository().storeTask(dialog.getTask(), true);
           } catch (final Exception e) {
             UIPlugin.getDefault().log(e);
           }

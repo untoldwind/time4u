@@ -1,22 +1,25 @@
 package de.objectcode.time4u.server.ejb.impl;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.ejb.Local;
+import javax.annotation.Resource;
 import javax.ejb.Remote;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
-import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
+import org.jboss.annotation.security.SecurityDomain;
 
 import de.objectcode.time4u.server.api.IProjectService;
-import de.objectcode.time4u.server.api.ServiceException;
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.filter.ProjectFilter;
+import de.objectcode.time4u.server.entities.ProjectEntity;
 
 /**
  * EJB3 implementation of the project service interface.
@@ -25,42 +28,146 @@ import de.objectcode.time4u.server.api.filter.ProjectFilter;
  */
 @Stateless
 @Remote(IProjectService.class)
-@RemoteBinding(jndiBinding = "time4u-server/ProjectServiceBean/remote")
-@Local(IProjectService.class)
-@LocalBinding(jndiBinding = "time4u-server/ProjectServiceBean/local")
+@RemoteBinding(jndiBinding = "time4u-server/ProjectService/remote")
+@SecurityDomain("time4u")
 public class ProjectServiceImpl implements IProjectService
 {
   @PersistenceContext(unitName = "time4u")
   private EntityManager m_manager;
 
-  public Project getProject(final UUID projectId) throws ServiceException
+  @Resource
+  SessionContext m_sessionContext;
+
+  public Project getProject(final String projectId)
+  {
+    System.out.println(m_sessionContext.getCallerPrincipal());
+    System.out.println(m_sessionContext.isCallerInRole("user"));
+    final ProjectEntity projectEntity = m_manager.find(ProjectEntity.class, projectId);
+
+    if (projectEntity != null) {
+      final Project project = new Project();
+      projectEntity.toDTO(project);
+
+      return project;
+    }
+    return null;
+  }
+
+  public ProjectSummary getProjectSummary(final String projectId)
+  {
+    final ProjectEntity projectEntity = m_manager.find(ProjectEntity.class, projectId);
+
+    if (projectEntity != null) {
+      final ProjectSummary project = new ProjectSummary();
+      projectEntity.toSummaryDTO(project);
+
+      return project;
+    }
+    return null;
+  }
+
+  public FilterResult<Project> getProjects(final ProjectFilter filter)
+  {
+    final Query query = createQuery(filter);
+    final List<Project> result = new ArrayList<Project>();
+
+    for (final Object row : query.getResultList()) {
+      final Project project = new Project();
+
+      ((ProjectEntity) row).toDTO(project);
+
+      result.add(project);
+    }
+
+    return new FilterResult<Project>(result);
+  }
+
+  public FilterResult<ProjectSummary> getProjectSumaries(final ProjectFilter filter)
+  {
+    final Query query = createQuery(filter);
+    final List<ProjectSummary> result = new ArrayList<ProjectSummary>();
+
+    for (final Object row : query.getResultList()) {
+      final ProjectSummary project = new ProjectSummary();
+
+      ((ProjectEntity) row).toSummaryDTO(project);
+
+      result.add(project);
+    }
+
+    return new FilterResult<ProjectSummary>(result);
+  }
+
+  public Project storeProject(final Project project)
   {
     // TODO Auto-generated method stub
     return null;
   }
 
-  public FilterResult<Project> getProjects(final ProjectFilter filter) throws ServiceException
+  private Query createQuery(final ProjectFilter filter)
   {
-    // TODO Auto-generated method stub
-    return null;
-  }
+    String combineStr = " where ";
+    final StringBuffer queryStr = new StringBuffer("from " + ProjectEntity.class + " p");
 
-  public FilterResult<ProjectSummary> getProjectSumaries(final ProjectFilter filter) throws ServiceException
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
+    if (filter.getActive() != null) {
+      queryStr.append(combineStr);
+      queryStr.append("p.active = :active");
+      combineStr = " and ";
+    }
+    if (filter.getDeleted() != null) {
+      queryStr.append(combineStr);
+      queryStr.append("p.deleted = :deleted");
+      combineStr = " and ";
+    }
+    if (filter.getParentProject() != null) {
+      queryStr.append(combineStr);
+      if (filter.getParentProject().equals("")) {
+        queryStr.append("p.parent is null");
+      } else {
+        queryStr.append("p.parent.id = :parentId");
+      }
+      combineStr = " and ";
+    }
+    if (filter.getMinRevision() != null) {
+      queryStr.append(combineStr);
+      queryStr.append("p.revision >= :minRevision");
+      combineStr = " and ";
+    }
+    if (filter.getLastModifiedByClient() != null) {
+      queryStr.append(combineStr);
+      queryStr.append("p.lastModifiedByClient = :lastModifiedByClient");
+      combineStr = " and ";
+    }
 
-  public ProjectSummary getProjectSummary(final UUID projectId) throws ServiceException
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
+    switch (filter.getOrder()) {
+      case ID:
+        queryStr.append(" order by p.id asc");
+        break;
+      case NAME:
+        queryStr.append(" order by p.name asc, p.id asc");
+        break;
+    }
 
-  public Project storeProject(final Project project) throws ServiceException
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
+    final Query query = m_manager.createQuery(queryStr.toString());
 
+    if (filter.getActive() != null) {
+      query.setParameter("active", filter.getActive());
+    }
+    if (filter.getDeleted() != null) {
+      query.setParameter("deleted", filter.getDeleted());
+    }
+    if (filter.getParentProject() != null) {
+      if (!filter.getParentProject().equals("")) {
+        query.setParameter("parentId", filter.getParentProject());
+      }
+    }
+    if (filter.getMinRevision() != null) {
+      query.setParameter("minRevision", filter.getMinRevision());
+    }
+    if (filter.getLastModifiedByClient() != null) {
+      query.setParameter("lastModifiedByClient", filter.getLastModifiedByClient());
+    }
+
+    return query;
+  }
 }

@@ -1,12 +1,17 @@
 package de.objectcode.time4u.server.api;
 
-import java.util.List;
-import java.util.UUID;
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.jws.soap.SOAPBinding.Style;
 
+import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.filter.TaskFilter;
 
+@WebService(targetNamespace = "http://objectcode.de/time4u/api/ws")
+@SOAPBinding(style = Style.RPC)
 public interface ITaskService
 {
   /**
@@ -18,7 +23,8 @@ public interface ITaskService
    * @throws RepositoryException
    *           on error
    */
-  Task getTask(UUID taskId) throws ServiceException;
+  @WebMethod
+  Task getTask(String taskId);
 
   /**
    * Get a task summary by its identifier.
@@ -29,7 +35,8 @@ public interface ITaskService
    * @throws RepositoryException
    *           on error
    */
-  TaskSummary getTaskSummary(UUID taskId) throws ServiceException;
+  @WebMethod
+  TaskSummary getTaskSummary(String taskId);
 
   /**
    * Get all taks matching a filter condition.
@@ -40,10 +47,11 @@ public interface ITaskService
    * @throws RepositoryException
    *           on error
    */
-  List<Task> getTasks(TaskFilter filter) throws ServiceException;
+  @WebMethod
+  FilterResult<Task> getTasks(TaskFilter filter);
 
   /**
-   * Get all taks matching a filter condition.
+   * Get all tasks matching a filter condition.
    * 
    * @param filter
    *          The filter condition
@@ -51,7 +59,8 @@ public interface ITaskService
    * @throws RepositoryException
    *           on error
    */
-  List<TaskSummary> getTaskSummaries(TaskFilter filter) throws ServiceException;
+  @WebMethod
+  FilterResult<TaskSummary> getTaskSummaries(TaskFilter filter);
 
   /**
    * Store a task. This method either inserts a new tasks or updates an existing one.
@@ -61,17 +70,7 @@ public interface ITaskService
    * @throws RepositoryException
    *           on error
    */
-  Task storeTask(Task task) throws ServiceException;
-
-  /**
-   * Store a collection of tasks at once. Only one revision number is generated for this oeration.
-   * 
-   * @param tasks
-   *          A list of tasks to be stored
-   * @return The list of stored tasks (including generated ids)
-   * @throws RepositoryException
-   *           on error
-   */
-  List<Task> storeTasks(List<Task> tasks) throws ServiceException;
+  @WebMethod
+  Task storeTask(Task task);
 
 }

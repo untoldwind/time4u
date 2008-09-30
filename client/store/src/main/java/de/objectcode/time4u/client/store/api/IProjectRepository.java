@@ -66,7 +66,7 @@ public interface IProjectRepository
    * @throws RepositoryException
    *           on error
    */
-  Project storeProject(Project project) throws RepositoryException;
+  Project storeProject(Project project, boolean modifiedByOwner) throws RepositoryException;
 
   /**
    * Delete a project. Only the deleted flag of the project is set for the project and all its sub projects and tasks.

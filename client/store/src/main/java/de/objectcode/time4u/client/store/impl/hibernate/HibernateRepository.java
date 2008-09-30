@@ -26,6 +26,7 @@ import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
 import de.objectcode.time4u.client.store.impl.hibernate.entities.ClientDataEntity;
 import de.objectcode.time4u.server.api.data.Person;
+import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.entities.ActiveWorkItemEntity;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.DayTagEntity;
@@ -39,12 +40,12 @@ import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.TodoEntity;
 import de.objectcode.time4u.server.entities.TodoProperty;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
-import de.objectcode.time4u.server.entities.revision.EntityType;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
 import de.objectcode.time4u.server.entities.revision.SessionRevisionGenerator;
 import de.objectcode.time4u.server.entities.sync.ServerConnectionEntity;
+import de.objectcode.time4u.server.entities.sync.SynchronizationStatusEntity;
 import de.objectcode.time4u.server.utils.Base64;
 import de.objectcode.time4u.server.utils.DefaultKeyChainEncoder;
 import de.objectcode.time4u.server.utils.IKeyChainEncoder;
@@ -192,7 +193,7 @@ public class HibernateRepository implements IRepository
           // TODO: Reconsider this adhoc generation
           final long clientId = new SecureRandom().nextLong() & 0xffffffffffffffL;
           final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
-          final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PERSON, null);
+          final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.PERSON, null);
           final String personId = revisionLock.generateId(clientId);
           final PersonEntity ownerPerson = new PersonEntity(personId, revisionLock.getLatestRevision(), clientId,
               System.getProperty("user.name"));
@@ -255,6 +256,7 @@ public class HibernateRepository implements IRepository
       cfg.addAnnotatedClass(ClientDataEntity.class);
       cfg.addAnnotatedClass(ActiveWorkItemEntity.class);
       cfg.addAnnotatedClass(ServerConnectionEntity.class);
+      cfg.addAnnotatedClass(SynchronizationStatusEntity.class);
 
       return cfg.buildSessionFactory();
     } catch (final Exception e) {

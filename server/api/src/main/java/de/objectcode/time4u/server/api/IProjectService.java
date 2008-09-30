@@ -1,12 +1,17 @@
 package de.objectcode.time4u.server.api;
 
-import java.util.UUID;
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.jws.soap.SOAPBinding.Style;
 
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.filter.ProjectFilter;
 
+@WebService(targetNamespace = "http://objectcode.de/time4u/api/ws")
+@SOAPBinding(style = Style.RPC)
 public interface IProjectService
 {
   /**
@@ -18,7 +23,8 @@ public interface IProjectService
    * @throws RepositoryException
    *           on error
    */
-  Project getProject(UUID projectId) throws ServiceException;
+  @WebMethod
+  Project getProject(String projectId);
 
   /**
    * Get a project summary by its identifier.
@@ -29,7 +35,8 @@ public interface IProjectService
    * @throws RepositoryException
    *           on error
    */
-  ProjectSummary getProjectSummary(UUID projectId) throws ServiceException;
+  @WebMethod
+  ProjectSummary getProjectSummary(String projectId);
 
   /**
    * Get all projects that match a filter condition.
@@ -40,7 +47,8 @@ public interface IProjectService
    * @throws RepositoryException
    *           on error
    */
-  FilterResult<Project> getProjects(ProjectFilter filter) throws ServiceException;
+  @WebMethod
+  FilterResult<Project> getProjects(ProjectFilter filter);
 
   /**
    * Get summaries of all projects that match a filter condition.
@@ -51,7 +59,8 @@ public interface IProjectService
    * @throws RepositoryException
    *           on error
    */
-  FilterResult<ProjectSummary> getProjectSumaries(ProjectFilter filter) throws ServiceException;
+  @WebMethod
+  FilterResult<ProjectSummary> getProjectSumaries(ProjectFilter filter);
 
   /**
    * Store a project. This method either updates an existing project or inserts a new one.
@@ -62,6 +71,7 @@ public interface IProjectService
    * @throws RepositoryException
    *           on error
    */
-  Project storeProject(Project project) throws ServiceException;
+  @WebMethod
+  Project storeProject(Project project);
 
 }

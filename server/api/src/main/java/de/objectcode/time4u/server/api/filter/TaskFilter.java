@@ -19,6 +19,8 @@ public class TaskFilter implements Serializable
   Boolean m_deleted;
   /** Minimum revision number (i.e. only revisions greater or equals are returned). */
   Long m_minRevision;
+  /** Client id of the last modification */
+  Long m_lastModifiedByClient;
   /** Desired order. */
   Order m_order;
 
@@ -75,6 +77,16 @@ public class TaskFilter implements Serializable
   public void setMinRevision(final Long minRevision)
   {
     m_minRevision = minRevision;
+  }
+
+  public Long getLastModifiedByClient()
+  {
+    return m_lastModifiedByClient;
+  }
+
+  public void setLastModifiedByClient(final Long lastModifiedByClient)
+  {
+    m_lastModifiedByClient = lastModifiedByClient;
   }
 
   public Order getOrder()

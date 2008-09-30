@@ -32,7 +32,7 @@ public class HibernateTaskRepositoryTest
   @Test(dataProvider = "tasks")
   public void testCreate(final Task task) throws Exception
   {
-    final Task result = repository.getTaskRepository().storeTask(task);
+    final Task result = repository.getTaskRepository().storeTask(task, true);
 
     assertNotNull(result);
     assertNotNull(result.getId());

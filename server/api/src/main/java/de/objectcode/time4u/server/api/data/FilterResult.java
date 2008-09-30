@@ -23,6 +23,15 @@ public class FilterResult<T> implements Serializable
 
   private List<T> results;
 
+  public FilterResult()
+  {
+  }
+
+  public FilterResult(final List<T> results)
+  {
+    this.results = results;
+  }
+
   @XmlElements( { @XmlElement(name = "project", type = Project.class),
       @XmlElement(name = "project-summary", type = ProjectSummary.class) })
   public List<T> getResults()

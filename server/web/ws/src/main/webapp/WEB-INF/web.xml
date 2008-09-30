@@ -23,17 +23,16 @@
 		<servlet-name>PingServiceWS</servlet-name>
 		<url-pattern>/PingService</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PingServiceWS</servlet-name>
+		<url-pattern>/secure/PingService</url-pattern>
+	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>LoginServiceWS</servlet-name>
 		<url-pattern>/LoginService</url-pattern>
 	</servlet-mapping>
 	
-	<servlet-mapping>
-		<servlet-name>PersonServiceWS</servlet-name>
-		<url-pattern>/PersonService</url-pattern>
-	</servlet-mapping>
-
 	<servlet-mapping>
 		<servlet-name>PersonServiceWS</servlet-name>
 		<url-pattern>/secure/PersonService</url-pattern>

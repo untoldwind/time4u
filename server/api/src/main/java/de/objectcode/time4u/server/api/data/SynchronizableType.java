@@ -1,15 +1,10 @@
-package de.objectcode.time4u.server.entities.revision;
+package de.objectcode.time4u.server.api.data;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Enumeration of all revisioned entity types.
- * 
- * @author junglas
- */
-public enum EntityType
+public enum SynchronizableType
 {
   PERSON(0),
   TEAM(1),
@@ -21,9 +16,9 @@ public enum EntityType
 
   private final int m_value;
 
-  private final static Map<Integer, EntityType> VALUE_MAP;
+  private final static Map<Integer, SynchronizableType> VALUE_MAP;
 
-  private EntityType(final int value)
+  private SynchronizableType(final int value)
   {
     m_value = value;
   }
@@ -33,14 +28,14 @@ public enum EntityType
     return m_value;
   }
 
-  public static EntityType forValue(final int value)
+  public static SynchronizableType forValue(final int value)
   {
     return VALUE_MAP.get(value);
   }
 
   static {
-    final Map<Integer, EntityType> valueMap = new HashMap<Integer, EntityType>();
-    for (final EntityType key : EntityType.values()) {
+    final Map<Integer, SynchronizableType> valueMap = new HashMap<Integer, SynchronizableType>();
+    for (final SynchronizableType key : SynchronizableType.values()) {
       if (valueMap.containsKey(key.getValue())) {
         throw new ExceptionInInitializerError("duplicate code");
       }
@@ -48,4 +43,5 @@ public enum EntityType
     }
     VALUE_MAP = Collections.unmodifiableMap(valueMap);
   }
+
 }

@@ -4,32 +4,40 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+
+import de.objectcode.time4u.server.api.data.SynchronizableType;
+
 @Embeddable
 public class RevisionEntityKey implements Serializable
 {
   private static final long serialVersionUID = -143072929625119307L;
 
-  private EntityType m_entityKey;
+  private SynchronizableType m_entityType;
   private String m_part;
 
   protected RevisionEntityKey()
   {
   }
 
-  public RevisionEntityKey(final EntityType entityKey, final String part)
+  public RevisionEntityKey(final SynchronizableType entityType, final String part)
   {
     m_part = part;
-    m_entityKey = entityKey;
+    m_entityType = entityType;
   }
 
-  public int getEntityKeyValue()
+  @Type(type = "de.objectcode.time4u.server.entities.util.GenericEnumUserType", parameters = {
+      @Parameter(name = "enumClass", value = "de.objectcode.time4u.server.api.data.SynchronizableType"),
+      @Parameter(name = "identifierMethod", value = "getValue"), @Parameter(name = "valueOfMethod", value = "forValue") })
+  public SynchronizableType getEntityType()
   {
-    return m_entityKey != null ? m_entityKey.getValue() : -1;
+    return m_entityType;
   }
 
-  public void setEntityKeyValue(final int value)
+  public void setEntityType(final SynchronizableType entityType)
   {
-    m_entityKey = EntityType.forValue(value);
+    m_entityType = entityType;
   }
 
   public String getPart()
@@ -51,13 +59,13 @@ public class RevisionEntityKey implements Serializable
 
     final RevisionEntityKey castObj = (RevisionEntityKey) obj;
 
-    return m_entityKey == castObj.m_entityKey && m_part.equals(castObj.m_part);
+    return m_entityType == castObj.m_entityType && m_part.equals(castObj.m_part);
   }
 
   @Override
   public int hashCode()
   {
-    int hash = m_entityKey != null ? m_entityKey.getValue() : -1;
+    int hash = m_entityType != null ? m_entityType.getValue() : -1;
 
     hash = hash + 13 * m_part.hashCode();
 
@@ -68,7 +76,7 @@ public class RevisionEntityKey implements Serializable
   public String toString()
   {
     final StringBuffer buffer = new StringBuffer("RevisionEntityKey(");
-    buffer.append("entityKey=").append(m_entityKey);
+    buffer.append("entityType=").append(m_entityType);
     buffer.append(", part=").append(m_part);
     buffer.append(")");
 

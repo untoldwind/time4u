@@ -27,7 +27,7 @@ public class HibernateProjectRepositoryTest
   @Test(dataProvider = "rootProjects")
   public void testCreateRoot(final Project project) throws Exception
   {
-    final Project result = repository.getProjectRepository().storeProject(project);
+    final Project result = repository.getProjectRepository().storeProject(project, true);
 
     assertNotNull(result);
     assertNotNull(result.getId());
@@ -51,7 +51,7 @@ public class HibernateProjectRepositoryTest
   @Test(dependsOnMethods = "testCreateRoot", dataProvider = "subProjects")
   public void testCreateSub(final Project project) throws Exception
   {
-    final Project result = repository.getProjectRepository().storeProject(project);
+    final Project result = repository.getProjectRepository().storeProject(project, true);
 
     assertNotNull(result);
     assertNotNull(result.getId());

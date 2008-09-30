@@ -20,7 +20,7 @@ public class RevisionEntity implements IRevisionLock
   {
     m_id = id;
     m_latestRevision = 0L;
-    m_nextLocalId = (long) id.getEntityKeyValue() << 56 | 1L;
+    m_nextLocalId = (long) id.getEntityType().getValue() << 56 | 1L;
   }
 
   @Id

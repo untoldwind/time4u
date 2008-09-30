@@ -88,7 +88,7 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
 
       if (dialog.open() == ProjectDialog.OK) {
         try {
-          RepositoryFactory.getRepository().getProjectRepository().storeProject(dialog.getProject());
+          RepositoryFactory.getRepository().getProjectRepository().storeProject(dialog.getProject(), true);
         } catch (final Exception e) {
           UIPlugin.getDefault().log(e);
         }
@@ -99,7 +99,7 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
 
         if (dialog.open() == ProjectDialog.OK) {
           try {
-            RepositoryFactory.getRepository().getProjectRepository().storeProject(dialog.getProject());
+            RepositoryFactory.getRepository().getProjectRepository().storeProject(dialog.getProject(), true);
           } catch (final Exception e) {
             UIPlugin.getDefault().log(e);
           }
@@ -209,7 +209,7 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
       final IProjectRepository projectRepository = RepositoryFactory.getRepository().getProjectRepository();
       final ITaskRepository taskRepository = RepositoryFactory.getRepository().getTaskRepository();
 
-      projectRepository.storeProject(newProject);
+      projectRepository.storeProject(newProject, true);
 
       if (copyTasks) {
         final List<Task> newTasks = new ArrayList<Task>();
@@ -227,7 +227,7 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
 
           newTasks.add(newTask);
         }
-        taskRepository.storeTasks(newTasks);
+        taskRepository.storeTasks(newTasks, true);
       }
 
       if (copySubProjects) {

@@ -11,13 +11,13 @@ import org.hibernate.criterion.Restrictions;
 import de.objectcode.time4u.client.store.api.ITaskRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.client.store.api.event.TaskRepositoryEvent;
+import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.filter.TaskFilter;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
 import de.objectcode.time4u.server.entities.context.SessionPersistenceContext;
-import de.objectcode.time4u.server.entities.revision.EntityType;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 import de.objectcode.time4u.server.entities.revision.SessionRevisionGenerator;
@@ -102,6 +102,9 @@ public class HibernateTaskRepository implements ITaskRepository
         if (filter.getMinRevision() != null) {
           criteria.add(Restrictions.ge("revision", filter.getMinRevision()));
         }
+        if (filter.getLastModifiedByClient() != null) {
+          criteria.add(Restrictions.eq("lastModifiedByClient", filter.getLastModifiedByClient()));
+        }
         switch (filter.getOrder()) {
           case ID:
             criteria.addOrder(Order.asc("id"));
@@ -150,6 +153,9 @@ public class HibernateTaskRepository implements ITaskRepository
         if (filter.getMinRevision() != null) {
           criteria.add(Restrictions.ge("revision", filter.getMinRevision()));
         }
+        if (filter.getLastModifiedByClient() != null) {
+          criteria.add(Restrictions.eq("lastModifiedByClient", filter.getLastModifiedByClient()));
+        }
         switch (filter.getOrder()) {
           case ID:
             criteria.addOrder(Order.asc("id"));
@@ -179,14 +185,14 @@ public class HibernateTaskRepository implements ITaskRepository
   /**
    * {@inheritDoc}
    */
-  public Task storeTask(final Task task) throws RepositoryException
+  public Task storeTask(final Task task, final boolean modifiedByOwner) throws RepositoryException
   {
     final Task result = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Task>() {
       public Task perform(final Session session)
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
 
-        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.TASK, null);
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.TASK, null);
 
         TaskEntity taskEntity;
 
@@ -195,7 +201,9 @@ public class HibernateTaskRepository implements ITaskRepository
 
           taskEntity.fromDTO(new SessionPersistenceContext(session), task);
           taskEntity.setRevision(revisionLock.getLatestRevision());
-          taskEntity.setLastModifiedByClient(m_repository.getClientId());
+          if (modifiedByOwner) {
+            taskEntity.setLastModifiedByClient(m_repository.getClientId());
+          }
 
           session.flush();
         } else {
@@ -205,6 +213,9 @@ public class HibernateTaskRepository implements ITaskRepository
               projectEntity, task.getName());
 
           taskEntity.fromDTO(new SessionPersistenceContext(session), task);
+          if (modifiedByOwner) {
+            taskEntity.setLastModifiedByClient(m_repository.getClientId());
+          }
 
           session.persist(taskEntity);
         }
@@ -225,7 +236,7 @@ public class HibernateTaskRepository implements ITaskRepository
   /**
    * {@inheritDoc}
    */
-  public List<Task> storeTasks(final List<Task> tasks) throws RepositoryException
+  public List<Task> storeTasks(final List<Task> tasks, final boolean modifiedByOwner) throws RepositoryException
   {
     // TODO Auto-generated method stub
     return null;

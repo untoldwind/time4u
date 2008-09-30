@@ -48,7 +48,7 @@ public class TestSessionFactory
     cfg.setProperty(Environment.ISOLATION, "2");
     cfg.setProperty(Environment.DIALECT, DerbyDialect.class.getName());
     cfg.setProperty(Environment.HBM2DDL_AUTO, "update");
-    cfg.setProperty(Environment.SHOW_SQL, "true");
+    cfg.setProperty(Environment.SHOW_SQL, "false");
 
     cfg.addAnnotatedClass(RevisionEntity.class);
     cfg.addAnnotatedClass(PersonEntity.class);

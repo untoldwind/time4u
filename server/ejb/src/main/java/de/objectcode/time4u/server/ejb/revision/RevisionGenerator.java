@@ -11,7 +11,7 @@ import javax.persistence.Query;
 
 import org.jboss.annotation.ejb.LocalBinding;
 
-import de.objectcode.time4u.server.entities.revision.EntityType;
+import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
@@ -29,13 +29,13 @@ public class RevisionGenerator implements IRevisionGenerator
   private IRevisionGeneratorCreator m_creator;
 
   @TransactionAttribute(TransactionAttributeType.MANDATORY)
-  public IRevisionLock getNextRevision(final EntityType entityType, final String part)
+  public IRevisionLock getNextRevision(final SynchronizableType entityType, final String part)
   {
     final RevisionEntityKey key = new RevisionEntityKey(entityType, part != null ? part : "<default>");
 
     final Query updateQuery = m_manager
-        .createNativeQuery("update T4U_REVISIONS set latestRevision = latestRevision + 1 where entityKeyValue=:entityKeyValue and part=:part");
-    updateQuery.setParameter("entityKeyValue", key.getEntityKeyValue());
+        .createNativeQuery("update T4U_REVISIONS set latestRevision = latestRevision + 1 where entityType=:entityType and part=:part");
+    updateQuery.setParameter("entityType", key.getEntityType().getValue());
     updateQuery.setParameter("part", key.getPart());
 
     if (updateQuery.executeUpdate() != 1) {
@@ -45,7 +45,7 @@ public class RevisionGenerator implements IRevisionGenerator
         // Might fail in rare situations
       }
 
-      updateQuery.setParameter("entityKeyValue", key.getEntityKeyValue());
+      updateQuery.setParameter("entityType", key.getEntityType().getValue());
       updateQuery.setParameter("part", key.getPart());
 
       if (updateQuery.executeUpdate() != 1) {

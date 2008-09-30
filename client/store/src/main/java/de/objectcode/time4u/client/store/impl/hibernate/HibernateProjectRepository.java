@@ -13,10 +13,10 @@ import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.client.store.api.event.ProjectRepositoryEvent;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
+import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.api.filter.ProjectFilter;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.context.SessionPersistenceContext;
-import de.objectcode.time4u.server.entities.revision.EntityType;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 import de.objectcode.time4u.server.entities.revision.SessionRevisionGenerator;
@@ -100,6 +100,10 @@ public class HibernateProjectRepository implements IProjectRepository
         if (filter.getMinRevision() != null) {
           criteria.add(Restrictions.ge("revision", filter.getMinRevision()));
         }
+        if (filter.getLastModifiedByClient() != null) {
+          criteria.add(Restrictions.eq("lastModifiedByClient", filter.getLastModifiedByClient()));
+        }
+
         switch (filter.getOrder()) {
           case ID:
             criteria.addOrder(Order.asc("id"));
@@ -152,6 +156,9 @@ public class HibernateProjectRepository implements IProjectRepository
         if (filter.getMinRevision() != null) {
           criteria.add(Restrictions.ge("revision", filter.getMinRevision()));
         }
+        if (filter.getLastModifiedByClient() != null) {
+          criteria.add(Restrictions.eq("lastModifiedByClient", filter.getLastModifiedByClient()));
+        }
         switch (filter.getOrder()) {
           case ID:
             criteria.addOrder(Order.asc("id"));
@@ -181,14 +188,13 @@ public class HibernateProjectRepository implements IProjectRepository
   /**
    * {@inheritDoc}
    */
-  public Project storeProject(final Project project) throws RepositoryException
+  public Project storeProject(final Project project, final boolean modifiedByOwner) throws RepositoryException
   {
     final Project result = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Project>() {
       public Project perform(final Session session)
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
-
-        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PROJECT, null);
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.PROJECT, null);
 
         ProjectEntity projectEntity;
 
@@ -197,8 +203,9 @@ public class HibernateProjectRepository implements IProjectRepository
 
           projectEntity.fromDTO(new SessionPersistenceContext(session), project);
           projectEntity.setRevision(revisionLock.getLatestRevision());
-          projectEntity.setLastModifiedByClient(m_repository.getClientId());
-
+          if (modifiedByOwner) {
+            projectEntity.setLastModifiedByClient(m_repository.getClientId());
+          }
           session.flush();
         } else {
           final String projectId = revisionLock.generateId(m_repository.getClientId());
@@ -206,6 +213,9 @@ public class HibernateProjectRepository implements IProjectRepository
               project.getName());
 
           projectEntity.fromDTO(new SessionPersistenceContext(session), project);
+          if (modifiedByOwner) {
+            projectEntity.setLastModifiedByClient(m_repository.getClientId());
+          }
 
           session.persist(projectEntity);
         }

@@ -18,11 +18,11 @@ import org.jboss.annotation.ejb.RemoteBinding;
 
 import de.objectcode.time4u.server.api.ILoginService;
 import de.objectcode.time4u.server.api.data.RegistrationInfo;
+import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.ejb.config.IConfigServiceLocal;
 import de.objectcode.time4u.server.entities.ClientEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.RoleEntity;
-import de.objectcode.time4u.server.entities.revision.EntityType;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 import de.objectcode.time4u.server.jaas.service.ILoginServiceLocal;
@@ -87,7 +87,7 @@ public class LoginServiceImpl implements ILoginServiceLocal, ILoginService
       return false;
     }
 
-    final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PERSON, null);
+    final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.PERSON, null);
     final PersonEntity person = new PersonEntity(registrationInfo.getPersonId(), revisionLock.getLatestRevision(),
         registrationInfo.getClientId(), registrationInfo.getUserId());
     person.setHashedPassword(registrationInfo.getHashedPassword());
@@ -138,7 +138,7 @@ public class LoginServiceImpl implements ILoginServiceLocal, ILoginService
     final IPasswordEncoder encoder = new DefaultPasswordEncoder();
 
     final long serverId = configService.getServerId();
-    final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PERSON, null);
+    final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.PERSON, null);
     final String personId = revisionLock.generateId(serverId);
     final PersonEntity person = new PersonEntity(personId, revisionLock.getLatestRevision(), serverId, "admin");
 

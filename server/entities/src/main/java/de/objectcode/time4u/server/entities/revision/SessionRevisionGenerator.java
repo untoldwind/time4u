@@ -4,6 +4,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import de.objectcode.time4u.server.api.data.SynchronizableType;
+
 public class SessionRevisionGenerator implements IRevisionGenerator
 {
   private final Session m_session;
@@ -16,19 +18,19 @@ public class SessionRevisionGenerator implements IRevisionGenerator
   /**
    * {@inheritDoc}
    */
-  public IRevisionLock getNextRevision(final EntityType entityType, final String part)
+  public IRevisionLock getNextRevision(final SynchronizableType entityType, final String part)
   {
     final RevisionEntityKey key = new RevisionEntityKey(entityType, part != null ? part : "<default>");
 
     final Query updateQuery = m_session
-        .createSQLQuery("update T4U_REVISIONS set latestRevision = latestRevision + 1 where entityKeyValue=:entityKeyValue and part=:part");
-    updateQuery.setInteger("entityKeyValue", key.getEntityKeyValue());
+        .createSQLQuery("update T4U_REVISIONS set latestRevision = latestRevision + 1 where entityType=:entityType and part=:part");
+    updateQuery.setInteger("entityType", key.getEntityType().getValue());
     updateQuery.setString("part", key.getPart());
 
     if (updateQuery.executeUpdate() != 1) {
       createInOwnTransaction(key);
 
-      updateQuery.setInteger("entityKeyValue", key.getEntityKeyValue());
+      updateQuery.setInteger("entityType", key.getEntityType().getValue());
       updateQuery.setString("part", key.getPart());
 
       if (updateQuery.executeUpdate() != 1) {
