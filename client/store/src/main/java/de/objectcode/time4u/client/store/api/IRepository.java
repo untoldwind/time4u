@@ -2,6 +2,7 @@ package de.objectcode.time4u.client.store.api;
 
 import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
+import de.objectcode.time4u.server.api.data.Person;
 
 /**
  * Client data repository interface.
@@ -20,6 +21,10 @@ public interface IRepository
   IWorkItemRepository getWorkItemRepository();
 
   IServerConnectionRepository getServerConnectionRepository();
+
+  long getClientId();
+
+  Person getOwner();
 
   void addRepositoryListener(RepositoryEventType eventType, IRepositoryListener listener);
 

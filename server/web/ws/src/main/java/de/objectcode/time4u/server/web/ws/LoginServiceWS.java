@@ -7,6 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import de.objectcode.time4u.server.api.ILoginService;
+import de.objectcode.time4u.server.api.data.RegistrationInfo;
 
 @WebService(targetNamespace = "http://objectcode.de/time4u/api/ws", endpointInterface = "de.objectcode.time4u.server.api.ILoginService")
 public class LoginServiceWS implements ILoginService
@@ -30,12 +31,12 @@ public class LoginServiceWS implements ILoginService
     return m_loginService.checkLogin(userId);
   }
 
-  public boolean registerLogin(final String userId, final String hashedPassword, final String name, final String email)
+  public boolean registerLogin(final RegistrationInfo registrationInfo)
   {
     if (LOG.isInfoEnabled()) {
-      LOG.info("registerLogin: " + userId + " " + name + " " + email);
+      LOG.info("registerLogin: " + registrationInfo);
     }
-    return m_loginService.registerLogin(userId, hashedPassword, name, email);
+    return m_loginService.registerLogin(registrationInfo);
   }
 
 }

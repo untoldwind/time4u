@@ -11,10 +11,13 @@ import javax.xml.ws.Service;
 
 import de.objectcode.time4u.client.connection.api.ConnectionException;
 import de.objectcode.time4u.client.connection.api.IConnection;
+import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.server.api.IConstants;
 import de.objectcode.time4u.server.api.ILoginService;
 import de.objectcode.time4u.server.api.IPingService;
+import de.objectcode.time4u.server.api.data.Person;
 import de.objectcode.time4u.server.api.data.PingResult;
+import de.objectcode.time4u.server.api.data.RegistrationInfo;
 import de.objectcode.time4u.server.utils.DefaultPasswordEncoder;
 import de.objectcode.time4u.server.utils.IPasswordEncoder;
 
@@ -54,8 +57,17 @@ public class WSConnection implements IConnection
     try {
       final IPasswordEncoder encoder = new DefaultPasswordEncoder();
 
-      return m_loginService.registerLogin(credentials.get("userId"), encoder.encrypt(credentials.get("password")
-          .toCharArray()), credentials.get("userId"), "");
+      final Person owner = RepositoryFactory.getRepository().getOwner();
+      final RegistrationInfo registrationInfo = new RegistrationInfo();
+
+      registrationInfo.setClientId(RepositoryFactory.getRepository().getClientId());
+      registrationInfo.setPersonId(owner.getId());
+      registrationInfo.setName(owner.getName());
+      registrationInfo.setEmail(owner.getEmail());
+      registrationInfo.setUserId(credentials.get("userId"));
+      registrationInfo.setHashedPassword(encoder.encrypt(credentials.get("password").toCharArray()));
+
+      return m_loginService.registerLogin(registrationInfo);
     } catch (final Exception e) {
       throw new ConnectionException(e.toString(), e);
     }

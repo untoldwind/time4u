@@ -56,7 +56,7 @@ public class HibernateServerConnectionRepository implements IServerConnectionRep
           {
             ServerConnectionEntity serverConnectionEntity;
 
-            if (serverConnection.getId() >= 0) {
+            if (serverConnection.getId() > 0L) {
               serverConnectionEntity = (ServerConnectionEntity) session.get(ServerConnectionEntity.class,
                   serverConnection.getId());
 

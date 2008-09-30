@@ -152,12 +152,12 @@ public class HibernateRepository implements IRepository
     }
   }
 
-  Person getOwner()
+  public Person getOwner()
   {
     return m_owner;
   }
 
-  long getClientId()
+  public long getClientId()
   {
     return m_clientId;
   }

@@ -11,6 +11,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import de.objectcode.time4u.client.connection.api.ConnectionFactory;
 import de.objectcode.time4u.client.connection.api.IConnection;
 import de.objectcode.time4u.client.connection.ui.dialogs.ConnectionDialog;
+import de.objectcode.time4u.client.store.api.RepositoryFactory;
 
 public class ConnectionActionDelegate implements IWorkbenchWindowActionDelegate
 {
@@ -49,6 +50,9 @@ public class ConnectionActionDelegate implements IWorkbenchWindowActionDelegate
               MessageDialog.openError(m_shellProvider.getShell(), "Connection error", "Failed to register login");
             }
           }
+
+          RepositoryFactory.getRepository().getServerConnectionRepository().storeServerConnection(
+              dialog.getServerConnection());
         } catch (final Throwable e) {
           e.printStackTrace();
           MessageDialog.openError(m_shellProvider.getShell(), "Connection error", "Failed to contact server: "
