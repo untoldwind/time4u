@@ -25,12 +25,16 @@
 			<version>${pom.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.xml.ws</groupId>
-			<artifactId>jaxws-api</artifactId>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.jws</groupId>
@@ -47,6 +51,38 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-annotations</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-rt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jvnet.staxex</groupId>
+			<artifactId>stax-ex</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.stream</groupId>
+			<artifactId>sjsxp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.stream</groupId>
+			<artifactId>stax-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.soap</groupId>
+			<artifactId>saaj-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.messaging.saaj</groupId>
+			<artifactId>saaj-impl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.stream.buffer</groupId>
+			<artifactId>streambuffer</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.org.apache.xml.internal</groupId>
+			<artifactId>resolver</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.testng</groupId>
@@ -68,7 +104,7 @@
 						</goals>
 						<configuration>
 							<stripVersion>true</stripVersion>
-							<includeGroupIds>javax.jws,commons-logging,commons-collections,org.apache.derby,javax.transaction,javax.persistence,javax.xml.bind,javax.xml.ws,org.hibernate,dom4j,cglib,asm,de.objectcode.time4u.server,org.testng</includeGroupIds>
+							<includeGroupIds>javax.activation,javax.jws,commons-logging,commons-collections,org.apache.derby,javax.transaction,javax.persistence,javax.xml.bind,org.hibernate,dom4j,cglib,asm,com.sun.xml.bind,de.objectcode.time4u.server,org.testng,javax.xml.soap,javax.xml.ws,javax.xml.stream,org.jvnet.staxex,com.sun.org.apache.xml.internal,com.sun.xml.ws,com.sun.xml.stream,com.sun.xml.stream.buffer,com.sun.xml.messaging.saaj</includeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

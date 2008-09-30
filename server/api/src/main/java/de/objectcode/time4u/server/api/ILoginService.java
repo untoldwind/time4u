@@ -13,5 +13,5 @@ public interface ILoginService
   boolean checkLogin(String userId);
 
   @WebMethod
-  boolean registerLogin(String userId, String password, String name, String email);
+  boolean registerLogin(String userId, String hashedPassword, String name, String email);
 }

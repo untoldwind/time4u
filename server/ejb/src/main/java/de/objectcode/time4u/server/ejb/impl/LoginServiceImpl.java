@@ -16,6 +16,7 @@ import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
 
 import de.objectcode.time4u.server.api.ILoginService;
+import de.objectcode.time4u.server.ejb.config.IConfigServiceLocal;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.RoleEntity;
 import de.objectcode.time4u.server.entities.revision.EntityType;
@@ -39,6 +40,9 @@ public class LoginServiceImpl implements ILoginServiceLocal, ILoginService
   @EJB
   private IRevisionGenerator revisionGenerator;
 
+  @EJB
+  private IConfigServiceLocal configService;
+
   /**
    * {@inheritDoc}
    */
@@ -60,7 +64,7 @@ public class LoginServiceImpl implements ILoginServiceLocal, ILoginService
   /**
    * {@inheritDoc}
    */
-  public boolean registerLogin(final String userId, final String password, final String name, final String email)
+  public boolean registerLogin(final String userId, final String hashedPassword, final String name, final String email)
   {
     final Query query = m_manager.createQuery("from " + PersonEntity.class.getName() + " p where p.userId = :userId");
 
@@ -73,9 +77,17 @@ public class LoginServiceImpl implements ILoginServiceLocal, ILoginService
       }
     } catch (final NoResultException e) {
     }
+    final long serverId = configService.getServerId();
+    final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PERSON, null);
+    final String personId = revisionLock.generateId(serverId);
+    final PersonEntity person = new PersonEntity(personId, revisionLock.getLatestRevision(), userId);
+    person.setHashedPassword(hashedPassword);
+    person.setName(name);
+    person.setEmail(email);
 
-    // TODO Auto-generated method stub
-    return false;
+    m_manager.persist(person);
+
+    return true;
   }
 
   /**
@@ -109,9 +121,9 @@ public class LoginServiceImpl implements ILoginServiceLocal, ILoginService
   {
     final IPasswordEncoder encoder = new DefaultPasswordEncoder();
 
-    // TODO: Find a place for serverid
+    final long serverId = configService.getServerId();
     final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PERSON, null);
-    final String personId = revisionLock.generateId(1L);
+    final String personId = revisionLock.generateId(serverId);
     final PersonEntity person = new PersonEntity(personId, revisionLock.getLatestRevision(), "admin");
 
     person.setHashedPassword(encoder.encrypt("admin".toCharArray()));

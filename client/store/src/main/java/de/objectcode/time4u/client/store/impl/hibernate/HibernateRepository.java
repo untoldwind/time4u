@@ -190,7 +190,7 @@ public class HibernateRepository implements IRepository
 
         if (clientData == null) {
           // TODO: Reconsider this adhoc generation
-          final long clientId = new SecureRandom().nextLong();
+          final long clientId = new SecureRandom().nextLong() & 0xffffffffffffffL;
           final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
           final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PERSON, null);
           final String personId = revisionLock.generateId(clientId);

@@ -1,16 +1,23 @@
 package de.objectcode.time4u.server.entities;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "T4U_CLIENTS")
+@Table(name = "T4U_CLIENTS", uniqueConstraints = @UniqueConstraint(columnNames = "myself"))
 public class ClientEntity
 {
   long m_clientId;
   boolean m_myself;
   boolean m_server;
+  Date m_registeredAt;
+  PersonEntity m_person;
 
   @Id
   public long getClientId()
@@ -43,4 +50,25 @@ public class ClientEntity
     m_server = server;
   }
 
+  public Date getRegisteredAt()
+  {
+    return m_registeredAt;
+  }
+
+  public void setRegisteredAt(final Date registeredAt)
+  {
+    m_registeredAt = registeredAt;
+  }
+
+  @ManyToOne
+  @JoinColumn(name = "person_id")
+  public PersonEntity getPerson()
+  {
+    return m_person;
+  }
+
+  public void setPerson(final PersonEntity person)
+  {
+    m_person = person;
+  }
 }
