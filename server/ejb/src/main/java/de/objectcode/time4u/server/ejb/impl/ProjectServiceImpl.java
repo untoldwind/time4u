@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -18,8 +19,13 @@ import de.objectcode.time4u.server.api.IProjectService;
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
+import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.api.filter.ProjectFilter;
+import de.objectcode.time4u.server.ejb.config.IConfigServiceLocal;
 import de.objectcode.time4u.server.entities.ProjectEntity;
+import de.objectcode.time4u.server.entities.context.EntityManagerPersistenceContext;
+import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
+import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 
 /**
  * EJB3 implementation of the project service interface.
@@ -35,13 +41,17 @@ public class ProjectServiceImpl implements IProjectService
   @PersistenceContext(unitName = "time4u")
   private EntityManager m_manager;
 
+  @EJB
+  private IRevisionGenerator m_revisionGenerator;
+
+  @EJB
+  private IConfigServiceLocal m_configService;
+
   @Resource
   SessionContext m_sessionContext;
 
   public Project getProject(final String projectId)
   {
-    System.out.println(m_sessionContext.getCallerPrincipal());
-    System.out.println(m_sessionContext.isCallerInRole("user"));
     final ProjectEntity projectEntity = m_manager.find(ProjectEntity.class, projectId);
 
     if (projectEntity != null) {
@@ -100,8 +110,33 @@ public class ProjectServiceImpl implements IProjectService
 
   public Project storeProject(final Project project)
   {
-    // TODO Auto-generated method stub
-    return null;
+    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(SynchronizableType.PROJECT, null);
+
+    ProjectEntity projectEntity = null;
+
+    if (project.getId() != null) {
+      projectEntity = m_manager.find(ProjectEntity.class, project.getId());
+    } else {
+      final long serverId = m_configService.getServerId();
+      project.setId(revisionLock.generateId(serverId));
+    }
+    if (projectEntity != null) {
+      projectEntity.fromDTO(new EntityManagerPersistenceContext(m_manager), project);
+      projectEntity.setRevision(revisionLock.getLatestRevision());
+    } else {
+      projectEntity = new ProjectEntity(project.getId(), revisionLock.getLatestRevision(), project
+          .getLastModifiedByClient(), project.getName());
+
+      projectEntity.fromDTO(new EntityManagerPersistenceContext(m_manager), project);
+
+      m_manager.persist(projectEntity);
+    }
+
+    final Project result = new Project();
+
+    projectEntity.toDTO(result);
+
+    return result;
   }
 
   private Query createQuery(final ProjectFilter filter)

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -16,10 +17,16 @@ import org.jboss.annotation.security.SecurityDomain;
 
 import de.objectcode.time4u.server.api.ITaskService;
 import de.objectcode.time4u.server.api.data.FilterResult;
+import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.filter.TaskFilter;
+import de.objectcode.time4u.server.ejb.config.IConfigServiceLocal;
+import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
+import de.objectcode.time4u.server.entities.context.EntityManagerPersistenceContext;
+import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
+import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 
 /**
  * EJB3 implementation of the task service interface.
@@ -34,6 +41,13 @@ public class TaskServiceImpl implements ITaskService
 {
   @PersistenceContext(unitName = "time4u")
   private EntityManager m_manager;
+
+  @EJB
+  private IRevisionGenerator m_revisionGenerator;
+
+  @EJB
+  private IConfigServiceLocal m_configService;
+
   @Resource
   SessionContext m_sessionContext;
 
@@ -97,8 +111,33 @@ public class TaskServiceImpl implements ITaskService
 
   public Task storeTask(final Task task)
   {
-    // TODO Auto-generated method stub
-    return null;
+    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(SynchronizableType.TASK, null);
+
+    TaskEntity taskEntity = null;
+
+    if (task.getId() != null) {
+      taskEntity = m_manager.find(TaskEntity.class, task.getId());
+    } else {
+      final long serverId = m_configService.getServerId();
+      task.setId(revisionLock.generateId(serverId));
+    }
+    if (taskEntity != null) {
+      taskEntity.fromDTO(new EntityManagerPersistenceContext(m_manager), task);
+      taskEntity.setRevision(revisionLock.getLatestRevision());
+    } else {
+      taskEntity = new TaskEntity(task.getId(), revisionLock.getLatestRevision(), task.getLastModifiedByClient(),
+          m_manager.find(ProjectEntity.class, task.getProjectId()), task.getName());
+
+      taskEntity.fromDTO(new EntityManagerPersistenceContext(m_manager), task);
+
+      m_manager.persist(taskEntity);
+    }
+
+    final Task result = new Task();
+
+    taskEntity.toDTO(result);
+
+    return result;
   }
 
   private Query createQuery(final TaskFilter filter)

@@ -41,10 +41,10 @@ public class LoginServiceImpl implements ILoginServiceLocal, ILoginService
   private EntityManager m_manager;
 
   @EJB
-  private IRevisionGenerator revisionGenerator;
+  private IRevisionGenerator m_revisionGenerator;
 
   @EJB
-  private IConfigServiceLocal configService;
+  private IConfigServiceLocal m_configService;
 
   /**
    * {@inheritDoc}
@@ -87,7 +87,7 @@ public class LoginServiceImpl implements ILoginServiceLocal, ILoginService
       return false;
     }
 
-    final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.PERSON, null);
+    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(SynchronizableType.PERSON, null);
     final PersonEntity person = new PersonEntity(registrationInfo.getPersonId(), revisionLock.getLatestRevision(),
         registrationInfo.getClientId(), registrationInfo.getUserId());
     person.setHashedPassword(registrationInfo.getHashedPassword());
@@ -137,8 +137,8 @@ public class LoginServiceImpl implements ILoginServiceLocal, ILoginService
   {
     final IPasswordEncoder encoder = new DefaultPasswordEncoder();
 
-    final long serverId = configService.getServerId();
-    final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.PERSON, null);
+    final long serverId = m_configService.getServerId();
+    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(SynchronizableType.PERSON, null);
     final String personId = revisionLock.generateId(serverId);
     final PersonEntity person = new PersonEntity(personId, revisionLock.getLatestRevision(), serverId, "admin");
 

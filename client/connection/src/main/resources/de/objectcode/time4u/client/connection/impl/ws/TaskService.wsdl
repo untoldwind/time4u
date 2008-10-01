@@ -72,12 +72,14 @@
      <xs:choice maxOccurs='unbounded' minOccurs='0'>
       <xs:element name='project' type='tns:project'/>
       <xs:element name='project-summary' type='tns:project-summary'/>
+      <xs:element name='task' type='tns:task'/>
+      <xs:element name='task-summary' type='tns:taskSummary'/>
      </xs:choice>
     </xs:sequence>
    </xs:complexType>
+
    <xs:complexType name='project'>
     <xs:complexContent>
-
      <xs:extension base='tns:project-summary'>
       <xs:sequence>
        <xs:element minOccurs='0' name='description' type='xs:string'/>
@@ -85,9 +87,9 @@
         <xs:complexType>
          <xs:sequence>
           <xs:element maxOccurs='unbounded' minOccurs='0' name='entry'>
+
            <xs:complexType>
             <xs:sequence>
-
              <xs:element minOccurs='0' name='key' type='xs:string'/>
              <xs:element minOccurs='0' name='value' type='tns:meta-property'/>
             </xs:sequence>
@@ -95,9 +97,9 @@
           </xs:element>
          </xs:sequence>
         </xs:complexType>
+
        </xs:element>
       </xs:sequence>
-
      </xs:extension>
     </xs:complexContent>
    </xs:complexType>
@@ -105,9 +107,9 @@
     <xs:sequence>
      <xs:element name='lastModifiedByClient' type='xs:long'/>
     </xs:sequence>
+
     <xs:attribute name='active' type='xs:boolean' use='required'/>
     <xs:attribute name='deleted' type='xs:boolean' use='required'/>
-
     <xs:attribute name='id' type='xs:string'/>
     <xs:attribute name='name' type='xs:string'/>
     <xs:attribute name='parentId' type='xs:string'/>
@@ -115,9 +117,9 @@
    </xs:complexType>
   </xs:schema>
  </types>
+
  <message name='ITaskService_getTasks'>
   <part name='arg0' type='ns1:task-filter'></part>
-
  </message>
  <message name='ITaskService_getTaskSummariesResponse'>
   <part name='return' type='ns2:filter-result'></part>
@@ -125,9 +127,9 @@
  <message name='ITaskService_storeTask'>
   <part name='arg0' type='ns2:task'></part>
  </message>
+
  <message name='ITaskService_getTaskSummaries'>
   <part name='arg0' type='ns1:task-filter'></part>
-
  </message>
  <message name='ITaskService_storeTaskResponse'>
   <part name='return' type='ns2:task'></part>
@@ -135,9 +137,9 @@
  <message name='ITaskService_getTaskSummary'>
   <part name='arg0' type='xsd:string'></part>
  </message>
+
  <message name='ITaskService_getTaskSummaryResponse'>
   <part name='return' type='ns2:taskSummary'></part>
-
  </message>
  <message name='ITaskService_getTasksResponse'>
   <part name='return' type='ns2:filter-result'></part>
@@ -145,9 +147,9 @@
  <message name='ITaskService_getTaskResponse'>
   <part name='return' type='ns2:task'></part>
  </message>
+
  <message name='ITaskService_getTask'>
   <part name='arg0' type='xsd:string'></part>
-
  </message>
  <portType name='ITaskService'>
   <operation name='getTask' parameterOrder='arg0'>
@@ -155,9 +157,9 @@
    <output message='tns:ITaskService_getTaskResponse'></output>
   </operation>
   <operation name='getTaskSummaries' parameterOrder='arg0'>
+
    <input message='tns:ITaskService_getTaskSummaries'></input>
    <output message='tns:ITaskService_getTaskSummariesResponse'></output>
-
   </operation>
   <operation name='getTaskSummary' parameterOrder='arg0'>
    <input message='tns:ITaskService_getTaskSummary'></input>
@@ -165,9 +167,9 @@
   </operation>
   <operation name='getTasks' parameterOrder='arg0'>
    <input message='tns:ITaskService_getTasks'></input>
+
    <output message='tns:ITaskService_getTasksResponse'></output>
   </operation>
-
   <operation name='storeTask' parameterOrder='arg0'>
    <input message='tns:ITaskService_storeTask'></input>
    <output message='tns:ITaskService_storeTaskResponse'></output>
@@ -175,9 +177,9 @@
  </portType>
  <binding name='ITaskServiceBinding' type='tns:ITaskService'>
   <soap:binding style='rpc' transport='http://schemas.xmlsoap.org/soap/http'/>
+
   <operation name='getTask'>
    <soap:operation soapAction=''/>
-
    <input>
     <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
    </input>
@@ -185,9 +187,9 @@
     <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
    </output>
   </operation>
+
   <operation name='getTaskSummaries'>
    <soap:operation soapAction=''/>
-
    <input>
     <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
    </input>
@@ -195,9 +197,9 @@
     <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
    </output>
   </operation>
+
   <operation name='getTaskSummary'>
    <soap:operation soapAction=''/>
-
    <input>
     <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
    </input>
@@ -205,9 +207,9 @@
     <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
    </output>
   </operation>
+
   <operation name='getTasks'>
    <soap:operation soapAction=''/>
-
    <input>
     <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
    </input>
@@ -215,9 +217,9 @@
     <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
    </output>
   </operation>
+
   <operation name='storeTask'>
    <soap:operation soapAction=''/>
-
    <input>
     <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
    </input>
@@ -225,9 +227,9 @@
     <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
    </output>
   </operation>
+
  </binding>
  <service name='TaskServiceWSService'>
-
   <port binding='tns:ITaskServiceBinding' name='TaskServiceWSPort'>
    <soap:address location='http://127.0.0.1:8080/time4u-ws/secure/TaskService'/>
   </port>

@@ -7,10 +7,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "T4U_CLIENTS", uniqueConstraints = @UniqueConstraint(columnNames = "myself"))
+@Table(name = "T4U_CLIENTS")
 public class ClientEntity
 {
   long m_clientId;

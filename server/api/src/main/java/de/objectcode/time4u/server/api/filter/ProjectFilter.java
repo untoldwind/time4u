@@ -114,6 +114,22 @@ public class ProjectFilter implements Serializable
     m_order = order;
   }
 
+  @Override
+  public String toString()
+  {
+    final StringBuffer buffer = new StringBuffer("ProjectFilter(");
+    buffer.append("active=").append(m_active);
+    buffer.append(",deleted=").append(m_deleted);
+    buffer.append(",parentProject=").append(m_parentProject);
+    buffer.append(",minRevision=").append(m_minRevision);
+    buffer.append(",maxRevision=").append(m_maxRevision);
+    buffer.append(",lastModifiedByClient=").append(m_lastModifiedByClient);
+    buffer.append(",order=").append(m_order);
+    buffer.append(")");
+
+    return buffer.toString();
+  }
+
   /**
    * Convenient method to create a "only top level projects" filter.
    * 

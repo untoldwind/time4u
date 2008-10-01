@@ -22,7 +22,7 @@ public class SynchronizationContext
   private final long m_serverConnectionId;
   private final Map<SynchronizableType, SynchronizationStatus> m_synchronizationStatus;
   private final Map<SynchronizableType, Long> m_clientRevisionStatus;
-  Map<SynchronizableType, Long> m_serverRevisionStatus;
+  private final Map<SynchronizableType, Long> m_serverRevisionStatus;
   private final IRepository m_repository;
   private final IProjectService m_projectService;
   private final ITaskService m_taskService;

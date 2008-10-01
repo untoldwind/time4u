@@ -47,6 +47,7 @@ public class SendProjectChangesCommand implements ISynchronizationCommand
     final ProjectFilter filter = new ProjectFilter();
     // Only send changes made by myself
     filter.setLastModifiedByClient(context.getRepository().getClientId());
+    filter.setOrder(ProjectFilter.Order.ID);
 
     final SynchronizationStatus status = context.getSynchronizationStatus(SynchronizableType.PROJECT);
     final long currentLocalRevision = context.getClientRevisionStatus(SynchronizableType.PROJECT);
@@ -66,5 +67,4 @@ public class SendProjectChangesCommand implements ISynchronizationCommand
       serverConnectionRepository.storeSynchronizationStatus(context.getServerConnectionId(), status);
     }
   }
-
 }

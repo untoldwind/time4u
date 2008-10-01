@@ -43,6 +43,7 @@ public class ReceiveProjectChangesCommand implements ISynchronizationCommand
     final IServerConnectionRepository serverConnectionRepository = context.getRepository()
         .getServerConnectionRepository();
     final ProjectFilter filter = new ProjectFilter();
+    filter.setOrder(ProjectFilter.Order.ID);
 
     final SynchronizationStatus status = context.getSynchronizationStatus(SynchronizableType.PROJECT);
     final long currentRemoteRevision = context.getServerRevisionStatus(SynchronizableType.PROJECT);
@@ -54,15 +55,18 @@ public class ReceiveProjectChangesCommand implements ISynchronizationCommand
 
       final FilterResult<Project> projects = projectService.getProjects(filter);
 
-      for (final Project project : projects.getResults()) {
-        // Ignore changes made by myself
-        if (project.getLastModifiedByClient() != clientId) {
-          projectRepository.storeProject(project, false);
+      // Empty result might by null
+      if (projects != null && projects.getResults() != null) {
+        for (final Project project : projects.getResults()) {
+          // Ignore changes made by myself
+          if (project.getLastModifiedByClient() != clientId) {
+            projectRepository.storeProject(project, false);
+          }
         }
       }
-    }
 
-    status.setLastReceivedRevision(filter.getMaxRevision());
-    serverConnectionRepository.storeSynchronizationStatus(context.getServerConnectionId(), status);
+      status.setLastReceivedRevision(filter.getMaxRevision());
+      serverConnectionRepository.storeSynchronizationStatus(context.getServerConnectionId(), status);
+    }
   }
 }

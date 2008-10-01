@@ -200,22 +200,23 @@ public class HibernateTaskRepository implements ITaskRepository
 
         final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.TASK, null);
 
-        TaskEntity taskEntity;
+        TaskEntity taskEntity = null;
 
         if (task.getId() != null) {
           taskEntity = (TaskEntity) session.get(TaskEntity.class, task.getId());
+        } else {
+          task.setId(revisionLock.generateId(m_repository.getClientId()));
+        }
 
+        if (taskEntity != null) {
           taskEntity.fromDTO(new SessionPersistenceContext(session), task);
           taskEntity.setRevision(revisionLock.getLatestRevision());
           if (modifiedByOwner) {
             taskEntity.setLastModifiedByClient(m_repository.getClientId());
           }
-
-          session.flush();
         } else {
-          final String taskId = revisionLock.generateId(m_repository.getClientId());
           final ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, task.getProjectId());
-          taskEntity = new TaskEntity(taskId, revisionLock.getLatestRevision(), m_repository.getClientId(),
+          taskEntity = new TaskEntity(task.getId(), revisionLock.getLatestRevision(), m_repository.getClientId(),
               projectEntity, task.getName());
 
           taskEntity.fromDTO(new SessionPersistenceContext(session), task);
@@ -225,6 +226,7 @@ public class HibernateTaskRepository implements ITaskRepository
 
           session.persist(taskEntity);
         }
+        session.flush();
 
         final Task result = new Task();
 

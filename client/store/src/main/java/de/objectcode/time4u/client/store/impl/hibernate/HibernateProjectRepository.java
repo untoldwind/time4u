@@ -208,21 +208,22 @@ public class HibernateProjectRepository implements IProjectRepository
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
         final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.PROJECT, null);
 
-        ProjectEntity projectEntity;
+        ProjectEntity projectEntity = null;
 
         if (project.getId() != null) {
           projectEntity = (ProjectEntity) session.get(ProjectEntity.class, project.getId());
-
+        } else {
+          project.setId(revisionLock.generateId(m_repository.getClientId()));
+        }
+        if (projectEntity != null) {
           projectEntity.fromDTO(new SessionPersistenceContext(session), project);
           projectEntity.setRevision(revisionLock.getLatestRevision());
           if (modifiedByOwner) {
             projectEntity.setLastModifiedByClient(m_repository.getClientId());
           }
-          session.flush();
         } else {
-          final String projectId = revisionLock.generateId(m_repository.getClientId());
-          projectEntity = new ProjectEntity(projectId, revisionLock.getLatestRevision(), m_repository.getClientId(),
-              project.getName());
+          projectEntity = new ProjectEntity(project.getId(), revisionLock.getLatestRevision(), m_repository
+              .getClientId(), project.getName());
 
           projectEntity.fromDTO(new SessionPersistenceContext(session), project);
           if (modifiedByOwner) {
@@ -231,6 +232,7 @@ public class HibernateProjectRepository implements IProjectRepository
 
           session.persist(projectEntity);
         }
+        session.flush();
 
         final Project result = new Project();
 
