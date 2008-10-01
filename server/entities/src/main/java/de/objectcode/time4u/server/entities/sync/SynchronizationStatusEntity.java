@@ -93,4 +93,10 @@ public class SynchronizationStatusEntity
     status.setLastReceivedRevision(m_lastReceivedRevision);
     status.setLastSendRevision(m_lastSendRevision);
   }
+
+  public void fromDTO(final SynchronizationStatus status)
+  {
+    m_lastReceivedRevision = status.getLastReceivedRevision();
+    m_lastSendRevision = status.getLastSendRevision();
+  }
 }

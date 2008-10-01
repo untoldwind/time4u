@@ -8,10 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.derby.jdbc.EmbeddedDriver;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Environment;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.dialect.DerbyDialect;
 
 import de.objectcode.time4u.client.store.StorePlugin;
@@ -161,6 +163,32 @@ public class HibernateRepository implements IRepository
   public long getClientId()
   {
     return m_clientId;
+  }
+
+  public Map<SynchronizableType, Long> getRevisionStatus() throws RepositoryException
+  {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Map<SynchronizableType, Long>>() {
+      public Map<SynchronizableType, Long> perform(final Session session)
+      {
+        final Criteria criteria = session.createCriteria(RevisionEntity.class);
+        criteria.add(Restrictions.in("id.part", new Object[] { "<default>", m_owner.getId() }));
+
+        final Map<SynchronizableType, Long> result = new HashMap<SynchronizableType, Long>();
+
+        for (final Object row : criteria.list()) {
+          final RevisionEntity revisionEntity = (RevisionEntity) row;
+          result.put(revisionEntity.getId().getEntityType(), revisionEntity.getLatestRevision());
+        }
+        for (final SynchronizableType type : SynchronizableType.values()) {
+          if (!result.containsKey(type)) {
+            result.put(type, 0L);
+          }
+        }
+
+        return result;
+      }
+    });
+
   }
 
   void fireRepositoryEvent(final RepositoryEvent event)

@@ -1,5 +1,6 @@
 package de.objectcode.time4u.server.entities.sync;
 
+import java.util.Date;
 import java.util.Map;
 
 import javax.persistence.CascadeType;
@@ -42,6 +43,9 @@ public class ServerConnectionEntity
   private String m_url;
   /** Server credentials */
   private String m_credentials;
+  /** Timestamp of the last synchronization */
+  private Date m_lastSynchronize;
+
   private Map<SynchronizableType, SynchronizationStatusEntity> m_synchronizationStatus;
 
   @Id
@@ -91,6 +95,16 @@ public class ServerConnectionEntity
     m_credentials = credentials;
   }
 
+  public Date getLastSynchronize()
+  {
+    return m_lastSynchronize;
+  }
+
+  public void setLastSynchronize(final Date lastSynchronize)
+  {
+    m_lastSynchronize = lastSynchronize;
+  }
+
   @MapKey(name = "entityType")
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "serverConnection")
   public Map<SynchronizableType, SynchronizationStatusEntity> getSynchronizationStatus()
@@ -109,6 +123,7 @@ public class ServerConnectionEntity
     serverConnection.setRootProjectId(m_rootProject != null ? m_rootProject.getId() : null);
     serverConnection.setUrl(m_url);
     serverConnection.setCredentials(encoder.decrypt(m_credentials));
+    serverConnection.setLastSynchronize(m_lastSynchronize);
   }
 
   public void fromDTO(final IPersistenceContext context, final ServerConnection serverConnection,

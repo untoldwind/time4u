@@ -14,9 +14,14 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            name="RCP Perspective"
+            name="Full Perspective"
             class="de.objectcode.time4u.client.ui.Perspective"
             id="de.objectcode.client.ui.perspective">
+      </perspective>
+      <perspective
+            class="de.objectcode.time4u.client.ui.CompactPerspective"
+            id="de.objectcode.client.ui.compactPerspective"
+            name="Compact Perspective">
       </perspective>
    </extension>
    <extension
@@ -500,6 +505,27 @@
                   </objectState>
                </and>
             </enablement>
+         </action>
+      </actionSet>
+      <actionSet
+            id="de.objectcode.time4u.ui.client.perspectiveActionSet"
+            label="Perspective Action Set"
+            visible="true">
+         <action
+               class="de.objectcode.time4u.client.ui.actions.PerspectivesActionDelegate"
+               id="de.objectcode.time4u.client.ui.perspective.full"
+               label="%perspecitve.full.label"
+               menubarPath="window/perspectivesGroup"
+               style="push"
+               tooltip="%perspecitve.full.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.PerspectivesActionDelegate"
+               id="de.objectcode.time4u.client.ui.perspective.compact"
+               label="%perspective.compact.label"
+               menubarPath="window/perspectivesGroup"
+               style="push"
+               tooltip="%perspective.compact.tooltip">
          </action>
       </actionSet>
    </extension>

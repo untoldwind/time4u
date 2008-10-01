@@ -64,6 +64,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
   protected void fillMenuBar(final IMenuManager menuBar)
   {
     final MenuManager fileMenu = new MenuManager("&File", IWorkbenchActionConstants.M_FILE);
+    final MenuManager windowMenu = new MenuManager("&Window", IWorkbenchActionConstants.M_WINDOW);
     final MenuManager helpMenu = new MenuManager("&Help", IWorkbenchActionConstants.M_HELP);
 
     menuBar.add(fileMenu);
@@ -73,12 +74,15 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     menuBar.add(new GroupMarker("workItemAdditions"));
     menuBar.add(new GroupMarker("connectionAdditions"));
     menuBar.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
+    menuBar.add(windowMenu);
     menuBar.add(helpMenu);
 
     // File
     fileMenu.add(newWindowAction);
     fileMenu.add(new Separator());
     fileMenu.add(exitAction);
+
+    windowMenu.add(new GroupMarker("perspectivesGroup"));
 
     // Help
     helpMenu.add(aboutAction);

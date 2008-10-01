@@ -72,6 +72,11 @@ public class ConnectionDialog extends Dialog
   @Override
   protected Control createDialogArea(final Composite parent)
   {
+    final GC gc = new GC(parent);
+    final FontMetrics fm = gc.getFontMetrics();
+    final int width = fm.getAverageCharWidth();
+    gc.dispose();
+
     final Composite composite = (Composite) super.createDialogArea(parent);
     final Composite root = new Composite(composite, SWT.NONE);
     root.setLayout(new GridLayout(2, false));
@@ -82,13 +87,8 @@ public class ConnectionDialog extends Dialog
     m_urlText = new Text(root, SWT.BORDER);
     m_urlText.setText(m_serverConnection.getUrl());
     m_urlText.setTextLimit(200);
-    final int columns = 50;
-    final GC gc = new GC(m_urlText);
-    final FontMetrics fm = gc.getFontMetrics();
-    final int width = columns * fm.getAverageCharWidth();
-    gc.dispose();
     final GridData urlGridData = new GridData(GridData.FILL_HORIZONTAL);
-    urlGridData.widthHint = width;
+    urlGridData.widthHint = 50 * width;
     m_urlText.setLayoutData(urlGridData);
 
     m_urlText.addKeyListener(new KeyAdapter() {

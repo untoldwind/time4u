@@ -3,7 +3,9 @@ package de.objectcode.time4u.client.connection.impl.ws;
 import java.util.Map;
 
 import de.objectcode.time4u.client.store.api.IRepository;
+import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.server.api.IProjectService;
+import de.objectcode.time4u.server.api.IRevisionService;
 import de.objectcode.time4u.server.api.ITaskService;
 import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.api.data.SynchronizationStatus;
@@ -17,13 +19,28 @@ import de.objectcode.time4u.server.api.data.SynchronizationStatus;
  */
 public class SynchronizationContext
 {
-  long m_serverConnectionId;
-  Map<SynchronizableType, SynchronizationStatus> m_synchronizationStatus;
-  Map<SynchronizableType, Long> m_clientRevisionStatus;
+  private final long m_serverConnectionId;
+  private final Map<SynchronizableType, SynchronizationStatus> m_synchronizationStatus;
+  private final Map<SynchronizableType, Long> m_clientRevisionStatus;
   Map<SynchronizableType, Long> m_serverRevisionStatus;
-  IRepository m_repository;
-  IProjectService m_projectService;
-  ITaskService m_taskService;
+  private final IRepository m_repository;
+  private final IProjectService m_projectService;
+  private final ITaskService m_taskService;
+
+  public SynchronizationContext(final IRepository repository, final long serverConnectionId,
+      final IRevisionService revisionService, final IProjectService projectService, final ITaskService taskService)
+      throws RepositoryException
+  {
+    m_repository = repository;
+    m_serverConnectionId = serverConnectionId;
+    m_projectService = projectService;
+    m_taskService = taskService;
+
+    m_synchronizationStatus = m_repository.getServerConnectionRepository().getSynchronizationStatus(
+        m_serverConnectionId);
+    m_clientRevisionStatus = m_repository.getRevisionStatus();
+    m_serverRevisionStatus = revisionService.getRevisionStatus().getLatestRevisions();
+  }
 
   public long getServerConnectionId()
   {
@@ -59,4 +76,5 @@ public class SynchronizationContext
   {
     return m_taskService;
   }
+
 }

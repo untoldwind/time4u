@@ -14,6 +14,13 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+/**
+ * Simple exception feedback dialog.
+ * 
+ * Display an unexpected exception feedback for quick copy-paste of an exception for error-reporting.
+ * 
+ * @author junglas
+ */
 public class ExceptionDialog extends MessageDialog
 {
   String m_trace;

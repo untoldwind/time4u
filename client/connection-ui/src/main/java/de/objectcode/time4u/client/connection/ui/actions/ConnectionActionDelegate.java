@@ -11,6 +11,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import de.objectcode.time4u.client.connection.api.ConnectionFactory;
 import de.objectcode.time4u.client.connection.api.IConnection;
 import de.objectcode.time4u.client.connection.ui.dialogs.ConnectionDialog;
+import de.objectcode.time4u.client.connection.ui.dialogs.ManageConnectionsDialog;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 
 public class ConnectionActionDelegate implements IWorkbenchWindowActionDelegate
@@ -59,6 +60,10 @@ public class ConnectionActionDelegate implements IWorkbenchWindowActionDelegate
               + e.getMessage());
         }
       }
+    } else if ("de.objectcode.time4u.client.connection.manage".equals(id)) {
+      final ManageConnectionsDialog dialog = new ManageConnectionsDialog(m_shellProvider);
+
+      dialog.open();
     }
   }
 

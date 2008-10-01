@@ -1,12 +1,14 @@
 package de.objectcode.time4u.client.store.impl.hibernate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import de.objectcode.time4u.client.store.api.IServerConnectionRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
@@ -15,6 +17,7 @@ import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.api.data.SynchronizationStatus;
 import de.objectcode.time4u.server.entities.context.SessionPersistenceContext;
 import de.objectcode.time4u.server.entities.sync.ServerConnectionEntity;
+import de.objectcode.time4u.server.entities.sync.SynchronizationStatusEntity;
 
 /**
  * Hibernate implementation of the server connection interface.
@@ -106,7 +109,6 @@ public class HibernateServerConnectionRepository implements IServerConnectionRep
     m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Object>() {
       public Object perform(final Session session)
       {
-
         if (serverConnection.getId() >= 0) {
           final ServerConnectionEntity serverConnectionEntity = (ServerConnectionEntity) session.get(
               ServerConnectionEntity.class, serverConnection.getId());
@@ -126,8 +128,38 @@ public class HibernateServerConnectionRepository implements IServerConnectionRep
   public Map<SynchronizableType, SynchronizationStatus> getSynchronizationStatus(final long serverConnectionId)
       throws RepositoryException
   {
-    // TODO Auto-generated method stub
-    return null;
+    return m_hibernateTemplate
+        .executeInTransaction(new HibernateTemplate.Operation<Map<SynchronizableType, SynchronizationStatus>>() {
+          public Map<SynchronizableType, SynchronizationStatus> perform(final Session session)
+          {
+            final Criteria criteria = session.createCriteria(SynchronizationStatusEntity.class);
+
+            criteria.add(Restrictions.eq("serverConnection.id", serverConnectionId));
+
+            final Map<SynchronizableType, SynchronizationStatus> result = new HashMap<SynchronizableType, SynchronizationStatus>();
+            for (final Object row : criteria.list()) {
+              final SynchronizationStatusEntity synchronizationStatusEntity = (SynchronizationStatusEntity) row;
+              final SynchronizationStatus synchronizationStatus = new SynchronizationStatus();
+
+              synchronizationStatusEntity.toDTO(synchronizationStatus);
+
+              result.put(synchronizationStatusEntity.getEntityType(), synchronizationStatus);
+            }
+
+            for (final SynchronizableType type : SynchronizableType.values()) {
+              if (!result.containsKey(type)) {
+                final SynchronizationStatus synchronizationStatus = new SynchronizationStatus();
+                synchronizationStatus.setEntityType(type);
+                synchronizationStatus.setLastReceivedRevision(-1L);
+                synchronizationStatus.setLastSendRevision(-1L);
+
+                result.put(type, synchronizationStatus);
+              }
+            }
+
+            return result;
+          }
+        });
   }
 
   /**
@@ -136,8 +168,34 @@ public class HibernateServerConnectionRepository implements IServerConnectionRep
   public void storeSynchronizationStatus(final long serverConnectionId,
       final SynchronizationStatus synchronizationStatus) throws RepositoryException
   {
-    // TODO Auto-generated method stub
+    m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Object>() {
+      public Object perform(final Session session)
+      {
+        final Criteria criteria = session.createCriteria(SynchronizationStatusEntity.class);
 
+        criteria.add(Restrictions.eq("serverConnection.id", serverConnectionId));
+        criteria.add(Restrictions.eq("entityType", synchronizationStatus.getEntityType()));
+
+        SynchronizationStatusEntity synchronizationStatusEntity = (SynchronizationStatusEntity) criteria.uniqueResult();
+
+        if (synchronizationStatusEntity == null) {
+          synchronizationStatusEntity = new SynchronizationStatusEntity();
+          synchronizationStatusEntity.setEntityType(synchronizationStatus.getEntityType());
+          synchronizationStatusEntity.setServerConnection((ServerConnectionEntity) session.get(
+              ServerConnectionEntity.class, serverConnectionId));
+
+          synchronizationStatusEntity.fromDTO(synchronizationStatus);
+
+          session.persist(synchronizationStatusEntity);
+        } else {
+          synchronizationStatusEntity.fromDTO(synchronizationStatus);
+        }
+
+        session.flush();
+
+        return null;
+      }
+    });
   }
 
 }

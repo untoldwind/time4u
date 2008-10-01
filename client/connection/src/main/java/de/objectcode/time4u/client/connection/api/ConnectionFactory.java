@@ -34,7 +34,7 @@ public class ConnectionFactory
       final URL url = new URL(serverConnection.getUrl());
 
       if ("http".equals(url.getProtocol()) || "https".equals(url.getProtocol())) {
-        return new WSConnection(url, serverConnection.getCredentials());
+        return new WSConnection(serverConnection);
       }
     } catch (final MalformedURLException e) {
       throw new ConnectionException("Malformed url", e);

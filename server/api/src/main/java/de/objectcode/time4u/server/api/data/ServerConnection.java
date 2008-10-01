@@ -1,6 +1,7 @@
 package de.objectcode.time4u.server.api.data;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Map;
 
 public class ServerConnection implements Serializable
@@ -15,6 +16,8 @@ public class ServerConnection implements Serializable
   private String m_url;
   /** Server credentials */
   private Map<String, String> m_credentials;
+  /** Timestamp of the last synchronization */
+  private Date m_lastSynchronize;
 
   public long getId()
   {
@@ -54,6 +57,16 @@ public class ServerConnection implements Serializable
   public void setCredentials(final Map<String, String> credentials)
   {
     m_credentials = credentials;
+  }
+
+  public Date getLastSynchronize()
+  {
+    return m_lastSynchronize;
+  }
+
+  public void setLastSynchronize(final Date lastSynchronize)
+  {
+    m_lastSynchronize = lastSynchronize;
   }
 
 }
