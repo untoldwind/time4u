@@ -1,17 +1,12 @@
 package de.objectcode.time4u.client.connection.impl.common.down;
 
-import static java.lang.Math.min;
+import java.util.List;
+
 import de.objectcode.time4u.client.connection.api.ConnectionException;
-import de.objectcode.time4u.client.connection.impl.common.ISynchronizationCommand;
 import de.objectcode.time4u.client.connection.impl.common.SynchronizationContext;
-import de.objectcode.time4u.client.store.api.IProjectRepository;
-import de.objectcode.time4u.client.store.api.IServerConnectionRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
-import de.objectcode.time4u.server.api.IProjectService;
-import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.SynchronizableType;
-import de.objectcode.time4u.server.api.data.SynchronizationStatus;
 import de.objectcode.time4u.server.api.filter.ProjectFilter;
 
 /**
@@ -19,54 +14,28 @@ import de.objectcode.time4u.server.api.filter.ProjectFilter;
  * 
  * @author junglas
  */
-public class ReceiveProjectChangesCommand implements ISynchronizationCommand
+public class ReceiveProjectChangesCommand extends BaseReceiveCommand<Project>
 {
-  private final static int REVISION_CHUNK = 10;
-
-  /**
-   * {@inheritDoc}
-   */
-  public boolean shouldRun(final SynchronizationContext context)
+  public ReceiveProjectChangesCommand()
   {
-    return context.getServerRevisionStatus(SynchronizableType.PROJECT) > context.getSynchronizationStatus(
-        SynchronizableType.PROJECT).getLastReceivedRevision();
+    super(SynchronizableType.PROJECT);
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public void execute(final SynchronizationContext context) throws RepositoryException, ConnectionException
+  @Override
+  protected List<Project> receiveEntities(final SynchronizationContext context, final long minRevision,
+      final long maxRevision) throws ConnectionException
   {
-    final long clientId = context.getRepository().getClientId();
-    final IProjectRepository projectRepository = context.getRepository().getProjectRepository();
-    final IProjectService projectService = context.getProjectService();
-    final IServerConnectionRepository serverConnectionRepository = context.getRepository()
-        .getServerConnectionRepository();
     final ProjectFilter filter = new ProjectFilter();
+    filter.setMinRevision(minRevision);
+    filter.setMaxRevision(maxRevision);
     filter.setOrder(ProjectFilter.Order.ID);
 
-    final SynchronizationStatus status = context.getSynchronizationStatus(SynchronizableType.PROJECT);
-    final long currentRemoteRevision = context.getServerRevisionStatus(SynchronizableType.PROJECT);
+    return context.getProjectService().getProjects(filter).getResults();
+  }
 
-    // Do in chunks to avoid extremely large result sets
-    for (long beginRevision = status.getLastReceivedRevision() + 1; beginRevision <= currentRemoteRevision; beginRevision += REVISION_CHUNK) {
-      filter.setMinRevision(beginRevision);
-      filter.setMaxRevision(min(beginRevision + REVISION_CHUNK, currentRemoteRevision));
-
-      final FilterResult<Project> projects = projectService.getProjects(filter);
-
-      // Empty result might by null
-      if (projects != null && projects.getResults() != null) {
-        for (final Project project : projects.getResults()) {
-          // Ignore changes made by myself
-          if (project.getLastModifiedByClient() != clientId) {
-            projectRepository.storeProject(project, false);
-          }
-        }
-      }
-
-      status.setLastReceivedRevision(filter.getMaxRevision());
-      serverConnectionRepository.storeSynchronizationStatus(context.getServerConnectionId(), status);
-    }
+  @Override
+  protected void storeEntity(final SynchronizationContext context, final Project entity) throws RepositoryException
+  {
+    context.getRepository().getProjectRepository().storeProject(entity, false);
   }
 }

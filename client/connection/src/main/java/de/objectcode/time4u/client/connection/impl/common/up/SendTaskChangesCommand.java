@@ -1,65 +1,39 @@
 package de.objectcode.time4u.client.connection.impl.common.up;
 
-import static java.lang.Math.min;
-
 import java.util.List;
 
 import de.objectcode.time4u.client.connection.api.ConnectionException;
-import de.objectcode.time4u.client.connection.impl.common.ISynchronizationCommand;
 import de.objectcode.time4u.client.connection.impl.common.SynchronizationContext;
-import de.objectcode.time4u.client.store.api.IServerConnectionRepository;
-import de.objectcode.time4u.client.store.api.ITaskRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
-import de.objectcode.time4u.server.api.ITaskService;
 import de.objectcode.time4u.server.api.data.SynchronizableType;
-import de.objectcode.time4u.server.api.data.SynchronizationStatus;
 import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.filter.TaskFilter;
 
-public class SendTaskChangesCommand implements ISynchronizationCommand
+public class SendTaskChangesCommand extends BaseSendCommand<Task>
 {
-  private final static int REVISION_CHUNK = 10;
-
-  /**
-   * {@inheritDoc}
-   */
-  public boolean shouldRun(final SynchronizationContext context)
+  public SendTaskChangesCommand()
   {
-    return context.getClientRevisionStatus(SynchronizableType.TASK) > context.getSynchronizationStatus(
-        SynchronizableType.TASK).getLastSendRevision();
+    super(SynchronizableType.TASK);
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public void execute(final SynchronizationContext context) throws RepositoryException, ConnectionException
+  @Override
+  protected List<Task> queryEntities(final SynchronizationContext context, final long minRevision,
+      final long maxRevision) throws RepositoryException
   {
-    final ITaskRepository taskRepository = context.getRepository().getTaskRepository();
-    final ITaskService taskService = context.getTaskService();
-    final IServerConnectionRepository serverConnectionRepository = context.getRepository()
-        .getServerConnectionRepository();
-
     final TaskFilter filter = new TaskFilter();
     // Only send changes made by myself
     filter.setLastModifiedByClient(context.getRepository().getClientId());
+
+    filter.setMinRevision(minRevision);
+    filter.setMaxRevision(maxRevision);
     filter.setOrder(TaskFilter.Order.ID);
 
-    final SynchronizationStatus status = context.getSynchronizationStatus(SynchronizableType.TASK);
-    final long currentLocalRevision = context.getClientRevisionStatus(SynchronizableType.TASK);
+    return context.getRepository().getTaskRepository().getTasks(filter);
+  }
 
-    // Do in chunks to avoid extremely large result sets
-    for (long beginRevision = status.getLastSendRevision() + 1; beginRevision <= currentLocalRevision; beginRevision += REVISION_CHUNK) {
-      filter.setMinRevision(beginRevision);
-      filter.setMaxRevision(min(beginRevision + REVISION_CHUNK, currentLocalRevision));
-
-      final List<Task> tasks = taskRepository.getTasks(filter);
-
-      for (final Task task : tasks) {
-        taskService.storeTask(task);
-      }
-
-      status.setLastSendRevision(filter.getMaxRevision());
-      serverConnectionRepository.storeSynchronizationStatus(context.getServerConnectionId(), status);
-    }
+  @Override
+  protected void sendEntity(final SynchronizationContext context, final Task entity) throws ConnectionException
+  {
+    context.getTaskService().storeTask(entity);
   }
 }
