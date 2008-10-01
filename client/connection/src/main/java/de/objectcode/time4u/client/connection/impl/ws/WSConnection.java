@@ -2,7 +2,9 @@ package de.objectcode.time4u.client.connection.impl.ws;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
@@ -11,10 +13,13 @@ import javax.xml.ws.Service;
 
 import de.objectcode.time4u.client.connection.api.ConnectionException;
 import de.objectcode.time4u.client.connection.api.IConnection;
+import de.objectcode.time4u.client.connection.impl.ws.down.ReceiveProjectChangesCommand;
+import de.objectcode.time4u.client.connection.impl.ws.up.SendProjectChangesCommand;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.server.api.IConstants;
 import de.objectcode.time4u.server.api.ILoginService;
 import de.objectcode.time4u.server.api.IPingService;
+import de.objectcode.time4u.server.api.IProjectService;
 import de.objectcode.time4u.server.api.IRevisionService;
 import de.objectcode.time4u.server.api.data.Person;
 import de.objectcode.time4u.server.api.data.PingResult;
@@ -25,15 +30,24 @@ import de.objectcode.time4u.server.utils.IPasswordEncoder;
 
 public class WSConnection implements IConnection
 {
+  private final List<ISynchronizationCommand> m_synchronizationCommands;
+
   private final IPingService m_pingService;
   private final ILoginService m_loginService;
   private final IRevisionService m_revisionService;
+  private final IProjectService m_projectService;
 
   public WSConnection(final URL url, final Map<String, String> credentials) throws ConnectionException
   {
+    // TODO: This may either be static or configurable
+    m_synchronizationCommands = new ArrayList<ISynchronizationCommand>();
+    m_synchronizationCommands.add(new SendProjectChangesCommand());
+    m_synchronizationCommands.add(new ReceiveProjectChangesCommand());
+
     m_pingService = getServicePort(url, "PingService", IPingService.class, credentials, false);
     m_loginService = getServicePort(url, "LoginService", ILoginService.class, credentials, false);
     m_revisionService = getServicePort(url, "RevisionService", IRevisionService.class, credentials, true);
+    m_projectService = getServicePort(url, "ProjectService", IProjectService.class, credentials, true);
   }
 
   public boolean testConnection() throws ConnectionException
@@ -108,6 +122,12 @@ public class WSConnection implements IConnection
     }
 
     return port;
+  }
+
+  public void sychronizeNow() throws ConnectionException
+  {
+    // TODO Auto-generated method stub
+
   }
 
   public static void main(final String[] args)

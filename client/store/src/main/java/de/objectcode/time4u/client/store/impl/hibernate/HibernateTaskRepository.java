@@ -103,7 +103,7 @@ public class HibernateTaskRepository implements ITaskRepository
           criteria.add(Restrictions.ge("revision", filter.getMinRevision()));
         }
         if (filter.getMaxRevision() != null) {
-          criteria.add(Restrictions.lt("revision", filter.getMaxRevision()));
+          criteria.add(Restrictions.le("revision", filter.getMaxRevision()));
         }
         if (filter.getLastModifiedByClient() != null) {
           criteria.add(Restrictions.eq("lastModifiedByClient", filter.getLastModifiedByClient()));

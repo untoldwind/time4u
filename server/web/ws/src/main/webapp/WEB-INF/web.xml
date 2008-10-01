@@ -15,12 +15,16 @@
 		<servlet-class>de.objectcode.time4u.server.web.ws.PersonServiceWS</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>RevisionServiceWS</servlet-name>
+		<servlet-class>de.objectcode.time4u.server.web.ws.RevisionServiceWS</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>ProjectServiceWS</servlet-name>
 		<servlet-class>de.objectcode.time4u.server.web.ws.ProjectServiceWS</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>RevisionServiceWS</servlet-name>
-		<servlet-class>de.objectcode.time4u.server.web.ws.RevisionServiceWS</servlet-class>
+		<servlet-name>TaskServiceWS</servlet-name>
+		<servlet-class>de.objectcode.time4u.server.web.ws.TaskServiceWS</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -43,13 +47,18 @@
 	</servlet-mapping>
 	
 	<servlet-mapping>
+		<servlet-name>RevisionServiceWS</servlet-name>
+		<url-pattern>/secure/RevisionService</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
 		<servlet-name>ProjectServiceWS</servlet-name>
 		<url-pattern>/secure/ProjectService</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>
-		<servlet-name>RevisionServiceWS</servlet-name>
-		<url-pattern>/secure/RevisionService</url-pattern>
+		<servlet-name>TaskServiceWS</servlet-name>
+		<url-pattern>/secure/TaskService</url-pattern>
 	</servlet-mapping>
 	
 	<security-constraint>

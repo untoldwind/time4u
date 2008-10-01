@@ -21,6 +21,12 @@ import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 import de.objectcode.time4u.server.entities.revision.SessionRevisionGenerator;
 
+/**
+ * Hibernate implementation of the project repository interface.
+ * 
+ * @author junglas
+ * 
+ */
 public class HibernateProjectRepository implements IProjectRepository
 {
   private final HibernateRepository m_repository;
@@ -101,7 +107,7 @@ public class HibernateProjectRepository implements IProjectRepository
           criteria.add(Restrictions.ge("revision", filter.getMinRevision()));
         }
         if (filter.getMaxRevision() != null) {
-          criteria.add(Restrictions.lt("revision", filter.getMaxRevision()));
+          criteria.add(Restrictions.le("revision", filter.getMaxRevision()));
         }
         if (filter.getLastModifiedByClient() != null) {
           criteria.add(Restrictions.eq("lastModifiedByClient", filter.getLastModifiedByClient()));

@@ -20,7 +20,7 @@ public class DayInfoFilter
   CalendarDay m_to;
   /** Minimum (inclusive) revision number (i.e. only revisions greater or equals are returned). */
   Long m_minRevision;
-  /** Maximum (exclusive) revision number (i.e. only revisions less then are returned). */
+  /** Maximum (inclusive) revision number (i.e. only revisions less or equals are returned). */
   Long m_maxRevision;
   /** Client id of the last modification */
   Long m_lastModifiedByClient;

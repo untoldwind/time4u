@@ -11,6 +11,11 @@ import org.apache.commons.logging.LogFactory;
 import de.objectcode.time4u.server.api.IRevisionService;
 import de.objectcode.time4u.server.api.data.RevisionStatus;
 
+/**
+ * Web-service delegate to the revision service.
+ * 
+ * @author junglas
+ */
 @WebService(targetNamespace = "http://objectcode.de/time4u/api/ws", endpointInterface = "de.objectcode.time4u.server.api.IRevisionService")
 @SOAPBinding(style = Style.RPC)
 public class RevisionServiceWS implements IRevisionService

@@ -21,6 +21,11 @@ import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.filter.TaskFilter;
 import de.objectcode.time4u.server.entities.TaskEntity;
 
+/**
+ * EJB3 implementation of the task service interface.
+ * 
+ * @author junglas
+ */
 @Stateless
 @Remote(ITaskService.class)
 @RemoteBinding(jndiBinding = "time4u-server/TaskService/remote")
@@ -123,7 +128,7 @@ public class TaskServiceImpl implements ITaskService
     }
     if (filter.getMaxRevision() != null) {
       queryStr.append(combineStr);
-      queryStr.append("t.revision < :maxRevision");
+      queryStr.append("t.revision <= :maxRevision");
       combineStr = " and ";
     }
     if (filter.getLastModifiedByClient() != null) {

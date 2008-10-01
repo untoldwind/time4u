@@ -14,6 +14,11 @@ import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.filter.ProjectFilter;
 
+/**
+ * Web-service delegate to the project service implementation.
+ * 
+ * @author junglas
+ */
 @WebService(targetNamespace = "http://objectcode.de/time4u/api/ws", endpointInterface = "de.objectcode.time4u.server.api.IProjectService")
 @SOAPBinding(style = Style.RPC)
 public class ProjectServiceWS implements IProjectService

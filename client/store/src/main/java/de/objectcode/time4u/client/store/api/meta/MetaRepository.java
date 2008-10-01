@@ -9,6 +9,19 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
+/**
+ * The client side meta data definition repository.
+ * 
+ * Almost all Time4U entities may have an arbitrary set of meta properties. Different kinds of client plugins may use
+ * these meta properties for their own purpose. This repository is used to collect all these meta data definitions of
+ * the client plugins at a central place so that the UI is able to display all the additional information in an ordered
+ * manner.
+ * 
+ * Note that there might be still some meta properties not covered by this mechanism. These meta properties are
+ * considered to be internal used only and will not be displayed in the client UI.
+ * 
+ * @author junglas
+ */
 public class MetaRepository
 {
   private final Map<String, MetaCategory> m_categories;
@@ -21,8 +34,8 @@ public class MetaRepository
 
     m_categories = new TreeMap<String, MetaCategory>();
 
-    for (IConfigurationElement element : extensionPoint.getConfigurationElements()) {
-      String id = element.getAttribute("ID");
+    for (final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
+      final String id = element.getAttribute("ID");
 
       MetaCategory category = m_categories.get(id);
 

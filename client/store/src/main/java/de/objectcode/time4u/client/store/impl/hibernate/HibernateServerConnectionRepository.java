@@ -2,6 +2,7 @@ package de.objectcode.time4u.client.store.impl.hibernate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -10,9 +11,16 @@ import org.hibernate.criterion.Order;
 import de.objectcode.time4u.client.store.api.IServerConnectionRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.server.api.data.ServerConnection;
+import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.SynchronizationStatus;
 import de.objectcode.time4u.server.entities.context.SessionPersistenceContext;
 import de.objectcode.time4u.server.entities.sync.ServerConnectionEntity;
 
+/**
+ * Hibernate implementation of the server connection interface.
+ * 
+ * @author junglas
+ */
 public class HibernateServerConnectionRepository implements IServerConnectionRepository
 {
   private final HibernateRepository m_repository;
@@ -24,6 +32,9 @@ public class HibernateServerConnectionRepository implements IServerConnectionRep
     m_hibernateTemplate = hibernateTemplate;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<ServerConnection> getServerConnections() throws RepositoryException
   {
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<List<ServerConnection>>() {
@@ -48,6 +59,9 @@ public class HibernateServerConnectionRepository implements IServerConnectionRep
     });
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public ServerConnection storeServerConnection(final ServerConnection serverConnection) throws RepositoryException
   {
     final ServerConnection result = m_hibernateTemplate
@@ -84,6 +98,9 @@ public class HibernateServerConnectionRepository implements IServerConnectionRep
     return result;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void deleteServerConnection(final ServerConnection serverConnection) throws RepositoryException
   {
     m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Object>() {
@@ -101,6 +118,26 @@ public class HibernateServerConnectionRepository implements IServerConnectionRep
         return null;
       }
     });
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Map<SynchronizableType, SynchronizationStatus> getSynchronizationStatus(final long serverConnectionId)
+      throws RepositoryException
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void storeSynchronizationStatus(final long serverConnectionId,
+      final SynchronizationStatus synchronizationStatus) throws RepositoryException
+  {
+    // TODO Auto-generated method stub
+
   }
 
 }

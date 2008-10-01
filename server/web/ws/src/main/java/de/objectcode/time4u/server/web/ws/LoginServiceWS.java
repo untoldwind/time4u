@@ -9,6 +9,11 @@ import org.apache.commons.logging.LogFactory;
 import de.objectcode.time4u.server.api.ILoginService;
 import de.objectcode.time4u.server.api.data.RegistrationInfo;
 
+/**
+ * Web-service delegate to the login service implementation.
+ * 
+ * @author junglas
+ */
 @WebService(targetNamespace = "http://objectcode.de/time4u/api/ws", endpointInterface = "de.objectcode.time4u.server.api.ILoginService")
 public class LoginServiceWS implements ILoginService
 {

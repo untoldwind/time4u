@@ -135,7 +135,7 @@ public class ProjectServiceImpl implements IProjectService
     }
     if (filter.getMaxRevision() != null) {
       queryStr.append(combineStr);
-      queryStr.append("p.revision < :maxRevision");
+      queryStr.append("p.revision <= :maxRevision");
       combineStr = " and ";
     }
     if (filter.getLastModifiedByClient() != null) {
