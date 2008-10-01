@@ -1,4 +1,4 @@
-package de.objectcode.time4u.client.connection.impl.ws;
+package de.objectcode.time4u.client.connection.impl.common;
 
 import java.util.Map;
 

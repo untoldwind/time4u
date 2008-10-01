@@ -12,8 +12,12 @@ import javax.xml.ws.Service;
 
 import de.objectcode.time4u.client.connection.api.ConnectionException;
 import de.objectcode.time4u.client.connection.api.IConnection;
-import de.objectcode.time4u.client.connection.impl.ws.down.ReceiveProjectChangesCommand;
-import de.objectcode.time4u.client.connection.impl.ws.up.SendProjectChangesCommand;
+import de.objectcode.time4u.client.connection.impl.common.ISynchronizationCommand;
+import de.objectcode.time4u.client.connection.impl.common.SynchronizationContext;
+import de.objectcode.time4u.client.connection.impl.common.down.ReceiveProjectChangesCommand;
+import de.objectcode.time4u.client.connection.impl.common.down.ReceiveTaskChangesCommand;
+import de.objectcode.time4u.client.connection.impl.common.up.SendProjectChangesCommand;
+import de.objectcode.time4u.client.connection.impl.common.up.SendTaskChangesCommand;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.server.api.IConstants;
 import de.objectcode.time4u.server.api.ILoginService;
@@ -45,7 +49,9 @@ public class WSConnection implements IConnection
     // TODO: This may either be static or configurable
     m_synchronizationCommands = new ArrayList<ISynchronizationCommand>();
     m_synchronizationCommands.add(new SendProjectChangesCommand());
+    m_synchronizationCommands.add(new SendTaskChangesCommand());
     m_synchronizationCommands.add(new ReceiveProjectChangesCommand());
+    m_synchronizationCommands.add(new ReceiveTaskChangesCommand());
 
     m_serverConnection = serverConnection;
 

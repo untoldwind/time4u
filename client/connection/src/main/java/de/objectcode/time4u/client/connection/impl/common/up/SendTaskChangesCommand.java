@@ -1,27 +1,22 @@
-package de.objectcode.time4u.client.connection.impl.ws.up;
+package de.objectcode.time4u.client.connection.impl.common.up;
 
 import static java.lang.Math.min;
 
 import java.util.List;
 
 import de.objectcode.time4u.client.connection.api.ConnectionException;
-import de.objectcode.time4u.client.connection.impl.ws.ISynchronizationCommand;
-import de.objectcode.time4u.client.connection.impl.ws.SynchronizationContext;
-import de.objectcode.time4u.client.store.api.IProjectRepository;
+import de.objectcode.time4u.client.connection.impl.common.ISynchronizationCommand;
+import de.objectcode.time4u.client.connection.impl.common.SynchronizationContext;
 import de.objectcode.time4u.client.store.api.IServerConnectionRepository;
+import de.objectcode.time4u.client.store.api.ITaskRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
-import de.objectcode.time4u.server.api.IProjectService;
-import de.objectcode.time4u.server.api.data.Project;
+import de.objectcode.time4u.server.api.ITaskService;
 import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.api.data.SynchronizationStatus;
-import de.objectcode.time4u.server.api.filter.ProjectFilter;
+import de.objectcode.time4u.server.api.data.Task;
+import de.objectcode.time4u.server.api.filter.TaskFilter;
 
-/**
- * Send project changes to the server.
- * 
- * @author junglas
- */
-public class SendProjectChangesCommand implements ISynchronizationCommand
+public class SendTaskChangesCommand implements ISynchronizationCommand
 {
   private final static int REVISION_CHUNK = 10;
 
@@ -30,8 +25,8 @@ public class SendProjectChangesCommand implements ISynchronizationCommand
    */
   public boolean shouldRun(final SynchronizationContext context)
   {
-    return context.getClientRevisionStatus(SynchronizableType.PROJECT) > context.getSynchronizationStatus(
-        SynchronizableType.PROJECT).getLastSendRevision();
+    return context.getClientRevisionStatus(SynchronizableType.TASK) > context.getSynchronizationStatus(
+        SynchronizableType.TASK).getLastSendRevision();
   }
 
   /**
@@ -39,28 +34,28 @@ public class SendProjectChangesCommand implements ISynchronizationCommand
    */
   public void execute(final SynchronizationContext context) throws RepositoryException, ConnectionException
   {
-    final IProjectRepository projectRepository = context.getRepository().getProjectRepository();
-    final IProjectService projectService = context.getProjectService();
+    final ITaskRepository taskRepository = context.getRepository().getTaskRepository();
+    final ITaskService taskService = context.getTaskService();
     final IServerConnectionRepository serverConnectionRepository = context.getRepository()
         .getServerConnectionRepository();
 
-    final ProjectFilter filter = new ProjectFilter();
+    final TaskFilter filter = new TaskFilter();
     // Only send changes made by myself
     filter.setLastModifiedByClient(context.getRepository().getClientId());
-    filter.setOrder(ProjectFilter.Order.ID);
+    filter.setOrder(TaskFilter.Order.ID);
 
-    final SynchronizationStatus status = context.getSynchronizationStatus(SynchronizableType.PROJECT);
-    final long currentLocalRevision = context.getClientRevisionStatus(SynchronizableType.PROJECT);
+    final SynchronizationStatus status = context.getSynchronizationStatus(SynchronizableType.TASK);
+    final long currentLocalRevision = context.getClientRevisionStatus(SynchronizableType.TASK);
 
     // Do in chunks to avoid extremely large result sets
     for (long beginRevision = status.getLastSendRevision() + 1; beginRevision <= currentLocalRevision; beginRevision += REVISION_CHUNK) {
       filter.setMinRevision(beginRevision);
       filter.setMaxRevision(min(beginRevision + REVISION_CHUNK, currentLocalRevision));
 
-      final List<Project> projects = projectRepository.getProjects(filter);
+      final List<Task> tasks = taskRepository.getTasks(filter);
 
-      for (final Project project : projects) {
-        projectService.storeProject(project);
+      for (final Task task : tasks) {
+        taskService.storeTask(task);
       }
 
       status.setLastSendRevision(filter.getMaxRevision());
