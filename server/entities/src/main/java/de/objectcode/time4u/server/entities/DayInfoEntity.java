@@ -4,9 +4,11 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,6 +25,7 @@ import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
 import de.objectcode.time4u.server.api.data.WorkItem;
+import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 
 /**
  * Day information entity.
@@ -69,6 +72,7 @@ public class DayInfoEntity
     m_lastModifiedByClient = lastModifiedByClient;
     m_person = person;
     m_date = date;
+    m_regularTime = -1;
     m_workItems = new HashSet<WorkItemEntity>();
     m_tags = new HashSet<DayTagEntity>();
   }
@@ -180,7 +184,7 @@ public class DayInfoEntity
     m_regularTime = regularTime;
   }
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "dayInfo")
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "dayInfo")
   public Set<WorkItemEntity> getWorkItems()
   {
     return m_workItems;
@@ -266,6 +270,32 @@ public class DayInfoEntity
       final List<WorkItem> workItems = Collections.emptyList();
 
       dayinfo.setWorkItems(workItems);
+    }
+  }
+
+  public void fromDTO(final IPersistenceContext context, final DayInfo dayInfo)
+  {
+    m_lastModifiedByClient = dayInfo.getLastModifiedByClient();
+    m_regularTime = dayInfo.getRegularTime();
+
+    final Set<String> workItemIds = new HashSet<String>();
+
+    for (final WorkItem workItem : dayInfo.getWorkItems()) {
+      final WorkItemEntity workItemEntity = new WorkItemEntity(workItem.getId(), this);
+
+      workItemEntity.fromDTO(context, workItem);
+
+      context.merge(workItemEntity);
+      workItemIds.add(workItem.getId());
+    }
+    final Iterator<WorkItemEntity> it = m_workItems.iterator();
+    while (it.hasNext()) {
+      final WorkItemEntity entity = it.next();
+
+      if (!workItemIds.contains(entity.getId())) {
+        context.delete(entity);
+        it.remove();
+      }
     }
   }
 }

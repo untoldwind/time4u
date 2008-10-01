@@ -47,4 +47,8 @@ public interface IPersistenceContext
    * @return The person with id <tt>personId</tt>
    */
   PersonEntity findPerson(String personId);
+
+  void merge(Object entity);
+
+  void delete(Object entity);
 }

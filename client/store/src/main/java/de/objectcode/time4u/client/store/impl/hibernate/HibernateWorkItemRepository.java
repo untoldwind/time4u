@@ -112,6 +112,50 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
   /**
    * {@inheritDoc}
    */
+  public DayInfo storeDayInfo(final DayInfo dayInfo, final boolean modifiedByOwner) throws RepositoryException
+  {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<DayInfo>() {
+      public DayInfo perform(final Session session)
+      {
+        final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.DAYINFO, m_repository
+            .getOwner().getId());
+
+        DayInfoEntity dayInfoEntity = null;
+
+        if (dayInfo.getId() == null) {
+          dayInfo.setId(revisionLock.generateId(m_repository.getClientId()));
+        } else {
+          dayInfoEntity = (DayInfoEntity) session.get(DayInfoEntity.class, dayInfo.getId());
+        }
+
+        if (dayInfoEntity == null) {
+          dayInfoEntity = new DayInfoEntity(dayInfo.getId(), revisionLock.getLatestRevision(), dayInfo
+              .getLastModifiedByClient(), (PersonEntity) session.get(PersonEntity.class, m_repository.getOwner()
+              .getId()), dayInfo.getDay().getDate());
+
+          session.persist(dayInfoEntity);
+        }
+        dayInfoEntity.fromDTO(new SessionPersistenceContext(session), dayInfo);
+        dayInfoEntity.setRevision(revisionLock.getLatestRevision());
+        if (modifiedByOwner) {
+          dayInfoEntity.setLastModifiedByClient(m_repository.getClientId());
+        }
+        dayInfoEntity.validate();
+        session.flush();
+
+        final DayInfo result = new DayInfo();
+
+        dayInfoEntity.toDTO(result);
+
+        return result;
+      }
+    });
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   public WorkItem storeWorkItem(final WorkItem workItem) throws RepositoryException
   {
     final DayInfoWorkItemHolder dayInfoWorkItemHolder = m_hibernateTemplate
@@ -119,7 +163,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
           public DayInfoWorkItemHolder perform(final Session session)
           {
             final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
-            final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.WORKITEM,
+            final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.DAYINFO,
                 m_repository.getOwner().getId());
 
             WorkItemEntity workItemEntity;
@@ -190,7 +234,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
       public DayInfo perform(final Session session)
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
-        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.WORKITEM, m_repository
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.DAYINFO, m_repository
             .getOwner().getId());
 
         if (workItem.getId() != null) {

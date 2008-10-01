@@ -208,30 +208,18 @@ public class HibernateProjectRepository implements IProjectRepository
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
         final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.PROJECT, null);
 
-        ProjectEntity projectEntity = null;
-
-        if (project.getId() != null) {
-          projectEntity = (ProjectEntity) session.get(ProjectEntity.class, project.getId());
-        } else {
+        if (project.getId() == null) {
           project.setId(revisionLock.generateId(m_repository.getClientId()));
         }
-        if (projectEntity != null) {
-          projectEntity.fromDTO(new SessionPersistenceContext(session), project);
-          projectEntity.setRevision(revisionLock.getLatestRevision());
-          if (modifiedByOwner) {
-            projectEntity.setLastModifiedByClient(m_repository.getClientId());
-          }
-        } else {
-          projectEntity = new ProjectEntity(project.getId(), revisionLock.getLatestRevision(), m_repository
-              .getClientId(), project.getName());
+        final ProjectEntity projectEntity = new ProjectEntity(project.getId(), revisionLock.getLatestRevision(),
+            m_repository.getClientId(), project.getName());
 
-          projectEntity.fromDTO(new SessionPersistenceContext(session), project);
-          if (modifiedByOwner) {
-            projectEntity.setLastModifiedByClient(m_repository.getClientId());
-          }
-
-          session.persist(projectEntity);
+        projectEntity.fromDTO(new SessionPersistenceContext(session), project);
+        if (modifiedByOwner) {
+          projectEntity.setLastModifiedByClient(m_repository.getClientId());
         }
+
+        session.merge(projectEntity);
         session.flush();
 
         final Project result = new Project();

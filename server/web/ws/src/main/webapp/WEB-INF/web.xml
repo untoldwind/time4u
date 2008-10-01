@@ -26,6 +26,10 @@
 		<servlet-name>TaskServiceWS</servlet-name>
 		<servlet-class>de.objectcode.time4u.server.web.ws.TaskServiceWS</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>WorkItemServiceWS</servlet-name>
+		<servlet-class>de.objectcode.time4u.server.web.ws.WorkItemServiceWS</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>PingServiceWS</servlet-name>
@@ -59,6 +63,11 @@
 	<servlet-mapping>
 		<servlet-name>TaskServiceWS</servlet-name>
 		<url-pattern>/secure/TaskService</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>WorkItemServiceWS</servlet-name>
+		<url-pattern>/secure/WorkItemService</url-pattern>
 	</servlet-mapping>
 	
 	<security-constraint>

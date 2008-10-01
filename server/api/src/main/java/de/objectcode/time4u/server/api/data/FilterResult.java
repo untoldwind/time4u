@@ -34,7 +34,9 @@ public class FilterResult<T> implements Serializable
 
   @XmlElements( { @XmlElement(name = "project", type = Project.class),
       @XmlElement(name = "project-summary", type = ProjectSummary.class),
-      @XmlElement(name = "task", type = Task.class), @XmlElement(name = "task-summary", type = TaskSummary.class) })
+      @XmlElement(name = "task", type = Task.class), @XmlElement(name = "task-summary", type = TaskSummary.class),
+      @XmlElement(name = "dayinfo", type = DayInfo.class),
+      @XmlElement(name = "dayinfo-summary", type = DayInfoSummary.class) })
   public List<T> getResults()
   {
     return results;

@@ -48,4 +48,14 @@ public class SessionPersistenceContext implements IPersistenceContext
     return (TodoEntity) m_session.get(TodoEntity.class, todoId);
   }
 
+  public void delete(final Object entity)
+  {
+    m_session.delete(entity);
+  }
+
+  public void merge(final Object entity)
+  {
+    m_session.merge(entity);
+  }
+
 }

@@ -11,7 +11,7 @@ public enum SynchronizableType
   PROJECT(2),
   TASK(3),
   TODO(4),
-  WORKITEM(5),
+  DAYINFO(5),
   ACTIVE_WORKITEM(6);
 
   private final int m_value;

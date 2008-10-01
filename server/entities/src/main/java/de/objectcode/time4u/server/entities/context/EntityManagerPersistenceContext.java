@@ -36,4 +36,14 @@ public class EntityManagerPersistenceContext implements IPersistenceContext
     return m_manager.find(TodoEntity.class, todoId);
   }
 
+  public void delete(final Object entity)
+  {
+    m_manager.remove(entity);
+  }
+
+  public void merge(final Object entity)
+  {
+    m_manager.merge(entity);
+  }
+
 }

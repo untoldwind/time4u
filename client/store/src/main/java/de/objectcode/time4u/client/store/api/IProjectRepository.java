@@ -62,6 +62,9 @@ public interface IProjectRepository
    * 
    * @param project
    *          The project to store
+   * @param modifiedByOwner
+   *          <tt>true</tt> If the modification is done by the repository owner (in UI this should always be
+   *          <tt>true</tt>)
    * @return The stored project (including generated id for new projects)
    * @throws RepositoryException
    *           on error

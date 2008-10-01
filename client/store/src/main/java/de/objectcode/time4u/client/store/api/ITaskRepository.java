@@ -62,6 +62,9 @@ public interface ITaskRepository
    * 
    * @param task
    *          The task to be stored
+   * @param modifiedByOwner
+   *          <tt>true</tt> If the modification is done by the repository owner (in UI this should always be
+   *          <tt>true</tt>)
    * @throws RepositoryException
    *           on error
    */

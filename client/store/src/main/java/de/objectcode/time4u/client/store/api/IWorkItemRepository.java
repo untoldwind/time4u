@@ -38,6 +38,21 @@ public interface IWorkItemRepository
   List<DayInfoSummary> getDayInfoSummaries(DayInfoFilter filter) throws RepositoryException;
 
   /**
+   * Store a complete dayinfo.
+   * 
+   * This also stores/modifies all workitems for that day.
+   * 
+   * @param dayInfo
+   *          The dayinfo to be stored
+   * @param modifiedByOwner
+   *          <tt>true</tt> If the modification is done by the repository owner (in UI this should always be
+   *          <tt>true</tt>)
+   * @return
+   * @throws RepositoryException
+   */
+  DayInfo storeDayInfo(DayInfo dayInfo, boolean modifiedByOwner) throws RepositoryException;
+
+  /**
    * Store a single workitem.
    * 
    * This method also inserts a dayinfo if necessary.

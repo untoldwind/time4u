@@ -4,11 +4,15 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.Calendar;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * A (gregorian) calendar day.
  * 
  * @author junglas
  */
+@XmlType(name = "calendar-day")
 public class CalendarDay implements Serializable, Comparable<CalendarDay>
 {
   private static final long serialVersionUID = 5239789740978583628L;
@@ -16,6 +20,10 @@ public class CalendarDay implements Serializable, Comparable<CalendarDay>
   private int m_day;
   private int m_month;
   private int m_year;
+
+  public CalendarDay()
+  {
+  }
 
   public CalendarDay(final int day, final int month, final int year)
   {
@@ -41,16 +49,19 @@ public class CalendarDay implements Serializable, Comparable<CalendarDay>
     m_year = calendar.get(Calendar.YEAR);
   }
 
+  @XmlAttribute
   public int getDay()
   {
     return m_day;
   }
 
+  @XmlAttribute
   public int getMonth()
   {
     return m_month;
   }
 
+  @XmlAttribute
   public int getYear()
   {
     return m_year;
