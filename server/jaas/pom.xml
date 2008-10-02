@@ -13,7 +13,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>de.objectcode.time4u.server</groupId>
-			<artifactId>time4u-server-api</artifactId>
+			<artifactId>time4u-server-entities</artifactId>
 			<version>${pom.version}</version>
 			<scope>provided</scope>
 		</dependency>

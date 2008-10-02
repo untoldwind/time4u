@@ -19,6 +19,7 @@ import de.objectcode.time4u.server.api.IRevisionService;
 import de.objectcode.time4u.server.api.data.RevisionStatus;
 import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.entities.PersonEntity;
+import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
 
 @Stateless
@@ -36,12 +37,9 @@ public class RevisionServiceImpl implements IRevisionService
   @RolesAllowed("user")
   public RevisionStatus getRevisionStatus()
   {
-    final Query personQuery = m_manager.createQuery("from " + PersonEntity.class.getName()
-        + " p where p.userId=:userId");
-
-    personQuery.setParameter("userId", m_sessionContext.getCallerPrincipal().getName());
-
-    final PersonEntity person = (PersonEntity) personQuery.getSingleResult();
+    final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, m_sessionContext.getCallerPrincipal()
+        .getName());
+    final PersonEntity person = userAccount.getPerson();
 
     final Map<SynchronizableType, Long> latestRevisions = new HashMap<SynchronizableType, Long>();
 

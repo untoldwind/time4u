@@ -2,10 +2,13 @@ package de.objectcode.time4u.server.jaas.login;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import javax.naming.InitialContext;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
@@ -19,8 +22,8 @@ import javax.security.auth.spi.LoginModule;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import de.objectcode.time4u.server.jaas.service.ILoginServiceLocal;
-import de.objectcode.time4u.server.jaas.service.LoginLocal;
+import de.objectcode.time4u.server.entities.account.UserAccountEntity;
+import de.objectcode.time4u.server.entities.account.UserRoleEntity;
 import de.objectcode.time4u.server.utils.DefaultPasswordEncoder;
 import de.objectcode.time4u.server.utils.IPasswordEncoder;
 
@@ -30,15 +33,25 @@ public class Time4ULoginModule implements LoginModule
 
   protected Subject m_subject;
   protected Principal m_identity;
+  protected Set<String> m_roles;
   protected CallbackHandler m_callbackHandler;
   protected Map<String, ?> m_sharedState;
   protected Map<String, ?> m_options;
   protected boolean m_loginOk;
   protected char[] m_credential;
+  EntityManagerFactory m_entityManagerFactory;
 
   public Time4ULoginModule()
   {
-    LOG.info("Time4ULoginModel instanciated");
+    try {
+      final InitialContext ctx = new InitialContext();
+
+      m_entityManagerFactory = (EntityManagerFactory) ctx.lookup("time4u-server/EntityManagerFactory");
+
+      LOG.info("Time4ULoginModel instanciated");
+    } catch (final Exception e) {
+      LOG.fatal("Failed to initialize Time4ULoginModule", e);
+    }
   }
 
   /**
@@ -56,7 +69,9 @@ public class Time4ULoginModule implements LoginModule
    */
   public boolean commit() throws LoginException
   {
-    LOG.info("commit, loginOk=" + m_loginOk);
+    if (LOG.isInfoEnabled()) {
+      LOG.info("commit, loginOk=" + m_loginOk);
+    }
 
     if (m_loginOk == false) {
       return false;
@@ -69,9 +84,11 @@ public class Time4ULoginModule implements LoginModule
 
     final Time4UGroup roles = new Time4UGroup("Roles");
     principals.add(roles);
-    roles.addMember(new Time4UPrincipal("time4u-user"));
-    roles.addMember(new Time4UPrincipal("user"));
-    roles.addMember(new Time4UPrincipal("USER"));
+    if (getRoles() != null) {
+      for (final String role : getRoles()) {
+        roles.addMember(new Time4UPrincipal(role));
+      }
+    }
 
     return true;
 
@@ -108,24 +125,36 @@ public class Time4ULoginModule implements LoginModule
       m_identity = new Time4UPrincipal(username);
     }
 
+    EntityManager manager = null;
     try {
-      final InitialContext ctx = new InitialContext();
-
-      final ILoginServiceLocal loginService = (ILoginServiceLocal) ctx.lookup("time4u-server/LoginService/local");
-      final LoginLocal login = loginService.findLogin(username);
+      manager = m_entityManagerFactory.createEntityManager();
+      final UserAccountEntity userAccount = manager.find(UserAccountEntity.class, username);
 
       final IPasswordEncoder encoder = new DefaultPasswordEncoder();
 
-      if (login == null || !encoder.verify(password.toCharArray(), login.getHashedPassword())) {
+      if (userAccount == null || !encoder.verify(password.toCharArray(), userAccount.getHashedPassword())) {
         throw new FailedLoginException("Password Incorrect/Password Required");
+      }
+
+      m_roles = new HashSet<String>();
+      for (final UserRoleEntity role : userAccount.getRoles()) {
+        m_roles.add(role.getRoleId());
       }
 
       m_loginOk = true;
       return true;
+    } catch (final FailedLoginException e) {
+      LOG.error("Exception", e);
+
+      throw e;
     } catch (final Exception e) {
       LOG.error("Exception", e);
 
       throw new FailedLoginException("Password Incorrect/Password Required");
+    } finally {
+      if (manager != null) {
+        manager.close();
+      }
     }
 
   }
@@ -150,6 +179,11 @@ public class Time4ULoginModule implements LoginModule
   protected Principal getIdentity()
   {
     return m_identity;
+  }
+
+  protected Set<String> getRoles()
+  {
+    return m_roles;
   }
 
   protected String[] getUsernameAndPassword() throws LoginException

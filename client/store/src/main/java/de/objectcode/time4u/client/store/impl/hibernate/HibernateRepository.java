@@ -35,7 +35,6 @@ import de.objectcode.time4u.server.entities.DayTagEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.ProjectProperty;
-import de.objectcode.time4u.server.entities.RoleEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
 import de.objectcode.time4u.server.entities.TaskProperty;
 import de.objectcode.time4u.server.entities.TeamEntity;
@@ -223,8 +222,7 @@ public class HibernateRepository implements IRepository
           final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
           final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.PERSON, null);
           final String personId = revisionLock.generateId(clientId);
-          final PersonEntity ownerPerson = new PersonEntity(personId, revisionLock.getLatestRevision(), clientId,
-              System.getProperty("user.name"));
+          final PersonEntity ownerPerson = new PersonEntity(personId, revisionLock.getLatestRevision(), clientId);
           ownerPerson.setName(System.getProperty("user.name"));
 
           session.persist(ownerPerson);
@@ -270,7 +268,6 @@ public class HibernateRepository implements IRepository
 
       cfg.addAnnotatedClass(RevisionEntity.class);
       cfg.addAnnotatedClass(PersonEntity.class);
-      cfg.addAnnotatedClass(RoleEntity.class);
       cfg.addAnnotatedClass(TeamEntity.class);
       cfg.addAnnotatedClass(ProjectEntity.class);
       cfg.addAnnotatedClass(ProjectProperty.class);

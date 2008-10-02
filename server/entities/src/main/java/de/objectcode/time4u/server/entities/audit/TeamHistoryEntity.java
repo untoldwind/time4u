@@ -1,17 +1,15 @@
 package de.objectcode.time4u.server.entities.audit;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -38,12 +36,8 @@ public class TeamHistoryEntity
   private PersonEntity m_performedBy;
   /** Timestamp of the change. */
   private Date m_performedAt;
-  /** Orginial name of the team. */
-  private String m_name;
-  /** Original owners of the team. */
-  private Set<PersonEntity> m_owners;
-  /** Original members of the team. */
-  private Set<PersonEntity> m_members;
+  /** Original data */
+  private String m_data;
 
   public TeamHistoryEntity()
   {
@@ -54,10 +48,6 @@ public class TeamHistoryEntity
     m_team = team;
     m_performedBy = performedBy;
     m_performedAt = new Date();
-
-    m_owners = new HashSet<PersonEntity>(team.getOwners());
-    m_name = team.getName();
-    m_members = new HashSet<PersonEntity>(team.getMembers());
   }
 
   @Id
@@ -73,6 +63,18 @@ public class TeamHistoryEntity
     m_id = id;
   }
 
+  @Lob()
+  @Basic(fetch = FetchType.LAZY)
+  public String getData()
+  {
+    return m_data;
+  }
+
+  public void setData(final String data)
+  {
+    m_data = data;
+  }
+
   @ManyToOne(optional = false)
   @JoinColumn(name = "team_id")
   public TeamEntity getTeam()
@@ -83,41 +85,6 @@ public class TeamHistoryEntity
   public void setTeam(final TeamEntity team)
   {
     m_team = team;
-  }
-
-  @Column(length = 50, nullable = false)
-  public String getName()
-  {
-    return m_name;
-  }
-
-  public void setName(final String name)
-  {
-    m_name = name;
-  }
-
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "T4U_TEAMS_HISTORY_OWNERS", joinColumns = { @JoinColumn(name = "teamhistory_id") }, inverseJoinColumns = { @JoinColumn(name = "person_id") })
-  public Set<PersonEntity> getOwner()
-  {
-    return m_owners;
-  }
-
-  public void setOwner(final Set<PersonEntity> owners)
-  {
-    m_owners = owners;
-  }
-
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "T4U_TEAMS_HISTORY_MEMBERS", joinColumns = { @JoinColumn(name = "teamhistory_id") }, inverseJoinColumns = { @JoinColumn(name = "person_id") })
-  public Set<PersonEntity> getMembers()
-  {
-    return m_members;
-  }
-
-  public void setMembers(final Set<PersonEntity> members)
-  {
-    m_members = members;
   }
 
   @ManyToOne(optional = false)

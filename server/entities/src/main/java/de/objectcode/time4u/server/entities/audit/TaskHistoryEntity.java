@@ -2,11 +2,14 @@ package de.objectcode.time4u.server.entities.audit;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -14,7 +17,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import de.objectcode.time4u.server.entities.PersonEntity;
-import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
 
 /**
@@ -34,16 +36,8 @@ public class TaskHistoryEntity
   private PersonEntity m_performedBy;
   /** Timestamp of the change. */
   private Date m_performedAt;
-  /** Original name of the task. */
-  private String m_name;
-  /** Original description of the task. */
-  private String m_description;
-  /** Original active flag. */
-  private boolean m_active;
-  /** Original deleted flag. */
-  private boolean m_deleted;
-  /** Original project of the task. */
-  private ProjectEntity m_project;
+  /** Original data */
+  private String m_data;
 
   public TaskHistoryEntity()
   {
@@ -54,12 +48,6 @@ public class TaskHistoryEntity
     m_task = task;
     m_performedBy = performedBy;
     m_performedAt = new Date();
-
-    m_name = task.getName();
-    m_description = task.getDescription();
-    m_project = task.getProject();
-    m_active = task.isActive();
-    m_deleted = task.isDeleted();
   }
 
   @Id
@@ -75,58 +63,16 @@ public class TaskHistoryEntity
     m_id = id;
   }
 
-  public boolean isActive()
+  @Lob()
+  @Basic(fetch = FetchType.LAZY)
+  public String getData()
   {
-    return m_active;
+    return m_data;
   }
 
-  public void setActive(final boolean active)
+  public void setData(final String data)
   {
-    m_active = active;
-  }
-
-  public boolean isDeleted()
-  {
-    return m_deleted;
-  }
-
-  public void setDeleted(final boolean deleted)
-  {
-    m_deleted = deleted;
-  }
-
-  @Column(length = 30, nullable = true)
-  public String getName()
-  {
-    return m_name;
-  }
-
-  public void setName(final String name)
-  {
-    m_name = name;
-  }
-
-  @Column(length = 1000, nullable = true)
-  public String getDescription()
-  {
-    return m_description;
-  }
-
-  public void setDescription(final String description)
-  {
-    m_description = description;
-  }
-
-  @ManyToOne
-  @JoinColumn(name = "project_id")
-  public ProjectEntity getProject()
-  {
-    return m_project;
-  }
-
-  public void setProject(final ProjectEntity project)
-  {
-    m_project = project;
+    m_data = data;
   }
 
   @ManyToOne

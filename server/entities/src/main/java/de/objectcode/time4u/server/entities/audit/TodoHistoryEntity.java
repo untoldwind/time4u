@@ -2,11 +2,14 @@ package de.objectcode.time4u.server.entities.audit;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -14,8 +17,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import de.objectcode.time4u.server.entities.PersonEntity;
-import de.objectcode.time4u.server.entities.TaskEntity;
-import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.TodoEntity;
 
 /**
@@ -35,28 +36,8 @@ public class TodoHistoryEntity
   private PersonEntity m_performedBy;
   /** Timestamp of the change. */
   private Date m_performedAt;
-  /** Original task. */
-  private TaskEntity m_task;
-  /** Original person the todo was assigned to. */
-  private PersonEntity m_assignedToPerson;
-  /** Original team the todo was assigned to. */
-  private TeamEntity m_assignedToTeam;
-  /** Original creator of the todo. */
-  private PersonEntity m_reporter;
-  /** Original priority. */
-  private int m_priority;
-  /** Original header. */
-  private String m_header;
-  /** Original description. */
-  private String m_description;
-  /** Original compeleted flag. */
-  private boolean m_completed;
-  /** Original timestamp the todo was created. */
-  private Date m_createdAt;
-  /** Original timestamp the todo was completed. */
-  private Date m_completedAt;
-  /** Original deadline of the todo. */
-  private Date m_deadline;
+  /** Original data */
+  private String m_data;
 
   public TodoHistoryEntity()
   {
@@ -67,18 +48,6 @@ public class TodoHistoryEntity
     m_todo = todo;
     m_performedBy = performedBy;
     m_performedAt = new Date();
-
-    m_task = todo.getTask();
-    m_assignedToPerson = todo.getAssignedToPerson();
-    m_assignedToTeam = todo.getAssignedToTeam();
-    m_reporter = todo.getReporter();
-    m_priority = todo.getPriority();
-    m_header = todo.getHeader();
-    m_description = todo.getDescription();
-    m_completed = todo.isCompleted();
-    m_createdAt = todo.getCreatedAt();
-    m_completedAt = todo.getCompletedAt();
-    m_deadline = todo.getDeadline();
   }
 
   @Id
@@ -94,129 +63,16 @@ public class TodoHistoryEntity
     m_id = id;
   }
 
-  @ManyToOne
-  @JoinColumn(name = "person_id")
-  public PersonEntity getAssignedToPerson()
+  @Lob()
+  @Basic(fetch = FetchType.LAZY)
+  public String getData()
   {
-    return m_assignedToPerson;
+    return m_data;
   }
 
-  public void setAssignedToPerson(final PersonEntity assignedToPerson)
+  public void setData(final String data)
   {
-    m_assignedToPerson = assignedToPerson;
-  }
-
-  @ManyToOne
-  @JoinColumn(name = "team_id")
-  public TeamEntity getAssignedToTeam()
-  {
-    return m_assignedToTeam;
-  }
-
-  public void setAssignedToTeam(final TeamEntity assignedToTeam)
-  {
-    m_assignedToTeam = assignedToTeam;
-  }
-
-  @Column(name = "completed", nullable = false)
-  public boolean isCompleted()
-  {
-    return m_completed;
-  }
-
-  public void setCompleted(final boolean completed)
-  {
-    m_completed = completed;
-  }
-
-  @Column(name = "completedat", nullable = true)
-  public Date getCompletedAt()
-  {
-    return m_completedAt;
-  }
-
-  public void setCompletedAt(final Date completedAt)
-  {
-    m_completedAt = completedAt;
-  }
-
-  @Column(name = "createdat", nullable = false)
-  public Date getCreatedAt()
-  {
-    return m_createdAt;
-  }
-
-  public void setCreatedAt(final Date createdAt)
-  {
-    m_createdAt = createdAt;
-  }
-
-  @Column(name = "deadline", nullable = true)
-  public Date getDeadline()
-  {
-    return m_deadline;
-  }
-
-  public void setDeadline(final Date deadline)
-  {
-    m_deadline = deadline;
-  }
-
-  @Column(name = "description", length = 1000, nullable = false)
-  public String getDescription()
-  {
-    return m_description;
-  }
-
-  public void setDescription(final String description)
-  {
-    m_description = description;
-  }
-
-  @Column(name = "header", length = 1000, nullable = false)
-  public String getHeader()
-  {
-    return m_header;
-  }
-
-  public void setHeader(final String header)
-  {
-    m_header = header;
-  }
-
-  @Column(name = "priority", nullable = false)
-  public int getPriority()
-  {
-    return m_priority;
-  }
-
-  public void setPriority(final int priority)
-  {
-    m_priority = priority;
-  }
-
-  @ManyToOne
-  @JoinColumn(name = "reporter_id")
-  public PersonEntity getReporter()
-  {
-    return m_reporter;
-  }
-
-  public void setReporter(final PersonEntity reporter)
-  {
-    m_reporter = reporter;
-  }
-
-  @ManyToOne(optional = false)
-  @JoinColumn(name = "task_id")
-  public TaskEntity getTask()
-  {
-    return m_task;
-  }
-
-  public void setTask(final TaskEntity task)
-  {
-    m_task = task;
+    m_data = data;
   }
 
   @ManyToOne(optional = false)

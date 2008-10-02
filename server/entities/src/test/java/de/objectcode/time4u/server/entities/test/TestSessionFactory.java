@@ -12,13 +12,13 @@ import de.objectcode.time4u.server.entities.DayTagEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.ProjectProperty;
-import de.objectcode.time4u.server.entities.RoleEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
 import de.objectcode.time4u.server.entities.TaskProperty;
 import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.TodoEntity;
 import de.objectcode.time4u.server.entities.TodoProperty;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
+import de.objectcode.time4u.server.entities.account.UserRoleEntity;
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
 
 public class TestSessionFactory
@@ -52,7 +52,7 @@ public class TestSessionFactory
 
     cfg.addAnnotatedClass(RevisionEntity.class);
     cfg.addAnnotatedClass(PersonEntity.class);
-    cfg.addAnnotatedClass(RoleEntity.class);
+    cfg.addAnnotatedClass(UserRoleEntity.class);
     cfg.addAnnotatedClass(TeamEntity.class);
     cfg.addAnnotatedClass(ProjectEntity.class);
     cfg.addAnnotatedClass(ProjectProperty.class);

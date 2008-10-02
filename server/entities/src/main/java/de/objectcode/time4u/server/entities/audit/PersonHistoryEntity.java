@@ -2,11 +2,14 @@ package de.objectcode.time4u.server.entities.audit;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -32,10 +35,8 @@ public class PersonHistoryEntity
   private PersonEntity m_performedBy;
   /** Timestamp of the change. */
   private Date m_performedAt;
-  /** Original name of the person. */
-  private String m_name;
-  /** Original email of the person. */
-  private String m_email;
+  /** Original data */
+  private String m_data;
 
   public PersonHistoryEntity()
   {
@@ -47,8 +48,6 @@ public class PersonHistoryEntity
     m_performedBy = performedBy;
     m_performedAt = new Date();
 
-    m_name = person.getName();
-    m_email = person.getEmail();
   }
 
   @Id
@@ -64,26 +63,16 @@ public class PersonHistoryEntity
     m_id = id;
   }
 
-  @Column(length = 50, nullable = false)
-  public String getName()
+  @Lob()
+  @Basic(fetch = FetchType.LAZY)
+  public String getData()
   {
-    return m_name;
+    return m_data;
   }
 
-  public void setName(final String name)
+  public void setData(final String data)
   {
-    m_name = name;
-  }
-
-  @Column(length = 200, nullable = true)
-  public String getEmail()
-  {
-    return m_email;
-  }
-
-  public void setEmail(final String email)
-  {
-    m_email = email;
+    m_data = data;
   }
 
   @ManyToOne(optional = false)

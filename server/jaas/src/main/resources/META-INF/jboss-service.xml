@@ -11,5 +11,6 @@
 			jboss.security:service=XMLLoginConfig</depends>
 		<depends optional-attribute-name="SecurityManagerService">
 			jboss.security:service=JaasSecurityManager</depends>
+		<depends>persistence.units:unitName=time4u</depends>
 	</mbean>
 </server>

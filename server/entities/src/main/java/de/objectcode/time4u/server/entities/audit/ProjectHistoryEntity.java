@@ -2,11 +2,14 @@ package de.objectcode.time4u.server.entities.audit;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -33,16 +36,8 @@ public class ProjectHistoryEntity
   private PersonEntity m_performedBy;
   /** Timestamp of the change. */
   private Date m_performedAt;
-  /** Original name of the project. */
-  private String m_name;
-  /** Original description of the project. */
-  private String m_description;
-  /** Original active flag. */
-  private boolean m_active;
-  /** Original deleted flag. */
-  private boolean m_deleted;
-  /** Original parent project. */
-  private ProjectEntity m_parent;
+  /** Original data */
+  private String m_data;
 
   public ProjectHistoryEntity()
   {
@@ -54,11 +49,6 @@ public class ProjectHistoryEntity
     m_performedBy = performedBy;
     m_performedAt = new Date();
 
-    m_name = project.getName();
-    m_description = project.getDescription();
-    m_active = project.isActive();
-    m_deleted = project.isDeleted();
-    m_parent = project.getParent();
   }
 
   @Id
@@ -74,58 +64,16 @@ public class ProjectHistoryEntity
     m_id = id;
   }
 
-  public boolean isActive()
+  @Lob()
+  @Basic(fetch = FetchType.LAZY)
+  public String getData()
   {
-    return m_active;
+    return m_data;
   }
 
-  public void setActive(final boolean active)
+  public void setData(final String data)
   {
-    m_active = active;
-  }
-
-  public boolean isDeleted()
-  {
-    return m_deleted;
-  }
-
-  public void setDeleted(final boolean deleted)
-  {
-    m_deleted = deleted;
-  }
-
-  @Column(length = 30, nullable = true)
-  public String getName()
-  {
-    return m_name;
-  }
-
-  public void setName(final String name)
-  {
-    m_name = name;
-  }
-
-  @Column(length = 1000, nullable = true)
-  public String getDescription()
-  {
-    return m_description;
-  }
-
-  public void setDescription(final String description)
-  {
-    m_description = description;
-  }
-
-  @ManyToOne
-  @JoinColumn(name = "parent_id")
-  public ProjectEntity getParent()
-  {
-    return m_parent;
-  }
-
-  public void setParent(final ProjectEntity parent)
-  {
-    m_parent = parent;
+    m_data = data;
   }
 
   @ManyToOne(optional = false)

@@ -24,6 +24,7 @@ import de.objectcode.time4u.server.api.filter.DayInfoFilter;
 import de.objectcode.time4u.server.ejb.config.IConfigServiceLocal;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
+import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 import de.objectcode.time4u.server.entities.context.EntityManagerPersistenceContext;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
@@ -49,12 +50,9 @@ public class WorkItemServiceImpl implements IWorkItemService
   @RolesAllowed("user")
   public DayInfo getDayInfo(final CalendarDay day)
   {
-    final Query personQuery = m_manager.createQuery("from " + PersonEntity.class.getName()
-        + " p where p.userId=:userId");
-
-    personQuery.setParameter("userId", m_sessionContext.getCallerPrincipal().getName());
-
-    final PersonEntity person = (PersonEntity) personQuery.getSingleResult();
+    final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, m_sessionContext.getCallerPrincipal()
+        .getName());
+    final PersonEntity person = userAccount.getPerson();
 
     final Query query = m_manager.createQuery("from " + DayInfoEntity.class.getName()
         + " d where d.person = :person and d.date = :date");
@@ -96,13 +94,9 @@ public class WorkItemServiceImpl implements IWorkItemService
   @RolesAllowed("user")
   public DayInfo storeDayInfo(final DayInfo dayInfo)
   {
-    final Query personQuery = m_manager.createQuery("from " + PersonEntity.class.getName()
-        + " p where p.userId=:userId");
-
-    personQuery.setParameter("userId", m_sessionContext.getCallerPrincipal().getName());
-
-    final PersonEntity person = (PersonEntity) personQuery.getSingleResult();
-
+    final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, m_sessionContext.getCallerPrincipal()
+        .getName());
+    final PersonEntity person = userAccount.getPerson();
     final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(SynchronizableType.DAYINFO, person.getId());
 
     DayInfoEntity dayInfoEntity = null;

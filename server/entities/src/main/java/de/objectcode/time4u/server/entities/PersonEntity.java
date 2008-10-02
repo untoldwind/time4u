@@ -7,8 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -30,16 +28,10 @@ public class PersonEntity
   private long m_revision;
   /** Client id of the last modification */
   private long m_lastModifiedByClient;
-  /** User id of the person. */
-  private String m_userId;
-  /** Encoded password of the person. */
-  private String m_hashedPassword;
   /** Real name of the person. */
   private String m_name;
   /** Email of the person. */
   private String m_email;
-  /** User roles. */
-  private Set<RoleEntity> m_roles;
   /** Set of teams the person is responsible for (i.e. owning them) */
   private Set<TeamEntity> m_responsibleFor;
   /** Set of teams the person is member of */
@@ -51,12 +43,11 @@ public class PersonEntity
   {
   }
 
-  public PersonEntity(final String id, final long revision, final long lastModifiedByClient, final String userId)
+  public PersonEntity(final String id, final long revision, final long lastModifiedByClient)
   {
     m_id = id;
     m_revision = revision;
     m_lastModifiedByClient = lastModifiedByClient;
-    m_userId = userId;
   }
 
   @Id
@@ -69,28 +60,6 @@ public class PersonEntity
   public void setId(final String id)
   {
     m_id = id;
-  }
-
-  @Column(length = 100, nullable = true)
-  public String getHashedPassword()
-  {
-    return m_hashedPassword;
-  }
-
-  public void setHashedPassword(final String hashedPassword)
-  {
-    m_hashedPassword = hashedPassword;
-  }
-
-  @Column(length = 30, nullable = false, unique = true)
-  public String getUserId()
-  {
-    return m_userId;
-  }
-
-  public void setUserId(final String userId)
-  {
-    m_userId = userId;
   }
 
   @Column(length = 50, nullable = false)
@@ -113,18 +82,6 @@ public class PersonEntity
   public void setEmail(final String email)
   {
     m_email = email;
-  }
-
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "T4U_PERSONS_ROLES", joinColumns = { @JoinColumn(name = "person_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
-  public Set<RoleEntity> getRoles()
-  {
-    return m_roles;
-  }
-
-  public void setRoles(final Set<RoleEntity> roles)
-  {
-    m_roles = roles;
   }
 
   @ManyToMany(fetch = FetchType.LAZY, mappedBy = "members")
@@ -208,7 +165,6 @@ public class PersonEntity
     person.setRevision(m_revision);
     person.setLastModifiedByClient(m_lastModifiedByClient);
     person.setName(m_name);
-    person.setUserId(m_userId);
     person.setEmail(m_email);
     person.setLastSynchronize(m_lastSynchronize);
   }

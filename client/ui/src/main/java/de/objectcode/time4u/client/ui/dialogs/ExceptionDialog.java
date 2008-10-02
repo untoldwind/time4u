@@ -29,6 +29,8 @@ public class ExceptionDialog extends MessageDialog
   {
     super(parent, title, null, message, ERROR, new String[] { IDialogConstants.OK_LABEL }, 0);
 
+    setShellStyle(SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE | getDefaultOrientation());
+
     final StringWriter writer = new StringWriter();
     final PrintWriter out = new PrintWriter(writer);
     e.printStackTrace(out);
