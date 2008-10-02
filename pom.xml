@@ -52,7 +52,7 @@
 			<dependency>
 				<groupId>org.eclipse</groupId>
 				<artifactId>osgi</artifactId>
-				<version>3.4.0</version>
+				<version>3.4.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse</groupId>
@@ -67,7 +67,7 @@
 			<dependency>
 				<groupId>org.eclipse</groupId>
 				<artifactId>help</artifactId>
-				<version>3.3.100</version>
+				<version>3.3.101</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.core</groupId>
@@ -92,7 +92,7 @@
 			<dependency>
 				<groupId>org.eclipse.core</groupId>
 				<artifactId>databinding</artifactId>
-				<version>1.1.0</version>
+				<version>1.1.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.core</groupId>
@@ -127,7 +127,7 @@
 			<dependency>
 				<groupId>org.eclipse.equinox</groupId>
 				<artifactId>preferences</artifactId>
-				<version>3.2.200</version>
+				<version>3.2.201</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.equinox</groupId>
@@ -147,7 +147,7 @@
 			<dependency>
 				<groupId>org.eclipse.ui</groupId>
 				<artifactId>workbench</artifactId>
-				<version>3.4.0</version>
+				<version>3.4.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.ui</groupId>
@@ -157,22 +157,27 @@
 			<dependency>
 				<groupId>org.eclipse</groupId>
 				<artifactId>jface</artifactId>
-				<version>3.4.0</version>
+				<version>3.4.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.jface</groupId>
 				<artifactId>databinding</artifactId>
-				<version>1.2.0</version>
+				<version>1.2.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse</groupId>
 				<artifactId>swt</artifactId>
-				<version>3.4.0</version>
+				<version>3.4.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.swt.carbon</groupId>
 				<artifactId>macosx</artifactId>
 				<version>3.4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.swt.win32.win32</groupId>
+				<artifactId>x86</artifactId>
+				<version>3.4.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.update</groupId>
