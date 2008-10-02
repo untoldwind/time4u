@@ -16,31 +16,82 @@ public class EntityManagerPersistenceContext implements IPersistenceContext
     m_manager = manager;
   }
 
-  public PersonEntity findPerson(final String personId)
+  /**
+   * {@inheritDoc}
+   */
+  public PersonEntity findPerson(final String personId, final long clientId)
   {
-    return m_manager.find(PersonEntity.class, PersonEntity.class);
+    PersonEntity person = m_manager.find(PersonEntity.class, PersonEntity.class);
+
+    if (person == null) {
+      person = new PersonEntity(personId, -1L, clientId);
+      person.setName(personId);
+
+      m_manager.persist(person);
+    }
+
+    return person;
   }
 
-  public ProjectEntity findProject(final String projectId)
+  /**
+   * {@inheritDoc}
+   */
+  public ProjectEntity findProject(final String projectId, final long clientId)
   {
-    return m_manager.find(ProjectEntity.class, projectId);
+    ProjectEntity project = m_manager.find(ProjectEntity.class, projectId);
+
+    if (project == null) {
+      project = new ProjectEntity(projectId, -1L, clientId, projectId);
+
+      m_manager.persist(project);
+    }
+
+    return project;
   }
 
-  public TaskEntity findTask(final String taskId)
+  /**
+   * {@inheritDoc}
+   */
+  public TaskEntity findTask(final String taskId, final long clientId)
   {
-    return m_manager.find(TaskEntity.class, taskId);
+    TaskEntity task = m_manager.find(TaskEntity.class, taskId);
+
+    if (task == null) {
+      task = new TaskEntity(taskId, -1L, clientId, null, taskId);
+
+      m_manager.persist(task);
+    }
+
+    return task;
   }
 
-  public TodoEntity findTodo(final String todoId)
+  /**
+   * {@inheritDoc}
+   */
+  public TodoEntity findTodo(final String todoId, final long clientId)
   {
-    return m_manager.find(TodoEntity.class, todoId);
+    TodoEntity todo = m_manager.find(TodoEntity.class, todoId);
+
+    if (todo == null) {
+      todo = new TodoEntity(todoId, -1L, clientId);
+
+      m_manager.persist(todo);
+    }
+
+    return todo;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void delete(final Object entity)
   {
     m_manager.remove(entity);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void merge(final Object entity)
   {
     m_manager.merge(entity);

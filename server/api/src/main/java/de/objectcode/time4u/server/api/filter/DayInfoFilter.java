@@ -1,5 +1,6 @@
 package de.objectcode.time4u.server.api.filter;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 import javax.xml.bind.annotation.XmlType;
@@ -12,8 +13,10 @@ import de.objectcode.time4u.server.api.data.CalendarDay;
  * @author junglas
  */
 @XmlType(name = "dayinfo-filter")
-public class DayInfoFilter
+public class DayInfoFilter implements Serializable
 {
+  private static final long serialVersionUID = 2511350769971651125L;
+
   /** From calendar day (inclusively). */
   CalendarDay m_from;
   /** To calendar day (exclusively). */
@@ -84,6 +87,20 @@ public class DayInfoFilter
   public void setLastModifiedByClient(final Long lastModifiedByClient)
   {
     m_lastModifiedByClient = lastModifiedByClient;
+  }
+
+  @Override
+  public String toString()
+  {
+    final StringBuffer buffer = new StringBuffer("DayInfoFilter(");
+    buffer.append("from=").append(m_from);
+    buffer.append(",to=").append(m_to);
+    buffer.append(",minRevision=").append(m_minRevision);
+    buffer.append(",maxRevision=").append(m_maxRevision);
+    buffer.append(",lastModifiedByClient=").append(m_lastModifiedByClient);
+    buffer.append(")");
+
+    return buffer.toString();
   }
 
   /**

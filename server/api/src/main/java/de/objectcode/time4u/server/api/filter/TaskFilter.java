@@ -117,7 +117,7 @@ public class TaskFilter implements Serializable
   @Override
   public String toString()
   {
-    final StringBuffer buffer = new StringBuffer("ProjectFilter(");
+    final StringBuffer buffer = new StringBuffer("TaskFilter(");
     buffer.append("active=").append(m_active);
     buffer.append(",deleted=").append(m_deleted);
     buffer.append(",project=").append(m_project);

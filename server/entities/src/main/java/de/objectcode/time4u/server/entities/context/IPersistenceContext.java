@@ -19,7 +19,7 @@ public interface IPersistenceContext
    *          The project id
    * @return The project with id <tt>projectId</tt>
    */
-  ProjectEntity findProject(String projectId);
+  ProjectEntity findProject(String projectId, long clientId);
 
   /**
    * Find a task.
@@ -28,7 +28,7 @@ public interface IPersistenceContext
    *          The task id
    * @return The task with id <tt>taskId</tt>
    */
-  TaskEntity findTask(String taskId);
+  TaskEntity findTask(String taskId, long clientId);
 
   /**
    * Find a todo.
@@ -37,7 +37,7 @@ public interface IPersistenceContext
    *          The todo id
    * @return The todo with id <tt>todoId</tt>
    */
-  TodoEntity findTodo(String todoId);
+  TodoEntity findTodo(String todoId, long clientId);
 
   /**
    * Find a person.
@@ -46,7 +46,7 @@ public interface IPersistenceContext
    *          The person id
    * @return The person with id <tt>personId</tt>
    */
-  PersonEntity findPerson(String personId);
+  PersonEntity findPerson(String personId, long clientId);
 
   void merge(Object entity);
 

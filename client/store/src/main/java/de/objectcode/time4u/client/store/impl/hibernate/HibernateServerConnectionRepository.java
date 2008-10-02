@@ -78,14 +78,14 @@ public class HibernateServerConnectionRepository implements IServerConnectionRep
                   serverConnection.getId());
 
               serverConnectionEntity.fromDTO(new SessionPersistenceContext(session), serverConnection, m_repository
-                  .getKeyChainEncoder());
+                  .getKeyChainEncoder(), m_repository.getClientId());
 
               session.flush();
             } else {
               serverConnectionEntity = new ServerConnectionEntity();
 
               serverConnectionEntity.fromDTO(new SessionPersistenceContext(session), serverConnection, m_repository
-                  .getKeyChainEncoder());
+                  .getKeyChainEncoder(), m_repository.getClientId());
 
               session.persist(serverConnectionEntity);
             }

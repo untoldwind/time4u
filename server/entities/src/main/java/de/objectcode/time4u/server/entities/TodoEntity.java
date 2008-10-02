@@ -60,6 +60,20 @@ public class TodoEntity
   /** Client id of the last modification */
   private long m_lastModifiedByClient;
 
+  /**
+   * Default constructor for hibernate.
+   */
+  protected TodoEntity()
+  {
+  }
+
+  public TodoEntity(final String id, final long revision, final long lastModifiedByClient)
+  {
+    m_id = id;
+    m_revision = revision;
+    m_lastModifiedByClient = lastModifiedByClient;
+  }
+
   @Id
   @Column(length = 36)
   public String getId()

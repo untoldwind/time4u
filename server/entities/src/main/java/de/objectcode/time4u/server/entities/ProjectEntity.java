@@ -98,7 +98,7 @@ public class ProjectEntity
     m_deleted = deleted;
   }
 
-  @Column(length = 30, nullable = false)
+  @Column(length = 40, nullable = false)
   public String getName()
   {
     return m_name;
@@ -253,7 +253,8 @@ public class ProjectEntity
     m_active = project.isActive();
     m_deleted = project.isDeleted();
     m_name = project.getName() != null ? project.getName() : "";
-    m_parent = project.getParentId() != null ? context.findProject(project.getParentId()) : null;
+    m_parent = project.getParentId() != null ? context.findProject(project.getParentId(), project
+        .getLastModifiedByClient()) : null;
     updateParentKey();
     m_description = project.getDescription();
 

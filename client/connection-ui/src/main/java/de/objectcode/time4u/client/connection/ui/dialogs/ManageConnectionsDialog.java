@@ -117,6 +117,21 @@ public class ManageConnectionsDialog extends Dialog
       }
     });
 
+    final Button newButton = new Button(root, SWT.PUSH);
+    newButton.setText("New");
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    gridData.verticalIndent = 10;
+    gridData.grabExcessHorizontalSpace = false;
+    gridData.grabExcessVerticalSpace = false;
+    newButton.setLayoutData(gridData);
+    newButton.addSelectionListener(new SelectionAdapter() {
+      @Override
+      public void widgetSelected(final SelectionEvent e)
+      {
+        newConnection();
+      }
+    });
+
     m_editButton = new Button(root, SWT.PUSH);
     m_editButton.setText("Edit");
     gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -172,6 +187,42 @@ public class ManageConnectionsDialog extends Dialog
   protected void createButtonsForButtonBar(final Composite parent)
   {
     createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
+  }
+
+  protected void newConnection()
+  {
+    final ConnectionDialog dialog = new ConnectionDialog(new SameShellProvider(getShell()));
+
+    if (dialog.open() == ConnectionDialog.OK) {
+      System.out.println(">>>" + dialog.getServerConnection().getUrl());
+
+      try {
+        final IConnection connection = ConnectionFactory.openConnection(dialog.getServerConnection());
+
+        System.out.println(">>> " + connection);
+        if (!connection.testConnection()) {
+          MessageDialog.openError(getShell(), "Connection error", "Server is incompatible with this client version");
+          return;
+        }
+        System.out.println(">>> tested");
+        if (!connection.checkLogin(dialog.getServerConnection().getCredentials())) {
+          System.out.println(">>> check login failed");
+          if (!connection.registerLogin(dialog.getServerConnection().getCredentials())) {
+            System.out.println(">>> register login failed");
+            MessageDialog.openError(getShell(), "Connection error", "Failed to register login");
+          }
+        }
+
+        RepositoryFactory.getRepository().getServerConnectionRepository().storeServerConnection(
+            dialog.getServerConnection());
+        m_connectionsViewer.setInput(RepositoryFactory.getRepository().getServerConnectionRepository()
+            .getServerConnections());
+      } catch (final Throwable e) {
+        e.printStackTrace();
+        MessageDialog.openError(getShell(), "Connection error", "Failed to contact server: " + e.getMessage());
+      }
+    }
+
   }
 
   protected void editSelection()

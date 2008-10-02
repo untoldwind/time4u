@@ -112,6 +112,49 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
   /**
    * {@inheritDoc}
    */
+  public List<DayInfo> getDayInfos(final DayInfoFilter filter) throws RepositoryException
+  {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<List<DayInfo>>() {
+      public List<DayInfo> perform(final Session session)
+      {
+        final Criteria criteria = session.createCriteria(DayInfoEntity.class);
+        criteria.add(Restrictions.eq("person.id", m_repository.getOwner().getId()));
+        if (filter.getFrom() != null) {
+          criteria.add(Restrictions.ge("date", filter.getFrom().getDate()));
+        }
+        if (filter.getTo() != null) {
+          criteria.add(Restrictions.lt("date", filter.getTo().getDate()));
+        }
+        if (filter.getMinRevision() != null) {
+          criteria.add(Restrictions.ge("revision", filter.getMinRevision()));
+        }
+        if (filter.getMaxRevision() != null) {
+          criteria.add(Restrictions.le("revision", filter.getMaxRevision()));
+        }
+        if (filter.getLastModifiedByClient() != null) {
+          criteria.add(Restrictions.eq("lastModifiedByClient", filter.getLastModifiedByClient()));
+        }
+        criteria.addOrder(Order.asc("date"));
+
+        final List<?> result = criteria.list();
+        final List<DayInfo> dayInfos = new ArrayList<DayInfo>();
+
+        for (final Object row : result) {
+          final DayInfoEntity entity = (DayInfoEntity) row;
+          final DayInfo dayInfo = new DayInfo();
+
+          entity.toDTO(dayInfo);
+          dayInfos.add(dayInfo);
+        }
+
+        return dayInfos;
+      }
+    });
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   public DayInfo storeDayInfo(final DayInfo dayInfo, final boolean modifiedByOwner) throws RepositoryException
   {
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<DayInfo>() {
@@ -173,7 +216,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
 
               workItemEntity.getDayInfo().setRevision(revisionLock.getLatestRevision());
 
-              workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem);
+              workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem, m_repository.getClientId());
               workItemEntity.getDayInfo().validate();
               session.flush();
             } else {
@@ -196,7 +239,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
               final String workItemId = revisionLock.generateId(m_repository.getClientId());
               workItemEntity = new WorkItemEntity(workItemId, dayInfoEntity);
 
-              workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem);
+              workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem, m_repository.getClientId());
 
               session.persist(workItemEntity);
               dayInfoEntity.getWorkItems().add(workItemEntity);

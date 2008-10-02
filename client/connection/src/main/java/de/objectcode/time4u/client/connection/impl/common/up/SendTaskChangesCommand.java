@@ -9,6 +9,11 @@ import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.filter.TaskFilter;
 
+/**
+ * Send task changes to the server.
+ * 
+ * @author junglas
+ */
 public class SendTaskChangesCommand extends BaseSendCommand<Task>
 {
   public SendTaskChangesCommand()

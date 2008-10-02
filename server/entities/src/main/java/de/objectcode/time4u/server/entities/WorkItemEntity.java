@@ -196,7 +196,7 @@ public class WorkItemEntity
     }
   }
 
-  public void fromDTO(final IPersistenceContext context, final WorkItem workItem)
+  public void fromDTO(final IPersistenceContext context, final WorkItem workItem, final long clientId)
   {
     m_begin = workItem.getBegin();
     m_end = workItem.getEnd();
@@ -205,10 +205,10 @@ public class WorkItemEntity
     if (m_comment == null) {
       m_comment = "";
     }
-    m_project = context.findProject(workItem.getProjectId());
-    m_task = context.findTask(workItem.getTaskId());
+    m_project = context.findProject(workItem.getProjectId(), clientId);
+    m_task = context.findTask(workItem.getTaskId(), clientId);
     if (workItem.getTodoId() != null) {
-      m_todo = context.findTodo(workItem.getTodoId());
+      m_todo = context.findTodo(workItem.getTodoId(), clientId);
     } else {
       m_todo = null;
     }

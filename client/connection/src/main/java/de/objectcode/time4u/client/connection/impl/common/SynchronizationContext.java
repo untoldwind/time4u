@@ -7,6 +7,7 @@ import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.server.api.IProjectService;
 import de.objectcode.time4u.server.api.IRevisionService;
 import de.objectcode.time4u.server.api.ITaskService;
+import de.objectcode.time4u.server.api.IWorkItemService;
 import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.api.data.SynchronizationStatus;
 
@@ -26,15 +27,17 @@ public class SynchronizationContext
   private final IRepository m_repository;
   private final IProjectService m_projectService;
   private final ITaskService m_taskService;
+  private final IWorkItemService m_workItemService;
 
   public SynchronizationContext(final IRepository repository, final long serverConnectionId,
-      final IRevisionService revisionService, final IProjectService projectService, final ITaskService taskService)
-      throws RepositoryException
+      final IRevisionService revisionService, final IProjectService projectService, final ITaskService taskService,
+      final IWorkItemService workItemService) throws RepositoryException
   {
     m_repository = repository;
     m_serverConnectionId = serverConnectionId;
     m_projectService = projectService;
     m_taskService = taskService;
+    m_workItemService = workItemService;
 
     m_synchronizationStatus = m_repository.getServerConnectionRepository().getSynchronizationStatus(
         m_serverConnectionId);
@@ -75,6 +78,11 @@ public class SynchronizationContext
   public ITaskService getTaskService()
   {
     return m_taskService;
+  }
+
+  public IWorkItemService getWorkItemService()
+  {
+    return m_workItemService;
   }
 
 }

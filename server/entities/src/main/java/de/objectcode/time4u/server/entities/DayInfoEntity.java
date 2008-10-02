@@ -283,7 +283,7 @@ public class DayInfoEntity
     for (final WorkItem workItem : dayInfo.getWorkItems()) {
       final WorkItemEntity workItemEntity = new WorkItemEntity(workItem.getId(), this);
 
-      workItemEntity.fromDTO(context, workItem);
+      workItemEntity.fromDTO(context, workItem, dayInfo.getLastModifiedByClient());
 
       context.merge(workItemEntity);
       workItemIds.add(workItem.getId());

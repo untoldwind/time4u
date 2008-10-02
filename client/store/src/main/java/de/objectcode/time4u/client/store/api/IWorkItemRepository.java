@@ -38,6 +38,17 @@ public interface IWorkItemRepository
   List<DayInfoSummary> getDayInfoSummaries(DayInfoFilter filter) throws RepositoryException;
 
   /**
+   * Get all dayinfo that match a filter condition.
+   * 
+   * @param filter
+   *          The filter condition
+   * @return All dayinfo DTO that match <tt>filter</tt>
+   * @throws RepositoryException
+   *           on error
+   */
+  List<DayInfo> getDayInfos(DayInfoFilter filter) throws RepositoryException;
+
+  /**
    * Store a complete dayinfo.
    * 
    * This also stores/modifies all workitems for that day.

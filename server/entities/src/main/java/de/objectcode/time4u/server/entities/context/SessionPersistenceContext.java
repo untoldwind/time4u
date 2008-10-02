@@ -19,33 +19,66 @@ public class SessionPersistenceContext implements IPersistenceContext
   /**
    * {@inheritDoc}
    */
-  public PersonEntity findPerson(final String personId)
+  public PersonEntity findPerson(final String personId, final long clientId)
   {
-    return (PersonEntity) m_session.get(PersonEntity.class, personId);
+    PersonEntity person = (PersonEntity) m_session.get(PersonEntity.class, PersonEntity.class);
+
+    if (person == null) {
+      person = new PersonEntity(personId, -1L, clientId);
+      person.setName(personId);
+
+      m_session.persist(person);
+    }
+
+    return person;
   }
 
   /**
    * {@inheritDoc}
    */
-  public ProjectEntity findProject(final String projectId)
+  public ProjectEntity findProject(final String projectId, final long clientId)
   {
-    return (ProjectEntity) m_session.get(ProjectEntity.class, projectId);
+    ProjectEntity project = (ProjectEntity) m_session.get(ProjectEntity.class, projectId);
+
+    if (project == null) {
+      project = new ProjectEntity(projectId, -1L, clientId, projectId);
+
+      m_session.persist(project);
+    }
+
+    return project;
   }
 
   /**
    * {@inheritDoc}
    */
-  public TaskEntity findTask(final String taskId)
+  public TaskEntity findTask(final String taskId, final long clientId)
   {
-    return (TaskEntity) m_session.get(TaskEntity.class, taskId);
+    TaskEntity task = (TaskEntity) m_session.get(TaskEntity.class, taskId);
+
+    if (task == null) {
+      task = new TaskEntity(taskId, -1L, clientId, null, taskId);
+
+      m_session.persist(task);
+    }
+
+    return task;
   }
 
   /**
    * {@inheritDoc}
    */
-  public TodoEntity findTodo(final String todoId)
+  public TodoEntity findTodo(final String todoId, final long clientId)
   {
-    return (TodoEntity) m_session.get(TodoEntity.class, todoId);
+    TodoEntity todo = (TodoEntity) m_session.get(TodoEntity.class, todoId);
+
+    if (todo == null) {
+      todo = new TodoEntity(todoId, -1L, clientId);
+
+      m_session.persist(todo);
+    }
+
+    return todo;
   }
 
   public void delete(final Object entity)

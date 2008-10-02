@@ -98,7 +98,7 @@ public class TaskEntity
     m_deleted = deleted;
   }
 
-  @Column(length = 30, nullable = false)
+  @Column(length = 40, nullable = false)
   public String getName()
   {
     return m_name;
@@ -218,7 +218,7 @@ public class TaskEntity
     m_deleted = task.isDeleted();
     m_name = task.getName() != null ? task.getName() : "";
     if (task.getProjectId() != null) {
-      m_project = context.findProject(task.getProjectId());
+      m_project = context.findProject(task.getProjectId(), task.getLastModifiedByClient());
     } else {
       m_project = null;
     }

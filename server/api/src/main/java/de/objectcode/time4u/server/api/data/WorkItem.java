@@ -1,12 +1,13 @@
 package de.objectcode.time4u.server.api.data;
 
+import java.io.Serializable;
 
 /**
  * WorkItem DTO object.
  * 
  * @author junglas
  */
-public class WorkItem implements Comparable<WorkItem>
+public class WorkItem implements Comparable<WorkItem>, Serializable
 {
   private static final long serialVersionUID = -3834849041983216580L;
 

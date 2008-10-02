@@ -14,8 +14,10 @@ import de.objectcode.time4u.client.connection.api.ConnectionException;
 import de.objectcode.time4u.client.connection.api.IConnection;
 import de.objectcode.time4u.client.connection.impl.common.ISynchronizationCommand;
 import de.objectcode.time4u.client.connection.impl.common.SynchronizationContext;
+import de.objectcode.time4u.client.connection.impl.common.down.ReceiveDayInfoChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.down.ReceiveProjectChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.down.ReceiveTaskChangesCommand;
+import de.objectcode.time4u.client.connection.impl.common.up.SendDayInfoChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.up.SendProjectChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.up.SendTaskChangesCommand;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
@@ -25,6 +27,7 @@ import de.objectcode.time4u.server.api.IPingService;
 import de.objectcode.time4u.server.api.IProjectService;
 import de.objectcode.time4u.server.api.IRevisionService;
 import de.objectcode.time4u.server.api.ITaskService;
+import de.objectcode.time4u.server.api.IWorkItemService;
 import de.objectcode.time4u.server.api.data.Person;
 import de.objectcode.time4u.server.api.data.PingResult;
 import de.objectcode.time4u.server.api.data.RegistrationInfo;
@@ -43,6 +46,7 @@ public class WSConnection implements IConnection
   private final IRevisionService m_revisionService;
   private final IProjectService m_projectService;
   private final ITaskService m_taskService;
+  private final IWorkItemService m_workItemService;
 
   public WSConnection(final ServerConnection serverConnection) throws ConnectionException
   {
@@ -50,8 +54,10 @@ public class WSConnection implements IConnection
     m_synchronizationCommands = new ArrayList<ISynchronizationCommand>();
     m_synchronizationCommands.add(new SendProjectChangesCommand());
     m_synchronizationCommands.add(new SendTaskChangesCommand());
+    m_synchronizationCommands.add(new SendDayInfoChangesCommand());
     m_synchronizationCommands.add(new ReceiveProjectChangesCommand());
     m_synchronizationCommands.add(new ReceiveTaskChangesCommand());
+    m_synchronizationCommands.add(new ReceiveDayInfoChangesCommand());
 
     m_serverConnection = serverConnection;
 
@@ -60,6 +66,7 @@ public class WSConnection implements IConnection
     m_revisionService = getServicePort("RevisionService", IRevisionService.class, true);
     m_projectService = getServicePort("ProjectService", IProjectService.class, true);
     m_taskService = getServicePort("TaskService", ITaskService.class, true);
+    m_workItemService = getServicePort("WorkItemService", IWorkItemService.class, true);
   }
 
   public boolean testConnection() throws ConnectionException
@@ -137,7 +144,7 @@ public class WSConnection implements IConnection
   {
     try {
       final SynchronizationContext context = new SynchronizationContext(RepositoryFactory.getRepository(),
-          m_serverConnection.getId(), m_revisionService, m_projectService, m_taskService);
+          m_serverConnection.getId(), m_revisionService, m_projectService, m_taskService, m_workItemService);
 
       for (final ISynchronizationCommand command : m_synchronizationCommands) {
         if (command.shouldRun(context)) {

@@ -127,10 +127,10 @@ public class ServerConnectionEntity
   }
 
   public void fromDTO(final IPersistenceContext context, final ServerConnection serverConnection,
-      final IKeyChainEncoder encoder)
+      final IKeyChainEncoder encoder, final long clientId)
   {
     m_rootProject = serverConnection.getRootProjectId() != null ? context.findProject(serverConnection
-        .getRootProjectId()) : null;
+        .getRootProjectId(), clientId) : null;
     m_url = serverConnection.getUrl();
     m_credentials = encoder.encrypt(serverConnection.getCredentials());
   }

@@ -1,5 +1,8 @@
 package de.objectcode.time4u.server.ejb.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
@@ -80,15 +83,41 @@ public class WorkItemServiceImpl implements IWorkItemService
   @RolesAllowed("user")
   public FilterResult<DayInfo> getDayInfos(final DayInfoFilter filter)
   {
-    // TODO Auto-generated method stub
-    return null;
+    final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, m_sessionContext.getCallerPrincipal()
+        .getName());
+    final PersonEntity person = userAccount.getPerson();
+    final Query query = createQuery(filter, person);
+    final List<DayInfo> result = new ArrayList<DayInfo>();
+
+    for (final Object row : query.getResultList()) {
+      final DayInfo dayInfo = new DayInfo();
+
+      ((DayInfoEntity) row).toDTO(dayInfo);
+
+      result.add(dayInfo);
+    }
+
+    return new FilterResult<DayInfo>(result);
   }
 
   @RolesAllowed("user")
   public FilterResult<DayInfoSummary> getDayInfoSummaries(final DayInfoFilter filter)
   {
-    // TODO Auto-generated method stub
-    return null;
+    final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, m_sessionContext.getCallerPrincipal()
+        .getName());
+    final PersonEntity person = userAccount.getPerson();
+    final Query query = createQuery(filter, person);
+    final List<DayInfoSummary> result = new ArrayList<DayInfoSummary>();
+
+    for (final Object row : query.getResultList()) {
+      final DayInfoSummary dayInfo = new DayInfoSummary();
+
+      ((DayInfoEntity) row).toSummaryDTO(dayInfo);
+
+      result.add(dayInfo);
+    }
+
+    return new FilterResult<DayInfoSummary>(result);
   }
 
   @RolesAllowed("user")
@@ -124,4 +153,52 @@ public class WorkItemServiceImpl implements IWorkItemService
     return result;
   }
 
+  private Query createQuery(final DayInfoFilter filter, final PersonEntity person)
+  {
+    final StringBuffer queryStr = new StringBuffer("from " + DayInfoEntity.class.getName()
+        + " d where d.person = :person");
+
+    if (filter.getFrom() != null) {
+      queryStr.append(" and ");
+      queryStr.append("d.date >= :from");
+    }
+    if (filter.getTo() != null) {
+      queryStr.append(" and ");
+      queryStr.append("d.date < :to");
+    }
+    if (filter.getMinRevision() != null) {
+      queryStr.append(" and ");
+      queryStr.append("d.revision >= :minRevision");
+    }
+    if (filter.getMaxRevision() != null) {
+      queryStr.append(" and ");
+      queryStr.append("d.revision <= :maxRevision");
+    }
+    if (filter.getLastModifiedByClient() != null) {
+      queryStr.append(" and ");
+      queryStr.append("t.lastModifiedByClient = :lastModifiedByClient");
+    }
+    queryStr.append(" order by d.date");
+
+    final Query query = m_manager.createQuery(queryStr.toString());
+
+    query.setParameter("person", person);
+    if (filter.getFrom() != null) {
+      query.setParameter("from", filter.getFrom().getDate());
+    }
+    if (filter.getTo() != null) {
+      query.setParameter("to", filter.getTo().getDate());
+    }
+    if (filter.getMinRevision() != null) {
+      query.setParameter("minRevision", filter.getMinRevision());
+    }
+    if (filter.getMaxRevision() != null) {
+      query.setParameter("maxRevision", filter.getMaxRevision());
+    }
+    if (filter.getLastModifiedByClient() != null) {
+      query.setParameter("lastModifiedByClient", filter.getLastModifiedByClient());
+    }
+
+    return query;
+  }
 }
