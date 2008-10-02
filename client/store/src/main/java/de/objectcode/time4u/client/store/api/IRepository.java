@@ -23,6 +23,9 @@ public interface IRepository
   /** Get the workitem repository */
   IWorkItemRepository getWorkItemRepository();
 
+  /** Get the statistics repository */
+  IStatisticRepository getStatisticRepository();
+
   IServerConnectionRepository getServerConnectionRepository();
 
   long getClientId();

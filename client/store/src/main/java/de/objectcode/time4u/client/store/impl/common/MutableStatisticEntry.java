@@ -9,22 +9,9 @@ import de.objectcode.time4u.client.store.api.StatisticEntry;
  */
 public class MutableStatisticEntry extends StatisticEntry
 {
-  public MutableStatisticEntry()
+  public MutableStatisticEntry(final String projectId, final String[] projectPath)
   {
-    super(null);
-  }
-
-  public MutableStatisticEntry(final String projectId)
-  {
-    super(projectId);
-  }
-
-  public MutableStatisticEntry(final String projectId, final int sumDuration, final int countWorkItem)
-  {
-    super(projectId);
-
-    m_sumDuration = sumDuration;
-    m_countWorkItem = countWorkItem;
+    super(projectId, projectPath);
   }
 
   public void setProjectId(final String projectId)

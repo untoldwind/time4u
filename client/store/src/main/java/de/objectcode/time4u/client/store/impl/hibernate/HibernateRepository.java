@@ -60,6 +60,11 @@ import de.objectcode.time4u.server.utils.IKeyChainEncoder;
  */
 public class HibernateRepository implements IRepository
 {
+  public HibernateStatisticRepository getStatisticRepository()
+  {
+    return m_statisticRepository;
+  }
+
   private final HibernateTemplate m_hibernateTemplate;
 
   private Person m_owner;
@@ -69,6 +74,7 @@ public class HibernateRepository implements IRepository
   private final HibernateProjectRepository m_projectRepository;
   private final HibernateTaskRepository m_taskRepository;
   private final HibernateWorkItemRepository m_workItemRepository;
+  private final HibernateStatisticRepository m_statisticRepository;
   private final HibernateServerConnectionRepository m_serverConnectionRepository;
 
   private final Map<RepositoryEventType, List<IRepositoryListener>> m_listeners = new HashMap<RepositoryEventType, List<IRepositoryListener>>();
@@ -83,7 +89,10 @@ public class HibernateRepository implements IRepository
     m_projectRepository = new HibernateProjectRepository(this, m_hibernateTemplate);
     m_taskRepository = new HibernateTaskRepository(this, m_hibernateTemplate);
     m_workItemRepository = new HibernateWorkItemRepository(this, m_hibernateTemplate);
+    m_statisticRepository = new HibernateStatisticRepository(this, m_hibernateTemplate);
     m_serverConnectionRepository = new HibernateServerConnectionRepository(this, m_hibernateTemplate);
+
+    addRepositoryListener(RepositoryEventType.DAYINFO, m_statisticRepository);
   }
 
   /**

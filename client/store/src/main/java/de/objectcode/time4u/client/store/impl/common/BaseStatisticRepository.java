@@ -1,9 +1,20 @@
 package de.objectcode.time4u.client.store.impl.common;
 
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public abstract class BaseStatisticRepository
+import de.objectcode.time4u.client.store.api.IStatisticRepository;
+import de.objectcode.time4u.client.store.api.RepositoryException;
+import de.objectcode.time4u.client.store.api.StatisticEntry;
+import de.objectcode.time4u.client.store.api.event.DayInfoRepositoryEvent;
+import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
+import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
+import de.objectcode.time4u.server.api.data.CalendarDay;
+
+public abstract class BaseStatisticRepository implements IStatisticRepository, IRepositoryListener
 {
   private final Map<Integer, Map<String, MutableStatisticEntry>> m_yearCache;
   private final Map<CalendarMonth, Map<String, MutableStatisticEntry>> m_monthCache;
@@ -44,4 +55,164 @@ public abstract class BaseStatisticRepository
       }
     };
   }
+
+  public Map<String, ? extends StatisticEntry> getDayStatistic(final int day, final int month, final int year)
+      throws RepositoryException
+  {
+    final Calendar begin = Calendar.getInstance();
+    begin.clear();
+    begin.set(year, month - 1, day, 0, 0, 0);
+
+    final Calendar end = Calendar.getInstance();
+    end.clear();
+    end.set(year, month - 1, day, 0, 0, 0);
+    end.add(Calendar.DAY_OF_MONTH, 1);
+
+    final Map<String, MutableStatisticEntry> statistic = new HashMap<String, MutableStatisticEntry>();
+
+    iterateWorkItems(new Date(begin.getTimeInMillis()), new Date(end.getTimeInMillis()), new IStatisticCollector() {
+      public void collect(final Date day, final int begin, final int end, final String projectId,
+          final String projectParentKey, final String taskId)
+      {
+        MutableStatisticEntry entry = statistic.get(projectId);
+
+        if (entry == null) {
+          entry = new MutableStatisticEntry(projectId, projectParentKey.split(":"));
+          statistic.put(projectId, entry);
+        }
+        entry.incrWorkItem(end - begin);
+      }
+    });
+
+    return statistic;
+  }
+
+  public synchronized Map<String, ? extends StatisticEntry> getWeekStatistic(final int week, final int year)
+      throws RepositoryException
+  {
+    final Map<String, MutableStatisticEntry> cachedStatistic = m_weekCache.get(new CalendarWeek(week, year));
+
+    if (cachedStatistic != null) {
+      return cachedStatistic;
+    }
+
+    final Calendar begin = Calendar.getInstance();
+    begin.clear();
+    begin.set(Calendar.YEAR, year);
+    begin.set(Calendar.WEEK_OF_YEAR, week);
+
+    final Calendar end = Calendar.getInstance();
+    end.clear();
+    end.set(Calendar.YEAR, year);
+    end.set(Calendar.WEEK_OF_YEAR, week);
+    end.add(Calendar.WEEK_OF_YEAR, 1);
+
+    final Map<String, MutableStatisticEntry> statistic = new HashMap<String, MutableStatisticEntry>();
+
+    iterateWorkItems(new Date(begin.getTimeInMillis()), new Date(end.getTimeInMillis()), new IStatisticCollector() {
+      public void collect(final Date day, final int begin, final int end, final String projectId,
+          final String projectParentKey, final String taskId)
+      {
+        MutableStatisticEntry entry = statistic.get(projectId);
+
+        if (entry == null) {
+          entry = new MutableStatisticEntry(projectId, projectParentKey.split(":"));
+          statistic.put(projectId, entry);
+        }
+        entry.incrWorkItem(end - begin);
+      }
+    });
+
+    m_weekCache.put(new CalendarWeek(week, year), statistic);
+
+    return statistic;
+
+  }
+
+  public synchronized Map<String, ? extends StatisticEntry> getMonthStatistic(final int month, final int year)
+      throws RepositoryException
+  {
+    final Map<String, MutableStatisticEntry> cachedStatistic = m_monthCache.get(month);
+
+    if (cachedStatistic != null) {
+      return cachedStatistic;
+    }
+
+    final Calendar begin = Calendar.getInstance();
+    begin.clear();
+    begin.set(year, month - 1, 1, 0, 0, 0);
+    final Calendar end = Calendar.getInstance();
+    end.clear();
+    end.set(year, month - 1, 1, 0, 0, 0);
+    end.add(Calendar.MONTH, 1);
+
+    final Map<String, MutableStatisticEntry> statistic = new HashMap<String, MutableStatisticEntry>();
+
+    iterateWorkItems(new Date(begin.getTimeInMillis()), new Date(end.getTimeInMillis()), new IStatisticCollector() {
+      public void collect(final Date day, final int begin, final int end, final String projectId,
+          final String projectParentKey, final String taskId)
+      {
+        MutableStatisticEntry entry = statistic.get(projectId);
+
+        if (entry == null) {
+          entry = new MutableStatisticEntry(projectId, projectParentKey.split(":"));
+          statistic.put(projectId, entry);
+        }
+        entry.incrWorkItem(end - begin);
+      }
+    });
+
+    m_monthCache.put(new CalendarMonth(month, year), statistic);
+    return statistic;
+  }
+
+  public synchronized Map<String, ? extends StatisticEntry> getYearStatistic(final int year) throws RepositoryException
+  {
+    final Map<String, MutableStatisticEntry> cachedStatistic = m_yearCache.get(year);
+
+    if (cachedStatistic != null) {
+      return cachedStatistic;
+    }
+
+    final Map<String, MutableStatisticEntry> statistic = new HashMap<String, MutableStatisticEntry>();
+
+    for (int month = 1; month <= 12; month++) {
+      final Map<String, ? extends StatisticEntry> monthStatistic = getMonthStatistic(month, year);
+
+      for (final StatisticEntry monthEntry : monthStatistic.values()) {
+        MutableStatisticEntry entry = statistic.get(monthEntry.getProjectId());
+
+        if (entry == null) {
+          entry = new MutableStatisticEntry(monthEntry.getProjectId(), monthEntry.getProjectPath());
+
+          statistic.put(monthEntry.getProjectId(), entry);
+        }
+
+        entry.aggregate(monthEntry);
+      }
+    }
+
+    m_yearCache.put(year, statistic);
+
+    return statistic;
+  }
+
+  public void handleRepositoryEvent(final RepositoryEvent event)
+  {
+    switch (event.getEventType()) {
+      case DAYINFO:
+        final DayInfoRepositoryEvent dayInfoEvent = (DayInfoRepositoryEvent) event;
+        final CalendarDay day = dayInfoEvent.getDayInfo().getDay();
+        synchronized (this) {
+          m_yearCache.remove(day.getYear());
+          m_monthCache.remove(new CalendarMonth(day));
+          m_weekCache.remove(new CalendarWeek(day));
+        }
+
+        break;
+    }
+  }
+
+  protected abstract void iterateWorkItems(Date from, Date until, IStatisticCollector collector)
+      throws RepositoryException;
 }

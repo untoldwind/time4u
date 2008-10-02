@@ -196,7 +196,7 @@ public class ProjectEntity
       if (m_parent.getParentKey() == null) {
         m_parent.updateParentKey();
       }
-      m_parentKey = m_parent.getParentKey() + "." + m_id;
+      m_parentKey = m_parent.getParentKey() + ":" + m_id;
     }
   }
 
