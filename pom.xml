@@ -18,6 +18,9 @@
 	</scm>
 	<distributionManagement>
 		<site>
+			<id>time4u-sourceforge</id>
+			<name>Sourceforge web site</name>
+			<!--  url>sftp://web.sourceforge.net/home/groups/t/ti/time4u/htdocs</url -->
 			<url>file:///Users/junglas/workspaces/w3/time4u-site</url>
 		</site>
 	</distributionManagement>
@@ -436,6 +439,7 @@
 				<reportSets>
 					<reportSet>
 						<reports>
+							<report>index</report>
 							<report>summary</report>
 							<report>project-team</report>
 							<report>scm</report>
@@ -447,4 +451,5 @@
 			</plugin>
 		</plugins>
 	</reporting>
+	
 </project>
