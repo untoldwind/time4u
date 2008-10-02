@@ -5,7 +5,7 @@
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<fileSets>
 		<fileSet>
-			<directory>src/launcher</directory>
+			<directory>src/main/launcher</directory>
 			<outputDirectory></outputDirectory>
 		</fileSet>
 	</fileSets>
