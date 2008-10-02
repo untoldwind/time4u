@@ -14,5 +14,6 @@
   	<module>server-ear</module>
   	<module>server-deploy</module>
   	<module>client-mac</module>
+  	<module>client-win32</module>
   </modules>
 </project>

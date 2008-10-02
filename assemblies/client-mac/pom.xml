@@ -114,16 +114,8 @@
 			<artifactId>simpleconfigurator</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.equinox.launcher.carbon</groupId>
-			<artifactId>macosx</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.eclipse.ui</groupId>
 			<artifactId>workbench</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.ui</groupId>
-			<artifactId>carbon</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse</groupId>
@@ -155,6 +147,14 @@
 				</os>
 			</activation>
 			<dependencies>
+				<dependency>
+					<groupId>org.eclipse.ui</groupId>
+					<artifactId>carbon</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.eclipse.equinox.launcher.carbon</groupId>
+					<artifactId>macosx</artifactId>
+				</dependency>
 				<dependency>
 					<groupId>org.eclipse.swt.carbon</groupId>
 					<artifactId>macosx</artifactId>
