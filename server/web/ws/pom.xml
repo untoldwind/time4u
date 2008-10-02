@@ -33,6 +33,10 @@
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>jmdns</groupId>
+			<artifactId>jmdns</artifactId>
+		</dependency>
 	</dependencies>
 	<profiles>
 		<profile>
