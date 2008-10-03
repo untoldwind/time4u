@@ -223,8 +223,8 @@ public abstract class BaseStatisticRepository implements IStatisticRepository, I
           statistic.put(projectPath[i], parentEntry);
         }
         parentEntry.aggregate(entry);
-        totals.aggregate(entry);
       }
+      totals.aggregate(entry);
     }
   }
 

@@ -99,7 +99,7 @@ public class StatisticsView extends ViewPart implements ISelectionListener, IRep
   {
     if (selection instanceof IAdaptable) {
       final ProjectSummary project = (ProjectSummary) ((IAdaptable) selection).getAdapter(ProjectSummary.class);
-      final CalendarDay day = (CalendarDay) ((IAdaptable) selection).getAdapter(Calendar.class);
+      final CalendarDay day = (CalendarDay) ((IAdaptable) selection).getAdapter(CalendarDay.class);
 
       if (!m_selectedDay.equals(day.getCalendar()) || project == null && m_selectedProject != null || project != null
           && !project.equals(m_selectedProject)) {
