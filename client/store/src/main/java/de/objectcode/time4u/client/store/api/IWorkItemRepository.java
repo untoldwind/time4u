@@ -5,6 +5,7 @@ import java.util.List;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
+import de.objectcode.time4u.server.api.data.TimePolicy;
 import de.objectcode.time4u.server.api.data.WorkItem;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
 
@@ -96,4 +97,6 @@ public interface IWorkItemRepository
    * Get the currenty active workitem.
    */
   void setActiveWorkItem(WorkItem workitem) throws RepositoryException;
+
+  List<TimePolicy> getTimePolicies() throws RepositoryException;
 }

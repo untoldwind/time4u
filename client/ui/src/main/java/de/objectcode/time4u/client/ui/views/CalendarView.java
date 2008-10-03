@@ -1,7 +1,6 @@
 package de.objectcode.time4u.client.ui.views;
 
 import java.util.Calendar;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.action.GroupMarker;
@@ -40,7 +39,7 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
   int m_currentMonth;
   int m_currentYear;
 
-  AtomicInteger m_refreshCounter = new AtomicInteger(0);
+  int m_refreshCounter = 0;
 
   private CompoundSelectionProvider m_selectionProvider;
 
@@ -168,11 +167,11 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
     switch (event.getEventType()) {
       case DAYINFO:
         synchronized (this) {
-          if (m_refreshCounter.intValue() >= 2) {
+          if (m_refreshCounter >= 2) {
             return;
           }
 
-          m_refreshCounter.incrementAndGet();
+          m_refreshCounter++;
         }
         m_calendar.getDisplay().asyncExec(new Runnable() {
           public void run()
@@ -181,7 +180,7 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
               refresh();
             } finally {
               synchronized (CalendarView.this) {
-                m_refreshCounter.decrementAndGet();
+                m_refreshCounter--;
               }
             }
           }

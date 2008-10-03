@@ -244,4 +244,24 @@ public class HibernateProjectRepository implements IProjectRepository
 
   }
 
+  public List<ProjectSummary> getProjectPath(final String projectId) throws RepositoryException
+  {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<List<ProjectSummary>>() {
+      public List<ProjectSummary> perform(final Session session)
+      {
+        final List<ProjectSummary> result = new ArrayList<ProjectSummary>();
+        ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, projectId);
+
+        while (projectEntity != null) {
+          final ProjectSummary project = new ProjectSummary();
+
+          projectEntity.toSummaryDTO(project);
+          result.add(0, project);
+          projectEntity = projectEntity.getParent();
+        }
+
+        return result;
+      }
+    });
+  }
 }

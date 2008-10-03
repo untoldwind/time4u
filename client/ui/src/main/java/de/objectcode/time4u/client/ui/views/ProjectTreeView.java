@@ -1,7 +1,5 @@
 package de.objectcode.time4u.client.ui.views;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.jface.action.GroupMarker;
@@ -39,7 +37,7 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
   private TreeViewer m_viewer;
   private boolean m_showOnlyActive;
 
-  AtomicInteger m_refreshCounter = new AtomicInteger(0);
+  int m_refreshCounter = 0;
   private CompoundSelectionProvider m_selectionProvider;
 
   /**
@@ -165,11 +163,11 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
       case PROJECT:
         // Do not queue more than 2 refreshes
         synchronized (this) {
-          if (m_refreshCounter.intValue() >= 2) {
+          if (m_refreshCounter >= 2) {
             return;
           }
 
-          m_refreshCounter.incrementAndGet();
+          m_refreshCounter++;
         }
 
         m_viewer.getControl().getDisplay().asyncExec(new Runnable() {
@@ -185,7 +183,7 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
               m_viewer.setSelection(selection);
             } finally {
               synchronized (ProjectTreeView.this) {
-                m_refreshCounter.decrementAndGet();
+                m_refreshCounter--;
               }
             }
           }

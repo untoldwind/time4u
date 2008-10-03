@@ -1,9 +1,11 @@
 package de.objectcode.time4u.client.store.impl.common;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.objectcode.time4u.client.store.api.IStatisticRepository;
@@ -68,21 +70,8 @@ public abstract class BaseStatisticRepository implements IStatisticRepository, I
     end.set(year, month - 1, day, 0, 0, 0);
     end.add(Calendar.DAY_OF_MONTH, 1);
 
-    final Map<String, MutableStatisticEntry> statistic = new HashMap<String, MutableStatisticEntry>();
-
-    iterateWorkItems(new Date(begin.getTimeInMillis()), new Date(end.getTimeInMillis()), new IStatisticCollector() {
-      public void collect(final Date day, final int begin, final int end, final String projectId,
-          final String projectParentKey, final String taskId)
-      {
-        MutableStatisticEntry entry = statistic.get(projectId);
-
-        if (entry == null) {
-          entry = new MutableStatisticEntry(projectId, projectParentKey.split(":"));
-          statistic.put(projectId, entry);
-        }
-        entry.incrWorkItem(end - begin);
-      }
-    });
+    final Map<String, MutableStatisticEntry> statistic = calculateStatistic(new Date(begin.getTimeInMillis()),
+        new Date(end.getTimeInMillis()));
 
     return statistic;
   }
@@ -107,21 +96,8 @@ public abstract class BaseStatisticRepository implements IStatisticRepository, I
     end.set(Calendar.WEEK_OF_YEAR, week);
     end.add(Calendar.WEEK_OF_YEAR, 1);
 
-    final Map<String, MutableStatisticEntry> statistic = new HashMap<String, MutableStatisticEntry>();
-
-    iterateWorkItems(new Date(begin.getTimeInMillis()), new Date(end.getTimeInMillis()), new IStatisticCollector() {
-      public void collect(final Date day, final int begin, final int end, final String projectId,
-          final String projectParentKey, final String taskId)
-      {
-        MutableStatisticEntry entry = statistic.get(projectId);
-
-        if (entry == null) {
-          entry = new MutableStatisticEntry(projectId, projectParentKey.split(":"));
-          statistic.put(projectId, entry);
-        }
-        entry.incrWorkItem(end - begin);
-      }
-    });
+    final Map<String, MutableStatisticEntry> statistic = calculateStatistic(new Date(begin.getTimeInMillis()),
+        new Date(end.getTimeInMillis()));
 
     m_weekCache.put(new CalendarWeek(week, year), statistic);
 
@@ -146,23 +122,11 @@ public abstract class BaseStatisticRepository implements IStatisticRepository, I
     end.set(year, month - 1, 1, 0, 0, 0);
     end.add(Calendar.MONTH, 1);
 
-    final Map<String, MutableStatisticEntry> statistic = new HashMap<String, MutableStatisticEntry>();
-
-    iterateWorkItems(new Date(begin.getTimeInMillis()), new Date(end.getTimeInMillis()), new IStatisticCollector() {
-      public void collect(final Date day, final int begin, final int end, final String projectId,
-          final String projectParentKey, final String taskId)
-      {
-        MutableStatisticEntry entry = statistic.get(projectId);
-
-        if (entry == null) {
-          entry = new MutableStatisticEntry(projectId, projectParentKey.split(":"));
-          statistic.put(projectId, entry);
-        }
-        entry.incrWorkItem(end - begin);
-      }
-    });
+    final Map<String, MutableStatisticEntry> statistic = calculateStatistic(new Date(begin.getTimeInMillis()),
+        new Date(end.getTimeInMillis()));
 
     m_monthCache.put(new CalendarMonth(month, year), statistic);
+
     return statistic;
   }
 
@@ -188,7 +152,7 @@ public abstract class BaseStatisticRepository implements IStatisticRepository, I
           statistic.put(monthEntry.getProjectId(), entry);
         }
 
-        entry.aggregate(monthEntry);
+        entry.sum(monthEntry);
       }
     }
 
@@ -210,6 +174,57 @@ public abstract class BaseStatisticRepository implements IStatisticRepository, I
         }
 
         break;
+    }
+  }
+
+  protected Map<String, MutableStatisticEntry> calculateStatistic(final Date from, final Date until)
+      throws RepositoryException
+  {
+    final Map<String, MutableStatisticEntry> statistic = new HashMap<String, MutableStatisticEntry>();
+
+    iterateWorkItems(from, until, new IStatisticCollector() {
+      public void collect(final Date day, final int begin, final int end, final String projectId,
+          final String projectParentKey, final String taskId)
+      {
+        MutableStatisticEntry entry = statistic.get(projectId);
+
+        if (entry == null) {
+          entry = new MutableStatisticEntry(projectId, projectParentKey.split(":"));
+          statistic.put(projectId, entry);
+        }
+        entry.incrWorkItem(end - begin);
+      }
+    });
+    aggregateDown(statistic);
+
+    return statistic;
+  }
+
+  protected void aggregateDown(final Map<String, MutableStatisticEntry> statistic)
+  {
+    final List<String> projectIds = new ArrayList<String>(statistic.keySet());
+
+    final MutableStatisticEntry totals = new MutableStatisticEntry(null, null);
+
+    statistic.put(null, totals);
+
+    for (final String projectId : projectIds) {
+      final MutableStatisticEntry entry = statistic.get(projectId);
+      final String[] projectPath = entry.getProjectPath();
+
+      for (int i = projectPath.length - 2; i >= 0; i--) {
+        MutableStatisticEntry parentEntry = statistic.get(projectPath[i]);
+
+        if (parentEntry == null) {
+          final String[] parentPath = new String[i];
+          System.arraycopy(projectPath, 0, parentPath, 0, i);
+          parentEntry = new MutableStatisticEntry(projectPath[i], parentPath);
+
+          statistic.put(projectPath[i], parentEntry);
+        }
+        parentEntry.aggregate(entry);
+        totals.aggregate(entry);
+      }
     }
   }
 

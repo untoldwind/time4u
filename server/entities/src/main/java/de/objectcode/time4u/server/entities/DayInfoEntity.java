@@ -50,7 +50,7 @@ public class DayInfoEntity
   private Date m_date;
   private boolean m_hasWorkItems;
   private boolean m_hasInvalidWorkItems;
-  private int m_totalTime;
+  private int m_sumDurations;
   private int m_regularTime;
   /** Set of tags of the day */
   private Set<DayTagEntity> m_tags;
@@ -164,14 +164,14 @@ public class DayInfoEntity
     m_hasInvalidWorkItems = hasInvalidWorkItems;
   }
 
-  public int getTotalTime()
+  public int getSumDurations()
   {
-    return m_totalTime;
+    return m_sumDurations;
   }
 
-  public void setTotalTime(final int totalTime)
+  public void setSumDurations(final int sumDurations)
   {
-    m_totalTime = totalTime;
+    m_sumDurations = sumDurations;
   }
 
   public int getRegularTime()
@@ -208,7 +208,7 @@ public class DayInfoEntity
    */
   public void validate()
   {
-    int totalTime = 0;
+    int sumDurations = 0;
     boolean hasInvalidWorkItems = false;
 
     for (final WorkItemEntity item1 : m_workItems) {
@@ -230,14 +230,14 @@ public class DayInfoEntity
         }
 
         if (item1.isValid()) {
-          totalTime += item1.getDuration();
+          sumDurations += item1.getDuration();
         }
       }
     }
 
     m_hasWorkItems = !m_workItems.isEmpty();
     m_hasInvalidWorkItems = hasInvalidWorkItems;
-    m_totalTime = totalTime;
+    m_sumDurations = sumDurations;
   }
 
   public void toSummaryDTO(final DayInfoSummary dayinfo)
@@ -249,6 +249,7 @@ public class DayInfoEntity
     dayinfo.setHasWorkItems(m_hasWorkItems);
     dayinfo.setHasInvalidWorkItems(m_hasInvalidWorkItems);
     dayinfo.setRegularTime(m_regularTime);
+    dayinfo.setSumDurations(m_sumDurations);
   }
 
   public void toDTO(final DayInfo dayinfo)

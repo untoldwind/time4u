@@ -1,6 +1,7 @@
 package de.objectcode.time4u.client.store.impl.hibernate;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -17,6 +18,7 @@ import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
 import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.TimePolicy;
 import de.objectcode.time4u.server.api.data.WorkItem;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
 import de.objectcode.time4u.server.entities.ActiveWorkItemEntity;
@@ -375,6 +377,12 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
     });
 
     m_repository.fireRepositoryEvent(new ActiveWorkItemRepositoryEvent(workItem));
+  }
+
+  public List<TimePolicy> getTimePolicies() throws RepositoryException
+  {
+    // TODO: Store this
+    return Collections.emptyList();
   }
 
   private static class DayInfoWorkItemHolder

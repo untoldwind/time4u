@@ -1,7 +1,6 @@
 package de.objectcode.time4u.client.ui.views;
 
 import java.util.Calendar;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.GroupMarker;
@@ -61,7 +60,7 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
   private PageBook m_pageBook;
   private ViewType m_activeViewType;
 
-  AtomicInteger m_refreshCounter = new AtomicInteger(0);
+  int m_refreshCounter = 0;
 
   private CompoundSelectionProvider m_selectionProvider;
 
@@ -197,10 +196,10 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
       case TASK: {
         // Do not queue more than 2 refreshes
         synchronized (this) {
-          if (m_refreshCounter.intValue() >= 2) {
+          if (m_refreshCounter >= 2) {
             return;
           }
-          m_refreshCounter.incrementAndGet();
+          m_refreshCounter++;
         }
 
         m_tableViewer.getTable().getDisplay().asyncExec(new Runnable() {
@@ -218,7 +217,7 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
               }
             } finally {
               synchronized (WorkItemView.this) {
-                m_refreshCounter.decrementAndGet();
+                m_refreshCounter--;
               }
             }
           }

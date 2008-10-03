@@ -80,4 +80,6 @@ public interface IProjectRepository
    *           on error
    */
   void deleteProject(Project project) throws RepositoryException;
+
+  List<ProjectSummary> getProjectPath(String projectId) throws RepositoryException;
 }

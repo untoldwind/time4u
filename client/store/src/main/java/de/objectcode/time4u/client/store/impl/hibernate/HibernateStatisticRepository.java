@@ -1,10 +1,13 @@
 package de.objectcode.time4u.client.store.impl.hibernate;
 
 import java.sql.Date;
-import java.util.Iterator;
 
-import org.hibernate.Query;
+import org.hibernate.Criteria;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.client.store.impl.common.BaseStatisticRepository;
@@ -27,17 +30,20 @@ public class HibernateStatisticRepository extends BaseStatisticRepository
     m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Object>() {
       public Object perform(final Session session)
       {
-        final Query query = session
-            .createQuery("select w.dataInfo.date, w.begin, w.end, w.project.id, w.project.parentKey, w.task.id from "
-                + WorkItemEntity.class.getName() + " w where w.dayInfo.date >= :from and w.dayInfo.date < :until");
+        final Criteria criteria = session.createCriteria(WorkItemEntity.class);
+        criteria.createAlias("dayInfo", "d");
+        criteria.createAlias("project", "p");
+        criteria.createAlias("task", "t");
+        criteria.add(Restrictions.ge("d.date", from));
+        criteria.add(Restrictions.lt("d.date", until));
+        criteria.setProjection(Projections.projectionList().add(Projections.property("d.date")).add(
+            Projections.property("begin")).add(Projections.property("end")).add(Projections.property("p.id")).add(
+            Projections.property("p.parentKey")).add(Projections.property("t.id")));
 
-        query.setParameter("from", from);
-        query.setParameter("until", until);
+        final ScrollableResults results = criteria.scroll(ScrollMode.FORWARD_ONLY);
 
-        final Iterator<?> it = query.iterate();
-
-        while (it.hasNext()) {
-          final Object[] row = (Object[]) it.next();
+        while (results.next()) {
+          final Object[] row = results.get();
 
           collector.collect((Date) row[0], (Integer) row[1], (Integer) row[2], (String) row[3], (String) row[4],
               (String) row[5]);

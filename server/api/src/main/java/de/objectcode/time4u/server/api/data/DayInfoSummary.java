@@ -9,6 +9,7 @@ package de.objectcode.time4u.server.api.data;
  */
 public class DayInfoSummary implements ISynchronizableData
 {
+
   private static final long serialVersionUID = 4834724509315672372L;
 
   /** Internal server id of the dayinfo. */
@@ -25,6 +26,8 @@ public class DayInfoSummary implements ISynchronizableData
   private boolean m_hasInvalidWorkItems;
   /** The regular working time for the day (usually calculated by time policies) */
   private int m_regularTime;
+  /** Sum of all workitem durations or that day */
+  private int m_sumDurations;
 
   public String getId()
   {
@@ -96,4 +99,13 @@ public class DayInfoSummary implements ISynchronizableData
     m_regularTime = regularTime;
   }
 
+  public int getSumDurations()
+  {
+    return m_sumDurations;
+  }
+
+  public void setSumDurations(final int sumDurations)
+  {
+    m_sumDurations = sumDurations;
+  }
 }
