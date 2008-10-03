@@ -52,4 +52,10 @@ public class PreferenceConstants
   public static final String UI_OVERTIME_REGULARTIME = "ui.overtime.regulartime";
 
   public static final String UI_OVERTIME_COLORIZE = "ui.overtime.colorize";
+
+  public static final String UI_CALENDAR_REGULAR_COLOR = "ui.calendar.regular.color";
+
+  public static final String UI_CALENDAR_INVALID_COLOR = "ui.calendar.invalid.color";
+
+  public static final String UI_CALENDAR_FREE_COLOR = "ui.calendar.free.color";
 }

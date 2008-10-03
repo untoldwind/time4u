@@ -529,4 +529,30 @@
          </action>
       </actionSet>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="de.objectcode.time4u.client.ui.preferences.UIPreferencesPage"
+            id="de.objectcode.time4u.client.ui.preferences.UIPreferencesPage"
+            name="%propertyPage.userInterface.title">
+      </page>
+      <page
+            category="de.objectcode.time4u.client.ui.preferences.UIPreferencesPage"
+            class="de.objectcode.time4u.client.ui.preferences.PunchViewPreferencesPage"
+            id="time4u-client-ui.page1"
+            name="%punchView.title">
+      </page>
+      <page
+            category="de.objectcode.time4u.client.ui.preferences.UIPreferencesPage"
+            class="de.objectcode.time4u.client.ui.preferences.CalendarViewPreferencesPage"
+            id="de.objectcode.time4u.client.ui.preferences.CalendarViewPreferencesPage"
+            name="%calendarView.title">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.equinox.preferences.preferences">
+      <initializer
+            class="de.objectcode.time4u.client.ui.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
 </plugin>

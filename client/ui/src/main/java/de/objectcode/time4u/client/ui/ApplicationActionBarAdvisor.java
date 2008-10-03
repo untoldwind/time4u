@@ -22,13 +22,14 @@ import org.eclipse.ui.application.IActionBarConfigurer;
  */
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 {
-
   // Actions - important to allocate these only in makeActions, and then use them
   // in the fill methods.  This ensures that the actions aren't recreated
   // when fillActionBars is called with FILL_PROXY.
   private IWorkbenchAction exitAction;
   private IWorkbenchAction aboutAction;
   private IWorkbenchAction newWindowAction;
+
+  private IWorkbenchAction preferencesActions;
 
   public ApplicationActionBarAdvisor(final IActionBarConfigurer configurer)
   {
@@ -55,6 +56,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 
     newWindowAction = ActionFactory.OPEN_NEW_WINDOW.create(window);
     register(newWindowAction);
+
+    preferencesActions = ActionFactory.PREFERENCES.create(window);
+    register(preferencesActions);
   }
 
   /**
@@ -83,6 +87,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     fileMenu.add(exitAction);
 
     windowMenu.add(new GroupMarker("perspectivesGroup"));
+    windowMenu.add(new Separator());
+    windowMenu.add(preferencesActions);
 
     // Help
     helpMenu.add(aboutAction);
