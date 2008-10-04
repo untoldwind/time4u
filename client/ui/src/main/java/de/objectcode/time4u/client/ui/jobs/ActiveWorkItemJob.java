@@ -17,7 +17,7 @@ public class ActiveWorkItemJob extends Job
 {
   public ActiveWorkItemJob()
   {
-    super("WorkItemJob");
+    super("WorkItem Job");
   }
 
   @Override

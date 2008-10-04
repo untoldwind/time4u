@@ -12,9 +12,13 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.ui.PlatformUI;
 
+import de.objectcode.time4u.client.store.api.IWorkItemRepository;
+import de.objectcode.time4u.client.store.api.RepositoryException;
+import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
 import de.objectcode.time4u.server.api.data.TimePolicy;
+import de.objectcode.time4u.server.api.filter.DayInfoFilter;
 
 public class DayFontColorProvider implements IFontProvider, IColorProvider
 {
@@ -26,18 +30,22 @@ public class DayFontColorProvider implements IFontProvider, IColorProvider
   Font m_regularFont;
 
   public DayFontColorProvider(final Color regularBackground, final Color regularForeground, final Font regularFont,
-      final Font boldFont, final List<DayInfoSummary> dayInfos, final List<TimePolicy> timePolicies)
+      final Font boldFont, final IWorkItemRepository workItemRepository, final int year, final int month)
   {
     m_regularBackground = regularBackground;
     m_regularForeground = regularForeground;
     m_regularFont = regularFont;
     m_boldFont = boldFont;
 
-    m_dayInfos = new HashMap<CalendarDay, DayInfoSummary>();
-    for (final DayInfoSummary dayInfo : dayInfos) {
-      m_dayInfos.put(dayInfo.getDay(), dayInfo);
+    try {
+      m_dayInfos = new HashMap<CalendarDay, DayInfoSummary>();
+      for (final DayInfoSummary dayInfo : workItemRepository.getDayInfos(DayInfoFilter.filterMonth(year, month))) {
+        m_dayInfos.put(dayInfo.getDay(), dayInfo);
+      }
+      m_timePolicies = workItemRepository.getTimePolicies();
+    } catch (final RepositoryException e) {
+      UIPlugin.getDefault().log(e);
     }
-    m_timePolicies = timePolicies;
   }
 
   public Color getBackground(final Object element)

@@ -12,12 +12,16 @@ public class ServerConnection implements Serializable
   private long m_id;
   /** Root project to be synchronized */
   private String m_rootProjectId;
+  /** Logical name of the server */
+  private String m_name;
   /** Connection url */
   private String m_url;
   /** Server credentials */
   private Map<String, String> m_credentials;
   /** Timestamp of the last synchronization */
   private Date m_lastSynchronize;
+  /** Synchronize every x seconds (0 = never) */
+  private int m_synchronizeInterval;
 
   public long getId()
   {
@@ -69,4 +73,23 @@ public class ServerConnection implements Serializable
     m_lastSynchronize = lastSynchronize;
   }
 
+  public int getSynchronizeInterval()
+  {
+    return m_synchronizeInterval;
+  }
+
+  public void setSynchronizeInterval(final int synchronizeInterval)
+  {
+    m_synchronizeInterval = synchronizeInterval;
+  }
+
+  public String getName()
+  {
+    return m_name;
+  }
+
+  public void setName(final String name)
+  {
+    m_name = name;
+  }
 }

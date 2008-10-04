@@ -9,5 +9,19 @@
 			<directory>target/classes</directory>
 			<outputDirectory>/</outputDirectory>
 		</fileSet>
+		<fileSet>
+			<directory>icons</directory>
+			<outputDirectory>/icons</outputDirectory>
+		</fileSet>
 	</fileSets>
+	<files>
+		<file>
+			<source>plugin.xml</source>
+			<outputDirectory>/</outputDirectory>
+		</file>
+		<file>
+			<source>plugin.properties</source>
+			<outputDirectory>/</outputDirectory>
+		</file>
+	</files>
 </assembly>

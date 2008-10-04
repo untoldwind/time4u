@@ -39,12 +39,16 @@ public class ServerConnectionEntity
   private long m_id;
   /** Root project to be synchronized */
   private ProjectEntity m_rootProject;
+  /** Logical name of the server */
+  private String m_name;
   /** Connection url */
   private String m_url;
   /** Server credentials */
   private String m_credentials;
   /** Timestamp of the last synchronization */
   private Date m_lastSynchronize;
+  /** Synchronize every x seconds (0 = never) */
+  private int m_synchronizeInterval;
 
   private Map<SynchronizableType, SynchronizationStatusEntity> m_synchronizationStatus;
 
@@ -105,6 +109,27 @@ public class ServerConnectionEntity
     m_lastSynchronize = lastSynchronize;
   }
 
+  public int getSynchronizeInterval()
+  {
+    return m_synchronizeInterval;
+  }
+
+  public void setSynchronizeInterval(final int synchronizeInterval)
+  {
+    m_synchronizeInterval = synchronizeInterval;
+  }
+
+  @Column(length = 50, nullable = true)
+  public String getName()
+  {
+    return m_name;
+  }
+
+  public void setName(final String name)
+  {
+    m_name = name;
+  }
+
   @MapKey(name = "entityType")
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "serverConnection")
   public Map<SynchronizableType, SynchronizationStatusEntity> getSynchronizationStatus()
@@ -124,6 +149,8 @@ public class ServerConnectionEntity
     serverConnection.setUrl(m_url);
     serverConnection.setCredentials(encoder.decrypt(m_credentials));
     serverConnection.setLastSynchronize(m_lastSynchronize);
+    serverConnection.setSynchronizeInterval(m_synchronizeInterval);
+    serverConnection.setName(m_name);
   }
 
   public void fromDTO(final IPersistenceContext context, final ServerConnection serverConnection,
@@ -133,5 +160,7 @@ public class ServerConnectionEntity
         .getRootProjectId(), clientId) : null;
     m_url = serverConnection.getUrl();
     m_credentials = encoder.encrypt(serverConnection.getCredentials());
+    m_synchronizeInterval = serverConnection.getSynchronizeInterval();
+    m_name = serverConnection.getName();
   }
 }

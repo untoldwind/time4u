@@ -17,16 +17,20 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 
 import de.objectcode.time4u.server.api.data.ServerConnection;
 
 public class ConnectionDialog extends Dialog
 {
+  Text m_nameText;
   Text m_urlText;
   Text m_userIdText;
   Text m_passwordText;
   Text m_passwordConfirmText;
+  Spinner m_synchronizeItervalSpinner;
+
   ServerConnection m_serverConnection;
   boolean m_create;
 
@@ -43,9 +47,11 @@ public class ConnectionDialog extends Dialog
 
     if (serverConnection == null) {
       m_serverConnection = new ServerConnection();
+      m_serverConnection.setName("");
       m_serverConnection.setUrl("");
       m_serverConnection.setRootProjectId(null);
       m_serverConnection.setCredentials(new HashMap<String, String>());
+      m_serverConnection.setSynchronizeInterval(5 * 60);
     } else {
       m_serverConnection = serverConnection;
       m_create = false;
@@ -81,6 +87,15 @@ public class ConnectionDialog extends Dialog
     final Composite root = new Composite(composite, SWT.NONE);
     root.setLayout(new GridLayout(2, false));
     root.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+    final Label nameLabel = new Label(root, SWT.NONE);
+    nameLabel.setText("Name");
+    m_nameText = new Text(root, SWT.BORDER);
+    m_nameText.setText(m_serverConnection.getName());
+    m_nameText.setTextLimit(50);
+    final GridData nameGridData = new GridData(GridData.FILL_HORIZONTAL);
+    nameGridData.widthHint = 50 * width;
+    m_nameText.setLayoutData(nameGridData);
 
     final Label urlLabel = new Label(root, SWT.NONE);
     urlLabel.setText("URL");
@@ -140,15 +155,23 @@ public class ConnectionDialog extends Dialog
       }
     });
 
+    final Label synchronizeEveryConfirmLabel = new Label(root, SWT.NONE);
+    synchronizeEveryConfirmLabel.setText("Synchronize interval");
+    m_synchronizeItervalSpinner = new Spinner(root, SWT.BORDER);
+    m_synchronizeItervalSpinner.setIncrement(30);
+    m_synchronizeItervalSpinner.setValues(m_serverConnection.getSynchronizeInterval() / 60, 0, 120, 0, 1, 5);
+
     return composite;
   }
 
   @Override
   protected void okPressed()
   {
+    m_serverConnection.setName(m_nameText.getText());
     m_serverConnection.setUrl(m_urlText.getText());
     m_serverConnection.getCredentials().put("userId", m_userIdText.getText());
     m_serverConnection.getCredentials().put("password", m_passwordText.getText());
+    m_serverConnection.setSynchronizeInterval(m_synchronizeItervalSpinner.getSelection() * 60);
 
     super.okPressed();
   }

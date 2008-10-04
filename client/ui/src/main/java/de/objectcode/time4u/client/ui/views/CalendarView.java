@@ -28,7 +28,6 @@ import de.objectcode.time4u.client.ui.util.CompoundSelectionEntityType;
 import de.objectcode.time4u.client.ui.util.CompoundSelectionProvider;
 import de.objectcode.time4u.client.ui.util.SelectionServiceAdapter;
 import de.objectcode.time4u.server.api.data.CalendarDay;
-import de.objectcode.time4u.server.api.filter.DayInfoFilter;
 
 public class CalendarView extends ViewPart implements SWTCalendarListener, IRepositoryListener
 {
@@ -80,8 +79,7 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
       final IWorkItemRepository workItemRepository = RepositoryFactory.getRepository().getWorkItemRepository();
 
       final DayFontColorProvider provider = new DayFontColorProvider(m_calendar.getBackground(), m_calendar
-          .getForeground(), m_calendar.getFont(), m_boldFont, workItemRepository.getDayInfoSummaries(DayInfoFilter
-          .filterMonth(m_currentYear, m_currentMonth)), null);
+          .getForeground(), m_calendar.getFont(), m_boldFont, workItemRepository, m_currentYear, m_currentMonth);
 
       m_calendar.setColorProvider(provider);
       m_calendar.setFontProvider(provider);
@@ -128,10 +126,8 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
   {
     try {
       final IWorkItemRepository workItemRepository = RepositoryFactory.getRepository().getWorkItemRepository();
-
       final DayFontColorProvider provider = new DayFontColorProvider(m_calendar.getBackground(), m_calendar
-          .getForeground(), m_calendar.getFont(), m_boldFont, workItemRepository.getDayInfoSummaries(DayInfoFilter
-          .filterMonth(m_currentYear, m_currentMonth)), null);
+          .getForeground(), m_calendar.getFont(), m_boldFont, workItemRepository, m_currentYear, m_currentMonth);
 
       m_calendar.setColorProvider(provider);
       m_calendar.setFontProvider(provider);
