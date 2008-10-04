@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:rich="http://richfaces.org/rich" template="template.xhtml">
+
+  <ui:define name="content">
+    <a4j:form>
+      <rich:dropDownMenu value="Admin">
+        <rich:menuItem  submitMode="ajax" value="Accounts"  action="#{admin.accountList.enter}"/>
+
+      </rich:dropDownMenu>
+    </a4j:form>
+    <ui:insert name="contentDetail"/>
+  </ui:define>
+</ui:composition>
