@@ -7,13 +7,13 @@
 		<fileSet>
 			<directory>src/main/launcher</directory>
 			<outputDirectory></outputDirectory>
-			<excludes><exclude>Time4U.app/Contents/MacOS/Time4U</exclude></excludes>
+			<excludes><exclude>Time4U</exclude></excludes>
 		</fileSet>
 	</fileSets>
 	<files>
 		<file>
-			<source>src/main/launcher/Time4U.app/Contents/MacOS/Time4U</source>
-			<outputDirectory>Time4U.app/Contents/MacOS</outputDirectory>
+			<source>src/main/launcher/Time4U</source>
+			<outputDirectory></outputDirectory>
 			<fileMode>755</fileMode>
 		</file>
 	</files>
@@ -22,8 +22,7 @@
 			<outputFileNameMapping>
 				${artifact.groupId}.${artifact.artifactId}_${artifact.version}.${artifact.extension}
 			</outputFileNameMapping>
-			<outputDirectory>Time4U.app/Contents/Resources/Java/plugins
-			</outputDirectory>
+			<outputDirectory>plugins</outputDirectory>
 			<includes>
 				<include>de.objectcode.time4u.client:store:jar:plugin
 				</include>
@@ -39,8 +38,7 @@
 			<outputFileNameMapping>
 				${artifact.groupId}.${artifact.artifactId}_${artifact.version}.${artifact.extension}
 			</outputFileNameMapping>
-			<outputDirectory>
-				Time4U.app/Contents/Resources/Java/features/de.objectcode.time4u.client.feature_${pom.version}
+			<outputDirectory>features/de.objectcode.time4u.client.feature_${pom.version}
 			</outputDirectory>
 			<unpack>true</unpack>
 			<includes>
@@ -52,8 +50,7 @@
 			<outputFileNameMapping>
 				${artifact.groupId}.${artifact.artifactId}_${artifact.version}.${artifact.extension}
 			</outputFileNameMapping>
-			<outputDirectory>Time4U.app/Contents/Resources/Java/plugins
-			</outputDirectory>
+			<outputDirectory>plugins</outputDirectory>
 			<includes>
 				<include>com.ibm:icu</include>
 				<include>org.eclipse:osgi</include>
@@ -78,8 +75,7 @@
 				<include>org.eclipse.equinox:registry</include>
 				<include>org.eclipse.equinox:simpleconfigurator</include>
 				<include>org.eclipse.ui:workbench</include>
-				<include>org.eclipse.ui:carbon</include>
-				<include>org.eclipse.swt.carbon:macosx</include>
+				<include>org.eclipse.swt.gtk.linux:x86_64</include>
 				<include>org.eclipse.update:configurator</include>
 			</includes>
 		</dependencySet>
