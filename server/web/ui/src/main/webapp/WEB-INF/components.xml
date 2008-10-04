@@ -18,4 +18,8 @@
 		concurrent-request-timeout="45000" conversation-id-parameter="cid" />
     
 	<security:identity jaas-config-name="time4u"/>
+
+    <persistence:managed-persistence-context name="entityManager"
+                                      auto-create="true"
+                       persistence-unit-jndi-name="java:/time4u-server/EntityManagerFactory" />
 </components>

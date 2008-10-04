@@ -7,9 +7,9 @@
 		<jta-data-source>java:/Time4UDS</jta-data-source>
 		<properties>
 			<property name="hibernate.ejb.cfgfile" value="/time4u-hibernate.cfg.xml"/>
-			<property name="jboss.entity.manager.jndi.name" value="time4u-server/EntityManager" />
+			<property name="jboss.entity.manager.jndi.name" value="java:/time4u-server/EntityManager" />
 			<property name="jboss.entity.manager.factory.jndi.name"
-				value="time4u-server/EntityManagerFactory" />
+				value="java:/time4u-server/EntityManagerFactory" />
 		</properties>
 	</persistence-unit>
 </persistence>

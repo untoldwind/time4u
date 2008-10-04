@@ -7,6 +7,27 @@
   <ui:define name="title">Accounts</ui:define>
   <ui:define name="contentDetail">
     <h:form>
+	  <rich:dataTable value="#{admin.accountList}" var="userAccount" rowClasses="first,second" columnClasses="narrow,wide">
+        <rich:column>
+          <f:facet name="header">User Id</f:facet>
+              #{userAccount.userId}
+        </rich:column>
+        <rich:column>
+          <f:facet name="header">Name</f:facet>
+              #{userAccount.person.name}
+        </rich:column>
+        <rich:column>
+          <f:facet name="header">EMail</f:facet>
+              #{userAccount.person.email}
+        </rich:column>
+        <f:facet name="footer">
+          <rich:datascroller pageIndexVar="pageIndex" pagesVar="pages">
+            <f:facet name="pages">
+              <h:outputText value="#{pageIndex} / #{pages}"></h:outputText>
+            </f:facet>
+          </rich:datascroller>
+         </f:facet>
+      </rich:dataTable>
 	</h:form>
   </ui:define>
 </ui:composition>
