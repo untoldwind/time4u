@@ -11,6 +11,11 @@ import de.objectcode.time4u.server.api.data.DayInfoSummary;
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
 
+/**
+ * Remote workitem service interface.
+ * 
+ * @author junglas
+ */
 @WebService(targetNamespace = "http://objectcode.de/time4u/api/ws")
 @SOAPBinding(style = Style.RPC)
 public interface IWorkItemService

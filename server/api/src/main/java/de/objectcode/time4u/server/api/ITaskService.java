@@ -10,6 +10,11 @@ import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.filter.TaskFilter;
 
+/**
+ * Remote task service interface.
+ * 
+ * @author junglas
+ */
 @WebService(targetNamespace = "http://objectcode.de/time4u/api/ws")
 @SOAPBinding(style = Style.RPC)
 public interface ITaskService

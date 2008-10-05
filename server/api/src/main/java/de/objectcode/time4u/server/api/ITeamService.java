@@ -5,17 +5,23 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
-import de.objectcode.time4u.server.api.data.RevisionStatus;
+import de.objectcode.time4u.server.api.data.Team;
 
 /**
- * Remote revision service interface.
+ * Remote team service interface.
  * 
  * @author junglas
  */
 @WebService(targetNamespace = "http://objectcode.de/time4u/api/ws")
 @SOAPBinding(style = Style.RPC)
-public interface IRevisionService
+public interface ITeamService
 {
+  /**
+   * Store a team. This method either inserts a new teams or updates an existing one.
+   * 
+   * @param team
+   *          The team to be stored
+   */
   @WebMethod
-  RevisionStatus getRevisionStatus();
+  Team storeTeam(Team team);
 }

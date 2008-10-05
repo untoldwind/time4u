@@ -4,24 +4,20 @@
   xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
   template="../main-template.xhtml">
 
-  <ui:define name="title">Accounts</ui:define>
+  <ui:define name="title">Teams</ui:define>
   <ui:define name="contentDetail">
     <h:form>
-	  <rich:dataTable id="accountListTable" rows="10" value="#{admin.accountList}" var="userAccount" rowClasses="first,second" columnClasses="narrow,wide">
+	  <rich:dataTable id="teamListTable" rows="10" value="#{admin.teamList}" var="team" rowClasses="first,second" columnClasses="narrow,wide">
         <rich:column>
-          <f:facet name="header">User Id</f:facet>
-              #{userAccount.userId}
+          <f:facet name="header">Team Id</f:facet>
+              #{team.id}
         </rich:column>
         <rich:column>
           <f:facet name="header">Name</f:facet>
-              #{userAccount.person.name}
-        </rich:column>
-        <rich:column>
-          <f:facet name="header">EMail</f:facet>
-              #{userAccount.person.email}
+              #{team.name}
         </rich:column>
         <f:facet name="footer">
-          <rich:datascroller for="accountListTable" pageIndexVar="pageIndex" pagesVar="pages">
+          <rich:datascroller for="teamListTable" pageIndexVar="pageIndex" pagesVar="pages">
             <f:facet name="pages">
               <h:outputText value="#{pageIndex} / #{pages}"></h:outputText>
             </f:facet>

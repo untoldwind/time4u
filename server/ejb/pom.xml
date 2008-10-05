@@ -27,13 +27,6 @@
 			<version>${pom.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>de.objectcode.time4u.server</groupId>
-			<artifactId>time4u-server-jaas</artifactId>
-			<version>${pom.version}</version>
-			<classifier>compile</classifier>
-			<scope>provided</scope>
-		</dependency>
 		
 		<!-- EJB 3.0 -->
 		<dependency>

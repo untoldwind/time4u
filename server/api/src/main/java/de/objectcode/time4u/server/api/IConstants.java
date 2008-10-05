@@ -1,5 +1,10 @@
 package de.objectcode.time4u.server.api;
 
+/**
+ * Remote interface constants.
+ * 
+ * @author junglas
+ */
 public interface IConstants
 {
   /** Major version of the API package. This will change if a new version is no long compatible. */

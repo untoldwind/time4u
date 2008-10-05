@@ -18,6 +18,13 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>de.objectcode.time4u.server</groupId>
+			<artifactId>time4u-server-ejb</artifactId>
+			<version>${pom.version}</version>
+			<type>ejb</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 		</dependency>
@@ -32,21 +39,6 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jboss-packaging-maven-plugin</artifactId>
 				<extensions>true</extensions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<classifier>compile</classifier>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
