@@ -305,6 +305,11 @@
 				<version>3.2.1.ga</version>
 			</dependency>
 			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-commons-annotations</artifactId>
+				<version>3.0.0.ga</version>
+			</dependency>
+			<dependency>
 				<groupId>c3p0</groupId>
 				<artifactId>c3p0</artifactId>
 				<version>0.9.1</version>

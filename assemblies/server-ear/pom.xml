@@ -24,6 +24,20 @@
 			<groupId>org.jboss.seam</groupId>
 			<artifactId>jboss-seam</artifactId>
 			<type>ejb</type>
+			<exclusions>
+				<exclusion>
+					<groupId>javassist</groupId>
+					<artifactId>javassist</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>dom4j</groupId>
+					<artifactId>dom4j</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-commons-annotations</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>de.objectcode.time4u.server</groupId>
@@ -61,8 +75,8 @@
 			<plugin>
 				<artifactId>maven-ear-plugin</artifactId>
 				<configuration>
-              		<version>5</version>
-              		<defaultLibBundleDir>lib</defaultLibBundleDir>
+					<version>5</version>
+					<defaultLibBundleDir>lib</defaultLibBundleDir>
 					<modules>
 						<jarModule>
 							<groupId>de.objectcode.time4u.server</groupId>
