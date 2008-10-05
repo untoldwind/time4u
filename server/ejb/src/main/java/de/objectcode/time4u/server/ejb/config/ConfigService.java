@@ -24,7 +24,7 @@ import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 import de.objectcode.time4u.server.utils.DefaultPasswordEncoder;
 import de.objectcode.time4u.server.utils.IPasswordEncoder;
 
-@Service
+@Service(objectName = "time4u:service=ConfigService")
 @Management(IConfigServiceManagement.class)
 @Local(IConfigServiceLocal.class)
 @LocalBinding(jndiBinding = "time4u-server/ConfigService/local")

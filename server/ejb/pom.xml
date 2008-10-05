@@ -39,30 +39,52 @@
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.jws</groupId>
 			<artifactId>jsr181-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>persistence-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.ejb</groupId>
 			<artifactId>ejb-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>jsr250-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>jboss</groupId>
 			<artifactId>jboss-annotations-ejb3</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>jboss</groupId>
 			<artifactId>jboss-ejb3</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.jboss.seam</groupId>
+			<artifactId>jboss-seam</artifactId>
+			<type>ejb</type>
+		</dependency>		
+		<dependency>
+			<groupId>org.jboss.el</groupId>
+			<artifactId>jboss-el</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
@@ -81,9 +103,48 @@
 			<build>
 				<plugins>
 					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy</id>
+								<phase>validate</phase>
+								<goals>
+									<goal>copy-dependencies</goal>
+								</goals>
+								<configuration>
+									<stripVersion>true</stripVersion>
+									<includeGroupIds>org.jboss.seam,org.jboss.el</includeGroupIds>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>jboss-maven-plugin</artifactId>
 						<executions>
+							<execution>
+								<id>deploy-el</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>deploy</goal>
+								</goals>
+								<configuration>
+									<server>local.jboss</server>
+									<fileName>${project.build.directory}/dependency/jboss-el.jar</fileName>
+								</configuration>
+							</execution>
+							<execution>
+								<id>deploy-seam</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>deploy</goal>
+								</goals>
+								<configuration>
+									<server>local.jboss</server>
+									<fileName>${project.build.directory}/dependency/jboss-seam.jar</fileName>
+								</configuration>
+							</execution>
 							<execution>
 								<id>deploy-ejb</id>
 								<phase>pre-integration-test</phase>

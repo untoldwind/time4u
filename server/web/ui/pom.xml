@@ -18,8 +18,16 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>de.objectcode.time4u.server</groupId>
+			<artifactId>time4u-server-ejb</artifactId>
+			<version>${pom.version}</version>			
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.jboss.seam</groupId>
 			<artifactId>jboss-seam</artifactId>
+			<type>ejb</type>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.seam</groupId>
@@ -28,6 +36,7 @@
 		<dependency>
 			<groupId>org.jboss.el</groupId>
 			<artifactId>jboss-el</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.el</groupId>
@@ -53,6 +62,16 @@
 		<dependency>
 			<groupId>javax.faces</groupId>
 			<artifactId>jsf-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>persistence-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations</artifactId>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<profiles>
