@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory name="NewSessionFactory">
+		<property name="hibernate.connection.driver_class">${new-version.db.driver}</property>
+		<property name="hibernate.connection.password">${new-version.db.password}</property>
+		<property name="hibernate.connection.url">${new-version.db.url}</property>
+		<property name="hibernate.connection.username">${new-version.db.username}</property>
+		<property name="hibernate.default_schema">${new-version.db.username}</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+		<property name="hibernate.hbm2ddl.auto">validate</property>
+		<property name="hibernate.connection.isolation">2</property>
+		<property name="hibernate.connection.autocommit">false</property>
+	</session-factory>
+</hibernate-configuration>

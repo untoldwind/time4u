@@ -26,6 +26,7 @@ public class RevisionGeneratorCreator implements IRevisionGeneratorCreator
     final RevisionEntity revisionEntity = new RevisionEntity(key);
 
     m_manager.persist(revisionEntity);
+    m_manager.flush();
   }
 
 }

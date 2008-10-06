@@ -49,7 +49,7 @@ public class Time4ULoginModule implements LoginModule
 
       m_entityManagerFactory = (EntityManagerFactory) ctx.lookup("java:/time4u-server/EntityManagerFactory");
 
-      LOG.info("Time4ULoginModel instanciated");
+      LOG.info("Time4ULoginModule instanciated");
     } catch (final Exception e) {
       LOG.fatal("Failed to initialize Time4ULoginModule", e);
     }

@@ -1,5 +1,5 @@
 package de.objectcode.time4u.migrator.server05.old.entities;
-// Generated 06.10.2008 15:53:41 by Hibernate Tools 3.2.0.CR1
+// Generated 06.10.2008 17:02:23 by Hibernate Tools 3.2.0.CR1
 
 
 import javax.persistence.Column;
@@ -15,12 +15,12 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name="SEND_CHANGES"
-    ,catalog="time4u"
     , uniqueConstraints = @UniqueConstraint(columnNames={"owner_id", "type", "entityId"}) 
 )
 public class OldSendChanges  implements java.io.Serializable {
 
-
+  private static final long serialVersionUID = 1L;
+  
      private Long id;
      private int type;
      private long revision;

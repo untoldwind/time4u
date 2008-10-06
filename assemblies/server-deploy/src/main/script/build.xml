@@ -47,7 +47,7 @@
 			<fileset dir="db/${db.engine}" includes="*-persistence-service.xml"/>
 		</copy>
 		<copy todir="${jboss.home}/bin">
-			<fileset dir="." includes="run.conf"/>
+			<fileset dir="." includes="run-time4u.conf"/>
 		</copy>
 	</target>
 

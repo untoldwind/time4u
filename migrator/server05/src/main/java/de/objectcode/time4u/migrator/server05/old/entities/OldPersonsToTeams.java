@@ -1,5 +1,5 @@
 package de.objectcode.time4u.migrator.server05.old.entities;
-// Generated 06.10.2008 15:53:41 by Hibernate Tools 3.2.0.CR1
+// Generated 06.10.2008 17:02:23 by Hibernate Tools 3.2.0.CR1
 
 
 import javax.persistence.AttributeOverride;
@@ -14,11 +14,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="PERSONS_TO_TEAMS"
-    ,catalog="time4u"
 )
 public class OldPersonsToTeams  implements java.io.Serializable {
 
-
+  private static final long serialVersionUID = 1L;
+  
      private OldPersonsToTeamsId id;
 
     public OldPersonsToTeams() {

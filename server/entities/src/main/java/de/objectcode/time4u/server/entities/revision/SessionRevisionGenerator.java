@@ -21,6 +21,17 @@ public class SessionRevisionGenerator implements IRevisionGenerator
   public IRevisionLock getNextRevision(final SynchronizableType entityType, final String part)
   {
     final RevisionEntityKey key = new RevisionEntityKey(entityType, part != null ? part : "<default>");
+    RevisionEntity revisionEntity = (RevisionEntity) m_session.get(RevisionEntity.class, key);
+
+    if (revisionEntity == null) {
+      createInOwnTransaction(key);
+
+      revisionEntity = (RevisionEntity) m_session.get(RevisionEntity.class, key);
+
+      if (revisionEntity == null) {
+        throw new RuntimeException("Failed to get next revision number");
+      }
+    }
 
     final Query updateQuery = m_session
         .createSQLQuery("update T4U_REVISIONS set latestRevision = latestRevision + 1 where entityType=:entityType and part=:part");
@@ -28,17 +39,10 @@ public class SessionRevisionGenerator implements IRevisionGenerator
     updateQuery.setString("part", key.getPart());
 
     if (updateQuery.executeUpdate() != 1) {
-      createInOwnTransaction(key);
-
-      updateQuery.setInteger("entityType", key.getEntityType().getValue());
-      updateQuery.setString("part", key.getPart());
-
-      if (updateQuery.executeUpdate() != 1) {
-        throw new RuntimeException("Failed to get next revision number");
-      }
+      throw new RuntimeException("Failed to get next revision number");
     }
 
-    final RevisionEntity revisionEntity = (RevisionEntity) m_session.get(RevisionEntity.class, key);
+    m_session.refresh(revisionEntity);
 
     return revisionEntity;
   }

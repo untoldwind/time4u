@@ -33,26 +33,31 @@ public class RevisionGenerator implements IRevisionGenerator
   {
     final RevisionEntityKey key = new RevisionEntityKey(entityType, part != null ? part : "<default>");
 
+    RevisionEntity revisionEntity = m_manager.find(RevisionEntity.class, key);
+
+    if (revisionEntity == null) {
+      try {
+        m_creator.createRevisionEntity(key);
+      } catch (final Exception e) {
+        // Might fail in rare situations
+      }
+      revisionEntity = m_manager.find(RevisionEntity.class, key);
+
+      if (revisionEntity == null) {
+        throw new RuntimeException("Failed to get next revision number");
+      }
+    }
+
     final Query updateQuery = m_manager
         .createNativeQuery("update T4U_REVISIONS set latestRevision = latestRevision + 1 where entityType=:entityType and part=:part");
     updateQuery.setParameter("entityType", key.getEntityType().getValue());
     updateQuery.setParameter("part", key.getPart());
 
     if (updateQuery.executeUpdate() != 1) {
-      try {
-        m_creator.createRevisionEntity(key);
-      } catch (final Exception e) {
-        // Might fail in rare situations
-      }
-
-      updateQuery.setParameter("entityType", key.getEntityType().getValue());
-      updateQuery.setParameter("part", key.getPart());
-
-      if (updateQuery.executeUpdate() != 1) {
-        throw new RuntimeException("Failed to get next revision number");
-      }
+      throw new RuntimeException("Failed to get next revision number");
     }
-    final RevisionEntity revisionEntity = m_manager.find(RevisionEntity.class, key);
+
+    m_manager.refresh(revisionEntity);
 
     if (revisionEntity == null) {
       throw new RuntimeException("Failed to get next revision number");
