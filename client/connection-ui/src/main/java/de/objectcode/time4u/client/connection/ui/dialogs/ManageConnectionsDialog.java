@@ -13,6 +13,7 @@ import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.jface.window.SameShellProvider;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -30,6 +31,7 @@ import de.objectcode.time4u.client.connection.api.ConnectionFactory;
 import de.objectcode.time4u.client.connection.api.IConnection;
 import de.objectcode.time4u.client.connection.ui.ConnectionUIPlugin;
 import de.objectcode.time4u.client.connection.ui.provider.ServerConnectionTableLabelProvider;
+import de.objectcode.time4u.client.connection.ui.wizards.NewConnectionWizard;
 import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.server.api.data.ServerConnection;
@@ -191,38 +193,9 @@ public class ManageConnectionsDialog extends Dialog
 
   protected void newConnection()
   {
-    final ConnectionDialog dialog = new ConnectionDialog(new SameShellProvider(getShell()));
+    final WizardDialog wizardDialog = new WizardDialog(getShell(), new NewConnectionWizard());
 
-    if (dialog.open() == ConnectionDialog.OK) {
-      System.out.println(">>>" + dialog.getServerConnection().getUrl());
-
-      try {
-        final IConnection connection = ConnectionFactory.openConnection(dialog.getServerConnection());
-
-        System.out.println(">>> " + connection);
-        if (!connection.testConnection()) {
-          MessageDialog.openError(getShell(), "Connection error", "Server is incompatible with this client version");
-          return;
-        }
-        System.out.println(">>> tested");
-        if (!connection.checkLogin(dialog.getServerConnection().getCredentials())) {
-          System.out.println(">>> check login failed");
-          if (!connection.registerLogin(dialog.getServerConnection().getCredentials())) {
-            System.out.println(">>> register login failed");
-            MessageDialog.openError(getShell(), "Connection error", "Failed to register login");
-          }
-        }
-
-        RepositoryFactory.getRepository().getServerConnectionRepository().storeServerConnection(
-            dialog.getServerConnection());
-        m_connectionsViewer.setInput(RepositoryFactory.getRepository().getServerConnectionRepository()
-            .getServerConnections());
-      } catch (final Throwable e) {
-        e.printStackTrace();
-        MessageDialog.openError(getShell(), "Connection error", "Failed to contact server: " + e.getMessage());
-      }
-    }
-
+    wizardDialog.open();
   }
 
   protected void editSelection()

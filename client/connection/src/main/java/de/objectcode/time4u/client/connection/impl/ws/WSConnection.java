@@ -123,6 +123,10 @@ public class WSConnection implements IConnection
   private <T> T getServicePort(final String serviceName, final Class<T> portInterface, final boolean secure)
       throws ConnectionException
   {
+    if (secure && m_serverConnection.getCredentials() == null) {
+      return null;
+    }
+
     final URL wsdl = getClass().getResource(serviceName + ".wsdl");
     final Service service = Service.create(wsdl, new QName("http://objectcode.de/time4u/api/ws", serviceName
         + "WSService"));

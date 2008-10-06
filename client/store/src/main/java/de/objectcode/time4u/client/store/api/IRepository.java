@@ -14,6 +14,9 @@ import de.objectcode.time4u.server.api.data.SynchronizableType;
  */
 public interface IRepository
 {
+  /** Get the person repository. */
+  IPersonRepository getPersonRepository();
+
   /** Get the project repository. */
   IProjectRepository getProjectRepository();
 

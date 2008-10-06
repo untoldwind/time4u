@@ -6,6 +6,8 @@ import java.util.Date;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -79,7 +81,18 @@ public class SynchronizeViewTab
 
     m_synchronizeNow = new Button(buttonBar, SWT.PUSH);
     m_synchronizeNow.setText(ConnectionUIPlugin.getDefault().getString("synchronizeView.synchronize.now"));
-    m_synchronizeNow.setEnabled(false);
+    m_synchronizeNow.addSelectionListener(new SelectionAdapter() {
+      @Override
+      public void widgetSelected(final SelectionEvent e)
+      {
+        final SynchronizeJob job = ConnectionUIPlugin.getDefault().getSynchronizeJob(m_serverConnection.getId());
+
+        if (job != null) {
+          job.schedule();
+          job.wakeUp();
+        }
+      }
+    });
 
     final SynchronizeJob job = ConnectionUIPlugin.getDefault().getSynchronizeJob(m_serverConnection.getId());
 

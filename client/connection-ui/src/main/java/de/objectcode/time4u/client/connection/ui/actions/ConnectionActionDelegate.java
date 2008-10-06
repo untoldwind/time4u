@@ -5,17 +5,15 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.jface.window.SameShellProvider;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PartInitException;
 
-import de.objectcode.time4u.client.connection.api.ConnectionFactory;
-import de.objectcode.time4u.client.connection.api.IConnection;
-import de.objectcode.time4u.client.connection.ui.dialogs.ConnectionDialog;
 import de.objectcode.time4u.client.connection.ui.dialogs.ManageConnectionsDialog;
 import de.objectcode.time4u.client.connection.ui.views.SynchronizeView;
-import de.objectcode.time4u.client.store.api.RepositoryFactory;
+import de.objectcode.time4u.client.connection.ui.wizards.NewConnectionWizard;
 
 public class ConnectionActionDelegate implements IWorkbenchWindowActionDelegate
 {
@@ -33,30 +31,9 @@ public class ConnectionActionDelegate implements IWorkbenchWindowActionDelegate
     final String id = action.getId();
 
     if ("de.objectcode.time4u.client.connection.new".equals(id)) {
-      final ConnectionDialog dialog = new ConnectionDialog(m_shellProvider);
+      final WizardDialog wizardDialog = new WizardDialog(m_shellProvider.getShell(), new NewConnectionWizard());
 
-      if (dialog.open() == ConnectionDialog.OK) {
-        try {
-          final IConnection connection = ConnectionFactory.openConnection(dialog.getServerConnection());
-
-          if (!connection.testConnection()) {
-            MessageDialog.openError(m_shellProvider.getShell(), "Connection error",
-                "Server is incompatible with this client version");
-            return;
-          }
-          if (!connection.checkLogin(dialog.getServerConnection().getCredentials())) {
-            if (!connection.registerLogin(dialog.getServerConnection().getCredentials())) {
-              MessageDialog.openError(m_shellProvider.getShell(), "Connection error", "Failed to register login");
-            }
-          }
-
-          RepositoryFactory.getRepository().getServerConnectionRepository().storeServerConnection(
-              dialog.getServerConnection());
-        } catch (final Throwable e) {
-          MessageDialog.openError(m_shellProvider.getShell(), "Connection error", "Failed to contact server: "
-              + e.getMessage());
-        }
-      }
+      wizardDialog.open();
     } else if ("de.objectcode.time4u.client.connection.manage".equals(id)) {
       final ManageConnectionsDialog dialog = new ManageConnectionsDialog(m_shellProvider);
 

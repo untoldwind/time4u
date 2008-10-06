@@ -7,5 +7,6 @@ public enum RepositoryEventType
   DAYINFO,
   WORKITEM,
   ACTIVE_WORKITEM,
-  TODO
+  TODO,
+  PERSON
 }
