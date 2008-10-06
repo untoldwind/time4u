@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Time4U">
+  <body>
+    <menu ref="parent" />
+    <menu ref="modules" />
+    <menu ref="reports" />
+  </body>
+  <publishDate position="navigation-bottom"/>
+  <poweredBy>
+	<logo name="Maven" href="http://maven.apache.org/"
+       img="http://maven.apache.org/images/logos/maven-feather.png"/>
+  	<logo name="Sourcefored" href="http://sourceforge.net"
+  	   img="http://sourceforge.net/sflogo.php?group_id=239870&amp;type=2"/>
+  </poweredBy>
+</project>

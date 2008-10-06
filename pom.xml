@@ -10,6 +10,7 @@
 		<module>client</module>
 		<module>server</module>
 		<module>assemblies</module>
+		<module>migrator</module>
 	</modules>
 	<scm>
 		<connection>scm:svn:https://time4u.svn.sourceforge.net/svnroot/time4u/overhaul/trunk</connection>
@@ -20,7 +21,9 @@
 		<site>
 			<id>time4u-sourceforge</id>
 			<name>Sourceforge web site</name>
-			<!--  url>sftp://web.sourceforge.net/home/groups/t/ti/time4u/htdocs</url -->
+			<!--
+				url>sftp://web.sourceforge.net/home/groups/t/ti/time4u/htdocs</url
+			-->
 			<url>file:///Users/junglas/workspaces/w3/time4u-site</url>
 		</site>
 	</distributionManagement>
@@ -208,11 +211,11 @@
 				<artifactId>x86</artifactId>
 				<version>3.4.1</version>
 			</dependency>
-				<dependency>
-					<groupId>org.eclipse.swt.gtk.linux</groupId>
-					<artifactId>x86_64</artifactId>
-					<version>3.4.1</version>
-				</dependency>
+			<dependency>
+				<groupId>org.eclipse.swt.gtk.linux</groupId>
+				<artifactId>x86_64</artifactId>
+				<version>3.4.1</version>
+			</dependency>
 			<dependency>
 				<groupId>org.eclipse.update</groupId>
 				<artifactId>configurator</artifactId>
@@ -313,6 +316,11 @@
 				<groupId>c3p0</groupId>
 				<artifactId>c3p0</artifactId>
 				<version>0.9.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-tools</artifactId>
+				<version>3.2.0.ga</version>
 			</dependency>
 
 			<!-- Server -->
@@ -465,7 +473,11 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
 		</plugins>
 	</reporting>
-	
+
 </project>
