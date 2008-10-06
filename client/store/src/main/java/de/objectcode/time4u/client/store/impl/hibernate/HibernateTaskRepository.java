@@ -204,7 +204,8 @@ public class HibernateTaskRepository implements ITaskRepository
           task.setId(revisionLock.generateId(m_repository.getClientId()));
         }
 
-        final ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, task.getProjectId());
+        final ProjectEntity projectEntity = task.getProjectId() != null ? (ProjectEntity) session.get(
+            ProjectEntity.class, task.getProjectId()) : null;
         final TaskEntity taskEntity = new TaskEntity(task.getId(), revisionLock.getLatestRevision(), m_repository
             .getClientId(), projectEntity, task.getName());
 
