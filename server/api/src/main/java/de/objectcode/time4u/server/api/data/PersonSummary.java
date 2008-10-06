@@ -2,11 +2,14 @@ package de.objectcode.time4u.server.api.data;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Person summary DTO object.
  * 
  * @author junglas
  */
+@XmlType(name = "person-summary")
 public class PersonSummary implements ISynchronizableData
 {
   private static final long serialVersionUID = 2399244105597561898L;
@@ -19,8 +22,10 @@ public class PersonSummary implements ISynchronizableData
   private long m_lastModifiedByClient;
   /** User id of the person. */
   private String m_userId;
-  /** Real name of the person. */
-  private String m_name;
+  /** Given name of the person. */
+  private String m_givenName;
+  /** Surname of the person. */
+  private String m_surname;
   /** Email address of the person. */
   private String m_email;
   /** Timestamp of the last synchronization of that person. */
@@ -46,11 +51,6 @@ public class PersonSummary implements ISynchronizableData
     m_revision = revision;
   }
 
-  public String getName()
-  {
-    return m_name;
-  }
-
   public long getLastModifiedByClient()
   {
     return m_lastModifiedByClient;
@@ -61,9 +61,24 @@ public class PersonSummary implements ISynchronizableData
     m_lastModifiedByClient = lastModifiedByClient;
   }
 
-  public void setName(final String name)
+  public String getGivenName()
   {
-    m_name = name;
+    return m_givenName;
+  }
+
+  public void setGivenName(final String givenName)
+  {
+    m_givenName = givenName;
+  }
+
+  public String getSurname()
+  {
+    return m_surname;
+  }
+
+  public void setSurname(final String surname)
+  {
+    m_surname = surname;
   }
 
   public String getUserId()

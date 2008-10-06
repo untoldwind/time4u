@@ -108,7 +108,8 @@ public class WSConnection implements IConnection
 
       registrationInfo.setClientId(RepositoryFactory.getRepository().getClientId());
       registrationInfo.setPersonId(owner.getId());
-      registrationInfo.setName(owner.getName());
+      registrationInfo.setGivenName(owner.getGivenName());
+      registrationInfo.setSurname(owner.getSurname());
       registrationInfo.setEmail(owner.getEmail());
       registrationInfo.setUserId(credentials.get("userId"));
       registrationInfo.setHashedPassword(encoder.encrypt(credentials.get("password").toCharArray()));

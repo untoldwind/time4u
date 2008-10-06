@@ -61,7 +61,8 @@ public class LoginServiceImpl implements ILoginService
     final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(SynchronizableType.PERSON, null);
     final PersonEntity person = new PersonEntity(registrationInfo.getPersonId(), revisionLock.getLatestRevision(),
         registrationInfo.getClientId());
-    person.setName(registrationInfo.getName());
+    person.setGivenName(registrationInfo.getGivenName());
+    person.setSurname(registrationInfo.getSurname());
     person.setEmail(registrationInfo.getEmail());
     m_manager.persist(person);
 

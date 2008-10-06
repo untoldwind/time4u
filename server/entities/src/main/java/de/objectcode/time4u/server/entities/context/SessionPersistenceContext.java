@@ -25,7 +25,7 @@ public class SessionPersistenceContext implements IPersistenceContext
 
     if (person == null) {
       person = new PersonEntity(personId, -1L, clientId);
-      person.setName(personId);
+      person.setSurname(personId);
 
       m_session.persist(person);
     }

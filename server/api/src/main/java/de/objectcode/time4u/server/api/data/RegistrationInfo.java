@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * Registration information of a new client.
+ * 
+ * @author junglas
+ */
 @XmlType(name = "registration-info")
 public class RegistrationInfo implements Serializable
 {
@@ -13,7 +18,8 @@ public class RegistrationInfo implements Serializable
   String m_personId;
   String m_userId;
   String m_hashedPassword;
-  String m_name;
+  String m_givenName;
+  String m_surname;
   String m_email;
 
   public long getClientId()
@@ -56,14 +62,24 @@ public class RegistrationInfo implements Serializable
     m_hashedPassword = hashedPassword;
   }
 
-  public String getName()
+  public String getGivenName()
   {
-    return m_name;
+    return m_givenName;
   }
 
-  public void setName(final String name)
+  public void setGivenName(final String givenName)
   {
-    m_name = name;
+    m_givenName = givenName;
+  }
+
+  public String getSurname()
+  {
+    return m_surname;
+  }
+
+  public void setSurname(final String surname)
+  {
+    m_surname = surname;
   }
 
   public String getEmail()
@@ -83,7 +99,8 @@ public class RegistrationInfo implements Serializable
     buffer.append("clientId=").append(m_clientId);
     buffer.append(",personId=").append(m_personId);
     buffer.append(",userId=").append(m_userId);
-    buffer.append(",name=").append(m_name);
+    buffer.append(",givenName=").append(m_givenName);
+    buffer.append(",surname=").append(m_surname);
     buffer.append(",email=").append(m_email);
     buffer.append(")");
 

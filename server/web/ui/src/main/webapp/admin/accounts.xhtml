@@ -7,27 +7,41 @@
   <ui:define name="title">Accounts</ui:define>
   <ui:define name="contentDetail">
     <h:form>
-	  <rich:dataTable id="accountListTable" rows="10" value="#{admin.accountList}" var="userAccount" rowClasses="first,second" columnClasses="narrow,wide">
-        <rich:column>
-          <f:facet name="header">User Id</f:facet>
-              #{userAccount.userId}
-        </rich:column>
-        <rich:column>
-          <f:facet name="header">Name</f:facet>
-              #{userAccount.person.name}
-        </rich:column>
-        <rich:column>
-          <f:facet name="header">EMail</f:facet>
-              #{userAccount.person.email}
-        </rich:column>
-        <f:facet name="footer">
-          <rich:datascroller for="accountListTable" pageIndexVar="pageIndex" pagesVar="pages">
-            <f:facet name="pages">
-              <h:outputText value="#{pageIndex} / #{pages}"></h:outputText>
-            </f:facet>
-          </rich:datascroller>
-         </f:facet>
-      </rich:dataTable>
+ 		<a4j:region renderRegionOnly="true">
+		  <rich:dataTable id="accountListTable" rows="10" value="#{admin.accountList}" var="userAccount" rowClasses="first,second" columnClasses="narrow,wide">
+	        <rich:column>
+	          <h:outputText value="*" rendered="#{userAccount.userId == admin.accountListController.selectedAccount.userId}"/>
+	        </rich:column>
+	        <rich:column>
+	          <f:facet name="header">User Id</f:facet>
+	          <a4j:commandLink action="#{admin.accountListController.select}" reRender="accountDetail" rendered="#{userAccount.userId != admin.accountListController.selectedAccount.userId}">
+	              #{userAccount.userId}
+	          </a4j:commandLink>
+	          <h:outputText value="#{userAccount.userId}" rendered="#{userAccount.userId == admin.accountListController.selectedAccount.userId}"/>
+	        </rich:column>
+	        <rich:column>
+	          <f:facet name="header">Name</f:facet>
+	              #{userAccount.person.givenName} #{userAccount.person.surname}
+	        </rich:column>
+	        <rich:column>
+	          <f:facet name="header">EMail</f:facet>
+	              #{userAccount.person.email}
+	        </rich:column>
+	        <rich:column>
+	       	  <f:facet name="header">Last login</f:facet>
+	       	      #{userAccount.lastLogin}
+	        </rich:column>
+	        <f:facet name="footer">
+	          <rich:datascroller for="accountListTable" pageIndexVar="pageIndex" pagesVar="pages">
+	            <f:facet name="pages">
+	              <h:outputText value="#{pageIndex} / #{pages}"></h:outputText>
+	            </f:facet>
+	          </rich:datascroller>
+	         </f:facet>
+	      </rich:dataTable>
+		</a4j:region>
+		<h:panelGroup id="accountDetail">
+		</h:panelGroup>
 	</h:form>
   </ui:define>
 </ui:composition>

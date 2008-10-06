@@ -232,7 +232,7 @@ public class HibernateRepository implements IRepository
           final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.PERSON, null);
           final String personId = revisionLock.generateId(clientId);
           final PersonEntity ownerPerson = new PersonEntity(personId, revisionLock.getLatestRevision(), clientId);
-          ownerPerson.setName(System.getProperty("user.name"));
+          ownerPerson.setSurname(System.getProperty("user.name"));
 
           session.persist(ownerPerson);
 

@@ -9,7 +9,10 @@
     <h:form>
 	  <rich:dataTable id="teamListTable" rows="10" value="#{admin.teamList}" var="team" rowClasses="first,second" columnClasses="narrow,wide">
         <rich:column>
-          <f:facet name="header">Team Id</f:facet>
+          <h:outputText value="*" rendered="#{team.id == admin.teamListController.selectedTeam.id}"/>
+        </rich:column>
+        <rich:column>
+         <f:facet name="header">Team Id</f:facet>
               #{team.id}
         </rich:column>
         <rich:column>

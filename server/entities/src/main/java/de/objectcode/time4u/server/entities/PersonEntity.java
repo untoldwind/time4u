@@ -28,8 +28,10 @@ public class PersonEntity
   private long m_revision;
   /** Client id of the last modification */
   private long m_lastModifiedByClient;
-  /** Real name of the person. */
-  private String m_name;
+  /** Given name of the person. */
+  private String m_givenName;
+  /** Surname name of the person */
+  private String m_surname;
   /** Email of the person. */
   private String m_email;
   /** Set of teams the person is responsible for (i.e. owning them) */
@@ -62,15 +64,26 @@ public class PersonEntity
     m_id = id;
   }
 
-  @Column(length = 50, nullable = false)
-  public String getName()
+  @Column(length = 50, nullable = true)
+  public String getGivenName()
   {
-    return m_name;
+    return m_givenName;
   }
 
-  public void setName(final String name)
+  public void setGivenName(final String givenName)
   {
-    m_name = name;
+    m_givenName = givenName;
+  }
+
+  @Column(length = 50, nullable = false)
+  public String getSurname()
+  {
+    return m_surname;
+  }
+
+  public void setSurname(final String surename)
+  {
+    m_surname = surename;
   }
 
   @Column(length = 200, nullable = true)
@@ -164,7 +177,8 @@ public class PersonEntity
     person.setId(m_id);
     person.setRevision(m_revision);
     person.setLastModifiedByClient(m_lastModifiedByClient);
-    person.setName(m_name);
+    person.setGivenName(m_givenName);
+    person.setSurname(m_surname);
     person.setEmail(m_email);
     person.setLastSynchronize(m_lastSynchronize);
   }
@@ -172,7 +186,8 @@ public class PersonEntity
   public void fromDTO(final Person person)
   {
     m_lastModifiedByClient = person.getLastModifiedByClient();
-    m_name = person.getName();
+    m_givenName = person.getGivenName();
+    m_surname = person.getSurname();
     m_email = person.getEmail();
   }
 }

@@ -92,7 +92,7 @@ public class ConfigService implements IConfigServiceManagement, IConfigServiceLo
     final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(SynchronizableType.PERSON, null);
     final String personId = revisionLock.generateId(serverId);
     final PersonEntity person = new PersonEntity(personId, revisionLock.getLatestRevision(), serverId);
-    person.setName("admin");
+    person.setSurname("admin");
 
     m_manager.persist(person);
 

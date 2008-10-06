@@ -2,6 +2,7 @@ package de.objectcode.time4u.server.jaas.login;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -140,6 +141,7 @@ public class Time4ULoginModule implements LoginModule
       for (final UserRoleEntity role : userAccount.getRoles()) {
         m_roles.add(role.getRoleId());
       }
+      userAccount.setLastLogin(new Date());
 
       m_loginOk = true;
       return true;

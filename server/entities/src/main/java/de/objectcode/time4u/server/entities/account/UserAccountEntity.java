@@ -1,5 +1,6 @@
 package de.objectcode.time4u.server.entities.account;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,6 +24,8 @@ public class UserAccountEntity
   private String m_userId;
   /** Encoded password of the person. */
   private String m_hashedPassword;
+  /** Last login for this account */
+  private Date m_lastLogin;
   /** Identity */
   PersonEntity m_person;
   /** User roles. */
@@ -64,6 +67,16 @@ public class UserAccountEntity
   public void setHashedPassword(final String hashedPassword)
   {
     m_hashedPassword = hashedPassword;
+  }
+
+  public Date getLastLogin()
+  {
+    return m_lastLogin;
+  }
+
+  public void setLastLogin(final Date lastLogin)
+  {
+    m_lastLogin = lastLogin;
   }
 
   @ManyToOne(optional = false)
