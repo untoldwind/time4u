@@ -111,7 +111,7 @@ public class DayInfoEntity
     m_lastModifiedByClient = lastModifiedByClient;
   }
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "person_id")
   public PersonEntity getPerson()
   {

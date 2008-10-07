@@ -2,6 +2,7 @@ package de.objectcode.time4u.server.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -114,7 +115,7 @@ public class WorkItemEntity
     m_valid = valid;
   }
 
-  @ManyToOne(optional = false)
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
   @JoinColumn(name = "project_id")
   public ProjectEntity getProject()
   {
@@ -126,7 +127,7 @@ public class WorkItemEntity
     m_project = project;
   }
 
-  @ManyToOne(optional = false)
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
   @JoinColumn(name = "task_id")
   public TaskEntity getTask()
   {
@@ -138,7 +139,7 @@ public class WorkItemEntity
     m_task = task;
   }
 
-  @ManyToOne(optional = false)
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
   @JoinColumn(name = "dayinfo_id")
   public DayInfoEntity getDayInfo()
   {
@@ -150,7 +151,7 @@ public class WorkItemEntity
     m_dayInfo = dayInfo;
   }
 
-  @ManyToOne(optional = true)
+  @ManyToOne(optional = true, fetch = FetchType.LAZY)
   @JoinColumn(name = "todo_id")
   public TodoEntity getTodo()
   {

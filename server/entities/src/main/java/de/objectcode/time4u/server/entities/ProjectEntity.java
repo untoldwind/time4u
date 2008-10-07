@@ -120,7 +120,7 @@ public class ProjectEntity
     m_description = description;
   }
 
-  @ManyToOne(optional = true)
+  @ManyToOne(optional = true, fetch = FetchType.LAZY)
   @JoinColumn(name = "parent_id")
   public ProjectEntity getParent()
   {

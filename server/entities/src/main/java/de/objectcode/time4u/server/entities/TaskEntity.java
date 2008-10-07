@@ -120,7 +120,7 @@ public class TaskEntity
     m_description = description;
   }
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "project_id")
   public ProjectEntity getProject()
   {

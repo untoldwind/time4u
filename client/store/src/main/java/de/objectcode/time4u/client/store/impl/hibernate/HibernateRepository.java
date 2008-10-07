@@ -12,6 +12,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cache.HashtableCacheProvider;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.criterion.Restrictions;
@@ -355,6 +356,8 @@ public class HibernateRepository implements IRepository
       cfg.setProperty(Environment.DIALECT, DerbyDialect.class.getName());
       cfg.setProperty(Environment.HBM2DDL_AUTO, "update");
       cfg.setProperty(Environment.SHOW_SQL, "false");
+      cfg.setProperty(Environment.CACHE_PROVIDER, HashtableCacheProvider.class.getName());
+      cfg.setProperty(Environment.USE_QUERY_CACHE, "true");
 
       cfg.addAnnotatedClass(RevisionEntity.class);
       cfg.addAnnotatedClass(LocalIdEntity.class);
