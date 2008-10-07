@@ -35,12 +35,14 @@ public class SynchronizeJob extends Job
     try {
       final IConnection connection = ConnectionFactory.openConnection(m_serverConnection);
 
-      connection.sychronizeNow();
+      connection.sychronizeNow(monitor);
 
       m_status = SynchronizationStatus.OK;
     } catch (final Exception e) {
       ConnectionUIPlugin.getDefault().log(e);
       m_status = SynchronizationStatus.FAILURE;
+    } finally {
+      monitor.done();
     }
     m_lastRun = new Date();
 

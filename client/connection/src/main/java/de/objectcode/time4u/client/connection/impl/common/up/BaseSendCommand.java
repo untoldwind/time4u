@@ -4,6 +4,8 @@ import static java.lang.Math.min;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+
 import de.objectcode.time4u.client.connection.api.ConnectionException;
 import de.objectcode.time4u.client.connection.impl.common.ISynchronizationCommand;
 import de.objectcode.time4u.client.connection.impl.common.SynchronizationContext;
@@ -45,7 +47,8 @@ public abstract class BaseSendCommand<T extends ISynchronizableData> implements 
   /**
    * {@inheritDoc}
    */
-  public void execute(final SynchronizationContext context) throws RepositoryException, ConnectionException
+  public void execute(final SynchronizationContext context, final IProgressMonitor monitor) throws RepositoryException,
+      ConnectionException
   {
     final IServerConnectionRepository serverConnectionRepository = context.getRepository()
         .getServerConnectionRepository();
@@ -53,22 +56,34 @@ public abstract class BaseSendCommand<T extends ISynchronizableData> implements 
     final SynchronizationStatus status = context.getSynchronizationStatus(m_entityType);
     final long currentLocalRevision = context.getClientRevisionStatus(m_entityType);
 
-    // Do in chunks to avoid extremely large result sets
-    for (long beginRevision = status.getLastSendRevision() + 1; beginRevision <= currentLocalRevision; beginRevision += REVISION_CHUNK) {
-      final long minRevision = beginRevision;
-      final long maxRevision = min(beginRevision + REVISION_CHUNK, currentLocalRevision);
+    monitor.beginTask("Send " + m_entityType, (int) (currentLocalRevision - status.getLastSendRevision()));
+    monitor.subTask("Send " + m_entityType);
 
-      final List<T> entities = queryEntities(context, minRevision, maxRevision);
-
-      // Empty result might by null
-      if (entities != null) {
-        for (final T entity : entities) {
-          sendEntity(context, entity);
+    try {
+      // Do in chunks to avoid extremely large result sets
+      for (long beginRevision = status.getLastSendRevision() + 1; beginRevision <= currentLocalRevision; beginRevision += REVISION_CHUNK) {
+        if (monitor.isCanceled()) {
+          break;
         }
-      }
+        final long minRevision = beginRevision;
+        final long maxRevision = min(beginRevision + REVISION_CHUNK, currentLocalRevision);
 
-      status.setLastSendRevision(maxRevision);
-      serverConnectionRepository.storeSynchronizationStatus(context.getServerConnectionId(), status);
+        final List<T> entities = queryEntities(context, minRevision, maxRevision);
+
+        // Empty result might by null
+        if (entities != null) {
+          for (final T entity : entities) {
+            sendEntity(context, entity);
+          }
+        }
+
+        status.setLastSendRevision(maxRevision);
+        serverConnectionRepository.storeSynchronizationStatus(context.getServerConnectionId(), status);
+
+        monitor.worked((int) (maxRevision - minRevision));
+      }
+    } finally {
+      monitor.done();
     }
   }
 

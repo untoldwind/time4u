@@ -1,5 +1,7 @@
 package de.objectcode.time4u.client.connection.impl.common;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+
 import de.objectcode.time4u.client.connection.api.ConnectionException;
 import de.objectcode.time4u.client.store.api.RepositoryException;
 
@@ -30,5 +32,6 @@ public interface ISynchronizationCommand
    * @throws ConnectionException
    *           on error
    */
-  void execute(SynchronizationContext context) throws RepositoryException, ConnectionException;
+  void execute(SynchronizationContext context, IProgressMonitor monitor) throws RepositoryException,
+      ConnectionException;
 }

@@ -2,6 +2,8 @@ package de.objectcode.time4u.client.connection.api;
 
 import java.util.Map;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+
 import de.objectcode.time4u.server.api.data.Person;
 
 /**
@@ -21,5 +23,5 @@ public interface IConnection
 
   boolean registerClient() throws ConnectionException;
 
-  void sychronizeNow() throws ConnectionException;
+  void sychronizeNow(IProgressMonitor monitor) throws ConnectionException;
 }

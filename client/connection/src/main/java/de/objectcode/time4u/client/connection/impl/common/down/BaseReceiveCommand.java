@@ -4,6 +4,8 @@ import static java.lang.Math.min;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+
 import de.objectcode.time4u.client.connection.api.ConnectionException;
 import de.objectcode.time4u.client.connection.impl.common.ISynchronizationCommand;
 import de.objectcode.time4u.client.connection.impl.common.SynchronizationContext;
@@ -45,7 +47,8 @@ public abstract class BaseReceiveCommand<T extends ISynchronizableData> implemen
   /**
    * {@inheritDoc}
    */
-  public void execute(final SynchronizationContext context) throws RepositoryException, ConnectionException
+  public void execute(final SynchronizationContext context, final IProgressMonitor monitor) throws RepositoryException,
+      ConnectionException
   {
     final long clientId = context.getRepository().getClientId();
     final IServerConnectionRepository serverConnectionRepository = context.getRepository()
@@ -54,24 +57,36 @@ public abstract class BaseReceiveCommand<T extends ISynchronizableData> implemen
     final SynchronizationStatus status = context.getSynchronizationStatus(m_entityType);
     final long currentRemoteRevision = context.getServerRevisionStatus(m_entityType);
 
-    // Do in chunks to avoid extremely large result sets
-    for (long beginRevision = status.getLastReceivedRevision() + 1; beginRevision <= currentRemoteRevision; beginRevision += REVISION_CHUNK) {
-      final long minRevision = beginRevision;
-      final long maxRevision = min(beginRevision + REVISION_CHUNK, currentRemoteRevision);
-      final List<T> entities = receiveEntities(context, minRevision, maxRevision);
+    monitor.beginTask("Receive " + m_entityType, (int) (currentRemoteRevision - status.getLastReceivedRevision()));
+    monitor.subTask("Receive " + m_entityType);
 
-      // Empty result might by null
-      if (entities != null) {
-        for (final T entity : entities) {
-          // Ignore changes made by myself
-          if (entity.getLastModifiedByClient() != clientId) {
-            storeEntity(context, entity);
+    try {
+      // Do in chunks to avoid extremely large result sets
+      for (long beginRevision = status.getLastReceivedRevision() + 1; beginRevision <= currentRemoteRevision; beginRevision += REVISION_CHUNK) {
+        if (monitor.isCanceled()) {
+          break;
+        }
+        final long minRevision = beginRevision;
+        final long maxRevision = min(beginRevision + REVISION_CHUNK, currentRemoteRevision);
+        final List<T> entities = receiveEntities(context, minRevision, maxRevision);
+
+        // Empty result might by null
+        if (entities != null) {
+          for (final T entity : entities) {
+            // Ignore changes made by myself
+            if (entity.getLastModifiedByClient() != clientId) {
+              storeEntity(context, entity);
+            }
           }
         }
-      }
 
-      status.setLastReceivedRevision(maxRevision);
-      serverConnectionRepository.storeSynchronizationStatus(context.getServerConnectionId(), status);
+        status.setLastReceivedRevision(maxRevision);
+        serverConnectionRepository.storeSynchronizationStatus(context.getServerConnectionId(), status);
+
+        monitor.worked((int) (maxRevision - minRevision));
+      }
+    } finally {
+      monitor.done();
     }
   }
 

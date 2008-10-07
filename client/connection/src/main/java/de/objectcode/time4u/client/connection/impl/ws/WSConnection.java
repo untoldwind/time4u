@@ -10,6 +10,9 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Service;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubProgressMonitor;
+
 import de.objectcode.time4u.client.connection.api.ConnectionException;
 import de.objectcode.time4u.client.connection.api.IConnection;
 import de.objectcode.time4u.client.connection.impl.common.ISynchronizationCommand;
@@ -158,19 +161,28 @@ public class WSConnection implements IConnection
     return port;
   }
 
-  public void sychronizeNow() throws ConnectionException
+  public void sychronizeNow(final IProgressMonitor monitor) throws ConnectionException
   {
+    monitor.beginTask("Synchronize", m_synchronizationCommands.size());
+
     try {
       final SynchronizationContext context = new SynchronizationContext(RepositoryFactory.getRepository(),
           m_serverConnection.getId(), m_revisionService, m_projectService, m_taskService, m_workItemService);
 
       for (final ISynchronizationCommand command : m_synchronizationCommands) {
+        if (monitor.isCanceled()) {
+          break;
+        }
         if (command.shouldRun(context)) {
-          command.execute(context);
+          command.execute(context, new SubProgressMonitor(monitor, 1));
+        } else {
+          monitor.worked(1);
         }
       }
     } catch (final Exception e) {
       throw new ConnectionException(e.toString(), e);
+    } finally {
+      monitor.done();
     }
 
     // TODO: Update lastSynchronized here

@@ -1,8 +1,13 @@
 package de.objectcode.time4u.client.connection.ui.dialogs;
 
+import java.lang.reflect.InvocationTargetException;
+
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ISelection;
@@ -241,11 +246,21 @@ public class ManageConnectionsDialog extends Dialog
     if (m_selection == null) {
       return;
     }
-
     try {
       final IConnection connection = ConnectionFactory.openConnection(m_selection);
-
-      connection.sychronizeNow();
+      final ProgressMonitorDialog diaglog = new ProgressMonitorDialog(getShell());
+      diaglog.run(true, true, new IRunnableWithProgress() {
+        public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
+        {
+          try {
+            connection.sychronizeNow(monitor);
+          } catch (final Exception e) {
+            ConnectionUIPlugin.getDefault().log(e);
+          } finally {
+            monitor.done();
+          }
+        }
+      });
     } catch (final Exception e) {
       ConnectionUIPlugin.getDefault().log(e);
     }
