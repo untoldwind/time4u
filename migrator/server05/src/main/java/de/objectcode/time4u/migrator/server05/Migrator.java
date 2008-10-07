@@ -3,8 +3,12 @@ package de.objectcode.time4u.migrator.server05;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.criterion.Restrictions;
 
 import de.objectcode.time4u.migrator.server05.old.entities.OldProjects;
 import de.objectcode.time4u.migrator.server05.old.entities.OldTasks;
@@ -12,6 +16,7 @@ import de.objectcode.time4u.migrator.server05.parts.IMigratorPart;
 import de.objectcode.time4u.migrator.server05.parts.ProjectMigratorPart;
 import de.objectcode.time4u.migrator.server05.parts.TaskMigratorPart;
 import de.objectcode.time4u.server.entities.ActiveWorkItemEntity;
+import de.objectcode.time4u.server.entities.ClientEntity;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.DayTagEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
@@ -65,6 +70,7 @@ public class Migrator
     cfg.addAnnotatedClass(ActiveWorkItemEntity.class);
     cfg.addAnnotatedClass(ServerConnectionEntity.class);
     cfg.addAnnotatedClass(SynchronizationStatusEntity.class);
+    cfg.addAnnotatedClass(ClientEntity.class);
 
     return cfg.buildSessionFactory();
   }
@@ -83,8 +89,22 @@ public class Migrator
 
   public void run()
   {
+    final Session newSession = m_newSessionFactory.openSession();
+    final Transaction trx = newSession.beginTransaction();
+    final Criteria clientCriteria = newSession.createCriteria(ClientEntity.class);
+    clientCriteria.add(Restrictions.eq("myself", true));
+
+    final ClientEntity clientEntity = (ClientEntity) clientCriteria.uniqueResult();
+
+    trx.rollback();
+    newSession.close();
+
+    if (clientEntity == null) {
+      throw new RuntimeException("ClientEntity not found");
+    }
+
     for (final IMigratorPart part : m_migratorParts) {
-      part.migrate(m_oldSessionFactory, m_newSessionFactory);
+      part.migrate(clientEntity.getClientId(), m_oldSessionFactory, m_newSessionFactory);
     }
   }
 

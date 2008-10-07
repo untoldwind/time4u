@@ -4,5 +4,5 @@ import org.hibernate.SessionFactory;
 
 public interface IMigratorPart
 {
-  void migrate(SessionFactory oldSessionFactory, SessionFactory newSessionFactory);
+  void migrate(long serverId, SessionFactory oldSessionFactory, SessionFactory newSessionFactory);
 }
