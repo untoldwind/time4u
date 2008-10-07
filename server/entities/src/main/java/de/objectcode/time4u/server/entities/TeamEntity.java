@@ -39,6 +39,23 @@ public class TeamEntity
   /** Client id of the last modification */
   private long m_lastModifiedByClient;
 
+  /**
+   * Default construtor for hibernate.
+   */
+  protected TeamEntity()
+  {
+  }
+
+  public TeamEntity(final String id, final long revision, final long lastModifiedByClient, final String name)
+  {
+    m_id = id;
+    m_revision = revision;
+    m_lastModifiedByClient = lastModifiedByClient;
+    m_name = name;
+    m_owners = new HashSet<PersonEntity>();
+    m_members = new HashSet<PersonEntity>();
+  }
+
   @Id
   @Column(length = 36)
   public String getId()

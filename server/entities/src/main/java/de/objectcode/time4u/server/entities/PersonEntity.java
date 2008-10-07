@@ -81,9 +81,9 @@ public class PersonEntity
     return m_surname;
   }
 
-  public void setSurname(final String surename)
+  public void setSurname(final String surname)
   {
-    m_surname = surename;
+    m_surname = surname;
   }
 
   @Column(length = 200, nullable = true)

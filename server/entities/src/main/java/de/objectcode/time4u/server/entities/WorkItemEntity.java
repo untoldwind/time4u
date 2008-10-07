@@ -175,7 +175,7 @@ public class WorkItemEntity
 
     final WorkItemEntity castObj = (WorkItemEntity) obj;
 
-    return m_id == castObj.m_id;
+    return m_id.equals(castObj.m_id);
   }
 
   public void toDTO(final WorkItem workItem)

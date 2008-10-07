@@ -10,11 +10,14 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.criterion.Restrictions;
 
+import de.objectcode.time4u.migrator.server05.old.entities.OldPersons;
+import de.objectcode.time4u.migrator.server05.old.entities.OldPersonsToTeams;
 import de.objectcode.time4u.migrator.server05.old.entities.OldProjects;
 import de.objectcode.time4u.migrator.server05.old.entities.OldTasks;
+import de.objectcode.time4u.migrator.server05.old.entities.OldTeams;
+import de.objectcode.time4u.migrator.server05.old.entities.OldWorkitems;
 import de.objectcode.time4u.migrator.server05.parts.IMigratorPart;
-import de.objectcode.time4u.migrator.server05.parts.ProjectMigratorPart;
-import de.objectcode.time4u.migrator.server05.parts.TaskMigratorPart;
+import de.objectcode.time4u.migrator.server05.parts.WorkItemMigrator;
 import de.objectcode.time4u.server.entities.ActiveWorkItemEntity;
 import de.objectcode.time4u.server.entities.ClientEntity;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
@@ -28,6 +31,8 @@ import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.TodoEntity;
 import de.objectcode.time4u.server.entities.TodoProperty;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
+import de.objectcode.time4u.server.entities.account.UserAccountEntity;
+import de.objectcode.time4u.server.entities.account.UserRoleEntity;
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
 import de.objectcode.time4u.server.entities.sync.ServerConnectionEntity;
 import de.objectcode.time4u.server.entities.sync.SynchronizationStatusEntity;
@@ -45,8 +50,11 @@ public class Migrator
     m_newSessionFactory = buildNewSessionFactory();
 
     m_migratorParts = new ArrayList<IMigratorPart>();
-    m_migratorParts.add(new ProjectMigratorPart());
-    m_migratorParts.add(new TaskMigratorPart());
+    //    m_migratorParts.add(new ProjectMigratorPart());
+    //    m_migratorParts.add(new TaskMigratorPart());
+    //    m_migratorParts.add(new PersonMigratorPart());
+    //   m_migratorParts.add(new TeamMigratorPart());
+    m_migratorParts.add(new WorkItemMigrator());
   }
 
   private SessionFactory buildNewSessionFactory()
@@ -71,6 +79,8 @@ public class Migrator
     cfg.addAnnotatedClass(ServerConnectionEntity.class);
     cfg.addAnnotatedClass(SynchronizationStatusEntity.class);
     cfg.addAnnotatedClass(ClientEntity.class);
+    cfg.addAnnotatedClass(UserAccountEntity.class);
+    cfg.addAnnotatedClass(UserRoleEntity.class);
 
     return cfg.buildSessionFactory();
   }
@@ -83,6 +93,10 @@ public class Migrator
 
     cfg.addAnnotatedClass(OldProjects.class);
     cfg.addAnnotatedClass(OldTasks.class);
+    cfg.addAnnotatedClass(OldPersons.class);
+    cfg.addAnnotatedClass(OldTeams.class);
+    cfg.addAnnotatedClass(OldPersonsToTeams.class);
+    cfg.addAnnotatedClass(OldWorkitems.class);
 
     return cfg.buildSessionFactory();
   }
