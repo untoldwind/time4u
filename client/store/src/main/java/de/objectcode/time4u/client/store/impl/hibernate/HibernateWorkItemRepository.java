@@ -169,7 +169,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
         DayInfoEntity dayInfoEntity = null;
 
         if (dayInfo.getId() == null) {
-          dayInfo.setId(revisionLock.generateId(m_repository.getClientId()));
+          dayInfo.setId(m_repository.generateLocalId(SynchronizableType.DAYINFO));
         } else {
           dayInfoEntity = (DayInfoEntity) session.get(DayInfoEntity.class, dayInfo.getId());
         }
@@ -230,7 +230,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
 
               if (dayInfoEntity == null) {
                 // This is save because the revision counter locks this section
-                final String dayInfoId = revisionLock.generateId(m_repository.getClientId());
+                final String dayInfoId = m_repository.generateLocalId(SynchronizableType.DAYINFO);
 
                 dayInfoEntity = new DayInfoEntity(dayInfoId, revisionLock.getLatestRevision(), m_repository
                     .getClientId(), (PersonEntity) session.get(PersonEntity.class, m_repository.getOwner().getId()),
@@ -238,7 +238,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
 
                 session.persist(dayInfoEntity);
               }
-              final String workItemId = revisionLock.generateId(m_repository.getClientId());
+              final String workItemId = m_repository.generateLocalId(SynchronizableType.DAYINFO);
               workItemEntity = new WorkItemEntity(workItemId, dayInfoEntity);
 
               workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem, m_repository.getClientId());

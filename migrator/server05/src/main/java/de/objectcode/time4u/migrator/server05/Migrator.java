@@ -17,6 +17,10 @@ import de.objectcode.time4u.migrator.server05.old.entities.OldTasks;
 import de.objectcode.time4u.migrator.server05.old.entities.OldTeams;
 import de.objectcode.time4u.migrator.server05.old.entities.OldWorkitems;
 import de.objectcode.time4u.migrator.server05.parts.IMigratorPart;
+import de.objectcode.time4u.migrator.server05.parts.PersonMigratorPart;
+import de.objectcode.time4u.migrator.server05.parts.ProjectMigratorPart;
+import de.objectcode.time4u.migrator.server05.parts.TaskMigratorPart;
+import de.objectcode.time4u.migrator.server05.parts.TeamMigratorPart;
 import de.objectcode.time4u.migrator.server05.parts.WorkItemMigrator;
 import de.objectcode.time4u.server.entities.ActiveWorkItemEntity;
 import de.objectcode.time4u.server.entities.ClientEntity;
@@ -33,7 +37,10 @@ import de.objectcode.time4u.server.entities.TodoProperty;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 import de.objectcode.time4u.server.entities.account.UserRoleEntity;
+import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
+import de.objectcode.time4u.server.entities.revision.LocalIdEntity;
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
+import de.objectcode.time4u.server.entities.revision.SessionLocalIdGenerator;
 import de.objectcode.time4u.server.entities.sync.ServerConnectionEntity;
 import de.objectcode.time4u.server.entities.sync.SynchronizationStatusEntity;
 
@@ -41,7 +48,6 @@ public class Migrator
 {
   SessionFactory m_oldSessionFactory;
   SessionFactory m_newSessionFactory;
-
   List<IMigratorPart> m_migratorParts;
 
   Migrator()
@@ -50,10 +56,10 @@ public class Migrator
     m_newSessionFactory = buildNewSessionFactory();
 
     m_migratorParts = new ArrayList<IMigratorPart>();
-    //    m_migratorParts.add(new ProjectMigratorPart());
-    //    m_migratorParts.add(new TaskMigratorPart());
-    //    m_migratorParts.add(new PersonMigratorPart());
-    //   m_migratorParts.add(new TeamMigratorPart());
+    m_migratorParts.add(new ProjectMigratorPart());
+    m_migratorParts.add(new TaskMigratorPart());
+    m_migratorParts.add(new PersonMigratorPart());
+    m_migratorParts.add(new TeamMigratorPart());
     m_migratorParts.add(new WorkItemMigrator());
   }
 
@@ -64,6 +70,7 @@ public class Migrator
     cfg.configure("new-version.cfg.xml");
 
     cfg.addAnnotatedClass(RevisionEntity.class);
+    cfg.addAnnotatedClass(LocalIdEntity.class);
     cfg.addAnnotatedClass(PersonEntity.class);
     cfg.addAnnotatedClass(TeamEntity.class);
     cfg.addAnnotatedClass(ProjectEntity.class);
@@ -113,12 +120,14 @@ public class Migrator
     trx.rollback();
     newSession.close();
 
+    final ILocalIdGenerator idGenerator = new SessionLocalIdGenerator(m_newSessionFactory, clientEntity.getClientId());
+
     if (clientEntity == null) {
       throw new RuntimeException("ClientEntity not found");
     }
 
     for (final IMigratorPart part : m_migratorParts) {
-      part.migrate(clientEntity.getClientId(), m_oldSessionFactory, m_newSessionFactory);
+      part.migrate(idGenerator, m_oldSessionFactory, m_newSessionFactory);
     }
   }
 

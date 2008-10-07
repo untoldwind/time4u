@@ -201,7 +201,7 @@ public class HibernateTaskRepository implements ITaskRepository
         final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.TASK, null);
 
         if (task.getId() == null) {
-          task.setId(revisionLock.generateId(m_repository.getClientId()));
+          task.setId(m_repository.generateLocalId(SynchronizableType.TASK));
         }
 
         final ProjectEntity projectEntity = task.getProjectId() != null ? (ProjectEntity) session.get(

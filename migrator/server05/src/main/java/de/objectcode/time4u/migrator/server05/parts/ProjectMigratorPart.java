@@ -19,7 +19,7 @@ public class ProjectMigratorPart extends BaseMigratorPart<OldProjects>
       final IRevisionLock revisionLock)
   {
     final ProjectEntity newProject = new ProjectEntity(migrateId(SynchronizableType.PROJECT, oldEntity.getId()),
-        revisionLock.getLatestRevision(), m_serverId, oldEntity.getName());
+        revisionLock.getLatestRevision(), m_idGenerator.getClientId(), oldEntity.getName());
     newProject.setDescription(oldEntity.getDescription());
     newProject.setActive(oldEntity.isActive());
     newProject.setDeleted(oldEntity.isDeleted());

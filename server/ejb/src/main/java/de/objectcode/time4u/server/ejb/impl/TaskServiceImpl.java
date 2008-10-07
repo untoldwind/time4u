@@ -21,10 +21,10 @@ import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.filter.TaskFilter;
-import de.objectcode.time4u.server.ejb.config.IConfigServiceLocal;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
 import de.objectcode.time4u.server.entities.context.EntityManagerPersistenceContext;
+import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 
@@ -46,7 +46,7 @@ public class TaskServiceImpl implements ITaskService
   private IRevisionGenerator m_revisionGenerator;
 
   @EJB
-  private IConfigServiceLocal m_configService;
+  private ILocalIdGenerator m_idGenerator;
 
   @Resource
   SessionContext m_sessionContext;
@@ -118,8 +118,7 @@ public class TaskServiceImpl implements ITaskService
     if (task.getId() != null) {
       taskEntity = m_manager.find(TaskEntity.class, task.getId());
     } else {
-      final long serverId = m_configService.getServerId();
-      task.setId(revisionLock.generateId(serverId));
+      task.setId(m_idGenerator.generateLocalId(SynchronizableType.TASK));
     }
     if (taskEntity != null) {
       taskEntity.fromDTO(new EntityManagerPersistenceContext(m_manager), task);

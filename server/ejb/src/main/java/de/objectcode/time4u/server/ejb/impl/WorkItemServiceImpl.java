@@ -23,12 +23,13 @@ import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.WorkItem;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
-import de.objectcode.time4u.server.ejb.config.IConfigServiceLocal;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 import de.objectcode.time4u.server.entities.context.EntityManagerPersistenceContext;
+import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 
@@ -45,7 +46,7 @@ public class WorkItemServiceImpl implements IWorkItemService
   private IRevisionGenerator m_revisionGenerator;
 
   @EJB
-  private IConfigServiceLocal m_configService;
+  private ILocalIdGenerator m_idGenerator;
 
   @Resource
   SessionContext m_sessionContext;
@@ -131,7 +132,7 @@ public class WorkItemServiceImpl implements IWorkItemService
     DayInfoEntity dayInfoEntity = null;
 
     if (dayInfo.getId() == null) {
-      dayInfo.setId(revisionLock.generateId(m_configService.getServerId()));
+      dayInfo.setId(m_idGenerator.generateLocalId(SynchronizableType.DAYINFO));
     } else {
       dayInfoEntity = m_manager.find(DayInfoEntity.class, dayInfo.getId());
     }
@@ -141,6 +142,13 @@ public class WorkItemServiceImpl implements IWorkItemService
           .getLastModifiedByClient(), person, dayInfo.getDay().getDate());
 
       m_manager.persist(dayInfoEntity);
+    }
+    if (dayInfo.getWorkItems() != null) {
+      for (final WorkItem workItem : dayInfo.getWorkItems()) {
+        if (workItem.getId() == null) {
+          workItem.setId(m_idGenerator.generateLocalId(SynchronizableType.DAYINFO));
+        }
+      }
     }
     dayInfoEntity.fromDTO(new EntityManagerPersistenceContext(m_manager), dayInfo);
     dayInfoEntity.setRevision(revisionLock.getLatestRevision());

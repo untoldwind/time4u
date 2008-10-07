@@ -26,7 +26,7 @@ public class TeamMigratorPart extends BaseMigratorPart<OldTeams>
       final IRevisionLock revisionLock)
   {
     final TeamEntity newTeam = new TeamEntity(migrateId(SynchronizableType.TEAM, oldEntity.getId()), revisionLock
-        .getLatestRevision(), m_serverId, oldEntity.getName());
+        .getLatestRevision(), m_idGenerator.getClientId(), oldEntity.getName());
 
     newTeam.getOwners()
         .add(

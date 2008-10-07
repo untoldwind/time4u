@@ -40,7 +40,7 @@ public class HibernatePersonRepository implements IPersonRepository
         final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.PERSON, null);
 
         if (person.getId() == null) {
-          person.setId(revisionLock.generateId(m_repository.getClientId()));
+          person.setId(m_repository.generateLocalId(SynchronizableType.PERSON));
         }
         final PersonEntity personEntity = new PersonEntity(person.getId(), revisionLock.getLatestRevision(),
             m_repository.getClientId());
@@ -65,5 +65,4 @@ public class HibernatePersonRepository implements IPersonRepository
 
     return result;
   }
-
 }

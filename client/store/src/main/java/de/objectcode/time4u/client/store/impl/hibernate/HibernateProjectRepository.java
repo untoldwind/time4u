@@ -209,7 +209,7 @@ public class HibernateProjectRepository implements IProjectRepository
         final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.PROJECT, null);
 
         if (project.getId() == null) {
-          project.setId(revisionLock.generateId(m_repository.getClientId()));
+          project.setId(m_repository.generateLocalId(SynchronizableType.PROJECT));
         }
         final ProjectEntity projectEntity = new ProjectEntity(project.getId(), revisionLock.getLatestRevision(),
             m_repository.getClientId(), project.getName());

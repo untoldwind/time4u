@@ -21,9 +21,9 @@ import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.api.filter.ProjectFilter;
-import de.objectcode.time4u.server.ejb.config.IConfigServiceLocal;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.context.EntityManagerPersistenceContext;
+import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 
@@ -45,7 +45,7 @@ public class ProjectServiceImpl implements IProjectService
   private IRevisionGenerator m_revisionGenerator;
 
   @EJB
-  private IConfigServiceLocal m_configService;
+  private ILocalIdGenerator m_idGenerator;
 
   @Resource
   SessionContext m_sessionContext;
@@ -117,8 +117,7 @@ public class ProjectServiceImpl implements IProjectService
     if (project.getId() != null) {
       projectEntity = m_manager.find(ProjectEntity.class, project.getId());
     } else {
-      final long serverId = m_configService.getServerId();
-      project.setId(revisionLock.generateId(serverId));
+      project.setId(m_idGenerator.generateLocalId(SynchronizableType.PROJECT));
     }
     if (projectEntity != null) {
       projectEntity.fromDTO(new EntityManagerPersistenceContext(m_manager), project);

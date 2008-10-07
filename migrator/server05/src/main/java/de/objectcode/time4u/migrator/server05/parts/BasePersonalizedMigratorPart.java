@@ -14,6 +14,7 @@ import org.hibernate.criterion.Restrictions;
 import de.objectcode.time4u.migrator.server05.old.entities.OldPersons;
 import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.entities.PersonEntity;
+import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 import de.objectcode.time4u.server.entities.revision.SessionRevisionGenerator;
@@ -34,10 +35,10 @@ public abstract class BasePersonalizedMigratorPart<T> extends BaseMigratorPart<T
 
   @Override
   @SuppressWarnings("unchecked")
-  public void migrate(final long serverId, final SessionFactory oldSessionFactory,
+  public void migrate(final ILocalIdGenerator idGenerator, final SessionFactory oldSessionFactory,
       final SessionFactory newSessionFactory)
   {
-    m_serverId = serverId;
+    m_idGenerator = idGenerator;
 
     final Session oldSession = oldSessionFactory.openSession();
 

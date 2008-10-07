@@ -42,9 +42,12 @@ import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.TodoEntity;
 import de.objectcode.time4u.server.entities.TodoProperty;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
+import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
+import de.objectcode.time4u.server.entities.revision.LocalIdEntity;
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
+import de.objectcode.time4u.server.entities.revision.SessionLocalIdGenerator;
 import de.objectcode.time4u.server.entities.revision.SessionRevisionGenerator;
 import de.objectcode.time4u.server.entities.sync.ServerConnectionEntity;
 import de.objectcode.time4u.server.entities.sync.SynchronizationStatusEntity;
@@ -78,6 +81,7 @@ public class HibernateRepository implements IRepository
   private final HibernateWorkItemRepository m_workItemRepository;
   private final HibernateStatisticRepository m_statisticRepository;
   private final HibernateServerConnectionRepository m_serverConnectionRepository;
+  private ILocalIdGenerator m_idGenerator;
 
   private final Map<RepositoryEventType, List<IRepositoryListener>> m_listeners = new HashMap<RepositoryEventType, List<IRepositoryListener>>();
 
@@ -141,6 +145,11 @@ public class HibernateRepository implements IRepository
   IKeyChainEncoder getKeyChainEncoder()
   {
     return m_keyChainEncoder;
+  }
+
+  String generateLocalId(final SynchronizableType entityTpye)
+  {
+    return m_idGenerator.generateLocalId(entityTpye);
   }
 
   /**
@@ -239,9 +248,12 @@ public class HibernateRepository implements IRepository
         if (clientData == null) {
           // TODO: Reconsider this adhoc generation
           final long clientId = new SecureRandom().nextLong() & 0xffffffffffffffL;
+
+          m_idGenerator = new SessionLocalIdGenerator(session.getSessionFactory(), clientId);
+
           final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
           final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.PERSON, null);
-          final String personId = revisionLock.generateId(clientId);
+          final String personId = m_idGenerator.generateLocalId(SynchronizableType.PERSON);
           final PersonEntity ownerPerson = new PersonEntity(personId, revisionLock.getLatestRevision(), clientId);
           ownerPerson.setSurname(System.getProperty("user.name"));
 
@@ -256,6 +268,8 @@ public class HibernateRepository implements IRepository
           session.persist(clientData);
 
           session.flush();
+        } else {
+          m_idGenerator = new SessionLocalIdGenerator(session.getSessionFactory(), clientData.getClientId());
         }
 
         m_owner = new Person();
@@ -287,6 +301,7 @@ public class HibernateRepository implements IRepository
       cfg.setProperty(Environment.SHOW_SQL, "false");
 
       cfg.addAnnotatedClass(RevisionEntity.class);
+      cfg.addAnnotatedClass(LocalIdEntity.class);
       cfg.addAnnotatedClass(PersonEntity.class);
       cfg.addAnnotatedClass(TeamEntity.class);
       cfg.addAnnotatedClass(ProjectEntity.class);

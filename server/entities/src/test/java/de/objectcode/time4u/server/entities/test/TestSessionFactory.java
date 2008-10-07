@@ -19,6 +19,7 @@ import de.objectcode.time4u.server.entities.TodoEntity;
 import de.objectcode.time4u.server.entities.TodoProperty;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
 import de.objectcode.time4u.server.entities.account.UserRoleEntity;
+import de.objectcode.time4u.server.entities.revision.LocalIdEntity;
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
 
 public class TestSessionFactory
@@ -51,6 +52,7 @@ public class TestSessionFactory
     cfg.setProperty(Environment.SHOW_SQL, "false");
 
     cfg.addAnnotatedClass(RevisionEntity.class);
+    cfg.addAnnotatedClass(LocalIdEntity.class);
     cfg.addAnnotatedClass(PersonEntity.class);
     cfg.addAnnotatedClass(UserRoleEntity.class);
     cfg.addAnnotatedClass(TeamEntity.class);

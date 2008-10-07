@@ -42,7 +42,7 @@ public class PersonMigratorPart extends BaseMigratorPart<OldPersons>
     }
 
     final PersonEntity newPerson = new PersonEntity(migrateId(SynchronizableType.PERSON, oldEntity.getId()),
-        revisionLock.getLatestRevision(), m_serverId);
+        revisionLock.getLatestRevision(), m_idGenerator.getClientId());
     newPerson.setGivenName(givenName);
     newPerson.setSurname(surname);
     newPerson.setEmail(oldEntity.getEmail());

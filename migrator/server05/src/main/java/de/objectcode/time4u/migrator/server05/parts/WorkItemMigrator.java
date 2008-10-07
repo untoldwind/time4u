@@ -38,8 +38,8 @@ public class WorkItemMigrator extends BasePersonalizedMigratorPart<OldWorkitems>
     DayInfoEntity dayInfoEntity = (DayInfoEntity) criteria.uniqueResult();
 
     if (dayInfoEntity == null) {
-      dayInfoEntity = new DayInfoEntity(revisionLock.generateId(m_serverId), revisionLock.getLatestRevision(),
-          m_serverId, m_newPerson, day.getDate());
+      dayInfoEntity = new DayInfoEntity(m_idGenerator.generateLocalId(SynchronizableType.DAYINFO), revisionLock
+          .getLatestRevision(), m_idGenerator.getClientId(), m_newPerson, day.getDate());
     } else {
       dayInfoEntity.setRevision(revisionLock.getLatestRevision());
     }

@@ -20,9 +20,9 @@ public class TaskMigratorPart extends BaseMigratorPart<OldTasks>
       final IRevisionLock revisionLock)
   {
     final TaskEntity newTask = new TaskEntity(migrateId(SynchronizableType.TASK, oldEntity.getId()), revisionLock
-        .getLatestRevision(), m_serverId, oldEntity.getProjectId() != null ? (ProjectEntity) newSession.get(
-        ProjectEntity.class, migrateId(SynchronizableType.PROJECT, oldEntity.getProjectId())) : null, oldEntity
-        .getName());
+        .getLatestRevision(), m_idGenerator.getClientId(),
+        oldEntity.getProjectId() != null ? (ProjectEntity) newSession.get(ProjectEntity.class, migrateId(
+            SynchronizableType.PROJECT, oldEntity.getProjectId())) : null, oldEntity.getName());
     newTask.setDescription(oldEntity.getDescription());
     newTask.setActive(oldEntity.isActive());
     newTask.setDeleted(oldEntity.isDeleted());
