@@ -28,7 +28,7 @@ public class DefaultPasswordEncoderTest
     final byte[] salt = new byte[16];
     for (final String password : passwords) {
       random.nextBytes(salt);
-      final String crypted = passwordEncoder.encrypt(password.toCharArray(), algorithm, salt);
+      final String crypted = passwordEncoder.encrypt(password.toCharArray(), algorithm, salt, (short) 100);
       assertNotNull(crypted);
       crypteds.add(crypted);
     }

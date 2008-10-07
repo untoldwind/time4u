@@ -22,7 +22,7 @@ public class DefaultPasswordEncoder implements IPasswordEncoder
 
     RANDOM.nextBytes(salt);
 
-    return encrypt(password, "SSHA", salt);
+    return encrypt(password, "SSHA", salt, (short) 100);
   }
 
   /**
@@ -36,16 +36,23 @@ public class DefaultPasswordEncoder implements IPasswordEncoder
    *          The (random) salt
    * @return The hashed/encrypted password
    */
-  public String encrypt(final char[] password, final String algorithm, final byte[] salt)
+  public String encrypt(final char[] password, final String algorithm, final byte[] salt, final short iterations)
   {
+    byte passwordData[];
+
+    try {
+      passwordData = new String(password).getBytes("UTF-8");
+    } catch (final UnsupportedEncodingException e) {
+      throw new IllegalStateException("UTF-8 Unsupported");
+    }
+
     final StringBuffer buffer = new StringBuffer();
 
-    MessageDigest digest = null;
+    MessageDigest messageDigest = null;
 
     int size = 0;
 
     if ("SHA".equalsIgnoreCase(algorithm) || "SSHA".equalsIgnoreCase(algorithm)) {
-      size = 20;
       if (salt != null && salt.length > 0) {
         buffer.append("{SSHA}");
       } else {
@@ -53,12 +60,12 @@ public class DefaultPasswordEncoder implements IPasswordEncoder
       }
 
       try {
-        digest = MessageDigest.getInstance("SHA-1");
+        messageDigest = MessageDigest.getInstance("SHA-1");
+        size = messageDigest.getDigestLength();
       } catch (final NoSuchAlgorithmException e) {
         throw new IllegalStateException("Invalid algorithm");
       }
     } else if ("MD5".equalsIgnoreCase(algorithm) || "SMD5".equalsIgnoreCase(algorithm)) {
-      size = 16;
       if (salt != null && salt.length > 0) {
         buffer.append("{SMD5}");
       } else {
@@ -66,7 +73,8 @@ public class DefaultPasswordEncoder implements IPasswordEncoder
       }
 
       try {
-        digest = MessageDigest.getInstance("MD5");
+        messageDigest = MessageDigest.getInstance("MD5");
+        size = messageDigest.getDigestLength();
       } catch (final NoSuchAlgorithmException e) {
         throw new IllegalStateException("Invalid algorithm");
       }
@@ -74,76 +82,92 @@ public class DefaultPasswordEncoder implements IPasswordEncoder
       throw new UnsupportedOperationException("Not implemented");
     }
 
-    int outSize = size;
+    final byte[] digest = new byte[size];
 
-    digest.reset();
+    for (int i = 0; i < iterations; i++) {
+      messageDigest.reset();
+      if (i > 0) {
+        messageDigest.update(digest);
+      }
+      messageDigest.update(passwordData);
 
-    try {
-      digest.update(new String(password).getBytes("UTF-8"));
-    } catch (final UnsupportedEncodingException e) {
-      throw new IllegalStateException("UTF-8 Unsupported");
+      if (salt != null && salt.length > 0) {
+        messageDigest.update(salt);
+      }
+
+      System.arraycopy(messageDigest.digest(), 0, digest, 0, size);
     }
 
+    int outSize = size + 2;
     if (salt != null && salt.length > 0) {
-      digest.update(salt);
       outSize += salt.length;
     }
 
     final byte[] out = new byte[outSize];
 
-    System.arraycopy(digest.digest(), 0, out, 0, size);
+    out[0] = (byte) (iterations >>> 8 & 0xff);
+    out[1] = (byte) (iterations & 0xff);
+
+    System.arraycopy(digest, 0, out, 2, size);
 
     if (salt != null && salt.length > 0) {
-      System.arraycopy(salt, 0, out, size, salt.length);
+      System.arraycopy(salt, 0, out, size + 2, salt.length);
     }
 
     buffer.append(new String(Base64.encode(out)));
 
     return buffer.toString();
-
   }
 
   public boolean verify(final char[] password, final String encryptedPassword)
   {
-    MessageDigest digest = null;
+    byte passwordData[];
+
+    try {
+      passwordData = new String(password).getBytes("UTF-8");
+    } catch (final UnsupportedEncodingException e) {
+      throw new IllegalStateException("UTF-8 Unsupported");
+    }
+
+    MessageDigest messageDigest = null;
 
     int size = 0;
 
     String base64 = null;
 
     if (encryptedPassword.regionMatches(true, 0, "{SHA}", 0, 5)) {
-      size = 20;
       base64 = encryptedPassword.substring(5);
 
       try {
-        digest = MessageDigest.getInstance("SHA-1");
+        messageDigest = MessageDigest.getInstance("SHA-1");
+        size = messageDigest.getDigestLength();
       } catch (final NoSuchAlgorithmException e) {
         throw new IllegalStateException("Invalid algorithm");
       }
     } else if (encryptedPassword.regionMatches(true, 0, "{SSHA}", 0, 6)) {
-      size = 20;
       base64 = encryptedPassword.substring(6);
 
       try {
-        digest = MessageDigest.getInstance("SHA-1");
+        messageDigest = MessageDigest.getInstance("SHA-1");
+        size = messageDigest.getDigestLength();
       } catch (final NoSuchAlgorithmException e) {
         throw new IllegalStateException("Invalid algorithm");
       }
     } else if (encryptedPassword.regionMatches(true, 0, "{MD5}", 0, 5)) {
-      size = 16;
       base64 = encryptedPassword.substring(5);
 
       try {
-        digest = MessageDigest.getInstance("MD5");
+        messageDigest = MessageDigest.getInstance("MD5");
+        size = messageDigest.getDigestLength();
       } catch (final NoSuchAlgorithmException e) {
         throw new IllegalStateException("Invalid algorithm");
       }
     } else if (encryptedPassword.regionMatches(true, 0, "{SMD5}", 0, 6)) {
-      size = 16;
       base64 = encryptedPassword.substring(6);
 
       try {
-        digest = MessageDigest.getInstance("MD5");
+        messageDigest = MessageDigest.getInstance("MD5");
+        size = messageDigest.getDigestLength();
       } catch (final NoSuchAlgorithmException e) {
         throw new IllegalStateException("Invalid algorithm");
       }
@@ -151,23 +175,36 @@ public class DefaultPasswordEncoder implements IPasswordEncoder
       return false;
     }
 
-    try {
-      final byte[] data = Base64.decode(base64.toCharArray());
-      final byte[] orig = new byte[size];
+    final byte[] data = Base64.decode(base64.toCharArray());
+    final byte[] orig = new byte[size];
 
-      System.arraycopy(data, 0, orig, 0, size);
+    final short iterations = (short) ((data[0] & 0xff) << 8 | data[1] & 0xff);
 
-      digest.reset();
-      digest.update(new String(password).getBytes("UTF-8"));
+    System.arraycopy(data, 2, orig, 0, size);
+    byte[] salt = null;
 
-      if (data.length > size) {
-        digest.update(data, size, data.length - size);
+    if (data.length > size + 2) {
+      salt = new byte[data.length - size - 2];
+      System.arraycopy(data, size + 2, salt, 0, data.length - size - 2);
+    }
+
+    final byte[] digest = new byte[size];
+
+    for (int i = 0; i < iterations; i++) {
+      messageDigest.reset();
+      if (i > 0) {
+        messageDigest.update(digest);
       }
 
-      return MessageDigest.isEqual(digest.digest(), orig);
-    } catch (final UnsupportedEncodingException e) {
-      throw new IllegalStateException("UTF-8 Unsupported");
+      messageDigest.update(passwordData);
+      if (salt != null && salt.length > 0) {
+        messageDigest.update(salt);
+      }
+
+      System.arraycopy(messageDigest.digest(), 0, digest, 0, size);
     }
+
+    return MessageDigest.isEqual(digest, orig);
   }
 
   static {
