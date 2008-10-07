@@ -244,7 +244,6 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
 
               workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem, m_repository.getClientId());
 
-              session.persist(workItemEntity);
               dayInfoEntity.getWorkItems().put(workItemEntity.getId(), workItemEntity);
               dayInfoEntity.validate();
               session.flush();
@@ -289,9 +288,11 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
 
           dayInfoEntity.setRevision(revisionLock.getLatestRevision());
 
+          // Workaround to enforce lazy initialization at this point
+          dayInfoEntity.getWorkItems().size();
+          dayInfoEntity.getWorkItems().remove(workItemEntity.getId());
           session.delete(workItemEntity);
 
-          dayInfoEntity.getWorkItems().remove(workItemEntity);
           workItemEntity.getDayInfo().validate();
           session.flush();
 

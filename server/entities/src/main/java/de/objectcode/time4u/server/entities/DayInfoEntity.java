@@ -302,6 +302,7 @@ public class DayInfoEntity
       final WorkItemEntity entity = it.next();
 
       if (!workItemIds.contains(entity.getId())) {
+        context.delete(entity);
         it.remove();
       }
     }
