@@ -48,7 +48,7 @@ public interface IPersistenceContext
    */
   PersonEntity findPerson(String personId, long clientId);
 
-  void merge(Object entity);
+  void persist(Object entity);
 
   void delete(Object entity);
 }

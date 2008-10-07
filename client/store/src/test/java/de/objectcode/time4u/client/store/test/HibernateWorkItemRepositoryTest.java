@@ -1,6 +1,7 @@
 package de.objectcode.time4u.client.store.test;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
@@ -50,6 +51,27 @@ public class HibernateWorkItemRepositoryTest
     assertNotNull(collector);
     assertEquals(collector.getEvents().size(), 1);
     collector.clearEvents();
+  }
+
+  @Test(dependsOnMethods = "testCreate")
+  public void testGetDay() throws Exception
+  {
+    final Calendar calendar = Calendar.getInstance();
+    for (int i = 0; i < 100; i++) {
+      calendar.set(1980, 0, 1, 0, 0, 0);
+
+      final DayInfo dayInfo = repository.getWorkItemRepository().getDayInfo(new CalendarDay(calendar));
+
+      assertTrue(dayInfo.isHasWorkItems());
+      assertFalse(dayInfo.isHasInvalidWorkItems());
+      assertNotNull(dayInfo.getWorkItems());
+      assertFalse(dayInfo.getWorkItems().isEmpty());
+
+      for (final WorkItem workItem : dayInfo.getWorkItems()) {
+        assertTrue(workItem.isValid());
+      }
+      calendar.add(Calendar.DAY_OF_MONTH, 1);
+    }
   }
 
   @Test(dependsOnMethods = "testCreate")

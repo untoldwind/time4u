@@ -244,6 +244,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
 
               workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem, m_repository.getClientId());
 
+              session.persist(workItemEntity);
               dayInfoEntity.getWorkItems().put(workItemEntity.getId(), workItemEntity);
               dayInfoEntity.validate();
               session.flush();

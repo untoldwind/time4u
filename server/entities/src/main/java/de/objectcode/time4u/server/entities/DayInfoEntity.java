@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -188,7 +187,7 @@ public class DayInfoEntity
   }
 
   @MapKey(name = "id")
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "dayInfo")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "dayInfo")
   public Map<String, WorkItemEntity> getWorkItems()
   {
     return m_workItems;
@@ -291,10 +290,13 @@ public class DayInfoEntity
       if (workItemEntity == null) {
         workItemEntity = new WorkItemEntity(workItem.getId(), this);
 
+        workItemEntity.fromDTO(context, workItem, dayInfo.getLastModifiedByClient());
+        context.persist(workItemEntity);
         m_workItems.put(workItem.getId(), workItemEntity);
+      } else {
+        workItemEntity.fromDTO(context, workItem, dayInfo.getLastModifiedByClient());
       }
 
-      workItemEntity.fromDTO(context, workItem, dayInfo.getLastModifiedByClient());
       workItemIds.add(workItem.getId());
     }
     final Iterator<WorkItemEntity> it = m_workItems.values().iterator();

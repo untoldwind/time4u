@@ -86,9 +86,9 @@ public class SessionPersistenceContext implements IPersistenceContext
     m_session.delete(entity);
   }
 
-  public void merge(final Object entity)
+  public void persist(final Object entity)
   {
-    m_session.merge(entity);
+    m_session.persist(entity);
   }
 
 }

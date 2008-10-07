@@ -92,9 +92,9 @@ public class EntityManagerPersistenceContext implements IPersistenceContext
   /**
    * {@inheritDoc}
    */
-  public void merge(final Object entity)
+  public void persist(final Object entity)
   {
-    m_manager.merge(entity);
+    m_manager.persist(entity);
   }
 
 }
