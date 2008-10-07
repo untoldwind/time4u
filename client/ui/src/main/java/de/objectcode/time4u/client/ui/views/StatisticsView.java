@@ -39,7 +39,7 @@ public class StatisticsView extends ViewPart implements ISelectionListener, IRep
   public static final String ID = "de.objectcode.time4u.client.ui.view.statisticsView";
 
   private ProjectSummary m_selectedProject;
-  private Calendar m_selectedDay;
+  private CalendarDay m_selectedDay;
 
   private Label m_projectLabel;
   private Label m_mainProjectLabel;
@@ -52,7 +52,7 @@ public class StatisticsView extends ViewPart implements ISelectionListener, IRep
   @Override
   public void createPartControl(final Composite parent)
   {
-    m_selectedDay = Calendar.getInstance();
+    m_selectedDay = new CalendarDay(Calendar.getInstance());
 
     createControls(parent);
 
@@ -101,10 +101,10 @@ public class StatisticsView extends ViewPart implements ISelectionListener, IRep
       final ProjectSummary project = (ProjectSummary) ((IAdaptable) selection).getAdapter(ProjectSummary.class);
       final CalendarDay day = (CalendarDay) ((IAdaptable) selection).getAdapter(CalendarDay.class);
 
-      if (!m_selectedDay.equals(day.getCalendar()) || project == null && m_selectedProject != null || project != null
+      if (!m_selectedDay.equals(day) || project == null && m_selectedProject != null || project != null
           && !project.equals(m_selectedProject)) {
         m_selectedProject = project;
-        m_selectedDay = day.getCalendar();
+        m_selectedDay = day;
         updateStatisticLabels();
       }
     }
@@ -231,10 +231,10 @@ public class StatisticsView extends ViewPart implements ISelectionListener, IRep
   protected void updateStatisticLabels()
   {
     try {
-      final int day = m_selectedDay.get(Calendar.DAY_OF_MONTH);
-      final int week = m_selectedDay.get(Calendar.WEEK_OF_YEAR);
-      final int month = m_selectedDay.get(Calendar.MONTH) + 1;
-      final int year = m_selectedDay.get(Calendar.YEAR);
+      final int day = m_selectedDay.getDay();
+      final int week = m_selectedDay.getCalendar().get(Calendar.WEEK_OF_YEAR);
+      final int month = m_selectedDay.getMonth();
+      final int year = m_selectedDay.getYear();
 
       m_rowLabels[0].setText("Day (" + day + "." + month + "." + year + ")");
       m_rowLabels[1].setText("Week (" + week + "/" + year + ")");

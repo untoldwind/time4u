@@ -108,7 +108,7 @@ public abstract class BaseStatisticRepository implements IStatisticRepository, I
   public synchronized Map<String, ? extends StatisticEntry> getMonthStatistic(final int month, final int year)
       throws RepositoryException
   {
-    final Map<String, MutableStatisticEntry> cachedStatistic = m_monthCache.get(month);
+    final Map<String, MutableStatisticEntry> cachedStatistic = m_monthCache.get(new CalendarMonth(month, year));
 
     if (cachedStatistic != null) {
       return cachedStatistic;

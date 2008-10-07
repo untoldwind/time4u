@@ -22,6 +22,7 @@ import de.objectcode.time4u.client.store.api.IPersonRepository;
 import de.objectcode.time4u.client.store.api.IProjectRepository;
 import de.objectcode.time4u.client.store.api.IRepository;
 import de.objectcode.time4u.client.store.api.IServerConnectionRepository;
+import de.objectcode.time4u.client.store.api.IStatisticRepository;
 import de.objectcode.time4u.client.store.api.ITaskRepository;
 import de.objectcode.time4u.client.store.api.IWorkItemRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
@@ -29,6 +30,7 @@ import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
 import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
 import de.objectcode.time4u.client.store.impl.hibernate.entities.ClientDataEntity;
+import de.objectcode.time4u.client.store.impl.util.MonitoringProxy;
 import de.objectcode.time4u.server.api.data.Person;
 import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.entities.ActiveWorkItemEntity;
@@ -65,11 +67,6 @@ import de.objectcode.time4u.server.utils.IKeyChainEncoder;
  */
 public class HibernateRepository implements IRepository
 {
-  public HibernateStatisticRepository getStatisticRepository()
-  {
-    return m_statisticRepository;
-  }
-
   private final HibernateTemplate m_hibernateTemplate;
 
   private Person m_owner;
@@ -108,7 +105,7 @@ public class HibernateRepository implements IRepository
    */
   public IPersonRepository getPersonRepository()
   {
-    return m_personRepository;
+    return MonitoringProxy.getMonitoringProxy(IPersonRepository.class, m_personRepository);
   }
 
   /**
@@ -116,7 +113,7 @@ public class HibernateRepository implements IRepository
    */
   public IProjectRepository getProjectRepository()
   {
-    return m_projectRepository;
+    return MonitoringProxy.getMonitoringProxy(IProjectRepository.class, m_projectRepository);
   }
 
   /**
@@ -124,7 +121,7 @@ public class HibernateRepository implements IRepository
    */
   public ITaskRepository getTaskRepository()
   {
-    return m_taskRepository;
+    return MonitoringProxy.getMonitoringProxy(ITaskRepository.class, m_taskRepository);
   }
 
   /**
@@ -132,7 +129,15 @@ public class HibernateRepository implements IRepository
    */
   public IWorkItemRepository getWorkItemRepository()
   {
-    return m_workItemRepository;
+    return MonitoringProxy.getMonitoringProxy(IWorkItemRepository.class, m_workItemRepository);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public IStatisticRepository getStatisticRepository()
+  {
+    return MonitoringProxy.getMonitoringProxy(IStatisticRepository.class, m_statisticRepository);
   }
 
   /**

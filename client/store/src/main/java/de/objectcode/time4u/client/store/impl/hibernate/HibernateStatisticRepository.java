@@ -16,10 +16,12 @@ import de.objectcode.time4u.server.entities.WorkItemEntity;
 
 public class HibernateStatisticRepository extends BaseStatisticRepository
 {
+  private final HibernateRepository m_repository;
   private final HibernateTemplate m_hibernateTemplate;
 
   HibernateStatisticRepository(final HibernateRepository repository, final HibernateTemplate hibernateTemplate)
   {
+    m_repository = repository;
     m_hibernateTemplate = hibernateTemplate;
   }
 
@@ -33,12 +35,12 @@ public class HibernateStatisticRepository extends BaseStatisticRepository
         final Criteria criteria = session.createCriteria(WorkItemEntity.class);
         criteria.createAlias("dayInfo", "d");
         criteria.createAlias("project", "p");
-        criteria.createAlias("task", "t");
+        criteria.add(Restrictions.eq("d.person.id", m_repository.getOwner().getId()));
         criteria.add(Restrictions.ge("d.date", from));
         criteria.add(Restrictions.lt("d.date", until));
         criteria.setProjection(Projections.projectionList().add(Projections.property("d.date")).add(
             Projections.property("begin")).add(Projections.property("end")).add(Projections.property("p.id")).add(
-            Projections.property("p.parentKey")).add(Projections.property("t.id")));
+            Projections.property("p.parentKey")).add(Projections.property("task.id")));
 
         final ScrollableResults results = criteria.scroll(ScrollMode.FORWARD_ONLY);
 

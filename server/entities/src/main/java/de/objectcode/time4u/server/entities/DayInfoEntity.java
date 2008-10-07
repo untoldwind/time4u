@@ -222,10 +222,7 @@ public class DayInfoEntity
         item1.setValid(true);
         for (final WorkItemEntity item2 : m_workItems.values()) {
           if (!item1.getId().equals(item2.getId())) {
-            if (item1.getBegin() > item2.getBegin() && item1.getBegin() < item2.getEnd()) {
-              item1.setValid(false);
-              hasInvalidWorkItems = true;
-            } else if (item1.getEnd() > item2.getBegin() && item1.getEnd() < item2.getEnd()) {
+            if (item1.getBegin() < item2.getEnd() && item1.getEnd() > item2.getBegin()) {
               item1.setValid(false);
               hasInvalidWorkItems = true;
             }

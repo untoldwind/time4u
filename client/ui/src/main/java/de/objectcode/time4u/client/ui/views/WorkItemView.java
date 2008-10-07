@@ -5,6 +5,7 @@ import java.util.Calendar;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ISelection;
@@ -140,7 +141,10 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
       }
     });
     final MenuManager menuMgr = new MenuManager();
+    menuMgr.add(new GroupMarker("newGroup"));
+    menuMgr.add(new Separator());
     menuMgr.add(new GroupMarker("objectGroup"));
+    menuMgr.add(new Separator());
     menuMgr.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
 
     final Menu menu = menuMgr.createContextMenu(m_tableViewer.getControl());
