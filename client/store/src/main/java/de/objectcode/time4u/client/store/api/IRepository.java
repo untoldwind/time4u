@@ -35,6 +35,8 @@ public interface IRepository
 
   Person getOwner();
 
+  void changeOwnerId(String ownerId) throws RepositoryException;
+
   Map<SynchronizableType, Long> getRevisionStatus() throws RepositoryException;
 
   void addRepositoryListener(RepositoryEventType eventType, IRepositoryListener listener);

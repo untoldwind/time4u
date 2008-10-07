@@ -57,7 +57,7 @@ public class WorkItemMigrator extends BasePersonalizedMigratorPart<OldWorkitems>
     workItemEntity.setTask((TaskEntity) newSession.get(TaskEntity.class, migrateId(SynchronizableType.TASK, oldEntity
         .getTaskId())));
 
-    dayInfoEntity.getWorkItems().add(workItemEntity);
+    dayInfoEntity.getWorkItems().put(workItemEntity.getId(), workItemEntity);
     dayInfoEntity.validate();
 
     newSession.merge(dayInfoEntity);

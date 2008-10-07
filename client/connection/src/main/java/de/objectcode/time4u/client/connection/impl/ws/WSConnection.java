@@ -23,6 +23,7 @@ import de.objectcode.time4u.client.connection.impl.common.up.SendTaskChangesComm
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.server.api.IConstants;
 import de.objectcode.time4u.server.api.ILoginService;
+import de.objectcode.time4u.server.api.IPersonService;
 import de.objectcode.time4u.server.api.IPingService;
 import de.objectcode.time4u.server.api.IProjectService;
 import de.objectcode.time4u.server.api.IRevisionService;
@@ -44,6 +45,7 @@ public class WSConnection implements IConnection
   private final IPingService m_pingService;
   private final ILoginService m_loginService;
   private final IRevisionService m_revisionService;
+  private final IPersonService m_personService;
   private final IProjectService m_projectService;
   private final ITaskService m_taskService;
   private final IWorkItemService m_workItemService;
@@ -64,6 +66,7 @@ public class WSConnection implements IConnection
     m_pingService = getServicePort("PingService", IPingService.class, false);
     m_loginService = getServicePort("LoginService", ILoginService.class, false);
     m_revisionService = getServicePort("RevisionService", IRevisionService.class, true);
+    m_personService = getServicePort("PersonService", IPersonService.class, true);
     m_projectService = getServicePort("ProjectService", IProjectService.class, true);
     m_taskService = getServicePort("TaskService", ITaskService.class, true);
     m_workItemService = getServicePort("WorkItemService", IWorkItemService.class, true);
@@ -87,6 +90,11 @@ public class WSConnection implements IConnection
     } catch (final Exception e) {
       throw new ConnectionException(e.toString(), e);
     }
+  }
+
+  public Person getPerson() throws ConnectionException
+  {
+    return m_personService.getSelf();
   }
 
   public RevisionStatus getRevisionStatus() throws ConnectionException
@@ -118,6 +126,11 @@ public class WSConnection implements IConnection
     } catch (final Exception e) {
       throw new ConnectionException(e.toString(), e);
     }
+  }
+
+  public boolean registerClient() throws ConnectionException
+  {
+    return m_personService.registerClient(RepositoryFactory.getRepository().getClientId());
   }
 
   private <T> T getServicePort(final String serviceName, final Class<T> portInterface, final boolean secure)

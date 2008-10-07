@@ -2,6 +2,7 @@ package de.objectcode.time4u.client.connection.ui.wizards;
 
 import java.util.HashMap;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -17,6 +18,8 @@ import org.eclipse.swt.widgets.Text;
 
 import de.objectcode.time4u.client.connection.api.ConnectionFactory;
 import de.objectcode.time4u.client.connection.api.IConnection;
+import de.objectcode.time4u.client.store.api.RepositoryFactory;
+import de.objectcode.time4u.server.api.data.Person;
 import de.objectcode.time4u.server.api.data.ServerConnection;
 
 public class UserAccountWizardPage extends WizardPage
@@ -138,11 +141,39 @@ public class UserAccountWizardPage extends WizardPage
           m_testResultLabel.setForeground(getShell().getDisplay().getSystemColor(SWT.COLOR_GREEN));
           setPageComplete(true);
           return;
+        } else {
+          m_testResultLabel.setText("Failed to register new account");
+          m_testResultLabel.setForeground(getShell().getDisplay().getSystemColor(SWT.COLOR_RED));
+          setPageComplete(false);
+          return;
+        }
+      } else {
+        final Person person = connection.getPerson();
+
+        if (!RepositoryFactory.getRepository().getOwner().getId().equals(person.getId())) {
+          if (MessageDialog.openConfirm(getShell(), "Account already exists",
+              "Account already exists, but person id differs. Associate this client with this account?")) {
+            RepositoryFactory.getRepository().changeOwnerId(person.getId());
+          } else {
+            m_testResultLabel.setText("Existing account");
+            m_testResultLabel.setForeground(getShell().getDisplay().getSystemColor(SWT.COLOR_RED));
+            setPageComplete(false);
+            return;
+          }
+        }
+
+        if (connection.registerClient()) {
+          m_testResultLabel.setText("Registered client");
+          m_testResultLabel.setForeground(getShell().getDisplay().getSystemColor(SWT.COLOR_GREEN));
+          setPageComplete(true);
+          return;
+        } else {
+          m_testResultLabel.setText("Client register failed");
+          m_testResultLabel.setForeground(getShell().getDisplay().getSystemColor(SWT.COLOR_RED));
+          setPageComplete(false);
+          return;
         }
       }
-      m_testResultLabel.setText("Existing account");
-      m_testResultLabel.setForeground(getShell().getDisplay().getSystemColor(SWT.COLOR_RED));
-      setPageComplete(false);
     } catch (final Exception e) {
       m_testResultLabel.setText("Connection failed: " + e.getMessage());
       m_testResultLabel.setForeground(getShell().getDisplay().getSystemColor(SWT.COLOR_RED));

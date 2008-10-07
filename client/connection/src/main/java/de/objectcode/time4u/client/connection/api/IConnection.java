@@ -2,6 +2,8 @@ package de.objectcode.time4u.client.connection.api;
 
 import java.util.Map;
 
+import de.objectcode.time4u.server.api.data.Person;
+
 /**
  * Client side connection API.
  * 
@@ -14,6 +16,10 @@ public interface IConnection
   boolean checkLogin(Map<String, String> credentials) throws ConnectionException;
 
   boolean registerLogin(Map<String, String> credentials) throws ConnectionException;
+
+  Person getPerson() throws ConnectionException;
+
+  boolean registerClient() throws ConnectionException;
 
   void sychronizeNow() throws ConnectionException;
 }

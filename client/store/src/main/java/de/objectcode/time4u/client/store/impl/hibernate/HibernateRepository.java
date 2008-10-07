@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.derby.jdbc.EmbeddedDriver;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
@@ -191,6 +192,56 @@ public class HibernateRepository implements IRepository
   public long getClientId()
   {
     return m_clientId;
+  }
+
+  public void changeOwnerId(final String ownerId) throws RepositoryException
+  {
+    final String oldOwnerId = m_owner.getId();
+
+    if (oldOwnerId.equals(ownerId)) {
+      return;
+    }
+
+    m_owner = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Person>() {
+      public Person perform(final Session session)
+      {
+        final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.PERSON, null);
+
+        final PersonEntity personEntity = new PersonEntity(ownerId, revisionLock.getLatestRevision(), m_clientId);
+
+        personEntity.fromDTO(m_owner);
+        personEntity.setLastModifiedByClient(m_clientId);
+
+        session.merge(personEntity);
+        final ClientDataEntity clientData = (ClientDataEntity) session.get(ClientDataEntity.class, 1);
+
+        clientData.setOwnerPerson(personEntity);
+        session.flush();
+
+        final Query updateDayInfos = session
+            .createSQLQuery("update T4U_DAYINFOS set person_id=:newOwnerId where person_id=:oldOwnerId");
+        updateDayInfos.setString("newOwnerId", ownerId);
+        updateDayInfos.setString("oldOwnerId", oldOwnerId);
+        updateDayInfos.executeUpdate();
+
+        final Query updateRevisions = session
+            .createSQLQuery("update T4U_REVISIONS set part=:newOwnerId where part=:oldOwnerId");
+        updateRevisions.setString("newOwnerId", ownerId);
+        updateRevisions.setString("oldOwnerId", oldOwnerId);
+        updateRevisions.executeUpdate();
+
+        final Query deleteOld = session.createSQLQuery("delete from T4U_PERSONS where id=:oldOwnerId");
+        deleteOld.setString("oldOwnerId", oldOwnerId);
+        deleteOld.executeUpdate();
+
+        final Person result = new Person();
+        personEntity.toDTO(result);
+
+        return result;
+      }
+    });
+
   }
 
   public Map<SynchronizableType, Long> getRevisionStatus() throws RepositoryException

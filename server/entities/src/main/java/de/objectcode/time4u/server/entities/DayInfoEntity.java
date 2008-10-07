@@ -3,9 +3,11 @@ package de.objectcode.time4u.server.entities;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -55,7 +58,7 @@ public class DayInfoEntity
   /** Set of tags of the day */
   private Set<DayTagEntity> m_tags;
   /** Set of workitem of this day. */
-  private Set<WorkItemEntity> m_workItems;
+  private Map<String, WorkItemEntity> m_workItems;
 
   /**
    * Default constructor for hibernate.
@@ -73,7 +76,7 @@ public class DayInfoEntity
     m_person = person;
     m_date = date;
     m_regularTime = -1;
-    m_workItems = new HashSet<WorkItemEntity>();
+    m_workItems = new HashMap<String, WorkItemEntity>();
     m_tags = new HashSet<DayTagEntity>();
   }
 
@@ -184,13 +187,14 @@ public class DayInfoEntity
     m_regularTime = regularTime;
   }
 
+  @MapKey(name = "id")
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "dayInfo")
-  public Set<WorkItemEntity> getWorkItems()
+  public Map<String, WorkItemEntity> getWorkItems()
   {
     return m_workItems;
   }
 
-  public void setWorkItems(final Set<WorkItemEntity> workItems)
+  public void setWorkItems(final Map<String, WorkItemEntity> workItems)
   {
     m_workItems = workItems;
   }
@@ -211,13 +215,13 @@ public class DayInfoEntity
     int sumDurations = 0;
     boolean hasInvalidWorkItems = false;
 
-    for (final WorkItemEntity item1 : m_workItems) {
+    for (final WorkItemEntity item1 : m_workItems.values()) {
       if (item1.getBegin() < 0 || item1.getEnd() > 24 * 3600 || item1.getEnd() < item1.getBegin()) {
         item1.setValid(false);
         hasInvalidWorkItems = true;
       } else {
         item1.setValid(true);
-        for (final WorkItemEntity item2 : m_workItems) {
+        for (final WorkItemEntity item2 : m_workItems.values()) {
           if (!item1.getId().equals(item2.getId())) {
             if (item1.getBegin() > item2.getBegin() && item1.getBegin() < item2.getEnd()) {
               item1.setValid(false);
@@ -258,7 +262,7 @@ public class DayInfoEntity
 
     if (m_workItems != null) {
       final List<WorkItem> workItems = new ArrayList<WorkItem>();
-      for (final WorkItemEntity entity : m_workItems) {
+      for (final WorkItemEntity entity : m_workItems.values()) {
         final WorkItem workItem = new WorkItem();
 
         entity.toDTO(workItem);
@@ -282,19 +286,22 @@ public class DayInfoEntity
     final Set<String> workItemIds = new HashSet<String>();
 
     for (final WorkItem workItem : dayInfo.getWorkItems()) {
-      final WorkItemEntity workItemEntity = new WorkItemEntity(workItem.getId(), this);
+      WorkItemEntity workItemEntity = m_workItems.get(workItem.getId());
+
+      if (workItemEntity == null) {
+        workItemEntity = new WorkItemEntity(workItem.getId(), this);
+
+        m_workItems.put(workItem.getId(), workItemEntity);
+      }
 
       workItemEntity.fromDTO(context, workItem, dayInfo.getLastModifiedByClient());
-
-      context.merge(workItemEntity);
       workItemIds.add(workItem.getId());
     }
-    final Iterator<WorkItemEntity> it = m_workItems.iterator();
+    final Iterator<WorkItemEntity> it = m_workItems.values().iterator();
     while (it.hasNext()) {
       final WorkItemEntity entity = it.next();
 
       if (!workItemIds.contains(entity.getId())) {
-        context.delete(entity);
         it.remove();
       }
     }

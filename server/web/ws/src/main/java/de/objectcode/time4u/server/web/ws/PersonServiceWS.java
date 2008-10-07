@@ -1,23 +1,40 @@
 package de.objectcode.time4u.server.web.ws;
 
-import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
+import javax.naming.InitialContext;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import de.objectcode.time4u.server.api.IPersonService;
 import de.objectcode.time4u.server.api.data.Person;
 
-@WebService
+@WebService(targetNamespace = "http://objectcode.de/time4u/api/ws", endpointInterface = "de.objectcode.time4u.server.api.IPersonService")
 @SOAPBinding(style = Style.RPC)
 public class PersonServiceWS implements IPersonService
 {
+  private static final Log LOG = LogFactory.getLog(ProjectServiceWS.class);
 
-  @WebMethod
-  public boolean registerPerson(final Person person)
+  private final IPersonService m_personService;
+
+  public PersonServiceWS() throws Exception
   {
-    // TODO Auto-generated method stub
-    return false;
+    final InitialContext ctx = new InitialContext();
+
+    m_personService = (IPersonService) ctx.lookup("time4u-server/PersonService/remote");
   }
 
+  public Person getSelf()
+  {
+    LOG.info("getSelf");
+
+    return m_personService.getSelf();
+  }
+
+  public boolean registerClient(final long clientId)
+  {
+    return m_personService.registerClient(clientId);
+  }
 }

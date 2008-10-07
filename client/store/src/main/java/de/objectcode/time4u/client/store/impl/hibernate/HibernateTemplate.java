@@ -60,7 +60,6 @@ public class HibernateTemplate
         session.close();
       }
     }
-
   }
 
   /**

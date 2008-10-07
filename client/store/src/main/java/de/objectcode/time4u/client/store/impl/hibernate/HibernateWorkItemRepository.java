@@ -187,6 +187,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
           dayInfoEntity.setLastModifiedByClient(m_repository.getClientId());
         }
         dayInfoEntity.validate();
+
         session.flush();
 
         final DayInfo result = new DayInfo();
@@ -244,7 +245,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
               workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem, m_repository.getClientId());
 
               session.persist(workItemEntity);
-              dayInfoEntity.getWorkItems().add(workItemEntity);
+              dayInfoEntity.getWorkItems().put(workItemEntity.getId(), workItemEntity);
               dayInfoEntity.validate();
               session.flush();
             }
