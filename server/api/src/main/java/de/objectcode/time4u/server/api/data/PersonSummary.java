@@ -20,8 +20,8 @@ public class PersonSummary implements ISynchronizableData
   private long m_revision;
   /** Client id of the last modification */
   private long m_lastModifiedByClient;
-  /** User id of the person. */
-  private String m_userId;
+  /** Flag if the person is deleted. */
+  private boolean m_deleted;
   /** Given name of the person. */
   private String m_givenName;
   /** Surname of the person. */
@@ -81,14 +81,14 @@ public class PersonSummary implements ISynchronizableData
     m_surname = surname;
   }
 
-  public String getUserId()
+  public boolean isDeleted()
   {
-    return m_userId;
+    return m_deleted;
   }
 
-  public void setUserId(final String userId)
+  public void setDeleted(final boolean deleted)
   {
-    m_userId = userId;
+    m_deleted = deleted;
   }
 
   public String getEmail()

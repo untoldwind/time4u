@@ -32,6 +32,8 @@ public class TeamEntity
   private String m_name;
   /** Description of the team. */
   private String m_description;
+  /** Flag if the team is deleted. */
+  private boolean m_deleted;
   /** All owners (responsible persons) of the team. */
   private Set<PersonEntity> m_owners;
   /** All members of the team. */
@@ -136,6 +138,16 @@ public class TeamEntity
     m_lastModifiedByClient = lastModifiedByClient;
   }
 
+  public boolean isDeleted()
+  {
+    return m_deleted;
+  }
+
+  public void setDeleted(final boolean deleted)
+  {
+    m_deleted = deleted;
+  }
+
   @Override
   public int hashCode()
   {
@@ -165,6 +177,7 @@ public class TeamEntity
     team.setLastModifiedByClient(m_lastModifiedByClient);
     team.setName(m_name);
     team.setDescription(m_description);
+    team.setDeleted(m_deleted);
     final List<String> ownerIds = new ArrayList<String>();
 
     for (final PersonEntity person : m_owners) {
@@ -184,6 +197,7 @@ public class TeamEntity
     m_lastModifiedByClient = team.getLastModifiedByClient();
     m_name = team.getName();
     m_description = team.getDescription();
+    m_deleted = team.isDeleted();
 
     if (m_owners == null) {
       m_owners = new HashSet<PersonEntity>();

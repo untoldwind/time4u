@@ -26,6 +26,8 @@ public class PersonEntity
   private String m_id;
   /** Revision number (increased every time something has changed) */
   private long m_revision;
+  /** Flag if the person is deleted. */
+  private boolean m_deleted;
   /** Client id of the last modification */
   private long m_lastModifiedByClient;
   /** Given name of the person. */
@@ -150,6 +152,16 @@ public class PersonEntity
     m_lastModifiedByClient = lastModifiedByClient;
   }
 
+  public boolean isDeleted()
+  {
+    return m_deleted;
+  }
+
+  public void setDeleted(final boolean deleted)
+  {
+    m_deleted = deleted;
+  }
+
   @Override
   public int hashCode()
   {
@@ -180,6 +192,7 @@ public class PersonEntity
     person.setGivenName(m_givenName);
     person.setSurname(m_surname);
     person.setEmail(m_email);
+    person.setDeleted(m_deleted);
     person.setLastSynchronize(m_lastSynchronize);
   }
 
@@ -189,5 +202,6 @@ public class PersonEntity
     m_givenName = person.getGivenName();
     m_surname = person.getSurname();
     m_email = person.getEmail();
+    m_deleted = person.isDeleted();
   }
 }

@@ -18,6 +18,8 @@ public class TeamSummary implements ISynchronizableData
   private long m_revision;
   /** Client id of the last modification */
   private long m_lastModifiedByClient;
+  /** Flag if the team is deleted. */
+  private boolean m_deleted;
   /** Team name. */
   private String m_name;
   /** Description of the team. */
@@ -71,6 +73,16 @@ public class TeamSummary implements ISynchronizableData
   public void setDescription(final String description)
   {
     m_description = description;
+  }
+
+  public boolean isDeleted()
+  {
+    return m_deleted;
+  }
+
+  public void setDeleted(final boolean deleted)
+  {
+    m_deleted = deleted;
   }
 
 }

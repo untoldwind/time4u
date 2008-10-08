@@ -19,6 +19,8 @@ public class Todo implements ISynchronizableData
   private long m_revision;
   /** Client id of the last modification */
   private long m_lastModifiedByClient;
+  /** Flag if the todo is deleted */
+  private boolean m_deleted;
   /** The server id of the task the todo belongs to. */
   private String m_taskId;
   /** Optional server id of the person the todo is assigned to. */
@@ -182,6 +184,16 @@ public class Todo implements ISynchronizableData
   public void setTaskId(final String taskId)
   {
     m_taskId = taskId;
+  }
+
+  public boolean isDeleted()
+  {
+    return m_deleted;
+  }
+
+  public void setDeleted(final boolean deleted)
+  {
+    m_deleted = deleted;
   }
 
   public List<MetaProperty> getMetaProperties()

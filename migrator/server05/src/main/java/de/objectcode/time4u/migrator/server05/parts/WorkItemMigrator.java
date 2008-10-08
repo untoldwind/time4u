@@ -40,6 +40,8 @@ public class WorkItemMigrator extends BasePersonalizedMigratorPart<OldWorkitems>
     if (dayInfoEntity == null) {
       dayInfoEntity = new DayInfoEntity(m_idGenerator.generateLocalId(SynchronizableType.DAYINFO), revisionLock
           .getLatestRevision(), m_idGenerator.getClientId(), m_newPerson, day.getDate());
+
+      newSession.persist(dayInfoEntity);
     } else {
       dayInfoEntity.setRevision(revisionLock.getLatestRevision());
     }
@@ -58,6 +60,7 @@ public class WorkItemMigrator extends BasePersonalizedMigratorPart<OldWorkitems>
         .getTaskId())));
 
     dayInfoEntity.getWorkItems().put(workItemEntity.getId(), workItemEntity);
+    newSession.merge(workItemEntity);
     dayInfoEntity.validate();
 
     newSession.merge(dayInfoEntity);
