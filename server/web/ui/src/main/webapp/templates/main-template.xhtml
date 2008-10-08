@@ -9,6 +9,7 @@
 		<a4j:form>
 			<h:panelGrid id="grid" columns="2" cellspacing="4">
 				<rich:dropDownMenu value="Time4U">
+					<rich:menuItem submitMode="ajax" value="Overview" action="/user/main.xhtml"/>
 					<rich:menuItem submitMode="ajax" value="Logout"
 						action="#{identity.logout}" />
 				</rich:dropDownMenu>

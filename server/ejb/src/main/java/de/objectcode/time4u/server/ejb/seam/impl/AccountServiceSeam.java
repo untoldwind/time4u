@@ -2,7 +2,6 @@ package de.objectcode.time4u.server.ejb.seam.impl;
 
 import java.util.List;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -18,6 +17,7 @@ import org.jboss.seam.annotations.Observer;
 import org.jboss.seam.annotations.RaiseEvent;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
+import org.jboss.seam.annotations.security.Restrict;
 
 import de.objectcode.time4u.server.ejb.seam.api.IAccountServiceLocal;
 import de.objectcode.time4u.server.entities.PersonEntity;
@@ -38,7 +38,7 @@ public class AccountServiceSeam implements IAccountServiceLocal
   List<UserAccountEntity> m_userAccounts;
 
   @SuppressWarnings("unchecked")
-  @RolesAllowed("admin")
+  @Restrict("#{s:hasRole('admin')}")
   @Factory("admin.accountList")
   @Observer("admin.accountList.updated")
   public void initUserAccounts()
@@ -48,7 +48,7 @@ public class AccountServiceSeam implements IAccountServiceLocal
     m_userAccounts = query.getResultList();
   }
 
-  @RolesAllowed("admin")
+  @Restrict("#{s:hasRole('admin')}")
   public void changePassword(final String userId, final String hashedPassword)
   {
     final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, userId);
@@ -59,6 +59,7 @@ public class AccountServiceSeam implements IAccountServiceLocal
   }
 
   @RaiseEvent("admin.accountList.updated")
+  @Restrict("#{s:hasRole('admin')}")
   public void updatePerson(final String userId, final String givenName, final String surname, final String email)
   {
     final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, userId);

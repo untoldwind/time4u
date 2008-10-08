@@ -2,7 +2,6 @@ package de.objectcode.time4u.server.ejb.seam.impl;
 
 import java.util.List;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -19,6 +18,7 @@ import org.jboss.seam.annotations.Observer;
 import org.jboss.seam.annotations.RaiseEvent;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
+import org.jboss.seam.annotations.security.Restrict;
 
 import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.ejb.seam.api.ITeamServiceLocal;
@@ -50,10 +50,10 @@ public class TeamServiceSeam implements ITeamServiceLocal
   @SuppressWarnings("unchecked")
   @Factory("admin.teamList")
   @Observer("admin.teamList.updated")
-  @RolesAllowed("user")
+  @Restrict("#{s:hasRole('admin')}")
   public void initTeams()
   {
-    final Query query = m_manager.createQuery("from " + TeamEntity.class.getName() + " t");
+    final Query query = m_manager.createQuery("from " + TeamEntity.class.getName() + " t where t.deleted = false");
 
     m_teams = query.getResultList();
   }
@@ -64,12 +64,14 @@ public class TeamServiceSeam implements ITeamServiceLocal
   }
 
   @RaiseEvent("admin.teamList.updated")
+  @Restrict("#{s:hasRole('admin')}")
   public void storeTeam(final TeamEntity teamEntity)
   {
     final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(SynchronizableType.TEAM, null);
-    
-    if ( teamEntity.getId() == null )
+
+    if (teamEntity.getId() == null) {
       teamEntity.setId(m_idGenerator.generateLocalId(SynchronizableType.TEAM));
+    }
     teamEntity.setRevision(revisionLock.getLatestRevision());
     teamEntity.setLastModifiedByClient(m_idGenerator.getClientId());
     m_manager.merge(teamEntity);

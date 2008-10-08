@@ -2,7 +2,6 @@ package de.objectcode.time4u.server.ejb.seam.impl;
 
 import java.util.List;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,6 +16,7 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Observer;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
+import org.jboss.seam.annotations.security.Restrict;
 
 import de.objectcode.time4u.server.ejb.seam.api.IPersonServiceLocal;
 import de.objectcode.time4u.server.entities.PersonEntity;
@@ -36,27 +36,20 @@ public class PersonServiceSeam implements IPersonServiceLocal
   List<PersonEntity> m_persons;
 
   @SuppressWarnings("unchecked")
-  @RolesAllowed("user")
+  @Restrict("#{s:hasRole('admin')}")
   @Factory("admin.personList")
   @Observer("admin.personList.updated")
   public void initPersons()
   {
-    final Query query = m_manager.createQuery("from " + PersonEntity.class.getName() + " t");
+    final Query query = m_manager.createQuery("from " + PersonEntity.class.getName() + " p where p.deleted = false");
 
     m_persons = query.getResultList();
   }
 
+  @Restrict("#{s:hasRole('admin')}")
   public PersonEntity getPerson(final String id)
   {
     return m_manager.find(PersonEntity.class, id);
-  }
-
-  @SuppressWarnings("unchecked")
-  public List<PersonEntity> getPersons()
-  {
-    final Query query = m_manager.createQuery("from " + PersonEntity.class.getName() + " t");
-
-    return query.getResultList();
   }
 
 }
