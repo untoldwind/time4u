@@ -2,6 +2,7 @@ package de.objectcode.time4u.server.ejb.impl;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -28,10 +29,21 @@ public class AccountServiceImpl implements IAccountServiceLocal
   private EntityManager m_manager;
 
   @SuppressWarnings("unchecked")
+  @RolesAllowed("admin")
   public List<UserAccountEntity> getUserAccounts()
   {
     final Query query = m_manager.createQuery("from " + UserAccountEntity.class.getName() + " a");
 
     return query.getResultList();
+  }
+
+  @RolesAllowed("admin")
+  public void changePassword(final String userId, final String hashedPassword)
+  {
+    final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, userId);
+
+    userAccount.setHashedPassword(hashedPassword);
+
+    m_manager.flush();
   }
 }

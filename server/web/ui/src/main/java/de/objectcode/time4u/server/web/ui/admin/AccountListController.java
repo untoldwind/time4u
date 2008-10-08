@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Begin;
-import org.jboss.seam.annotations.End;
 import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
@@ -14,6 +13,7 @@ import org.jboss.seam.annotations.datamodel.DataModelSelection;
 
 import de.objectcode.time4u.server.ejb.local.IAccountServiceLocal;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
+import de.objectcode.time4u.server.utils.DefaultPasswordEncoder;
 
 @Name("admin.accountListController")
 @Scope(ScopeType.CONVERSATION)
@@ -32,14 +32,16 @@ public class AccountListController
 
   UserAccountEntity m_selectedAccount;
 
+  @In("admin.passwordConfirm")
+  PasswordConfirm m_passwordConfirm;
+
   @Factory("admin.accountList")
   public void getUserAccounts()
   {
     m_userAccounts = m_accountService.getUserAccounts();
   }
 
-  @Begin
-  @End
+  @Begin(join = true)
   public String enter()
   {
     return VIEW_ID;
@@ -55,5 +57,15 @@ public class AccountListController
   public UserAccountEntity getSelectedAccount()
   {
     return m_selectedAccount;
+  }
+
+  public String resetPassword()
+  {
+    if (m_selectedAccount != null && m_passwordConfirm.getPassword().equals(m_passwordConfirm.getPasswordConfirm())) {
+      m_accountService.changePassword(m_selectedAccount.getUserId(), new DefaultPasswordEncoder()
+          .encrypt(m_passwordConfirm.getPassword().toCharArray()));
+    }
+
+    return VIEW_ID;
   }
 }

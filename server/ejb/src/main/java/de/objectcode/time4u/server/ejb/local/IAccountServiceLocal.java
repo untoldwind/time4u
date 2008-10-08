@@ -7,4 +7,6 @@ import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 public interface IAccountServiceLocal
 {
   List<UserAccountEntity> getUserAccounts();
+
+  void changePassword(String userId, String hashedPassword);
 }

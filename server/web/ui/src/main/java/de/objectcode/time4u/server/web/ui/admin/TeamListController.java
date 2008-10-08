@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Begin;
-import org.jboss.seam.annotations.End;
 import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
@@ -38,8 +37,7 @@ public class TeamListController
     m_teams = m_teamService.getTeams();
   }
 
-  @Begin
-  @End
+  @Begin(join = true)
   public String enter()
   {
     return VIEW_ID;
