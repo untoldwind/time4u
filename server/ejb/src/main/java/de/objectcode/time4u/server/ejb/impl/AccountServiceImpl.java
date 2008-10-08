@@ -15,6 +15,7 @@ import org.jboss.seam.annotations.JndiName;
 import org.jboss.seam.annotations.Name;
 
 import de.objectcode.time4u.server.ejb.local.IAccountServiceLocal;
+import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 
 @Stateless
@@ -46,4 +47,18 @@ public class AccountServiceImpl implements IAccountServiceLocal
 
     m_manager.flush();
   }
+
+  public void updatePerson(final String userId, final String givenName, final String surname, final String email)
+  {
+    final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, userId);
+
+    final PersonEntity person = userAccount.getPerson();
+
+    person.setGivenName(givenName);
+    person.setSurname(surname);
+    person.setEmail(email);
+
+    m_manager.flush();
+  }
+
 }

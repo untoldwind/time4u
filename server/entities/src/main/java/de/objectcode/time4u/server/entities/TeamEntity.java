@@ -30,6 +30,8 @@ public class TeamEntity
   private String m_id;
   /** Team name. */
   private String m_name;
+  /** Description of the team. */
+  private String m_description;
   /** All owners (responsible persons) of the team. */
   private Set<PersonEntity> m_owners;
   /** All members of the team. */
@@ -77,6 +79,17 @@ public class TeamEntity
   public void setName(final String name)
   {
     m_name = name;
+  }
+
+  @Column(length = 1000, nullable = true)
+  public String getDescription()
+  {
+    return m_description;
+  }
+
+  public void setDescription(final String description)
+  {
+    m_description = description;
   }
 
   @ManyToMany(fetch = FetchType.LAZY)
@@ -151,6 +164,7 @@ public class TeamEntity
     team.setRevision(m_revision);
     team.setLastModifiedByClient(m_lastModifiedByClient);
     team.setName(m_name);
+    team.setDescription(m_description);
     final List<String> ownerIds = new ArrayList<String>();
 
     for (final PersonEntity person : m_owners) {
@@ -169,6 +183,7 @@ public class TeamEntity
   {
     m_lastModifiedByClient = team.getLastModifiedByClient();
     m_name = team.getName();
+    m_description = team.getDescription();
 
     if (m_owners == null) {
       m_owners = new HashSet<PersonEntity>();

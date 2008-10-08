@@ -20,6 +20,8 @@ public class TeamSummary implements ISynchronizableData
   private long m_lastModifiedByClient;
   /** Team name. */
   private String m_name;
+  /** Description of the team. */
+  private String m_description;
 
   public String getId()
   {
@@ -60,4 +62,15 @@ public class TeamSummary implements ISynchronizableData
   {
     m_name = name;
   }
+
+  public String getDescription()
+  {
+    return m_description;
+  }
+
+  public void setDescription(final String description)
+  {
+    m_description = description;
+  }
+
 }

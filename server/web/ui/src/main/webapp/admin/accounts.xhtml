@@ -49,27 +49,58 @@
 						</f:facet>
 					</rich:dataTable>
 				</a4j:region>
-				<h:panelGroup id="accountDetail">
-					<table>
-						<s:decorate template="../templates/decorateTableField.xhtml">
-							<ui:define name="label">UserId</ui:define>
-							<h:outputText
-								value="#{admin.accountListController.selectedAccount.userId}" />
-						</s:decorate>
-						<s:decorate template="../templates/decorateTableField.xhtml">
-							<ui:define name="label">Password</ui:define>
-							<h:inputSecret  required="true" value="#{admin.passwordConfirm.password}" />
-						</s:decorate>
-						<s:decorate template="../templates/decorateTableField.xhtml">
-							<ui:define name="label">Password Confirm</ui:define>
-							<h:inputSecret  required="true" id="passwordConfirm"  value="#{admin.passwordConfirm.passwordConfirm}" />
-						</s:decorate>
-						<tr>
-							<td colspan="3">
-								<h:commandButton action="#{admin.accountListController.resetPassword}" value="Reset Password"/>
-							</td>
-						</tr>
-					</table>
+				<h:panelGroup id="accountDetail"
+					rendered="#{admin.accountListController.hasSelection}">
+					<rich:tabPanel switchType="client">
+						<rich:tab label="Account">
+							<table>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">UserId</ui:define>
+									<h:outputText
+										value="#{admin.accountListController.selectedAccount.userId}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Password</ui:define>
+									<h:inputSecret value="#{admin.passwordConfirm.password}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Password Confirm</ui:define>
+									<h:inputSecret value="#{admin.passwordConfirm.passwordConfirm}" />
+								</s:decorate>
+								<tr>
+									<td colspan="3">
+										<a4j:commandButton
+											action="#{admin.accountListController.resetPassword}" value="Reset Password" />
+									</td>
+								</tr>
+							</table>
+						</rich:tab>
+						<rich:tab label="Personal Information">
+							<table>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Griven name</ui:define>
+									<h:inputText
+										value="#{admin.accountListController.selectedAccount.person.givenName}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Surname</ui:define>
+									<h:inputText
+										value="#{admin.accountListController.selectedAccount.person.surname}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Email</ui:define>
+									<h:inputText
+										value="#{admin.accountListController.selectedAccount.person.email}" />
+								</s:decorate>
+								<tr>
+									<td colspan="3">
+										<a4j:commandButton
+											action="#{admin.accountListController.updatePerson}" value="Update" />
+									</td>
+								</tr>								
+							</table>
+						</rich:tab>
+					</rich:tabPanel>
 				</h:panelGroup>
 			</h:panelGroup>
 		</h:form>

@@ -9,4 +9,6 @@ public interface IAccountServiceLocal
   List<UserAccountEntity> getUserAccounts();
 
   void changePassword(String userId, String hashedPassword);
+
+  void updatePerson(String userId, String givenName, String surname, String email);
 }
