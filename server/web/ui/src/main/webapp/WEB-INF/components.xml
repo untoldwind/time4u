@@ -12,7 +12,7 @@
                  http://jboss.com/products/seam/transaction http://jboss.com/products/seam/transaction-2.0.xsd
                  http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.0.xsd
                  http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.0.xsd">
-	<core:init debug="true" />
+	<core:init debug="true" jndi-pattern="time4u-server/seam/#{ejbName}/local"/>
 
 	<core:manager conversation-timeout="3600000"
 		concurrent-request-timeout="45000" conversation-id-parameter="cid" />

@@ -19,7 +19,7 @@
 						</rich:column>
 						<rich:column>
 							<f:facet name="header">User Id</f:facet>
-							<a4j:commandLink action="#{admin.accountListController.select}"
+							<a4j:commandLink action="#{admin.accountListController.select(userAccount)}"
 								reRender="accountDetail"
 								rendered="#{userAccount.userId != admin.accountListController.selectedAccount.userId}">
 								#{userAccount.userId}

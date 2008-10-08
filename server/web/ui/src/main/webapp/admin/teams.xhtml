@@ -18,18 +18,18 @@
 								rendered="#{team.id == admin.teamListController.selectedTeam.id}" />
 						</rich:column>
 						<rich:column>
-							<f:facet name="header">Team Id</f:facet>
-							#{team.id}
-						</rich:column>
-						<rich:column>
 							<f:facet name="header">Name</f:facet>
-							<a4j:commandLink action="#{admin.teamListController.select}"
+							<a4j:commandLink action="#{admin.teamListController.select(team)}"
 								reRender="teamDetail"
 								rendered="#{team.id != admin.teamListController.selectedTeam.id}">
 								#{team.name}
 						</a4j:commandLink>
 							<h:outputText value="#{team.name}"
 								rendered="#{team.id == admin.teamListController.selectedTeam.id}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Description</f:facet>
+							#{team.description}
 						</rich:column>
 						<f:facet name="footer">
 							<rich:datascroller for="teamListTable"
@@ -41,8 +41,40 @@
 						</f:facet>
 					</rich:dataTable>
 				</a4j:region>
-				<h:panelGroup id="teamDetail" columns="2">
-
+				<h:panelGroup>
+					<a4j:commandButton action="#{admin.teamListController.newTeam}" value="New" reRender="teamDetail"/>
+				</h:panelGroup>
+				<h:panelGroup id="teamDetail"
+					rendered="#{admin.teamListController.hasSelection}">
+					<rich:tabPanel switchType="ajax">
+						<rich:tab label="Information">
+							<table>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Name</ui:define>
+									<h:inputText value="#{admin.teamListController.selectedTeam.name}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Description</ui:define>
+									<h:inputText
+										value="#{admin.teamListController.selectedTeam.description}" />
+								</s:decorate>
+							</table>
+						</rich:tab>
+						<rich:tab label="Owners">
+							<rich:pickList value="#{admin.teamListController.selectedTeam.owners}">
+								<s:selectItems value="#{admin.personList.wrappedData}"
+									var="person" itemValue="#{person.id}" label="#{person.givenName} #{person.surname}" />
+							</rich:pickList>
+						</rich:tab>
+						<rich:tab label="Members">
+							<rich:pickList value="#{admin.teamListController.selectedTeam.members}">
+								<s:selectItems value="#{admin.personList.wrappedData}"
+									var="person" itemValue="#{person.id}" label="#{person.givenName} #{person.surname}" />
+							</rich:pickList>
+						</rich:tab>
+					</rich:tabPanel>
+					<a4j:commandButton action="#{admin.teamListController.updateTeam}"
+						value="Update"/>
 				</h:panelGroup>
 			</h:panelGroup>
 		</h:form>

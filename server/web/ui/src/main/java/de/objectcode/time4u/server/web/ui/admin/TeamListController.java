@@ -1,17 +1,14 @@
 package de.objectcode.time4u.server.web.ui.admin;
 
-import java.util.List;
-
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Begin;
-import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
-import org.jboss.seam.annotations.datamodel.DataModel;
-import org.jboss.seam.annotations.datamodel.DataModelSelection;
+import org.jboss.seam.international.StatusMessages;
 
-import de.objectcode.time4u.server.ejb.local.ITeamServiceLocal;
+import de.objectcode.time4u.server.ejb.seam.api.IPersonServiceLocal;
+import de.objectcode.time4u.server.ejb.seam.api.ITeamServiceLocal;
 import de.objectcode.time4u.server.entities.TeamEntity;
 
 @Name("admin.teamListController")
@@ -20,22 +17,13 @@ public class TeamListController
 {
   public static final String VIEW_ID = "/admin/teams.xhtml";
 
+  @In("PersonService")
+  IPersonServiceLocal m_personService;
+
   @In("TeamService")
   ITeamServiceLocal m_teamService;;
 
-  @DataModel("admin.teamList")
-  List<TeamEntity> m_teams;
-
-  @DataModelSelection("admin.teamList")
-  TeamEntity m_currentTeam;
-
-  TeamEntity m_selectedTeam;
-
-  @Factory("admin.teamList")
-  public void getUserAccounts()
-  {
-    m_teams = m_teamService.getTeams();
-  }
+  TeamBean m_selectedTeam;
 
   @Begin(join = true)
   public String enter()
@@ -43,15 +31,38 @@ public class TeamListController
     return VIEW_ID;
   }
 
-  public String select()
+  public String newTeam()
   {
-    m_selectedTeam = m_currentTeam;
+    m_selectedTeam = new TeamBean(new TeamEntity(null, 0L, 0L, ""));
 
     return VIEW_ID;
   }
 
-  public TeamEntity getSelectedTeam()
+  public String select(final TeamEntity teamEntity)
+  {
+    m_selectedTeam = new TeamBean(m_teamService.getTeam(teamEntity.getId()));
+
+    return VIEW_ID;
+  }
+
+  public TeamBean getSelectedTeam()
   {
     return m_selectedTeam;
   }
+
+  public boolean isHasSelection()
+  {
+    return m_selectedTeam != null;
+  }
+
+  public String updateTeam()
+  {
+    if (m_selectedTeam != null) {
+      m_selectedTeam.updateTeam(m_personService);
+      m_teamService.storeTeam(m_selectedTeam.getTeam());
+      StatusMessages.instance().add("Team information updated");
+    }
+    return VIEW_ID;
+  }
+
 }
