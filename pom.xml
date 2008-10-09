@@ -432,6 +432,11 @@
 				<version>1.2_09</version>
 				<scope>provided</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.jboss.resteasy</groupId>
+				<artifactId>resteasy-jaxrs</artifactId>
+				<version>1.0-beta-8</version>
+			</dependency>
 
 			<!-- JDBC -->
 			<dependency>

@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.util.Calendar;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -82,6 +83,7 @@ public class CalendarDay implements Serializable, Comparable<CalendarDay>
     m_year = year;
   }
 
+  @XmlTransient
   public Calendar getCalendar()
   {
     final Calendar calendar = Calendar.getInstance();
@@ -91,6 +93,7 @@ public class CalendarDay implements Serializable, Comparable<CalendarDay>
     return calendar;
   }
 
+  @XmlTransient
   public Date getDate()
   {
     final Calendar calendar = Calendar.getInstance();

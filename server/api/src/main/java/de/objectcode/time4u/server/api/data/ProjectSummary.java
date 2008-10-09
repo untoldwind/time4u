@@ -1,6 +1,7 @@
 package de.objectcode.time4u.server.api.data;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -11,6 +12,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author junglas
  */
 @XmlType(name = "project-summary")
+@XmlRootElement(name = "project-summary")
 public class ProjectSummary implements ISynchronizableData
 {
   private static final long serialVersionUID = 7578389791349119895L;
@@ -52,6 +54,7 @@ public class ProjectSummary implements ISynchronizableData
     m_revision = revision;
   }
 
+  @XmlAttribute
   public long getLastModifiedByClient()
   {
     return m_lastModifiedByClient;

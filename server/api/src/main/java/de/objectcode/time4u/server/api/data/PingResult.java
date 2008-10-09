@@ -1,8 +1,10 @@
 package de.objectcode.time4u.server.api.data;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType(name = "ping-result")
+@XmlRootElement(name = "ping-result")
 public class PingResult
 {
   String m_serverVersion;

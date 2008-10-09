@@ -3,8 +3,9 @@ package de.objectcode.time4u.server.api.data;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementRefs;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -17,6 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  * @param <T>
  */
 @XmlType(name = "filter-result")
+@XmlRootElement(name = "filter-result")
 public class FilterResult<T> implements Serializable
 {
   private static final long serialVersionUID = -8284477347654961022L;
@@ -32,12 +34,10 @@ public class FilterResult<T> implements Serializable
     this.results = results;
   }
 
-  @XmlElements( { @XmlElement(name = "project", type = Project.class),
-      @XmlElement(name = "project-summary", type = ProjectSummary.class),
-      @XmlElement(name = "task", type = Task.class), @XmlElement(name = "task-summary", type = TaskSummary.class),
-      @XmlElement(name = "dayinfo", type = DayInfo.class),
-      @XmlElement(name = "dayinfo-summary", type = DayInfoSummary.class),
-      @XmlElement(name = "week-time-policy", type = WeekTimePolicy.class) })
+  @XmlElementRefs( { @XmlElementRef(type = Project.class), @XmlElementRef(type = ProjectSummary.class),
+      @XmlElementRef(type = Task.class), @XmlElementRef(type = TaskSummary.class),
+      @XmlElementRef(type = DayInfo.class), @XmlElementRef(type = DayInfoSummary.class),
+      @XmlElementRef(type = WeekTimePolicy.class) })
   public List<T> getResults()
   {
     return results;

@@ -3,9 +3,11 @@ package de.objectcode.time4u.server.api.data;
 import java.io.Serializable;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType(name = "revision-status")
+@XmlRootElement(name = "revision-status")
 public class RevisionStatus implements Serializable
 {
   private static final long serialVersionUID = 376719045033681490L;

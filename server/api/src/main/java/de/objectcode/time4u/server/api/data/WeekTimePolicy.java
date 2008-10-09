@@ -2,6 +2,7 @@ package de.objectcode.time4u.server.api.data;
 
 import java.util.Calendar;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -12,6 +13,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author junglas
  */
 @XmlType(name = "week-time-policy")
+@XmlRootElement(name = "week-time-policy")
 public class WeekTimePolicy extends TimePolicy
 {
   private static final long serialVersionUID = -3455841618528168636L;

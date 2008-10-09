@@ -1,5 +1,7 @@
 package de.objectcode.time4u.server.api.data;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -10,6 +12,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author junglas
  */
 @XmlType(name = "task-summary")
+@XmlRootElement(name = "task-summary")
 public class TaskSummary implements ISynchronizableData
 {
   private static final long serialVersionUID = -3947869946239621847L;
@@ -29,6 +32,7 @@ public class TaskSummary implements ISynchronizableData
   /** Internal server id of the project owning the task. */
   private String m_projectId;
 
+  @XmlAttribute
   public String getId()
   {
     return m_id;
@@ -39,6 +43,7 @@ public class TaskSummary implements ISynchronizableData
     m_id = id;
   }
 
+  @XmlAttribute
   public long getRevision()
   {
     return m_revision;
@@ -49,6 +54,7 @@ public class TaskSummary implements ISynchronizableData
     m_revision = revision;
   }
 
+  @XmlAttribute
   public long getLastModifiedByClient()
   {
     return m_lastModifiedByClient;
@@ -59,6 +65,7 @@ public class TaskSummary implements ISynchronizableData
     m_lastModifiedByClient = lastModifiedByClient;
   }
 
+  @XmlAttribute
   public String getName()
   {
     return m_name;
@@ -69,6 +76,7 @@ public class TaskSummary implements ISynchronizableData
     m_name = name;
   }
 
+  @XmlAttribute
   public boolean isActive()
   {
     return m_active;
@@ -79,6 +87,7 @@ public class TaskSummary implements ISynchronizableData
     m_active = active;
   }
 
+  @XmlAttribute
   public boolean isDeleted()
   {
     return m_deleted;
@@ -92,6 +101,7 @@ public class TaskSummary implements ISynchronizableData
   /**
    * @return the projectId
    */
+  @XmlAttribute
   public String getProjectId()
   {
     return m_projectId;

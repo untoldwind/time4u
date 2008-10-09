@@ -1,5 +1,6 @@
 package de.objectcode.time4u.server.api.data;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -8,6 +9,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author junglas
  */
 @XmlType(name = "person")
+@XmlRootElement(name = "person")
 public class Person extends PersonSummary
 {
   private static final long serialVersionUID = -4022407515199667835L;

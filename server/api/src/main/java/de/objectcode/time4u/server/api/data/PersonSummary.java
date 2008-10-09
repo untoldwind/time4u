@@ -2,6 +2,7 @@ package de.objectcode.time4u.server.api.data;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -31,6 +32,7 @@ public class PersonSummary implements ISynchronizableData
   /** Timestamp of the last synchronization of that person. */
   private Date m_lastSynchronize;
 
+  @XmlAttribute
   public String getId()
   {
     return m_id;
@@ -41,6 +43,7 @@ public class PersonSummary implements ISynchronizableData
     m_id = id;
   }
 
+  @XmlAttribute
   public long getRevision()
   {
     return m_revision;
@@ -51,6 +54,7 @@ public class PersonSummary implements ISynchronizableData
     m_revision = revision;
   }
 
+  @XmlAttribute
   public long getLastModifiedByClient()
   {
     return m_lastModifiedByClient;
@@ -61,6 +65,7 @@ public class PersonSummary implements ISynchronizableData
     m_lastModifiedByClient = lastModifiedByClient;
   }
 
+  @XmlAttribute
   public String getGivenName()
   {
     return m_givenName;
@@ -71,6 +76,7 @@ public class PersonSummary implements ISynchronizableData
     m_givenName = givenName;
   }
 
+  @XmlAttribute
   public String getSurname()
   {
     return m_surname;
@@ -81,6 +87,7 @@ public class PersonSummary implements ISynchronizableData
     m_surname = surname;
   }
 
+  @XmlAttribute
   public boolean isDeleted()
   {
     return m_deleted;
@@ -91,6 +98,7 @@ public class PersonSummary implements ISynchronizableData
     m_deleted = deleted;
   }
 
+  @XmlAttribute
   public String getEmail()
   {
     return m_email;
@@ -101,6 +109,7 @@ public class PersonSummary implements ISynchronizableData
     m_email = email;
   }
 
+  @XmlAttribute
   public Date getLastSynchronize()
   {
     return m_lastSynchronize;

@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -12,6 +13,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author junglas
  */
 @XmlType(name = "task")
+@XmlRootElement(name = "task")
 public class Task extends TaskSummary
 {
   private static final long serialVersionUID = -6761887763470951635L;

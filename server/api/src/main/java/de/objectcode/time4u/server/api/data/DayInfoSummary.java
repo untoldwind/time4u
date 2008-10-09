@@ -1,5 +1,7 @@
 package de.objectcode.time4u.server.api.data;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -10,6 +12,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author junglas
  */
 @XmlType(name = "day-info-summary")
+@XmlRootElement(name = "day-info-summary")
 public class DayInfoSummary implements ISynchronizableData
 {
   private static final long serialVersionUID = 4834724509315672372L;
@@ -31,6 +34,7 @@ public class DayInfoSummary implements ISynchronizableData
   /** Sum of all workitem durations or that day */
   private int m_sumDurations;
 
+  @XmlAttribute
   public String getId()
   {
     return m_id;
@@ -41,6 +45,7 @@ public class DayInfoSummary implements ISynchronizableData
     m_id = id;
   }
 
+  @XmlAttribute
   public long getRevision()
   {
     return m_revision;
@@ -51,6 +56,7 @@ public class DayInfoSummary implements ISynchronizableData
     m_revision = revision;
   }
 
+  @XmlAttribute
   public long getLastModifiedByClient()
   {
     return m_lastModifiedByClient;
@@ -71,6 +77,7 @@ public class DayInfoSummary implements ISynchronizableData
     m_day = day;
   }
 
+  @XmlAttribute
   public boolean isHasWorkItems()
   {
     return m_hasWorkItems;
@@ -81,6 +88,7 @@ public class DayInfoSummary implements ISynchronizableData
     m_hasWorkItems = hasWorkItems;
   }
 
+  @XmlAttribute
   public boolean isHasInvalidWorkItems()
   {
     return m_hasInvalidWorkItems;
@@ -91,6 +99,7 @@ public class DayInfoSummary implements ISynchronizableData
     m_hasInvalidWorkItems = hasInvalidWorkItems;
   }
 
+  @XmlAttribute
   public int getRegularTime()
   {
     return m_regularTime;
@@ -101,6 +110,7 @@ public class DayInfoSummary implements ISynchronizableData
     m_regularTime = regularTime;
   }
 
+  @XmlAttribute
   public int getSumDurations()
   {
     return m_sumDurations;
