@@ -8,7 +8,7 @@ import org.hibernate.criterion.Restrictions;
 
 import de.objectcode.time4u.migrator.server05.old.entities.OldWorkitems;
 import de.objectcode.time4u.server.api.data.CalendarDay;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
@@ -19,7 +19,7 @@ public class WorkItemMigrator extends BasePersonalizedMigratorPart<OldWorkitems>
 {
   public WorkItemMigrator()
   {
-    super(SynchronizableType.DAYINFO, OldWorkitems.class, "personId");
+    super(EntityType.DAYINFO, OldWorkitems.class, "personId");
   }
 
   @Override
@@ -38,7 +38,7 @@ public class WorkItemMigrator extends BasePersonalizedMigratorPart<OldWorkitems>
     DayInfoEntity dayInfoEntity = (DayInfoEntity) criteria.uniqueResult();
 
     if (dayInfoEntity == null) {
-      dayInfoEntity = new DayInfoEntity(m_idGenerator.generateLocalId(SynchronizableType.DAYINFO), revisionLock
+      dayInfoEntity = new DayInfoEntity(m_idGenerator.generateLocalId(EntityType.DAYINFO), revisionLock
           .getLatestRevision(), m_idGenerator.getClientId(), m_newPerson, day.getDate());
 
       newSession.persist(dayInfoEntity);
@@ -46,7 +46,7 @@ public class WorkItemMigrator extends BasePersonalizedMigratorPart<OldWorkitems>
       dayInfoEntity.setRevision(revisionLock.getLatestRevision());
     }
 
-    final WorkItemEntity workItemEntity = new WorkItemEntity(migrateId(SynchronizableType.DAYINFO, oldEntity.getId()),
+    final WorkItemEntity workItemEntity = new WorkItemEntity(migrateId(EntityType.DAYINFO, oldEntity.getId()),
         dayInfoEntity);
 
     workItemEntity.setBegin(begin.get(Calendar.HOUR_OF_DAY) * 3600 + begin.get(Calendar.MINUTE) * 60
@@ -54,9 +54,9 @@ public class WorkItemMigrator extends BasePersonalizedMigratorPart<OldWorkitems>
     workItemEntity.setEnd(workItemEntity.getBegin()
         + (int) ((oldEntity.getWend().getTime() - oldEntity.getWbegin().getTime()) / 1000));
     workItemEntity.setComment(oldEntity.getWcomment());
-    workItemEntity.setProject((ProjectEntity) newSession.get(ProjectEntity.class, migrateId(SynchronizableType.PROJECT,
+    workItemEntity.setProject((ProjectEntity) newSession.get(ProjectEntity.class, migrateId(EntityType.PROJECT,
         oldEntity.getProjectId())));
-    workItemEntity.setTask((TaskEntity) newSession.get(TaskEntity.class, migrateId(SynchronizableType.TASK, oldEntity
+    workItemEntity.setTask((TaskEntity) newSession.get(TaskEntity.class, migrateId(EntityType.TASK, oldEntity
         .getTaskId())));
 
     dayInfoEntity.getWorkItems().put(workItemEntity.getId(), workItemEntity);

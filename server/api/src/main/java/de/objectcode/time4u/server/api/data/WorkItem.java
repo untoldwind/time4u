@@ -2,11 +2,14 @@ package de.objectcode.time4u.server.api.data;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * WorkItem DTO object.
  * 
  * @author junglas
  */
+@XmlType(name = "workitem")
 public class WorkItem implements Comparable<WorkItem>, Serializable
 {
   private static final long serialVersionUID = -3834849041983216580L;

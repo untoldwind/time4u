@@ -8,7 +8,7 @@ import de.objectcode.time4u.server.api.IProjectService;
 import de.objectcode.time4u.server.api.IRevisionService;
 import de.objectcode.time4u.server.api.ITaskService;
 import de.objectcode.time4u.server.api.IWorkItemService;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.SynchronizationStatus;
 
 /**
@@ -21,9 +21,9 @@ import de.objectcode.time4u.server.api.data.SynchronizationStatus;
 public class SynchronizationContext
 {
   private final long m_serverConnectionId;
-  private final Map<SynchronizableType, SynchronizationStatus> m_synchronizationStatus;
-  private final Map<SynchronizableType, Long> m_clientRevisionStatus;
-  private final Map<SynchronizableType, Long> m_serverRevisionStatus;
+  private final Map<EntityType, SynchronizationStatus> m_synchronizationStatus;
+  private final Map<EntityType, Long> m_clientRevisionStatus;
+  private final Map<EntityType, Long> m_serverRevisionStatus;
   private final IRepository m_repository;
   private final IProjectService m_projectService;
   private final ITaskService m_taskService;
@@ -50,17 +50,17 @@ public class SynchronizationContext
     return m_serverConnectionId;
   }
 
-  public SynchronizationStatus getSynchronizationStatus(final SynchronizableType type)
+  public SynchronizationStatus getSynchronizationStatus(final EntityType type)
   {
     return m_synchronizationStatus.get(type);
   }
 
-  public long getClientRevisionStatus(final SynchronizableType type)
+  public long getClientRevisionStatus(final EntityType type)
   {
     return m_clientRevisionStatus.get(type);
   }
 
-  public long getServerRevisionStatus(final SynchronizableType type)
+  public long getServerRevisionStatus(final EntityType type)
   {
     return m_serverRevisionStatus.get(type);
   }

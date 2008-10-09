@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Todo DTO object.
  * 
  * @author junglas
  */
+@XmlType(name = "todo")
 public class Todo implements ISynchronizableData
 {
   private static final long serialVersionUID = 5927951499996904471L;

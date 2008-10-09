@@ -12,7 +12,7 @@ import org.jboss.annotation.ejb.RemoteBinding;
 
 import de.objectcode.time4u.server.api.ILoginService;
 import de.objectcode.time4u.server.api.data.RegistrationInfo;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.ClientEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
@@ -58,7 +58,7 @@ public class LoginServiceImpl implements ILoginService
       return false;
     }
 
-    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(SynchronizableType.PERSON, null);
+    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(EntityType.PERSON, null);
     final PersonEntity person = new PersonEntity(registrationInfo.getPersonId(), revisionLock.getLatestRevision(),
         registrationInfo.getClientId());
     person.setGivenName(registrationInfo.getGivenName());

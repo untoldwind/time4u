@@ -11,9 +11,9 @@ import org.hibernate.criterion.Restrictions;
 import de.objectcode.time4u.client.store.api.IProjectRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.client.store.api.event.ProjectRepositoryEvent;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.api.filter.ProjectFilter;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.context.SessionPersistenceContext;
@@ -206,10 +206,10 @@ public class HibernateProjectRepository implements IProjectRepository
       public Project perform(final Session session)
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
-        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.PROJECT, null);
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PROJECT, null);
 
         if (project.getId() == null) {
-          project.setId(m_repository.generateLocalId(SynchronizableType.PROJECT));
+          project.setId(m_repository.generateLocalId(EntityType.PROJECT));
         }
         final ProjectEntity projectEntity = new ProjectEntity(project.getId(), revisionLock.getLatestRevision(),
             m_repository.getClientId(), project.getName());

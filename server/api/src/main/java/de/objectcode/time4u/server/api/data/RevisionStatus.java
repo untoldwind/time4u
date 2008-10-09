@@ -10,23 +10,23 @@ public class RevisionStatus implements Serializable
 {
   private static final long serialVersionUID = 376719045033681490L;
 
-  Map<SynchronizableType, Long> m_latestRevisions;
+  Map<EntityType, Long> m_latestRevisions;
 
   public RevisionStatus()
   {
   }
 
-  public RevisionStatus(final Map<SynchronizableType, Long> latestRevisions)
+  public RevisionStatus(final Map<EntityType, Long> latestRevisions)
   {
     m_latestRevisions = latestRevisions;
   }
 
-  public Map<SynchronizableType, Long> getLatestRevisions()
+  public Map<EntityType, Long> getLatestRevisions()
   {
     return m_latestRevisions;
   }
 
-  public void setLatestRevisions(final Map<SynchronizableType, Long> latestRevisions)
+  public void setLatestRevisions(final Map<EntityType, Long> latestRevisions)
   {
     m_latestRevisions = latestRevisions;
   }

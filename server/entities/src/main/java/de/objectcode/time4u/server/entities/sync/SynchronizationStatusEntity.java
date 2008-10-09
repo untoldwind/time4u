@@ -13,7 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.SynchronizationStatus;
 
 @Entity
@@ -24,7 +24,7 @@ public class SynchronizationStatusEntity
   /** Primary key */
   private long m_id;
   private ServerConnectionEntity m_serverConnection;
-  private SynchronizableType m_entityType;
+  private EntityType m_entityType;
   private long m_lastSendRevision;
   private long m_lastReceivedRevision;
 
@@ -54,15 +54,15 @@ public class SynchronizationStatusEntity
   }
 
   @Type(type = "de.objectcode.time4u.server.entities.util.GenericEnumUserType", parameters = {
-      @Parameter(name = "enumClass", value = "de.objectcode.time4u.server.api.data.SynchronizableType"),
-      @Parameter(name = "identifierMethod", value = "getValue"), @Parameter(name = "valueOfMethod", value = "forValue") })
+      @Parameter(name = "enumClass", value = "de.objectcode.time4u.server.api.data.EntityType"),
+      @Parameter(name = "identifierMethod", value = "getCode"), @Parameter(name = "valueOfMethod", value = "forCode") })
   @Column(name = "entityType", nullable = false)
-  public SynchronizableType getEntityType()
+  public EntityType getEntityType()
   {
     return m_entityType;
   }
 
-  public void setEntityType(final SynchronizableType entityType)
+  public void setEntityType(final EntityType entityType)
   {
     m_entityType = entityType;
   }

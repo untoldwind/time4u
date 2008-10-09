@@ -1,5 +1,13 @@
 package de.objectcode.time4u.server.api.data;
 
+import javax.xml.bind.annotation.XmlType;
+
+/**
+ * Abstract base class of all time-policy.
+ * 
+ * @author junglas
+ */
+@XmlType(name = "time-policy")
 public abstract class TimePolicy implements ISynchronizableData
 {
   private static final long serialVersionUID = 5344090291753057165L;

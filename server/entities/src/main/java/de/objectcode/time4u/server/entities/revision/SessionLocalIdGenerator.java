@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 
 public class SessionLocalIdGenerator implements ILocalIdGenerator
 {
@@ -17,13 +17,13 @@ public class SessionLocalIdGenerator implements ILocalIdGenerator
   SessionFactory m_sessionFactory;
   long m_clientId;
   long m_nextLocalId;
-  Map<SynchronizableType, LocalIdEntity> m_current;
+  Map<EntityType, LocalIdEntity> m_current;
 
   public SessionLocalIdGenerator(final SessionFactory sessionFactory, final long clientId)
   {
     m_sessionFactory = sessionFactory;
     m_clientId = clientId;
-    m_current = new HashMap<SynchronizableType, LocalIdEntity>();
+    m_current = new HashMap<EntityType, LocalIdEntity>();
 
     Transaction trx = null;
     Session session = null;
@@ -32,7 +32,7 @@ public class SessionLocalIdGenerator implements ILocalIdGenerator
       session = m_sessionFactory.openSession();
       trx = session.beginTransaction();
 
-      for (final SynchronizableType type : SynchronizableType.values()) {
+      for (final EntityType type : EntityType.values()) {
         if (session.get(LocalIdEntity.class, type) == null) {
           session.persist(new LocalIdEntity(type));
         }
@@ -55,7 +55,7 @@ public class SessionLocalIdGenerator implements ILocalIdGenerator
     return m_clientId;
   }
 
-  public synchronized String generateLocalId(final SynchronizableType entityType)
+  public synchronized String generateLocalId(final EntityType entityType)
   {
     if (!m_current.containsKey(entityType) || m_nextLocalId > m_current.get(entityType).getHiId()) {
       final LocalIdEntity localIdEntity = getNextChunk(entityType);
@@ -68,7 +68,7 @@ public class SessionLocalIdGenerator implements ILocalIdGenerator
     buffer.append(digits(m_clientId >> 32, 8));
     buffer.append(digits(m_clientId, 8));
     buffer.append('-');
-    buffer.append(digits(entityType.getValue(), 2));
+    buffer.append(digits(entityType.getCode(), 2));
     buffer.append('-');
     buffer.append(digits(localId, 14));
 
@@ -81,7 +81,7 @@ public class SessionLocalIdGenerator implements ILocalIdGenerator
     return Long.toHexString(hi | val & hi - 1).substring(1);
   }
 
-  private LocalIdEntity getNextChunk(final SynchronizableType entityType)
+  private LocalIdEntity getNextChunk(final EntityType entityType)
   {
     Transaction trx = null;
     Session session = null;
@@ -92,7 +92,7 @@ public class SessionLocalIdGenerator implements ILocalIdGenerator
 
       final Query updateQuery = session.createSQLQuery("update T4U_LOCALID set loId = hiId + 1, hiId = hiId + "
           + CHUNK_SIZE + " where entityType=:entityType");
-      updateQuery.setInteger("entityType", entityType.getValue());
+      updateQuery.setInteger("entityType", entityType.getCode());
 
       if (updateQuery.executeUpdate() != 1) {
         throw new RuntimeException("Failed to get next localId");

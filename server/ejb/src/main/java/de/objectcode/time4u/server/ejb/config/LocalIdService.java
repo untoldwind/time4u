@@ -11,7 +11,7 @@ import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.Management;
 import org.jboss.annotation.ejb.Service;
 
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.revision.LocalIdEntity;
 
 @Service(objectName = "time4u:service=LocalIdService")
@@ -27,7 +27,7 @@ public class LocalIdService implements ILocalIdService, ILocalIdServiceManagemen
 
   public void start() throws Exception
   {
-    for (final SynchronizableType type : SynchronizableType.values()) {
+    for (final EntityType type : EntityType.values()) {
       if (m_manager.find(LocalIdEntity.class, type) == null) {
         m_manager.persist(new LocalIdEntity(type));
       }
@@ -39,11 +39,11 @@ public class LocalIdService implements ILocalIdService, ILocalIdServiceManagemen
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-  public LocalIdEntity getNextChunk(final SynchronizableType entityType)
+  public LocalIdEntity getNextChunk(final EntityType entityType)
   {
     final Query updateQuery = m_manager.createNativeQuery("update T4U_LOCALID set loId = hiId + 1,hiId = hiId + "
         + CHUNK_SIZE + " where entityType=:entityType");
-    updateQuery.setParameter("entityType", entityType.getValue());
+    updateQuery.setParameter("entityType", entityType.getCode());
 
     if (updateQuery.executeUpdate() != 1) {
       throw new RuntimeException("Failed to get next localId");

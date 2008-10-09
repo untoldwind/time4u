@@ -20,7 +20,7 @@ import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
 import org.jboss.seam.annotations.security.Restrict;
 
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.ejb.seam.api.ITeamServiceLocal;
 import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
@@ -67,10 +67,10 @@ public class TeamServiceSeam implements ITeamServiceLocal
   @Restrict("#{s:hasRole('admin')}")
   public void storeTeam(final TeamEntity teamEntity)
   {
-    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(SynchronizableType.TEAM, null);
+    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(EntityType.TEAM, null);
 
     if (teamEntity.getId() == null) {
-      teamEntity.setId(m_idGenerator.generateLocalId(SynchronizableType.TEAM));
+      teamEntity.setId(m_idGenerator.generateLocalId(EntityType.TEAM));
     }
     teamEntity.setRevision(revisionLock.getLatestRevision());
     teamEntity.setLastModifiedByClient(m_idGenerator.getClientId());

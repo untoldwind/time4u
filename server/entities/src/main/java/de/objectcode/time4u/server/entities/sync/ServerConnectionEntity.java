@@ -19,7 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import de.objectcode.time4u.server.api.data.ServerConnection;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 import de.objectcode.time4u.server.utils.IKeyChainEncoder;
@@ -50,7 +50,7 @@ public class ServerConnectionEntity
   /** Synchronize every x seconds (0 = never) */
   private int m_synchronizeInterval;
 
-  private Map<SynchronizableType, SynchronizationStatusEntity> m_synchronizationStatus;
+  private Map<EntityType, SynchronizationStatusEntity> m_synchronizationStatus;
 
   @Id
   @GeneratedValue(generator = "SEQ_T4U_SERVERS")
@@ -132,12 +132,12 @@ public class ServerConnectionEntity
 
   @MapKey(name = "entityType")
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "serverConnection")
-  public Map<SynchronizableType, SynchronizationStatusEntity> getSynchronizationStatus()
+  public Map<EntityType, SynchronizationStatusEntity> getSynchronizationStatus()
   {
     return m_synchronizationStatus;
   }
 
-  public void setSynchronizationStatus(final Map<SynchronizableType, SynchronizationStatusEntity> synchronizationStatus)
+  public void setSynchronizationStatus(final Map<EntityType, SynchronizationStatusEntity> synchronizationStatus)
   {
     m_synchronizationStatus = synchronizationStatus;
   }

@@ -5,7 +5,7 @@ import java.util.List;
 import de.objectcode.time4u.client.connection.api.ConnectionException;
 import de.objectcode.time4u.client.connection.impl.common.SynchronizationContext;
 import de.objectcode.time4u.client.store.api.RepositoryException;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.filter.TaskFilter;
 
@@ -13,7 +13,7 @@ public class ReceiveTaskChangesCommand extends BaseReceiveCommand<Task>
 {
   public ReceiveTaskChangesCommand()
   {
-    super(SynchronizableType.TASK);
+    super(EntityType.TASK);
   }
 
   @Override

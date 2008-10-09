@@ -9,16 +9,16 @@ public class SynchronizationStatus implements Serializable
 {
   private static final long serialVersionUID = 7066442424410214823L;
 
-  private SynchronizableType m_entityType;
+  private EntityType m_entityType;
   private long m_lastSendRevision;
   private long m_lastReceivedRevision;
 
-  public SynchronizableType getEntityType()
+  public EntityType getEntityType()
   {
     return m_entityType;
   }
 
-  public void setEntityType(final SynchronizableType entityType)
+  public void setEntityType(final EntityType entityType)
   {
     m_entityType = entityType;
   }

@@ -17,7 +17,7 @@ import org.jboss.annotation.security.SecurityDomain;
 
 import de.objectcode.time4u.server.api.IRevisionService;
 import de.objectcode.time4u.server.api.data.RevisionStatus;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
@@ -41,7 +41,7 @@ public class RevisionServiceImpl implements IRevisionService
         .getName());
     final PersonEntity person = userAccount.getPerson();
 
-    final Map<SynchronizableType, Long> latestRevisions = new HashMap<SynchronizableType, Long>();
+    final Map<EntityType, Long> latestRevisions = new HashMap<EntityType, Long>();
 
     final Query query = m_manager.createQuery("from " + RevisionEntity.class.getName()
         + " r where r.id.part in (:part1, :part2)");
@@ -54,7 +54,7 @@ public class RevisionServiceImpl implements IRevisionService
 
       latestRevisions.put(revisionEntity.getId().getEntityType(), revisionEntity.getLatestRevision());
     }
-    for (final SynchronizableType type : SynchronizableType.values()) {
+    for (final EntityType type : EntityType.values()) {
       if (!latestRevisions.containsKey(type)) {
         latestRevisions.put(type, 0L);
       }

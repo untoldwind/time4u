@@ -17,7 +17,7 @@ import org.jboss.annotation.security.SecurityDomain;
 
 import de.objectcode.time4u.server.api.ITaskService;
 import de.objectcode.time4u.server.api.data.FilterResult;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.filter.TaskFilter;
@@ -111,14 +111,14 @@ public class TaskServiceImpl implements ITaskService
 
   public Task storeTask(final Task task)
   {
-    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(SynchronizableType.TASK, null);
+    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(EntityType.TASK, null);
 
     TaskEntity taskEntity = null;
 
     if (task.getId() != null) {
       taskEntity = m_manager.find(TaskEntity.class, task.getId());
     } else {
-      task.setId(m_idGenerator.generateLocalId(SynchronizableType.TASK));
+      task.setId(m_idGenerator.generateLocalId(EntityType.TASK));
     }
     if (taskEntity != null) {
       taskEntity.fromDTO(new EntityManagerPersistenceContext(m_manager), task);

@@ -21,17 +21,17 @@
     <xs:attribute name='month' type='xs:int' use='required'/>
     <xs:attribute name='year' type='xs:int' use='required'/>
    </xs:complexType>
-   <xs:complexType name='dayInfo'>
+   <xs:complexType name='day-info'>
     <xs:complexContent>
-     <xs:extension base='tns:dayInfoSummary'>
+     <xs:extension base='tns:day-info-summary'>
       <xs:sequence>
-       <xs:element maxOccurs='unbounded' minOccurs='0' name='workItems' nillable='true' type='tns:workItem'/>
+       <xs:element maxOccurs='unbounded' minOccurs='0' name='workItems' nillable='true' type='tns:workitem'/>
       </xs:sequence>
 
      </xs:extension>
     </xs:complexContent>
    </xs:complexType>
-   <xs:complexType name='dayInfoSummary'>
+   <xs:complexType name='day-info-summary'>
     <xs:sequence>
      <xs:element minOccurs='0' name='day' type='tns:calendar-day'/>
      <xs:element name='hasInvalidWorkItems' type='xs:boolean'/>
@@ -41,13 +41,14 @@
      <xs:element name='lastModifiedByClient' type='xs:long'/>
      <xs:element name='regularTime' type='xs:int'/>
      <xs:element name='revision' type='xs:long'/>
+     <xs:element name='sumDurations' type='xs:int'/>
     </xs:sequence>
    </xs:complexType>
-   <xs:complexType name='workItem'>
+   <xs:complexType name='workitem'>
     <xs:sequence>
      <xs:element name='begin' type='xs:int'/>
-     <xs:element minOccurs='0' name='comment' type='xs:string'/>
 
+     <xs:element minOccurs='0' name='comment' type='xs:string'/>
      <xs:element minOccurs='0' name='day' type='tns:calendar-day'/>
      <xs:element name='end' type='xs:int'/>
      <xs:element minOccurs='0' name='id' type='xs:string'/>
@@ -56,18 +57,18 @@
      <xs:element minOccurs='0' name='todoId' type='xs:string'/>
      <xs:element name='valid' type='xs:boolean'/>
     </xs:sequence>
-   </xs:complexType>
 
+   </xs:complexType>
    <xs:complexType name='filter-result'>
     <xs:sequence>
      <xs:choice maxOccurs='unbounded' minOccurs='0'>
       <xs:element name='project' type='tns:project'/>
       <xs:element name='project-summary' type='tns:project-summary'/>
       <xs:element name='task' type='tns:task'/>
-      <xs:element name='task-summary' type='tns:taskSummary'/>
-      <xs:element name='dayinfo' type='tns:dayInfo'/>
-      <xs:element name='dayinfo-summary' type='tns:dayInfoSummary'/>
+      <xs:element name='task-summary' type='tns:task-summary'/>
+      <xs:element name='dayinfo' type='tns:day-info'/>
 
+      <xs:element name='dayinfo-summary' type='tns:day-info-summary'/>
      </xs:choice>
     </xs:sequence>
    </xs:complexType>
@@ -76,8 +77,8 @@
      <xs:extension base='tns:project-summary'>
       <xs:sequence>
        <xs:element minOccurs='0' name='description' type='xs:string'/>
-       <xs:element name='metaProperties'>
 
+       <xs:element name='metaProperties'>
         <xs:complexType>
          <xs:sequence>
           <xs:element maxOccurs='unbounded' minOccurs='0' name='entry'>
@@ -86,8 +87,8 @@
              <xs:element minOccurs='0' name='key' type='xs:string'/>
              <xs:element minOccurs='0' name='value' type='tns:meta-property'/>
             </xs:sequence>
-           </xs:complexType>
 
+           </xs:complexType>
           </xs:element>
          </xs:sequence>
         </xs:complexType>
@@ -96,8 +97,8 @@
      </xs:extension>
     </xs:complexContent>
    </xs:complexType>
-   <xs:complexType name='project-summary'>
 
+   <xs:complexType name='project-summary'>
     <xs:sequence>
      <xs:element name='lastModifiedByClient' type='xs:long'/>
     </xs:sequence>
@@ -106,8 +107,8 @@
     <xs:attribute name='id' type='xs:string'/>
     <xs:attribute name='name' type='xs:string'/>
     <xs:attribute name='parentId' type='xs:string'/>
-    <xs:attribute name='revision' type='xs:long' use='required'/>
 
+    <xs:attribute name='revision' type='xs:long' use='required'/>
    </xs:complexType>
    <xs:complexType name='meta-property'>
     <xs:sequence/>
@@ -116,9 +117,9 @@
     <xs:attribute name='value' type='xs:string'/>
    </xs:complexType>
    <xs:complexType name='task'>
-    <xs:complexContent>
 
-     <xs:extension base='tns:taskSummary'>
+    <xs:complexContent>
+     <xs:extension base='tns:task-summary'>
       <xs:sequence>
        <xs:element minOccurs='0' name='description' type='xs:string'/>
        <xs:element name='metaProperties'>
@@ -126,8 +127,8 @@
          <xs:sequence>
           <xs:element maxOccurs='unbounded' minOccurs='0' name='entry'>
            <xs:complexType>
-            <xs:sequence>
 
+            <xs:sequence>
              <xs:element minOccurs='0' name='key' type='xs:string'/>
              <xs:element minOccurs='0' name='value' type='tns:meta-property'/>
             </xs:sequence>
@@ -136,18 +137,18 @@
          </xs:sequence>
         </xs:complexType>
        </xs:element>
-      </xs:sequence>
 
+      </xs:sequence>
      </xs:extension>
     </xs:complexContent>
    </xs:complexType>
-   <xs:complexType name='taskSummary'>
+   <xs:complexType name='task-summary'>
     <xs:sequence>
      <xs:element name='active' type='xs:boolean'/>
      <xs:element name='deleted' type='xs:boolean'/>
      <xs:element minOccurs='0' name='id' type='xs:string'/>
-     <xs:element name='lastModifiedByClient' type='xs:long'/>
 
+     <xs:element name='lastModifiedByClient' type='xs:long'/>
      <xs:element minOccurs='0' name='name' type='xs:string'/>
      <xs:element minOccurs='0' name='projectId' type='xs:string'/>
      <xs:element name='revision' type='xs:long'/>
@@ -156,28 +157,28 @@
   </xs:schema>
  </types>
  <message name='IWorkItemService_getDayInfoSummariesResponse'>
-  <part name='return' type='ns2:filter-result'></part>
 
+  <part name='return' type='ns2:filter-result'></part>
  </message>
  <message name='IWorkItemService_getDayInfoResponse'>
-  <part name='return' type='ns2:dayInfo'></part>
+  <part name='return' type='ns2:day-info'></part>
  </message>
  <message name='IWorkItemService_getDayInfoSummaries'>
   <part name='arg0' type='ns1:dayinfo-filter'></part>
  </message>
  <message name='IWorkItemService_storeDayInfoResponse'>
-  <part name='return' type='ns2:dayInfo'></part>
 
+  <part name='return' type='ns2:day-info'></part>
  </message>
  <message name='IWorkItemService_getDayInfo'>
   <part name='arg0' type='ns2:calendar-day'></part>
  </message>
  <message name='IWorkItemService_storeDayInfo'>
-  <part name='arg0' type='ns2:dayInfo'></part>
+  <part name='arg0' type='ns2:day-info'></part>
  </message>
  <message name='IWorkItemService_getDayInfosResponse'>
-  <part name='return' type='ns2:filter-result'></part>
 
+  <part name='return' type='ns2:filter-result'></part>
  </message>
  <message name='IWorkItemService_getDayInfos'>
   <part name='arg0' type='ns1:dayinfo-filter'></part>
@@ -186,8 +187,8 @@
   <operation name='getDayInfo' parameterOrder='arg0'>
    <input message='tns:IWorkItemService_getDayInfo'></input>
    <output message='tns:IWorkItemService_getDayInfoResponse'></output>
-  </operation>
 
+  </operation>
   <operation name='getDayInfoSummaries' parameterOrder='arg0'>
    <input message='tns:IWorkItemService_getDayInfoSummaries'></input>
    <output message='tns:IWorkItemService_getDayInfoSummariesResponse'></output>
@@ -196,8 +197,8 @@
    <input message='tns:IWorkItemService_getDayInfos'></input>
    <output message='tns:IWorkItemService_getDayInfosResponse'></output>
   </operation>
-  <operation name='storeDayInfo' parameterOrder='arg0'>
 
+  <operation name='storeDayInfo' parameterOrder='arg0'>
    <input message='tns:IWorkItemService_storeDayInfo'></input>
    <output message='tns:IWorkItemService_storeDayInfoResponse'></output>
   </operation>
@@ -206,8 +207,8 @@
   <soap:binding style='rpc' transport='http://schemas.xmlsoap.org/soap/http'/>
   <operation name='getDayInfo'>
    <soap:operation soapAction=''/>
-   <input>
 
+   <input>
     <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
    </input>
    <output>
@@ -216,8 +217,8 @@
   </operation>
   <operation name='getDayInfoSummaries'>
    <soap:operation soapAction=''/>
-   <input>
 
+   <input>
     <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
    </input>
    <output>
@@ -226,8 +227,8 @@
   </operation>
   <operation name='getDayInfos'>
    <soap:operation soapAction=''/>
-   <input>
 
+   <input>
     <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
    </input>
    <output>
@@ -236,8 +237,8 @@
   </operation>
   <operation name='storeDayInfo'>
    <soap:operation soapAction=''/>
-   <input>
 
+   <input>
     <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
    </input>
    <output>
@@ -246,8 +247,8 @@
   </operation>
  </binding>
  <service name='WorkItemServiceWSService'>
-  <port binding='tns:IWorkItemServiceBinding' name='WorkItemServiceWSPort'>
 
+  <port binding='tns:IWorkItemServiceBinding' name='WorkItemServiceWSPort'>
    <soap:address location='http://127.0.0.1:8080/time4u-ws/secure/WorkItemService'/>
   </port>
  </service>

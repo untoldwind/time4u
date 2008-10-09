@@ -5,8 +5,8 @@ import java.util.List;
 import de.objectcode.time4u.client.connection.api.ConnectionException;
 import de.objectcode.time4u.client.connection.impl.common.SynchronizationContext;
 import de.objectcode.time4u.client.store.api.RepositoryException;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.Project;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.api.filter.ProjectFilter;
 
 /**
@@ -18,7 +18,7 @@ public class ReceiveProjectChangesCommand extends BaseReceiveCommand<Project>
 {
   public ReceiveProjectChangesCommand()
   {
-    super(SynchronizableType.PROJECT);
+    super(EntityType.PROJECT);
   }
 
   @Override

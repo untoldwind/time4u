@@ -3,8 +3,8 @@ package de.objectcode.time4u.client.store.api;
 import java.util.List;
 import java.util.Map;
 
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.ServerConnection;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.api.data.SynchronizationStatus;
 
 /**
@@ -23,8 +23,7 @@ public interface IServerConnectionRepository
 
   void deleteServerConnection(ServerConnection serverConnection) throws RepositoryException;
 
-  Map<SynchronizableType, SynchronizationStatus> getSynchronizationStatus(long serverConnectionId)
-      throws RepositoryException;
+  Map<EntityType, SynchronizationStatus> getSynchronizationStatus(long serverConnectionId) throws RepositoryException;
 
   void storeSynchronizationStatus(long serverConnectionId, SynchronizationStatus synchronizationStatus)
       throws RepositoryException;

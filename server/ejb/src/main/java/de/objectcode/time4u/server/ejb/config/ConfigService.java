@@ -17,7 +17,7 @@ import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.Management;
 import org.jboss.annotation.ejb.Service;
 
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.ClientEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
@@ -47,7 +47,7 @@ public class ConfigService implements IConfigServiceManagement, ILocalIdGenerato
 
   private long m_serverId = 0L;
 
-  Map<SynchronizableType, LocalIdEntity> m_current;
+  Map<EntityType, LocalIdEntity> m_current;
   long m_nextLocalId;
 
   public long getServerId()
@@ -60,7 +60,7 @@ public class ConfigService implements IConfigServiceManagement, ILocalIdGenerato
     return m_serverId;
   }
 
-  public synchronized String generateLocalId(final SynchronizableType entityType)
+  public synchronized String generateLocalId(final EntityType entityType)
   {
     if (!m_current.containsKey(entityType) || m_nextLocalId > m_current.get(entityType).getHiId()) {
       final LocalIdEntity localIdEntity = m_localIdCreator.getNextChunk(entityType);
@@ -73,7 +73,7 @@ public class ConfigService implements IConfigServiceManagement, ILocalIdGenerato
     buffer.append(digits(m_serverId >> 32, 8));
     buffer.append(digits(m_serverId, 8));
     buffer.append('-');
-    buffer.append(digits(entityType.getValue(), 2));
+    buffer.append(digits(entityType.getCode(), 2));
     buffer.append('-');
     buffer.append(digits(localId, 14));
 
@@ -114,7 +114,7 @@ public class ConfigService implements IConfigServiceManagement, ILocalIdGenerato
 
       m_manager.persist(clientEntity);
     }
-    m_current = new HashMap<SynchronizableType, LocalIdEntity>();
+    m_current = new HashMap<EntityType, LocalIdEntity>();
 
     if (m_manager.find(UserAccountEntity.class, "admin") == null) {
       initializeAdmin();
@@ -133,8 +133,8 @@ public class ConfigService implements IConfigServiceManagement, ILocalIdGenerato
     final IPasswordEncoder encoder = new DefaultPasswordEncoder();
 
     final long serverId = getServerId();
-    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(SynchronizableType.PERSON, null);
-    final String personId = generateLocalId(SynchronizableType.PERSON);
+    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(EntityType.PERSON, null);
+    final String personId = generateLocalId(EntityType.PERSON);
     final PersonEntity person = new PersonEntity(personId, revisionLock.getLatestRevision(), serverId);
     person.setSurname("admin");
 

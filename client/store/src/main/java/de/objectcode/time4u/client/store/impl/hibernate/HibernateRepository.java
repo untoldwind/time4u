@@ -32,8 +32,8 @@ import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
 import de.objectcode.time4u.client.store.impl.hibernate.entities.ClientDataEntity;
 import de.objectcode.time4u.client.store.impl.util.MonitoringProxy;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.Person;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.entities.ActiveWorkItemEntity;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.DayTagEntity;
@@ -154,7 +154,7 @@ public class HibernateRepository implements IRepository
     return m_keyChainEncoder;
   }
 
-  String generateLocalId(final SynchronizableType entityTpye)
+  String generateLocalId(final EntityType entityTpye)
   {
     return m_idGenerator.generateLocalId(entityTpye);
   }
@@ -212,7 +212,7 @@ public class HibernateRepository implements IRepository
       public Person perform(final Session session)
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
-        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.PERSON, null);
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PERSON, null);
 
         final PersonEntity personEntity = new PersonEntity(ownerId, revisionLock.getLatestRevision(), m_clientId);
 
@@ -250,21 +250,21 @@ public class HibernateRepository implements IRepository
 
   }
 
-  public Map<SynchronizableType, Long> getRevisionStatus() throws RepositoryException
+  public Map<EntityType, Long> getRevisionStatus() throws RepositoryException
   {
-    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Map<SynchronizableType, Long>>() {
-      public Map<SynchronizableType, Long> perform(final Session session)
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Map<EntityType, Long>>() {
+      public Map<EntityType, Long> perform(final Session session)
       {
         final Criteria criteria = session.createCriteria(RevisionEntity.class);
         criteria.add(Restrictions.in("id.part", new Object[] { "<default>", m_owner.getId() }));
 
-        final Map<SynchronizableType, Long> result = new HashMap<SynchronizableType, Long>();
+        final Map<EntityType, Long> result = new HashMap<EntityType, Long>();
 
         for (final Object row : criteria.list()) {
           final RevisionEntity revisionEntity = (RevisionEntity) row;
           result.put(revisionEntity.getId().getEntityType(), revisionEntity.getLatestRevision());
         }
-        for (final SynchronizableType type : SynchronizableType.values()) {
+        for (final EntityType type : EntityType.values()) {
           if (!result.containsKey(type)) {
             result.put(type, 0L);
           }
@@ -309,8 +309,8 @@ public class HibernateRepository implements IRepository
           m_idGenerator = new SessionLocalIdGenerator(session.getSessionFactory(), clientId);
 
           final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
-          final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.PERSON, null);
-          final String personId = m_idGenerator.generateLocalId(SynchronizableType.PERSON);
+          final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PERSON, null);
+          final String personId = m_idGenerator.generateLocalId(EntityType.PERSON);
           final PersonEntity ownerPerson = new PersonEntity(personId, revisionLock.getLatestRevision(), clientId);
           ownerPerson.setSurname(System.getProperty("user.name"));
 

@@ -1,6 +1,6 @@
 package de.objectcode.time4u.server.entities.revision;
 
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 
 /**
  * Revision number generator.
@@ -9,5 +9,5 @@ import de.objectcode.time4u.server.api.data.SynchronizableType;
  */
 public interface IRevisionGenerator
 {
-  IRevisionLock getNextRevision(SynchronizableType entityType, String part);
+  IRevisionLock getNextRevision(EntityType entityType, String part);
 }

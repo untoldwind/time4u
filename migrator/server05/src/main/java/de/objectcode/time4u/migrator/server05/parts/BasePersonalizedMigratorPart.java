@@ -12,7 +12,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import de.objectcode.time4u.migrator.server05.old.entities.OldPersons;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
@@ -25,7 +25,7 @@ public abstract class BasePersonalizedMigratorPart<T> extends BaseMigratorPart<T
   protected PersonEntity m_newPerson;
   protected String m_personIdProperty;
 
-  protected BasePersonalizedMigratorPart(final SynchronizableType type, final Class<T> oldClass,
+  protected BasePersonalizedMigratorPart(final EntityType type, final Class<T> oldClass,
       final String personIdProperty)
   {
     super(type, oldClass);
@@ -73,7 +73,7 @@ public abstract class BasePersonalizedMigratorPart<T> extends BaseMigratorPart<T
     try {
       trx = newSession.beginTransaction();
 
-      m_newPerson = (PersonEntity) newSession.get(PersonEntity.class, migrateId(SynchronizableType.PERSON, m_oldPerson
+      m_newPerson = (PersonEntity) newSession.get(PersonEntity.class, migrateId(EntityType.PERSON, m_oldPerson
           .getId()));
 
       final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(newSession);

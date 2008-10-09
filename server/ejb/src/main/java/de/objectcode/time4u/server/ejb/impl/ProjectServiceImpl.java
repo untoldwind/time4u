@@ -19,7 +19,7 @@ import de.objectcode.time4u.server.api.IProjectService;
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.filter.ProjectFilter;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.context.EntityManagerPersistenceContext;
@@ -110,14 +110,14 @@ public class ProjectServiceImpl implements IProjectService
 
   public Project storeProject(final Project project)
   {
-    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(SynchronizableType.PROJECT, null);
+    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(EntityType.PROJECT, null);
 
     ProjectEntity projectEntity = null;
 
     if (project.getId() != null) {
       projectEntity = m_manager.find(ProjectEntity.class, project.getId());
     } else {
-      project.setId(m_idGenerator.generateLocalId(SynchronizableType.PROJECT));
+      project.setId(m_idGenerator.generateLocalId(EntityType.PROJECT));
     }
     if (projectEntity != null) {
       projectEntity.fromDTO(new EntityManagerPersistenceContext(m_manager), project);

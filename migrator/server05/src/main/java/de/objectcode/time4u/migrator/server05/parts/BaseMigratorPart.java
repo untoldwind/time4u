@@ -8,7 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
@@ -16,12 +16,12 @@ import de.objectcode.time4u.server.entities.revision.SessionRevisionGenerator;
 
 public abstract class BaseMigratorPart<T> implements IMigratorPart
 {
-  protected SynchronizableType m_type;
+  protected EntityType m_type;
   protected Class<T> m_oldClass;
 
   protected ILocalIdGenerator m_idGenerator;
 
-  protected BaseMigratorPart(final SynchronizableType type, final Class<T> oldClass)
+  protected BaseMigratorPart(final EntityType type, final Class<T> oldClass)
   {
     m_type = type;
     m_oldClass = oldClass;
@@ -82,7 +82,7 @@ public abstract class BaseMigratorPart<T> implements IMigratorPart
     }
   }
 
-  protected String migrateId(final SynchronizableType type, final long oldId)
+  protected String migrateId(final EntityType type, final long oldId)
   {
     final StringBuffer buffer = new StringBuffer();
     if ((oldId & 0xffffffffffffffL) != oldId) {
@@ -97,7 +97,7 @@ public abstract class BaseMigratorPart<T> implements IMigratorPart
     buffer.append(digits(m_idGenerator.getClientId() >> 32, 8));
     buffer.append(digits(m_idGenerator.getClientId(), 8));
     buffer.append('-');
-    buffer.append(digits(type.getValue() | 0x80, 2));
+    buffer.append(digits(type.getCode() | 0x80, 2));
     buffer.append('-');
     buffer.append(digits(oldId, 14));
 

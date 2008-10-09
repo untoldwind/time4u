@@ -11,7 +11,7 @@ import org.hibernate.criterion.Restrictions;
 import de.objectcode.time4u.client.store.api.ITaskRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.client.store.api.event.TaskRepositoryEvent;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.filter.TaskFilter;
@@ -198,10 +198,10 @@ public class HibernateTaskRepository implements ITaskRepository
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
 
-        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.TASK, null);
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.TASK, null);
 
         if (task.getId() == null) {
-          task.setId(m_repository.generateLocalId(SynchronizableType.TASK));
+          task.setId(m_repository.generateLocalId(EntityType.TASK));
         }
 
         final ProjectEntity projectEntity = task.getProjectId() != null ? (ProjectEntity) session.get(

@@ -8,7 +8,7 @@ import org.hibernate.criterion.Restrictions;
 
 import de.objectcode.time4u.migrator.server05.old.entities.OldPersonsToTeams;
 import de.objectcode.time4u.migrator.server05.old.entities.OldTeams;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
@@ -17,7 +17,7 @@ public class TeamMigratorPart extends BaseMigratorPart<OldTeams>
 {
   public TeamMigratorPart()
   {
-    super(SynchronizableType.TEAM, OldTeams.class);
+    super(EntityType.TEAM, OldTeams.class);
   }
 
   @SuppressWarnings("unchecked")
@@ -25,12 +25,12 @@ public class TeamMigratorPart extends BaseMigratorPart<OldTeams>
   protected void migrateEntity(final Session oldSession, final Session newSession, final OldTeams oldEntity,
       final IRevisionLock revisionLock)
   {
-    final TeamEntity newTeam = new TeamEntity(migrateId(SynchronizableType.TEAM, oldEntity.getId()), revisionLock
+    final TeamEntity newTeam = new TeamEntity(migrateId(EntityType.TEAM, oldEntity.getId()), revisionLock
         .getLatestRevision(), m_idGenerator.getClientId(), oldEntity.getName());
 
     newTeam.getOwners()
         .add(
-            (PersonEntity) newSession.get(PersonEntity.class, migrateId(SynchronizableType.PERSON, oldEntity
+            (PersonEntity) newSession.get(PersonEntity.class, migrateId(EntityType.PERSON, oldEntity
                 .getOwnerId())));
 
     final Criteria memberCriteria = oldSession.createCriteria(OldPersonsToTeams.class);
@@ -40,7 +40,7 @@ public class TeamMigratorPart extends BaseMigratorPart<OldTeams>
 
     for (final OldPersonsToTeams personToTeam : personToTeams) {
       newTeam.getMembers().add(
-          (PersonEntity) newSession.get(PersonEntity.class, migrateId(SynchronizableType.PERSON, personToTeam.getId()
+          (PersonEntity) newSession.get(PersonEntity.class, migrateId(EntityType.PERSON, personToTeam.getId()
               .getPersonId())));
     }
 

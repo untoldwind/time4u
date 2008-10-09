@@ -6,7 +6,7 @@ import de.objectcode.time4u.client.connection.api.ConnectionException;
 import de.objectcode.time4u.client.connection.impl.common.SynchronizationContext;
 import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.server.api.data.DayInfo;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
 
 /**
@@ -18,7 +18,7 @@ public class SendDayInfoChangesCommand extends BaseSendCommand<DayInfo>
 {
   public SendDayInfoChangesCommand()
   {
-    super(SynchronizableType.DAYINFO);
+    super(EntityType.DAYINFO);
   }
 
   @Override

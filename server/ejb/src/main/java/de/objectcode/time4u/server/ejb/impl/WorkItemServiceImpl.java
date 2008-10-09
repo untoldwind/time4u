@@ -22,7 +22,7 @@ import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
 import de.objectcode.time4u.server.api.data.FilterResult;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.WorkItem;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
@@ -127,12 +127,12 @@ public class WorkItemServiceImpl implements IWorkItemService
     final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, m_sessionContext.getCallerPrincipal()
         .getName());
     final PersonEntity person = userAccount.getPerson();
-    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(SynchronizableType.DAYINFO, person.getId());
+    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(EntityType.DAYINFO, person.getId());
 
     DayInfoEntity dayInfoEntity = null;
 
     if (dayInfo.getId() == null) {
-      dayInfo.setId(m_idGenerator.generateLocalId(SynchronizableType.DAYINFO));
+      dayInfo.setId(m_idGenerator.generateLocalId(EntityType.DAYINFO));
     } else {
       dayInfoEntity = m_manager.find(DayInfoEntity.class, dayInfo.getId());
     }
@@ -146,7 +146,7 @@ public class WorkItemServiceImpl implements IWorkItemService
     if (dayInfo.getWorkItems() != null) {
       for (final WorkItem workItem : dayInfo.getWorkItems()) {
         if (workItem.getId() == null) {
-          workItem.setId(m_idGenerator.generateLocalId(SynchronizableType.DAYINFO));
+          workItem.setId(m_idGenerator.generateLocalId(EntityType.DAYINFO));
         }
       }
     }

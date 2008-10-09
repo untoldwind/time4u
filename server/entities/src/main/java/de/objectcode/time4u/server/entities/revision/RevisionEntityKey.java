@@ -7,35 +7,35 @@ import javax.persistence.Embeddable;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 
 @Embeddable
 public class RevisionEntityKey implements Serializable
 {
   private static final long serialVersionUID = -143072929625119307L;
 
-  private SynchronizableType m_entityType;
+  private EntityType m_entityType;
   private String m_part;
 
   protected RevisionEntityKey()
   {
   }
 
-  public RevisionEntityKey(final SynchronizableType entityType, final String part)
+  public RevisionEntityKey(final EntityType entityType, final String part)
   {
     m_part = part;
     m_entityType = entityType;
   }
 
   @Type(type = "de.objectcode.time4u.server.entities.util.GenericEnumUserType", parameters = {
-      @Parameter(name = "enumClass", value = "de.objectcode.time4u.server.api.data.SynchronizableType"),
-      @Parameter(name = "identifierMethod", value = "getValue"), @Parameter(name = "valueOfMethod", value = "forValue") })
-  public SynchronizableType getEntityType()
+      @Parameter(name = "enumClass", value = "de.objectcode.time4u.server.api.data.EntityType"),
+      @Parameter(name = "identifierMethod", value = "getCode"), @Parameter(name = "valueOfMethod", value = "forCode") })
+  public EntityType getEntityType()
   {
     return m_entityType;
   }
 
-  public void setEntityType(final SynchronizableType entityType)
+  public void setEntityType(final EntityType entityType)
   {
     m_entityType = entityType;
   }
@@ -65,7 +65,7 @@ public class RevisionEntityKey implements Serializable
   @Override
   public int hashCode()
   {
-    int hash = m_entityType != null ? m_entityType.getValue() : -1;
+    int hash = m_entityType != null ? m_entityType.getCode() : -1;
 
     hash = hash + 13 * m_part.hashCode();
 

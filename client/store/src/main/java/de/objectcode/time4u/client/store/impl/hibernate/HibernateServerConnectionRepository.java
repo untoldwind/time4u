@@ -12,8 +12,8 @@ import org.hibernate.criterion.Restrictions;
 
 import de.objectcode.time4u.client.store.api.IServerConnectionRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.ServerConnection;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.api.data.SynchronizationStatus;
 import de.objectcode.time4u.server.entities.context.SessionPersistenceContext;
 import de.objectcode.time4u.server.entities.sync.ServerConnectionEntity;
@@ -125,18 +125,18 @@ public class HibernateServerConnectionRepository implements IServerConnectionRep
   /**
    * {@inheritDoc}
    */
-  public Map<SynchronizableType, SynchronizationStatus> getSynchronizationStatus(final long serverConnectionId)
+  public Map<EntityType, SynchronizationStatus> getSynchronizationStatus(final long serverConnectionId)
       throws RepositoryException
   {
     return m_hibernateTemplate
-        .executeInTransaction(new HibernateTemplate.Operation<Map<SynchronizableType, SynchronizationStatus>>() {
-          public Map<SynchronizableType, SynchronizationStatus> perform(final Session session)
+        .executeInTransaction(new HibernateTemplate.Operation<Map<EntityType, SynchronizationStatus>>() {
+          public Map<EntityType, SynchronizationStatus> perform(final Session session)
           {
             final Criteria criteria = session.createCriteria(SynchronizationStatusEntity.class);
 
             criteria.add(Restrictions.eq("serverConnection.id", serverConnectionId));
 
-            final Map<SynchronizableType, SynchronizationStatus> result = new HashMap<SynchronizableType, SynchronizationStatus>();
+            final Map<EntityType, SynchronizationStatus> result = new HashMap<EntityType, SynchronizationStatus>();
             for (final Object row : criteria.list()) {
               final SynchronizationStatusEntity synchronizationStatusEntity = (SynchronizationStatusEntity) row;
               final SynchronizationStatus synchronizationStatus = new SynchronizationStatus();
@@ -146,7 +146,7 @@ public class HibernateServerConnectionRepository implements IServerConnectionRep
               result.put(synchronizationStatusEntity.getEntityType(), synchronizationStatus);
             }
 
-            for (final SynchronizableType type : SynchronizableType.values()) {
+            for (final EntityType type : EntityType.values()) {
               if (!result.containsKey(type)) {
                 final SynchronizationStatus synchronizationStatus = new SynchronizationStatus();
                 synchronizationStatus.setEntityType(type);

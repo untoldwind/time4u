@@ -2,11 +2,14 @@ package de.objectcode.time4u.server.api.data;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * DayInfo DTO object.
  * 
  * @author junglas
  */
+@XmlType(name = "day-info")
 public class DayInfo extends DayInfoSummary
 {
   private static final long serialVersionUID = -2048583139605476186L;

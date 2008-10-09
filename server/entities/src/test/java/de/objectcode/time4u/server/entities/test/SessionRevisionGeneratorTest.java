@@ -16,7 +16,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.SessionRevisionGenerator;
 
@@ -40,7 +40,7 @@ public class SessionRevisionGeneratorTest
 
       final IRevisionGenerator generator = new SessionRevisionGenerator(session);
 
-      final long nextRevision = generator.getNextRevision(SynchronizableType.PROJECT, null).getLatestRevision();
+      final long nextRevision = generator.getNextRevision(EntityType.PROJECT, null).getLatestRevision();
 
       trx.commit();
       session.close();
@@ -80,7 +80,7 @@ public class SessionRevisionGeneratorTest
 
           final IRevisionGenerator generator = new SessionRevisionGenerator(session);
 
-          revisions.add(generator.getNextRevision(SynchronizableType.PROJECT, null).getLatestRevision());
+          revisions.add(generator.getNextRevision(EntityType.PROJECT, null).getLatestRevision());
 
           inNextRevision.incrementAndGet();
 
@@ -168,7 +168,7 @@ public class SessionRevisionGeneratorTest
 
           final IRevisionGenerator generator = new SessionRevisionGenerator(session);
 
-          revisions.add(generator.getNextRevision(SynchronizableType.TASK, null).getLatestRevision());
+          revisions.add(generator.getNextRevision(EntityType.TASK, null).getLatestRevision());
 
           inNextRevision.incrementAndGet();
 

@@ -7,13 +7,13 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 
 @Entity
 @Table(name = "T4U_LOCALID")
 public class LocalIdEntity
 {
-  private SynchronizableType m_entityType;
+  private EntityType m_entityType;
   private long m_loId;
   private long m_hiId;
 
@@ -26,21 +26,21 @@ public class LocalIdEntity
     m_hiId = 0;
   }
 
-  public LocalIdEntity(final SynchronizableType entityType)
+  public LocalIdEntity(final EntityType entityType)
   {
     m_entityType = entityType;
   }
 
   @Id
   @Type(type = "de.objectcode.time4u.server.entities.util.GenericEnumUserType", parameters = {
-      @Parameter(name = "enumClass", value = "de.objectcode.time4u.server.api.data.SynchronizableType"),
-      @Parameter(name = "identifierMethod", value = "getValue"), @Parameter(name = "valueOfMethod", value = "forValue") })
-  public SynchronizableType getEntityType()
+      @Parameter(name = "enumClass", value = "de.objectcode.time4u.server.api.data.EntityType"),
+      @Parameter(name = "identifierMethod", value = "getCode"), @Parameter(name = "valueOfMethod", value = "forCode") })
+  public EntityType getEntityType()
   {
     return m_entityType;
   }
 
-  public void setEntityType(final SynchronizableType entityType)
+  public void setEntityType(final EntityType entityType)
   {
     m_entityType = entityType;
   }

@@ -5,8 +5,8 @@ import org.hibernate.Session;
 import de.objectcode.time4u.client.store.api.IPersonRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.client.store.api.event.PersonRepositoryEvent;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.Person;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
@@ -37,10 +37,10 @@ public class HibernatePersonRepository implements IPersonRepository
       public Person perform(final Session session)
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
-        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.PERSON, null);
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PERSON, null);
 
         if (person.getId() == null) {
-          person.setId(m_repository.generateLocalId(SynchronizableType.PERSON));
+          person.setId(m_repository.generateLocalId(EntityType.PERSON));
         }
         final PersonEntity personEntity = new PersonEntity(person.getId(), revisionLock.getLatestRevision(),
             m_repository.getClientId());

@@ -1,5 +1,7 @@
 package de.objectcode.time4u.server.api.data;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Task DTO object.
  * 
@@ -7,6 +9,7 @@ package de.objectcode.time4u.server.api.data;
  * 
  * @author junglas
  */
+@XmlType(name = "task-summary")
 public class TaskSummary implements ISynchronizableData
 {
   private static final long serialVersionUID = -3947869946239621847L;

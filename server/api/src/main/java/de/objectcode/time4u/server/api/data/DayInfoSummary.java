@@ -1,5 +1,7 @@
 package de.objectcode.time4u.server.api.data;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * DayInfo DTO object.
  * 
@@ -7,9 +9,9 @@ package de.objectcode.time4u.server.api.data;
  * 
  * @author junglas
  */
+@XmlType(name = "day-info-summary")
 public class DayInfoSummary implements ISynchronizableData
 {
-
   private static final long serialVersionUID = 4834724509315672372L;
 
   /** Internal server id of the dayinfo. */

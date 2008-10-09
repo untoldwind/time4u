@@ -4,8 +4,8 @@ import java.util.Map;
 
 import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.Person;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
 
 /**
  * Client data repository interface.
@@ -37,7 +37,7 @@ public interface IRepository
 
   void changeOwnerId(String ownerId) throws RepositoryException;
 
-  Map<SynchronizableType, Long> getRevisionStatus() throws RepositoryException;
+  Map<EntityType, Long> getRevisionStatus() throws RepositoryException;
 
   void addRepositoryListener(RepositoryEventType eventType, IRepositoryListener listener);
 

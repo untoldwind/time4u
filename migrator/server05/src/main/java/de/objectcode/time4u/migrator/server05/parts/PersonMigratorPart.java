@@ -3,7 +3,7 @@ package de.objectcode.time4u.migrator.server05.parts;
 import org.hibernate.Session;
 
 import de.objectcode.time4u.migrator.server05.old.entities.OldPersons;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 import de.objectcode.time4u.server.entities.account.UserRoleEntity;
@@ -17,7 +17,7 @@ public class PersonMigratorPart extends BaseMigratorPart<OldPersons>
 
   public PersonMigratorPart()
   {
-    super(SynchronizableType.PERSON, OldPersons.class);
+    super(EntityType.PERSON, OldPersons.class);
 
     m_passwordEncoder = new DefaultPasswordEncoder();
   }
@@ -41,7 +41,7 @@ public class PersonMigratorPart extends BaseMigratorPart<OldPersons>
       givenName += names[i];
     }
 
-    final PersonEntity newPerson = new PersonEntity(migrateId(SynchronizableType.PERSON, oldEntity.getId()),
+    final PersonEntity newPerson = new PersonEntity(migrateId(EntityType.PERSON, oldEntity.getId()),
         revisionLock.getLatestRevision(), m_idGenerator.getClientId());
     newPerson.setGivenName(givenName);
     newPerson.setSurname(surname);

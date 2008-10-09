@@ -10,17 +10,17 @@ import java.util.Set;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
 import de.objectcode.time4u.server.entities.revision.SessionLocalIdGenerator;
 
 @Test(groups = "session-localid-generator")
 public class SessionLocalIdGeneratorTest
 {
-  Map<SynchronizableType, Set<String>> m_generatedIds = new HashMap<SynchronizableType, Set<String>>();
+  Map<EntityType, Set<String>> m_generatedIds = new HashMap<EntityType, Set<String>>();
 
   @Test(dataProvider = "types")
-  public void test1(final SynchronizableType type) throws Exception
+  public void test1(final EntityType type) throws Exception
   {
     Set<String> idSet;
     synchronized (m_generatedIds) {
@@ -42,7 +42,7 @@ public class SessionLocalIdGeneratorTest
   }
 
   @Test(dependsOnMethods = "test1", dataProvider = "types")
-  public void test2(final SynchronizableType type) throws Exception
+  public void test2(final EntityType type) throws Exception
   {
     Set<String> idSet;
     synchronized (m_generatedIds) {
@@ -66,10 +66,10 @@ public class SessionLocalIdGeneratorTest
   @DataProvider(name = "types")
   public Object[][] getEntityTypes()
   {
-    final Object[][] result = new Object[SynchronizableType.values().length][];
+    final Object[][] result = new Object[EntityType.values().length][];
 
     int i = 0;
-    for (final SynchronizableType type : SynchronizableType.values()) {
+    for (final EntityType type : EntityType.values()) {
       result[i++] = new Object[] { type };
     }
 

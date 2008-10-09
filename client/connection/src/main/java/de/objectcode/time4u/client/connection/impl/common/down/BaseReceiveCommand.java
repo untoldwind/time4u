@@ -11,8 +11,8 @@ import de.objectcode.time4u.client.connection.impl.common.ISynchronizationComman
 import de.objectcode.time4u.client.connection.impl.common.SynchronizationContext;
 import de.objectcode.time4u.client.store.api.IServerConnectionRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.ISynchronizableData;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
 import de.objectcode.time4u.server.api.data.SynchronizationStatus;
 
 /**
@@ -28,9 +28,9 @@ public abstract class BaseReceiveCommand<T extends ISynchronizableData> implemen
 {
   private final static int REVISION_CHUNK = 10;
 
-  protected final SynchronizableType m_entityType;
+  protected final EntityType m_entityType;
 
-  protected BaseReceiveCommand(final SynchronizableType entityType)
+  protected BaseReceiveCommand(final EntityType entityType)
   {
     m_entityType = entityType;
   }

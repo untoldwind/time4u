@@ -17,7 +17,7 @@ import de.objectcode.time4u.client.store.api.event.WorkItemRepositoryEvent;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
-import de.objectcode.time4u.server.api.data.SynchronizableType;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.TimePolicy;
 import de.objectcode.time4u.server.api.data.WorkItem;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
@@ -163,13 +163,13 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
       public DayInfo perform(final Session session)
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
-        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.DAYINFO, m_repository
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.DAYINFO, m_repository
             .getOwner().getId());
 
         DayInfoEntity dayInfoEntity = null;
 
         if (dayInfo.getId() == null) {
-          dayInfo.setId(m_repository.generateLocalId(SynchronizableType.DAYINFO));
+          dayInfo.setId(m_repository.generateLocalId(EntityType.DAYINFO));
         } else {
           dayInfoEntity = (DayInfoEntity) session.get(DayInfoEntity.class, dayInfo.getId());
         }
@@ -209,8 +209,8 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
           public DayInfoWorkItemHolder perform(final Session session)
           {
             final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
-            final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.DAYINFO,
-                m_repository.getOwner().getId());
+            final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.DAYINFO, m_repository
+                .getOwner().getId());
 
             WorkItemEntity workItemEntity;
 
@@ -231,7 +231,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
 
               if (dayInfoEntity == null) {
                 // This is save because the revision counter locks this section
-                final String dayInfoId = m_repository.generateLocalId(SynchronizableType.DAYINFO);
+                final String dayInfoId = m_repository.generateLocalId(EntityType.DAYINFO);
 
                 dayInfoEntity = new DayInfoEntity(dayInfoId, revisionLock.getLatestRevision(), m_repository
                     .getClientId(), (PersonEntity) session.get(PersonEntity.class, m_repository.getOwner().getId()),
@@ -239,7 +239,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
 
                 session.persist(dayInfoEntity);
               }
-              final String workItemId = m_repository.generateLocalId(SynchronizableType.DAYINFO);
+              final String workItemId = m_repository.generateLocalId(EntityType.DAYINFO);
               workItemEntity = new WorkItemEntity(workItemId, dayInfoEntity);
 
               workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem, m_repository.getClientId());
@@ -280,7 +280,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
       public DayInfo perform(final Session session)
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
-        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.DAYINFO, m_repository
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.DAYINFO, m_repository
             .getOwner().getId());
 
         if (workItem.getId() != null) {
@@ -356,8 +356,8 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
 
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
 
-        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(SynchronizableType.ACTIVE_WORKITEM,
-            m_repository.getOwner().getId());
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.ACTIVE_WORKITEM, m_repository
+            .getOwner().getId());
 
         ActiveWorkItemEntity activeWorkItemEntity = (ActiveWorkItemEntity) session.get(ActiveWorkItemEntity.class,
             m_repository.getOwner().getId());
