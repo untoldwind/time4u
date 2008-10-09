@@ -1,7 +1,6 @@
 package de.objectcode.time4u.client.store.impl.hibernate;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -13,17 +12,22 @@ import de.objectcode.time4u.client.store.api.IWorkItemRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.client.store.api.event.ActiveWorkItemRepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.DayInfoRepositoryEvent;
+import de.objectcode.time4u.client.store.api.event.TimePolicyRepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.WorkItemRepositoryEvent;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.TimePolicy;
+import de.objectcode.time4u.server.api.data.WeekTimePolicy;
 import de.objectcode.time4u.server.api.data.WorkItem;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
+import de.objectcode.time4u.server.api.filter.TimePolicyFilter;
 import de.objectcode.time4u.server.entities.ActiveWorkItemEntity;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
+import de.objectcode.time4u.server.entities.TimePolicyEntity;
+import de.objectcode.time4u.server.entities.WeekTimePolicyEntity;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
 import de.objectcode.time4u.server.entities.context.SessionPersistenceContext;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
@@ -392,19 +396,89 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
   /**
    * {@inheritDoc}
    */
-  public List<TimePolicy> getTimePolicies() throws RepositoryException
+  public List<TimePolicy> getTimePolicies(final TimePolicyFilter filter) throws RepositoryException
   {
-    // TODO: Store this
-    return Collections.emptyList();
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<List<TimePolicy>>() {
+      public List<TimePolicy> perform(final Session session)
+      {
+        final Criteria criteria = session.createCriteria(TimePolicyEntity.class);
+
+        criteria.add(Restrictions.eq("person.id", m_repository.getOwner().getId()));
+        if (filter.getDeleted() != null) {
+          criteria.add(Restrictions.eq("deleted", filter.getDeleted()));
+        }
+        if (filter.getMinRevision() != null) {
+          criteria.add(Restrictions.ge("revision", filter.getMinRevision()));
+        }
+        if (filter.getMaxRevision() != null) {
+          criteria.add(Restrictions.le("revision", filter.getMaxRevision()));
+        }
+        if (filter.getLastModifiedByClient() != null) {
+          criteria.add(Restrictions.eq("lastModifiedByClient", filter.getLastModifiedByClient()));
+        }
+
+        criteria.addOrder(Order.asc("id"));
+
+        final List<TimePolicy> result = new ArrayList<TimePolicy>();
+
+        for (final Object row : criteria.list()) {
+          if (row instanceof WeekTimePolicyEntity) {
+            final WeekTimePolicy timePolicy = new WeekTimePolicy();
+
+            ((WeekTimePolicyEntity) row).toDTO(timePolicy);
+
+            result.add(timePolicy);
+          }
+        }
+
+        return result;
+      }
+
+    });
   }
 
   /**
    * {@inheritDoc}
    */
-  public void storeTimePolicies(final List<TimePolicy> timePolicy) throws RepositoryException
+  public TimePolicy storeTimePolicy(final TimePolicy timePolicy, final boolean modifiedByOwner)
+      throws RepositoryException
   {
-    // TODO Auto-generated method stub
+    final TimePolicy result = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<TimePolicy>() {
+      public TimePolicy perform(final Session session)
+      {
+        final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.TIMEPOLICY, m_repository
+            .getOwner().getId());
 
+        if (timePolicy.getId() == null) {
+          timePolicy.setId(m_repository.generateLocalId(EntityType.TIMEPOLICY));
+        }
+
+        if (timePolicy instanceof WeekTimePolicy) {
+          final WeekTimePolicyEntity timePolicyEntity = new WeekTimePolicyEntity(timePolicy.getId(), revisionLock
+              .getLatestRevision(), m_repository.getClientId(), (PersonEntity) session.get(PersonEntity.class,
+              m_repository.getOwner().getId()));
+
+          timePolicyEntity.fromDTO((WeekTimePolicy) timePolicy);
+          if (modifiedByOwner) {
+            timePolicyEntity.setLastModifiedByClient(m_repository.getClientId());
+          }
+          session.merge(timePolicyEntity);
+          session.flush();
+
+          final WeekTimePolicy result = new WeekTimePolicy();
+
+          timePolicyEntity.toDTO(result);
+
+          return result;
+        }
+        return null;
+      }
+    });
+
+    m_repository.fireRepositoryEvent(new TimePolicyRepositoryEvent(result));
+
+    return result;
   }
 
   private static class DayInfoWorkItemHolder

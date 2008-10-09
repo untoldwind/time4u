@@ -100,6 +100,7 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
     getSite().registerContextMenu(menuMgr, new SelectionServiceAdapter(getSite().getPage()));
 
     RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.DAYINFO, this);
+    RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.TIMEPOLICY, this);
   }
 
   /**
@@ -118,6 +119,7 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
   public void dispose()
   {
     RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.DAYINFO, this);
+    RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.TIMEPOLICY, this);
 
     super.dispose();
   }
@@ -162,6 +164,7 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
 
     switch (event.getEventType()) {
       case DAYINFO:
+      case TIMEPOLICY:
         synchronized (this) {
           if (m_refreshCounter >= 2) {
             return;

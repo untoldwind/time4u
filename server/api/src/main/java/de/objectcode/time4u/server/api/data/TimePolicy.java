@@ -18,6 +18,8 @@ public abstract class TimePolicy implements ISynchronizableData
   private long m_revision;
   /** Client id of the last modification */
   private long m_lastModifiedByClient;
+  /** Flag if the timepolicy is deleted */
+  private boolean m_deleted;
   protected CalendarDay m_validFrom;
   protected CalendarDay m_validUntil;
 
@@ -39,6 +41,16 @@ public abstract class TimePolicy implements ISynchronizableData
   public void setRevision(final long revision)
   {
     m_revision = revision;
+  }
+
+  public boolean isDeleted()
+  {
+    return m_deleted;
+  }
+
+  public void setDeleted(final boolean deleted)
+  {
+    m_deleted = deleted;
   }
 
   public long getLastModifiedByClient()

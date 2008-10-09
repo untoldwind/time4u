@@ -8,6 +8,7 @@ import de.objectcode.time4u.server.api.data.DayInfoSummary;
 import de.objectcode.time4u.server.api.data.TimePolicy;
 import de.objectcode.time4u.server.api.data.WorkItem;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
+import de.objectcode.time4u.server.api.filter.TimePolicyFilter;
 
 /**
  * Interface of the client side workitem repository.
@@ -100,7 +101,25 @@ public interface IWorkItemRepository
 
   void setRegularTime(CalendarDay from, CalendarDay until, int regularTime) throws RepositoryException;
 
-  List<TimePolicy> getTimePolicies() throws RepositoryException;
+  /**
+   * Get all time policies matching a filter condition.
+   * 
+   * @param filter
+   *          The filter condition
+   * @return All time policies matching <tt>filter</tt>
+   * @throws RepositoryException
+   *           on error
+   */
+  List<TimePolicy> getTimePolicies(TimePolicyFilter filter) throws RepositoryException;
 
-  void storeTimePolicies(List<TimePolicy> timePolicy) throws RepositoryException;
+  /**
+   * Store a time policy.
+   * 
+   * @param timePolicy
+   *          The time policy to be stored.
+   * 
+   * @throws RepositoryException
+   *           on error
+   */
+  TimePolicy storeTimePolicy(TimePolicy timePolicy, boolean modifiedByOwner) throws RepositoryException;
 }

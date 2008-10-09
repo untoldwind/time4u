@@ -29,11 +29,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableColumn;
 
 import de.objectcode.time4u.client.store.api.IWorkItemRepository;
+import de.objectcode.time4u.client.store.api.RepositoryException;
+import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.util.DateFormat;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.TimePolicy;
 import de.objectcode.time4u.server.api.data.WeekTimePolicy;
+import de.objectcode.time4u.server.api.filter.TimePolicyFilter;
 
 public class TimePolicyDialog extends Dialog
 {
@@ -41,8 +44,6 @@ public class TimePolicyDialog extends Dialog
   List<TimePolicy> m_timePolicies;
 
   TableViewer m_timePolicyTable;
-  Button m_upButton;
-  Button m_downButton;
   Button m_editButton;
   Button m_removeButton;
 
@@ -57,13 +58,7 @@ public class TimePolicyDialog extends Dialog
     m_workItemRepository = workItemRepository;
     m_timePolicies = new ArrayList<TimePolicy>();
     try {
-      final List<TimePolicy> policies = m_workItemRepository.getTimePolicies();
-
-      if (policies != null) {
-        for (final TimePolicy timePolicy : policies) {
-          m_timePolicies.add(timePolicy);
-        }
-      }
+      m_timePolicies = m_workItemRepository.getTimePolicies(TimePolicyFilter.all());
     } catch (final Exception e) {
       UIPlugin.getDefault().log(e);
     }
@@ -144,37 +139,6 @@ public class TimePolicyDialog extends Dialog
       }
     });
 
-    m_upButton = new Button(root, SWT.PUSH);
-    m_upButton.setText("Up");
-    gridData = new GridData(GridData.FILL_HORIZONTAL);
-    gridData.verticalIndent = 10;
-    gridData.grabExcessHorizontalSpace = false;
-    gridData.grabExcessVerticalSpace = false;
-    m_upButton.setLayoutData(gridData);
-    m_upButton.setEnabled(false);
-    m_upButton.addSelectionListener(new SelectionAdapter() {
-      @Override
-      public void widgetSelected(final SelectionEvent e)
-      {
-        upPolicy();
-      }
-    });
-
-    m_downButton = new Button(root, SWT.PUSH);
-    m_downButton.setText("Down");
-    gridData = new GridData(GridData.FILL_HORIZONTAL);
-    gridData.grabExcessHorizontalSpace = false;
-    gridData.grabExcessVerticalSpace = false;
-    m_downButton.setLayoutData(gridData);
-    m_downButton.setEnabled(false);
-    m_downButton.addSelectionListener(new SelectionAdapter() {
-      @Override
-      public void widgetSelected(final SelectionEvent e)
-      {
-        downPolicy();
-      }
-    });
-
     m_editButton = new Button(root, SWT.PUSH);
     m_editButton.setText("Edit");
     gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -210,24 +174,10 @@ public class TimePolicyDialog extends Dialog
     return composite;
   }
 
-  @Override
-  protected void okPressed()
-  {
-    try {
-      m_workItemRepository.storeTimePolicies(m_timePolicies);
-    } catch (final Exception e) {
-      UIPlugin.getDefault().log(e);
-    }
-
-    super.okPressed();
-  }
-
   protected void select(final TimePolicy selection)
   {
     m_selection = selection;
 
-    m_upButton.setEnabled(m_selection != null);
-    m_downButton.setEnabled(m_selection != null);
     m_editButton.setEnabled(m_selection != null);
     m_removeButton.setEnabled(m_selection != null);
   }
@@ -238,41 +188,15 @@ public class TimePolicyDialog extends Dialog
         new WeekTimePolicy());
 
     if (dialog.open() == Dialog.OK) {
-      m_timePolicies.add(dialog.getWeekTimePolicy());
-      m_timePolicyTable.setInput(m_timePolicies);
-    }
-  }
+      try {
+        RepositoryFactory.getRepository().getWorkItemRepository().storeTimePolicy(dialog.getWeekTimePolicy(), true);
 
-  protected void upPolicy()
-  {
-    if (m_selection == null) {
-      return;
+        m_timePolicies = m_workItemRepository.getTimePolicies(TimePolicyFilter.all());
+        m_timePolicyTable.setInput(m_timePolicies);
+      } catch (final RepositoryException e) {
+        UIPlugin.getDefault().log(e);
+      }
     }
-    final int idx = m_timePolicies.indexOf(m_selection);
-    if (idx < 1) {
-      return;
-    }
-
-    final TimePolicy prevPolicy = m_timePolicies.get(idx - 1);
-    m_timePolicies.set(idx - 1, m_selection);
-    m_timePolicies.set(idx, prevPolicy);
-    m_timePolicyTable.setInput(m_timePolicies);
-  }
-
-  protected void downPolicy()
-  {
-    if (m_selection == null) {
-      return;
-    }
-    final int idx = m_timePolicies.indexOf(m_selection);
-    if (idx < 0 || idx + 1 >= m_timePolicies.size()) {
-      return;
-    }
-
-    final TimePolicy nextPolicy = m_timePolicies.get(idx + 1);
-    m_timePolicies.set(idx + 1, m_selection);
-    m_timePolicies.set(idx, nextPolicy);
-    m_timePolicyTable.setInput(m_timePolicies);
   }
 
   protected void editPolicy()
@@ -285,6 +209,12 @@ public class TimePolicyDialog extends Dialog
           (WeekTimePolicy) m_selection);
 
       if (dialog.open() == Dialog.OK) {
+        try {
+          RepositoryFactory.getRepository().getWorkItemRepository().storeTimePolicy(dialog.getWeekTimePolicy(), true);
+        } catch (final RepositoryException e) {
+          UIPlugin.getDefault().log(e);
+        }
+
         m_timePolicyTable.update(m_selection, null);
       }
     }
@@ -295,8 +225,15 @@ public class TimePolicyDialog extends Dialog
     if (m_selection == null) {
       return;
     }
-    m_timePolicies.remove(m_selection);
-    m_timePolicyTable.setInput(m_timePolicies);
+    try {
+      m_selection.setDeleted(true);
+      RepositoryFactory.getRepository().getWorkItemRepository().storeTimePolicy(m_selection, true);
+
+      m_timePolicies = m_workItemRepository.getTimePolicies(TimePolicyFilter.all());
+      m_timePolicyTable.setInput(m_timePolicies);
+    } catch (final RepositoryException e) {
+      UIPlugin.getDefault().log(e);
+    }
   }
 
   public class TimePolicyLabelProvider extends LabelProvider implements ITableLabelProvider

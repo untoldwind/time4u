@@ -225,7 +225,7 @@ public class HibernateTaskRepository implements ITaskRepository
       }
     });
 
-    m_repository.fireRepositoryEvent(new TaskRepositoryEvent(task));
+    m_repository.fireRepositoryEvent(new TaskRepositoryEvent(result));
 
     return result;
   }

@@ -230,7 +230,7 @@ public class HibernateProjectRepository implements IProjectRepository
       }
     });
 
-    m_repository.fireRepositoryEvent(new ProjectRepositoryEvent(project));
+    m_repository.fireRepositoryEvent(new ProjectRepositoryEvent(result));
 
     return result;
   }

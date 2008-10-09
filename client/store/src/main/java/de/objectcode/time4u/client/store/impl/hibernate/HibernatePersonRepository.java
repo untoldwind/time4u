@@ -61,7 +61,7 @@ public class HibernatePersonRepository implements IPersonRepository
       }
     });
 
-    m_repository.fireRepositoryEvent(new PersonRepositoryEvent(person));
+    m_repository.fireRepositoryEvent(new PersonRepositoryEvent(result));
 
     return result;
   }

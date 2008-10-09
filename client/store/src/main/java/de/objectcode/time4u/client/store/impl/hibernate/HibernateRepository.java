@@ -43,8 +43,10 @@ import de.objectcode.time4u.server.entities.ProjectProperty;
 import de.objectcode.time4u.server.entities.TaskEntity;
 import de.objectcode.time4u.server.entities.TaskProperty;
 import de.objectcode.time4u.server.entities.TeamEntity;
+import de.objectcode.time4u.server.entities.TimePolicyEntity;
 import de.objectcode.time4u.server.entities.TodoEntity;
 import de.objectcode.time4u.server.entities.TodoProperty;
+import de.objectcode.time4u.server.entities.WeekTimePolicyEntity;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
 import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
@@ -231,6 +233,12 @@ public class HibernateRepository implements IRepository
         updateDayInfos.setString("oldOwnerId", oldOwnerId);
         updateDayInfos.executeUpdate();
 
+        final Query updateTimePoliciesInfos = session
+            .createSQLQuery("update T4U_TIMEPOLICIES set person_id=:newOwnerId where person_id=:oldOwnerId");
+        updateTimePoliciesInfos.setString("newOwnerId", ownerId);
+        updateTimePoliciesInfos.setString("oldOwnerId", oldOwnerId);
+        updateTimePoliciesInfos.executeUpdate();
+
         final Query updateRevisions = session
             .createSQLQuery("update T4U_REVISIONS set part=:newOwnerId where part=:oldOwnerId");
         updateRevisions.setString("newOwnerId", ownerId);
@@ -376,6 +384,8 @@ public class HibernateRepository implements IRepository
       cfg.addAnnotatedClass(ActiveWorkItemEntity.class);
       cfg.addAnnotatedClass(ServerConnectionEntity.class);
       cfg.addAnnotatedClass(SynchronizationStatusEntity.class);
+      cfg.addAnnotatedClass(TimePolicyEntity.class);
+      cfg.addAnnotatedClass(WeekTimePolicyEntity.class);
 
       return cfg.buildSessionFactory();
     } catch (final Exception e) {

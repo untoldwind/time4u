@@ -33,6 +33,7 @@ import de.objectcode.time4u.server.api.data.DayInfoSummary;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.data.TimePolicy;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
+import de.objectcode.time4u.server.api.filter.TimePolicyFilter;
 
 public class StatisticsView extends ViewPart implements ISelectionListener, IRepositoryListener
 {
@@ -331,7 +332,8 @@ public class StatisticsView extends ViewPart implements ISelectionListener, IRep
 
     try {
       final IPreferenceStore store = UIPlugin.getDefault().getPreferenceStore();
-      final List<TimePolicy> timePolicies = RepositoryFactory.getRepository().getWorkItemRepository().getTimePolicies();
+      final List<TimePolicy> timePolicies = RepositoryFactory.getRepository().getWorkItemRepository().getTimePolicies(
+          TimePolicyFilter.all());
 
       if (timePolicies != null && !timePolicies.isEmpty()) {
         final Calendar now = Calendar.getInstance();

@@ -19,6 +19,7 @@ import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
 import de.objectcode.time4u.server.api.data.TimePolicy;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
+import de.objectcode.time4u.server.api.filter.TimePolicyFilter;
 
 public class DayFontColorProvider implements IFontProvider, IColorProvider
 {
@@ -42,7 +43,7 @@ public class DayFontColorProvider implements IFontProvider, IColorProvider
       for (final DayInfoSummary dayInfo : workItemRepository.getDayInfos(DayInfoFilter.filterMonth(year, month))) {
         m_dayInfos.put(dayInfo.getDay(), dayInfo);
       }
-      m_timePolicies = workItemRepository.getTimePolicies();
+      m_timePolicies = workItemRepository.getTimePolicies(TimePolicyFilter.all());
     } catch (final RepositoryException e) {
       UIPlugin.getDefault().log(e);
     }

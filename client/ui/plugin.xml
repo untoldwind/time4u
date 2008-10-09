@@ -499,6 +499,12 @@
             <groupMarker
                   name="workItemGroup">
             </groupMarker>
+            <separator
+                  name="time4u-client-ui.separator1">
+            </separator>
+            <groupMarker
+                  name="timePolicyGroup">
+            </groupMarker>
          </menu>
          <action
                class="de.objectcode.time4u.client.ui.actions.WorkItemActionDelegate"
@@ -570,6 +576,33 @@
                   </objectState>
                </and>
             </enablement>
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TimePolicyActionDelegate"
+               id="de.objectcode.time4u.client.ui.timepolicy.override"
+               label="%action.timepolicy.override.label"
+               menubarPath="workItemMenu/timePolicyGroup"
+               style="push"
+               tooltip="%action.timepolicy.override.tooltip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+                  </objectClass>
+                  <objectState
+                        name="has"
+                        value="CALENDARDAY">
+                  </objectState>
+               </and>
+            </enablement>
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TimePolicyActionDelegate"
+               id="de.objectcode.time4u.client.ui.timepolicy.manage"
+               label="%action.timepolicy.manage.label"
+               menubarPath="workItemMenu/timePolicyGroup"
+               style="push"
+               tooltip="%action.timepolicy.manage.tooltip">
          </action>
       </actionSet>
       <actionSet

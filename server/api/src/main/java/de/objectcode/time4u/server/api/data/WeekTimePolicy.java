@@ -125,4 +125,17 @@ public class WeekTimePolicy extends TimePolicy
     return -1;
   }
 
+  @Override
+  public String toString()
+  {
+    final StringBuffer buffer = new StringBuffer("Week: ");
+    buffer.append(m_mondayTime / 36 / 100.0).append(", ");
+    buffer.append(m_tuesdayTime / 36 / 100.0).append(", ");
+    buffer.append(m_wednesdayTime / 36 / 100.0).append(", ");
+    buffer.append(m_thursdayTime / 36 / 100.0).append(", ");
+    buffer.append(m_fridayTime / 36 / 100.0).append(", ");
+    buffer.append(m_saturdayTime / 36 / 100.0).append(", ");
+    buffer.append(m_sundayTime / 36 / 100.0);
+    return buffer.toString();
+  }
 }
