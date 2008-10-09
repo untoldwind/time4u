@@ -20,9 +20,11 @@ import de.objectcode.time4u.client.connection.impl.common.SynchronizationContext
 import de.objectcode.time4u.client.connection.impl.common.down.ReceiveDayInfoChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.down.ReceiveProjectChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.down.ReceiveTaskChangesCommand;
+import de.objectcode.time4u.client.connection.impl.common.down.ReceiveTimePolicyChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.up.SendDayInfoChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.up.SendProjectChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.up.SendTaskChangesCommand;
+import de.objectcode.time4u.client.connection.impl.common.up.SendTimePolicyChangesCommand;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.server.api.IConstants;
 import de.objectcode.time4u.server.api.ILoginService;
@@ -60,9 +62,11 @@ public class WSConnection implements IConnection
     m_synchronizationCommands.add(new SendProjectChangesCommand());
     m_synchronizationCommands.add(new SendTaskChangesCommand());
     m_synchronizationCommands.add(new SendDayInfoChangesCommand());
+    m_synchronizationCommands.add(new SendTimePolicyChangesCommand());
     m_synchronizationCommands.add(new ReceiveProjectChangesCommand());
     m_synchronizationCommands.add(new ReceiveTaskChangesCommand());
     m_synchronizationCommands.add(new ReceiveDayInfoChangesCommand());
+    m_synchronizationCommands.add(new ReceiveTimePolicyChangesCommand());
 
     m_serverConnection = serverConnection;
 

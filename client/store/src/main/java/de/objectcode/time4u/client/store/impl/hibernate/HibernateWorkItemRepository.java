@@ -163,7 +163,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
    */
   public DayInfo storeDayInfo(final DayInfo dayInfo, final boolean modifiedByOwner) throws RepositoryException
   {
-    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<DayInfo>() {
+    final DayInfo result = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<DayInfo>() {
       public DayInfo perform(final Session session)
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
@@ -201,6 +201,10 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
         return result;
       }
     });
+
+    m_repository.fireRepositoryEvent(new DayInfoRepositoryEvent(result));
+
+    return result;
   }
 
   /**

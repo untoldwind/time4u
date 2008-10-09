@@ -91,7 +91,7 @@ public abstract class TimePolicyEntity
     m_deleted = deleted;
   }
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "person_id")
   public PersonEntity getPerson()
   {

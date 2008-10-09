@@ -13,7 +13,9 @@ import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
 import de.objectcode.time4u.server.api.data.FilterResult;
+import de.objectcode.time4u.server.api.data.TimePolicy;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
+import de.objectcode.time4u.server.api.filter.TimePolicyFilter;
 
 @WebService(targetNamespace = "http://objectcode.de/time4u/api/ws", endpointInterface = "de.objectcode.time4u.server.api.IWorkItemService")
 @SOAPBinding(style = Style.RPC)
@@ -61,4 +63,21 @@ public class WorkItemServiceWS implements IWorkItemService
     }
     return m_workItemService.storeDayInfo(dayInfo);
   }
+
+  public FilterResult<TimePolicy> getTimePolicies(final TimePolicyFilter filter)
+  {
+    if (LOG.isInfoEnabled()) {
+      LOG.info("getTimePolicies: " + filter);
+    }
+    return m_workItemService.getTimePolicies(filter);
+  }
+
+  public TimePolicy storeTimePolicy(final TimePolicy timePolicy)
+  {
+    if (LOG.isInfoEnabled()) {
+      LOG.info("storeTimePolicy: " + timePolicy);
+    }
+    return m_workItemService.storeTimePolicy(timePolicy);
+  }
+
 }

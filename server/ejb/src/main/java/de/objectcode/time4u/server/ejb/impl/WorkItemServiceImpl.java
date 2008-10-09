@@ -23,10 +23,15 @@ import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.FilterResult;
+import de.objectcode.time4u.server.api.data.TimePolicy;
+import de.objectcode.time4u.server.api.data.WeekTimePolicy;
 import de.objectcode.time4u.server.api.data.WorkItem;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
+import de.objectcode.time4u.server.api.filter.TimePolicyFilter;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
+import de.objectcode.time4u.server.entities.TimePolicyEntity;
+import de.objectcode.time4u.server.entities.WeekTimePolicyEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 import de.objectcode.time4u.server.entities.context.EntityManagerPersistenceContext;
 import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
@@ -161,6 +166,63 @@ public class WorkItemServiceImpl implements IWorkItemService
     return result;
   }
 
+  public FilterResult<TimePolicy> getTimePolicies(final TimePolicyFilter filter)
+  {
+    final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, m_sessionContext.getCallerPrincipal()
+        .getName());
+    final PersonEntity person = userAccount.getPerson();
+    final Query query = createQuery(filter, person);
+    final List<TimePolicy> result = new ArrayList<TimePolicy>();
+
+    for (final Object row : query.getResultList()) {
+      if (row instanceof WeekTimePolicyEntity) {
+        final WeekTimePolicy timePolicy = new WeekTimePolicy();
+
+        ((WeekTimePolicyEntity) row).toDTO(timePolicy);
+
+        result.add(timePolicy);
+      }
+    }
+
+    return new FilterResult<TimePolicy>(result);
+  }
+
+  public TimePolicy storeTimePolicy(final TimePolicy timePolicy)
+  {
+    final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, m_sessionContext.getCallerPrincipal()
+        .getName());
+    final PersonEntity person = userAccount.getPerson();
+    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(EntityType.TIMEPOLICY, person.getId());
+
+    if (timePolicy instanceof WeekTimePolicy) {
+      WeekTimePolicyEntity timePolicyEntity = null;
+
+      if (timePolicy.getId() == null) {
+        timePolicy.setId(m_idGenerator.generateLocalId(EntityType.TIMEPOLICY));
+      } else {
+        timePolicyEntity = m_manager.find(WeekTimePolicyEntity.class, timePolicy.getId());
+      }
+
+      if (timePolicyEntity == null) {
+        timePolicyEntity = new WeekTimePolicyEntity(timePolicy.getId(), revisionLock.getLatestRevision(), timePolicy
+            .getLastModifiedByClient(), person);
+
+        m_manager.persist(timePolicyEntity);
+      }
+
+      timePolicyEntity.fromDTO((WeekTimePolicy) timePolicy);
+      timePolicyEntity.setRevision(revisionLock.getLatestRevision());
+
+      final WeekTimePolicy result = new WeekTimePolicy();
+
+      timePolicyEntity.toDTO(result);
+
+      return result;
+    }
+
+    return null;
+  }
+
   private Query createQuery(final DayInfoFilter filter, final PersonEntity person)
   {
     final StringBuffer queryStr = new StringBuffer("from " + DayInfoEntity.class.getName()
@@ -196,6 +258,47 @@ public class WorkItemServiceImpl implements IWorkItemService
     }
     if (filter.getTo() != null) {
       query.setParameter("to", filter.getTo().getDate());
+    }
+    if (filter.getMinRevision() != null) {
+      query.setParameter("minRevision", filter.getMinRevision());
+    }
+    if (filter.getMaxRevision() != null) {
+      query.setParameter("maxRevision", filter.getMaxRevision());
+    }
+    if (filter.getLastModifiedByClient() != null) {
+      query.setParameter("lastModifiedByClient", filter.getLastModifiedByClient());
+    }
+
+    return query;
+  }
+
+  private Query createQuery(final TimePolicyFilter filter, final PersonEntity person)
+  {
+    final StringBuffer queryStr = new StringBuffer("from " + TimePolicyEntity.class.getName()
+        + " t where t.person = :person");
+
+    if (filter.getDeleted() != null) {
+      queryStr.append(" and ");
+      queryStr.append("t.deleted = :deleted");
+    }
+    if (filter.getMinRevision() != null) {
+      queryStr.append(" and ");
+      queryStr.append("t.revision >= :minRevision");
+    }
+    if (filter.getMaxRevision() != null) {
+      queryStr.append(" and ");
+      queryStr.append("t.revision <= :maxRevision");
+    }
+    if (filter.getLastModifiedByClient() != null) {
+      queryStr.append(" and ");
+      queryStr.append("t.lastModifiedByClient = :lastModifiedByClient");
+    }
+    queryStr.append(" order by t.id");
+
+    final Query query = m_manager.createQuery(queryStr.toString());
+    query.setParameter("person", person);
+    if (filter.getDeleted() != null) {
+      query.setParameter("deleted", filter.getDeleted());
     }
     if (filter.getMinRevision() != null) {
       query.setParameter("minRevision", filter.getMinRevision());

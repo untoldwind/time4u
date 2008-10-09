@@ -12,6 +12,7 @@ import org.hibernate.criterion.Restrictions;
 
 import de.objectcode.time4u.client.store.api.IServerConnectionRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
+import de.objectcode.time4u.client.store.api.event.ServerConnectionRepositoryEvent;
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.ServerConnection;
 import de.objectcode.time4u.server.api.data.SynchronizationStatus;
@@ -97,6 +98,8 @@ public class HibernateServerConnectionRepository implements IServerConnectionRep
             return result;
           }
         });
+
+    m_repository.fireRepositoryEvent(new ServerConnectionRepositoryEvent(result));
 
     return result;
   }
