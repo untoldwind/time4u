@@ -235,8 +235,44 @@ public class HibernateTaskRepository implements ITaskRepository
    */
   public List<Task> storeTasks(final List<Task> tasks, final boolean modifiedByOwner) throws RepositoryException
   {
-    // TODO Auto-generated method stub
-    return null;
+    final List<Task> result = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<List<Task>>() {
+      public List<Task> perform(final Session session)
+      {
+        final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
+
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.TASK, null);
+
+        final List<Task> results = new ArrayList<Task>();
+        for (final Task task : tasks) {
+          if (task.getId() == null) {
+            task.setId(m_repository.generateLocalId(EntityType.TASK));
+          }
+
+          final ProjectEntity projectEntity = task.getProjectId() != null ? (ProjectEntity) session.get(
+              ProjectEntity.class, task.getProjectId()) : null;
+          final TaskEntity taskEntity = new TaskEntity(task.getId(), revisionLock.getLatestRevision(), m_repository
+              .getClientId(), projectEntity, task.getName());
+
+          taskEntity.fromDTO(new SessionPersistenceContext(session), task);
+          if (modifiedByOwner) {
+            taskEntity.setLastModifiedByClient(m_repository.getClientId());
+          }
+
+          session.merge(taskEntity);
+          session.flush();
+
+          final Task result = new Task();
+          taskEntity.toDTO(result);
+          results.add(result);
+        }
+
+        return results;
+      }
+    });
+
+    m_repository.fireRepositoryEvent(new TaskRepositoryEvent(result));
+
+    return result;
   }
 
   /**
@@ -244,8 +280,35 @@ public class HibernateTaskRepository implements ITaskRepository
    */
   public void deleteTask(final Task task) throws RepositoryException
   {
-    // TODO Auto-generated method stub
+    final Task result = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Task>() {
+      public Task perform(final Session session)
+      {
+        final TaskEntity taskEntity = (TaskEntity) session.get(TaskEntity.class, task.getId());
 
+        if (taskEntity == null) {
+          return null;
+        }
+
+        final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.TASK, null);
+
+        taskEntity.setDeleted(true);
+        taskEntity.setRevision(revisionLock.getLatestRevision());
+        taskEntity.setLastModifiedByClient(m_repository.getClientId());
+
+        session.flush();
+
+        final Task result = new Task();
+
+        taskEntity.toDTO(result);
+
+        return result;
+      }
+    });
+
+    if (result != null) {
+      m_repository.fireRepositoryEvent(new TaskRepositoryEvent(result));
+    }
   }
 
 }

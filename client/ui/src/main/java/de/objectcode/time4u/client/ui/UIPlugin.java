@@ -62,7 +62,6 @@ public class UIPlugin extends AbstractUIPlugin
     super.start(context);
     plugin = this;
 
-    System.out.println(RepositoryFactory.getRepository());
     m_activeWorkItemJob = new ActiveWorkItemJob();
     m_activeWorkItemJob.schedule(1000L);
   }

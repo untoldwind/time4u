@@ -152,11 +152,26 @@
          </visibility>
          <action
                class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"
+               id="de.objectcode.time4u.client.ui.project.copy"
+               label="%action.project.copy.label"
+               menubarPath="objectGroup"
+               tooltip="%action.project.copy.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"
                icon="icons/Project.gif"
                id="de.objectcode.time4u.client.ui.project.edit"
                label="%action.project.edit.label"
                menubarPath="objectGroup"
                tooltip="%action.project.edit.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"
+               icon="icons/DeleteProject.gif"
+               id="de.objectcode.time4u.client.ui.project.delete"
+               label="%action.project.delete.label"
+               menubarPath="additions"
+               tooltip="%action.project.delete.tooltip">
          </action>
       </viewerContribution>
       <viewerContribution
@@ -167,7 +182,7 @@
                icon="icons/NewProject.gif"
                id="de.objectcode.time4u.client.ui.project.new"
                label="%action.project.new.label"
-               menubarPath="objectGroup"
+               menubarPath="newGroup"
                tooltip="%action.project.new.tooltip">
          </action>
       </viewerContribution>
@@ -193,6 +208,14 @@
                menubarPath="objectGroup"
                tooltip="%action.task.edit.tooltip">
          </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TaskActionDelegate"
+               icon="icons/DeleteTask.gif"
+               id="de.objectcode.time4u.client.ui.task.delete"
+               label="%action.task.delete.label"
+               menubarPath="additions"
+               tooltip="%action.task.delete.tooltip">
+         </action>
       </viewerContribution>
       <viewerContribution
             id="de.objectcode.client.ui.view.taskListContribution2"
@@ -213,7 +236,7 @@
                icon="icons/NewTask.gif"
                id="de.objectcode.time4u.client.ui.task.new"
                label="%action.task.new.label"
-               menubarPath="objectGroup"
+               menubarPath="newGroup"
                tooltip="%action.task.new.tooltip">
          </action>
       </viewerContribution>
@@ -349,6 +372,27 @@
          </menu>
          <action
                class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"
+               icon="icons/DeleteProject.gif"
+               id="de.objectcode.time4u.client.ui.project.delete"
+               label="%action.project.delete.label"
+               menubarPath="projectMenu/projectGroup"
+               style="push"
+               toolbarPath="project/additions"
+               tooltip="%action.project.delete.tooltip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+                  </objectClass>
+                  <objectState
+                        name="has"
+                        value="PROJECT">
+                  </objectState>
+               </and>
+            </enablement>
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"
                definitionId="de.objectcode.time4u.client.ui.project.edit"
                icon="icons/Project.gif"
                id="de.objectcode.time4u.client.ui.project.edit"
@@ -378,6 +422,27 @@
                style="push"
                toolbarPath="project/additions"
                tooltip="%action.project.new.tooltip"/>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TaskActionDelegate"
+               icon="icons/DeleteTask.gif"
+               id="de.objectcode.time4u.client.ui.task.delete"
+               label="%action.task.delete.label"
+               menubarPath="projectMenu/taskGroup"
+               style="push"
+               toolbarPath="task/additions"
+               tooltip="%action.task.delete.tooltip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+                  </objectClass>
+                  <objectState
+                        name="has"
+                        value="TASK">
+                  </objectState>
+               </and>
+            </enablement>
+         </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.TaskActionDelegate"
                definitionId="de.objectcode.time4u.client.ui.task.edit"
@@ -547,6 +612,24 @@
             class="de.objectcode.time4u.client.ui.preferences.CalendarViewPreferencesPage"
             id="de.objectcode.time4u.client.ui.preferences.CalendarViewPreferencesPage"
             name="%calendarView.title">
+      </page>
+      <page
+            category="de.objectcode.time4u.client.ui.preferences.UIPreferencesPage"
+            class="de.objectcode.time4u.client.ui.preferences.ProjectViewPreferencesPage"
+            id="de.objectcode.time4u.client.ui.preferences.ProjectViewPreferencesPage"
+            name="Project">
+      </page>
+      <page
+            category="de.objectcode.time4u.client.ui.preferences.UIPreferencesPage"
+            class="de.objectcode.time4u.client.ui.preferences.TaskViewPreferencesPage"
+            id="de.objectcode.time4u.client.ui.preferences.TaskViewPreferencesPage"
+            name="Task">
+      </page>
+      <page
+            category="de.objectcode.time4u.client.ui.preferences.UIPreferencesPage"
+            class="de.objectcode.time4u.client.ui.preferences.WorkItemViewPreferencesPage"
+            id="de.objectcode.time4u.client.ui.preferences.WorkItemViewPreferencesPage"
+            name="WorkItem">
       </page>
    </extension>
    <extension

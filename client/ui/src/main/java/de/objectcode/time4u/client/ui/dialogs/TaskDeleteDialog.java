@@ -1,5 +1,6 @@
 package de.objectcode.time4u.client.ui.dialogs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -37,6 +38,7 @@ public class TaskDeleteDialog extends Dialog
 
     setShellStyle(SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE | getDefaultOrientation());
 
+    m_results = new ArrayList<WorkItem>();
     //    final WorkItemSearcher searcher = new WorkItemSearcher();
     //
     //    searcher.setTask(task);

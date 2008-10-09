@@ -5,6 +5,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -87,7 +88,13 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
     getSite().getPage().addSelectionListener(m_selectionProvider);
 
     final MenuManager menuMgr = new MenuManager();
+
+    menuMgr.add(new GroupMarker("newGroup"));
+    menuMgr.add(new Separator());
+    menuMgr.add(new GroupMarker("objectGroup"));
+    menuMgr.add(new Separator());
     menuMgr.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
+
     final Menu menu = menuMgr.createContextMenu(m_viewer.getControl());
     m_viewer.getControl().setMenu(menu);
     getSite().registerContextMenu(menuMgr, new SelectionServiceAdapter(getSite().getPage()));

@@ -240,8 +240,35 @@ public class HibernateProjectRepository implements IProjectRepository
    */
   public void deleteProject(final Project project) throws RepositoryException
   {
-    // TODO Auto-generated method stub
+    final Project result = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Project>() {
+      public Project perform(final Session session)
+      {
+        final ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, project.getId());
 
+        if (projectEntity == null) {
+          return null;
+        }
+
+        final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PROJECT, null);
+
+        projectEntity.setDeleted(true);
+        projectEntity.setRevision(revisionLock.getLatestRevision());
+        projectEntity.setLastModifiedByClient(m_repository.getClientId());
+
+        session.flush();
+
+        final Project result = new Project();
+
+        projectEntity.toDTO(result);
+
+        return result;
+      }
+    });
+
+    if (result != null) {
+      m_repository.fireRepositoryEvent(new ProjectRepositoryEvent(result));
+    }
   }
 
   public List<ProjectSummary> getProjectPath(final String projectId) throws RepositoryException
