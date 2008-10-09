@@ -13,6 +13,8 @@ public class DayTagEntity
   private String m_name;
   /** Tag description */
   private String m_description;
+  /** Regular time of the day (only set this if the regular time of that day should be modified) */
+  private Integer m_regularTime;
 
   @Id
   @Column(length = 50)
@@ -37,4 +39,13 @@ public class DayTagEntity
     m_description = description;
   }
 
+  public Integer getRegularTime()
+  {
+    return m_regularTime;
+  }
+
+  public void setRegularTime(final Integer regularTime)
+  {
+    m_regularTime = regularTime;
+  }
 }

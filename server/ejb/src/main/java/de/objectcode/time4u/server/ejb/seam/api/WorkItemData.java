@@ -11,10 +11,13 @@ public class WorkItemData
   private final String m_personId;
   private final String m_projectId;
   private final String[] m_projectPath;
+  private final String m_projectName;
   private final String m_taskId;
+  private final String m_taskName;
 
   public WorkItemData(final Date day, final int begin, final int end, final String comment, final String personId,
-      final String projectId, final String[] projectPath, final String taskId)
+      final String projectId, final String[] projectPath, final String projectName, final String taskId,
+      final String taskName)
   {
     m_day = day;
     m_begin = begin;
@@ -23,7 +26,9 @@ public class WorkItemData
     m_personId = personId;
     m_projectId = projectId;
     m_projectPath = projectPath;
+    m_projectName = projectName;
     m_taskId = taskId;
+    m_taskName = taskName;
   }
 
   public Date getDay()
@@ -61,9 +66,19 @@ public class WorkItemData
     return m_projectPath;
   }
 
+  public String getProjectName()
+  {
+    return m_projectName;
+  }
+
   public String getTaskId()
   {
     return m_taskId;
+  }
+
+  public String getTaskName()
+  {
+    return m_taskName;
   }
 
 }

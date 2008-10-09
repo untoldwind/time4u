@@ -44,7 +44,7 @@ public class WorkItemServiceSeam implements IWorkItemServiceLocal
     final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, m_identity.getPrincipal().getName());
 
     final Query query = m_manager
-        .createQuery("select w.dayInfo.date, w.begin, w.end, w.comment, w.dayInfo.person.id, w.project.id, w.project.parentKey, w.task.id from "
+        .createQuery("select w.dayInfo.date, w.begin, w.end, w.comment, w.dayInfo.person.id, w.project.id, w.project.parentKey, w.project.name, w.task.id, w.task.name from "
             + WorkItemEntity.class.getName()
             + " w where w.dayInfo.date >= :from and w.dayInfo.date < :until and w.dayInfo.person = :person");
 
@@ -57,7 +57,8 @@ public class WorkItemServiceSeam implements IWorkItemServiceLocal
       final Object[] rowData = (Object[]) row;
 
       result.add(new WorkItemData((Date) rowData[0], (Integer) rowData[1], (Integer) rowData[2], (String) rowData[3],
-          (String) rowData[4], (String) rowData[5], ((String) rowData[6]).split(":"), (String) rowData[7]));
+          (String) rowData[4], (String) rowData[5], ((String) rowData[6]).split(":"), (String) rowData[7],
+          (String) rowData[8], (String) rowData[9]));
     }
     return result;
   }

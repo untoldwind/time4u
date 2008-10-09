@@ -16,19 +16,19 @@
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">Begin</f:facet>
-					#{workItem.begin}
+					<h:outputText value="#{workItem.begin}" converter="timeConverter"/>
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">End</f:facet>
-					#{workItem.end}
+					<h:outputText value="#{workItem.end}" converter="timeConverter"/>
 				</rich:column>
 				<rich:column>
-					<f:facet name="header">Project Id</f:facet>
-					#{workItem.projectId}
+					<f:facet name="header">Project</f:facet>
+					#{workItem.projectName}
 				</rich:column>
 				<rich:column>
-					<f:facet name="header">Task Id</f:facet>
-					#{workItem.taskId}
+					<f:facet name="header">Task</f:facet>
+					#{workItem.taskName}
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">Comment</f:facet>
