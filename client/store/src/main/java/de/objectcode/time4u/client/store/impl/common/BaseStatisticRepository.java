@@ -15,6 +15,7 @@ import de.objectcode.time4u.client.store.api.event.DayInfoRepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
 import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.server.api.data.CalendarDay;
+import de.objectcode.time4u.server.api.data.DayInfoSummary;
 
 public abstract class BaseStatisticRepository implements IStatisticRepository, IRepositoryListener
 {
@@ -166,11 +167,13 @@ public abstract class BaseStatisticRepository implements IStatisticRepository, I
     switch (event.getEventType()) {
       case DAYINFO:
         final DayInfoRepositoryEvent dayInfoEvent = (DayInfoRepositoryEvent) event;
-        final CalendarDay day = dayInfoEvent.getDayInfo().getDay();
-        synchronized (this) {
-          m_yearCache.remove(day.getYear());
-          m_monthCache.remove(new CalendarMonth(day));
-          m_weekCache.remove(new CalendarWeek(day));
+        for (final DayInfoSummary dayInfo : dayInfoEvent.getDayInfos()) {
+          final CalendarDay day = dayInfo.getDay();
+          synchronized (this) {
+            m_yearCache.remove(day.getYear());
+            m_monthCache.remove(new CalendarMonth(day));
+            m_weekCache.remove(new CalendarWeek(day));
+          }
         }
 
         break;

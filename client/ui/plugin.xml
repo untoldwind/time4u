@@ -302,6 +302,42 @@
                tooltip="%action.workItem.edit.tooltip">
          </action>
       </viewerContribution>
+      <viewerContribution
+            id="de.objectcode.time4u.client.ui.view..calendarViewContribution1"
+            targetID="de.objectcode.time4u.client.ui.view.calendarView">
+         <visibility>
+            <and>
+               <objectClass
+                     name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+               </objectClass>
+               <objectState
+                     name="has"
+                     value="CALENDARDAY">
+               </objectState>
+            </and>
+         </visibility>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TimePolicyActionDelegate"
+               id="de.objectcode.time4u.client.ui.timepolicy.markfree"
+               label="%action.timepolicy.markfree.label"
+               menubarPath="calendarGroup"
+               tooltip="%action.timepolicy.markfree.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TimePolicyActionDelegate"
+               id="de.objectcode.time4u.client.ui.timepolicy.markregular"
+               label="%action.timepolicy.markregular.label"
+               menubarPath="calendarGroup"
+               tooltip="%action.timepolicy.markregular.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TimePolicyActionDelegate"
+               id="de.objectcode.time4u.client.ui.timepolicy.override"
+               label="%action.timepolicy.override.label"
+               menubarPath="additions"
+               tooltip="%action.timepolicy.override.tooltip">
+         </action>
+      </viewerContribution>
    </extension>
    <extension
 
@@ -579,6 +615,44 @@
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.TimePolicyActionDelegate"
+               id="de.objectcode.time4u.client.ui.timepolicy.markfree"
+               label="%action.timepolicy.markfree.label"
+               menubarPath="workItemMenu/timePolicyGroup"
+               style="push"
+               tooltip="%action.timepolicy.markfree.tooltip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+                  </objectClass>
+                  <objectState
+                        name="has"
+                        value="CALENDARDAY">
+                  </objectState>
+               </and>
+            </enablement>
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TimePolicyActionDelegate"
+               id="de.objectcode.time4u.client.ui.timepolicy.markregular"
+               label="%action.timepolicy.markregular.label"
+               menubarPath="workItemMenu/timePolicyGroup"
+               style="push"
+               tooltip="%action.timepolicy.markregular.tooltip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+                  </objectClass>
+                  <objectState
+                        name="has"
+                        value="CALENDARDAY">
+                  </objectState>
+               </and>
+            </enablement>
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TimePolicyActionDelegate"
                id="de.objectcode.time4u.client.ui.timepolicy.override"
                label="%action.timepolicy.override.label"
                menubarPath="workItemMenu/timePolicyGroup"
@@ -663,6 +737,12 @@
             class="de.objectcode.time4u.client.ui.preferences.WorkItemViewPreferencesPage"
             id="de.objectcode.time4u.client.ui.preferences.WorkItemViewPreferencesPage"
             name="WorkItem">
+      </page>
+      <page
+            category="de.objectcode.time4u.client.ui.preferences.UIPreferencesPage"
+            class="de.objectcode.time4u.client.ui.preferences.StatisticViewPreferencesPage"
+            id="de.objectcode.time4u.client.ui.preferences.StatisticViewPreferencesPage"
+            name="Statistics">
       </page>
    </extension>
    <extension

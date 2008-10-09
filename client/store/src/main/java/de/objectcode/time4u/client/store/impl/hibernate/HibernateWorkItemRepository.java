@@ -1,6 +1,8 @@
 package de.objectcode.time4u.client.store.impl.hibernate;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -390,11 +392,54 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
     m_repository.fireRepositoryEvent(new ActiveWorkItemRepositoryEvent(workItem));
   }
 
-  public void setRegularTime(final CalendarDay from, final CalendarDay until, final int regularTime)
+  public void setRegularTime(final CalendarDay fromDay, final CalendarDay untilDay, final int regularTime)
       throws RepositoryException
   {
-    // TODO Auto-generated method stub
+    final List<DayInfoSummary> result = m_hibernateTemplate
+        .executeInTransaction(new HibernateTemplate.Operation<List<DayInfoSummary>>() {
+          public List<DayInfoSummary> perform(final Session session)
+          {
+            final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
+            final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.DAYINFO, m_repository
+                .getOwner().getId());
 
+            final Calendar from = fromDay.getCalendar();
+            final Calendar until = untilDay.getCalendar();
+
+            final List<DayInfoSummary> result = new ArrayList<DayInfoSummary>();
+            while (from.compareTo(until) <= 0) {
+              final Criteria criteria = session.createCriteria(DayInfoEntity.class);
+              criteria.add(Restrictions.eq("date", new Date(from.getTimeInMillis())));
+
+              DayInfoEntity dayInfoEntity = (DayInfoEntity) criteria.uniqueResult();
+
+              if (dayInfoEntity == null) {
+                dayInfoEntity = new DayInfoEntity(m_repository.generateLocalId(EntityType.DAYINFO), revisionLock
+                    .getLatestRevision(), m_repository.getClientId(), (PersonEntity) session.get(PersonEntity.class,
+                    m_repository.getOwner().getId()), new Date(from.getTimeInMillis()));
+
+                dayInfoEntity.setRegularTime(regularTime);
+                session.persist(dayInfoEntity);
+              } else {
+                dayInfoEntity.setRevision(revisionLock.getLatestRevision());
+                dayInfoEntity.setLastModifiedByClient(m_repository.getClientId());
+                dayInfoEntity.setRegularTime(regularTime);
+              }
+
+              final DayInfoSummary dayInfo = new DayInfoSummary();
+
+              dayInfoEntity.toSummaryDTO(dayInfo);
+              result.add(dayInfo);
+
+              from.add(Calendar.DAY_OF_MONTH, 1);
+            }
+            session.flush();
+
+            return result;
+          }
+        });
+
+    m_repository.fireRepositoryEvent(new DayInfoRepositoryEvent(result));
   }
 
   /**

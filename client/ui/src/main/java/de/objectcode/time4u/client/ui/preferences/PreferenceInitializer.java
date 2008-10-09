@@ -20,6 +20,9 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
     store.setDefault(PreferenceConstants.UI_CONFIRM_WORKITEM_DELETE, false);
     store.setDefault(PreferenceConstants.UI_STOPWATCH_PUNCH, false);
 
+    store.setDefault(PreferenceConstants.UI_OVERTIME_CALCULATE, false);
+    store.setDefault(PreferenceConstants.UI_OVERTIME_COLORIZE, true);
+
     PreferenceConverter.setDefault(store, PreferenceConstants.UI_CALENDAR_REGULAR_COLOR, PlatformUI.getWorkbench()
         .getDisplay().getSystemColor(SWT.COLOR_WIDGET_FOREGROUND).getRGB());
     PreferenceConverter.setDefault(store, PreferenceConstants.UI_CALENDAR_INVALID_COLOR, PlatformUI.getWorkbench()

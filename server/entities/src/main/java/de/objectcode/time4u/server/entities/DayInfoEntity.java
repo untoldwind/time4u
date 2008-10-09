@@ -281,20 +281,22 @@ public class DayInfoEntity
 
     final Set<String> workItemIds = new HashSet<String>();
 
-    for (final WorkItem workItem : dayInfo.getWorkItems()) {
-      WorkItemEntity workItemEntity = m_workItems.get(workItem.getId());
+    if (dayInfo.getWorkItems() != null) {
+      for (final WorkItem workItem : dayInfo.getWorkItems()) {
+        WorkItemEntity workItemEntity = m_workItems.get(workItem.getId());
 
-      if (workItemEntity == null) {
-        workItemEntity = new WorkItemEntity(workItem.getId(), this);
+        if (workItemEntity == null) {
+          workItemEntity = new WorkItemEntity(workItem.getId(), this);
 
-        workItemEntity.fromDTO(context, workItem, dayInfo.getLastModifiedByClient());
-        context.persist(workItemEntity);
-        m_workItems.put(workItem.getId(), workItemEntity);
-      } else {
-        workItemEntity.fromDTO(context, workItem, dayInfo.getLastModifiedByClient());
+          workItemEntity.fromDTO(context, workItem, dayInfo.getLastModifiedByClient());
+          context.persist(workItemEntity);
+          m_workItems.put(workItem.getId(), workItemEntity);
+        } else {
+          workItemEntity.fromDTO(context, workItem, dayInfo.getLastModifiedByClient());
+        }
+
+        workItemIds.add(workItem.getId());
       }
-
-      workItemIds.add(workItem.getId());
     }
     final Iterator<WorkItemEntity> it = m_workItems.values().iterator();
     while (it.hasNext()) {
