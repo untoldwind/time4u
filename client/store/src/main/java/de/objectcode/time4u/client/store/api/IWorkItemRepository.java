@@ -98,5 +98,9 @@ public interface IWorkItemRepository
    */
   void setActiveWorkItem(WorkItem workitem) throws RepositoryException;
 
+  void setRegularTime(CalendarDay from, CalendarDay until, int regularTime) throws RepositoryException;
+
   List<TimePolicy> getTimePolicies() throws RepositoryException;
+
+  void storeTimePolicies(List<TimePolicy> timePolicy) throws RepositoryException;
 }

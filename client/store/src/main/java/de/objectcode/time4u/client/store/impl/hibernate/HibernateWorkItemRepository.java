@@ -382,10 +382,29 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
     m_repository.fireRepositoryEvent(new ActiveWorkItemRepositoryEvent(workItem));
   }
 
+  public void setRegularTime(final CalendarDay from, final CalendarDay until, final int regularTime)
+      throws RepositoryException
+  {
+    // TODO Auto-generated method stub
+
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   public List<TimePolicy> getTimePolicies() throws RepositoryException
   {
     // TODO: Store this
     return Collections.emptyList();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void storeTimePolicies(final List<TimePolicy> timePolicy) throws RepositoryException
+  {
+    // TODO Auto-generated method stub
+
   }
 
   private static class DayInfoWorkItemHolder

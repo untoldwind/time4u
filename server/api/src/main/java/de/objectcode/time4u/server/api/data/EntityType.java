@@ -20,7 +20,8 @@ public enum EntityType
   TODO(4),
   DAYINFO(5),
   WORKITEM(6),
-  ACTIVE_WORKITEM(7);
+  ACTIVE_WORKITEM(7),
+  TIMEPOLICY(8);
 
   private final int m_code;
 

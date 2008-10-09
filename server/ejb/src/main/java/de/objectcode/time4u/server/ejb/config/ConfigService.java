@@ -1,6 +1,7 @@
 package de.objectcode.time4u.server.ejb.config;
 
 import java.net.InetAddress;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,8 +48,7 @@ public class ConfigService implements IConfigServiceManagement, ILocalIdGenerato
 
   private long m_serverId = 0L;
 
-  Map<EntityType, LocalIdEntity> m_current;
-  long m_nextLocalId;
+  Map<EntityType, EntityTypeIdGenerator> m_generators;
 
   public long getServerId()
   {
@@ -60,24 +60,9 @@ public class ConfigService implements IConfigServiceManagement, ILocalIdGenerato
     return m_serverId;
   }
 
-  public synchronized String generateLocalId(final EntityType entityType)
+  public String generateLocalId(final EntityType entityType)
   {
-    if (!m_current.containsKey(entityType) || m_nextLocalId > m_current.get(entityType).getHiId()) {
-      final LocalIdEntity localIdEntity = m_localIdCreator.getNextChunk(entityType);
-      m_current.put(entityType, localIdEntity);
-      m_nextLocalId = localIdEntity.getLoId();
-    }
-    final long localId = m_nextLocalId++;
-    final StringBuffer buffer = new StringBuffer();
-
-    buffer.append(digits(m_serverId >> 32, 8));
-    buffer.append(digits(m_serverId, 8));
-    buffer.append('-');
-    buffer.append(digits(entityType.getCode(), 2));
-    buffer.append('-');
-    buffer.append(digits(localId, 14));
-
-    return buffer.toString();
+    return m_generators.get(entityType).generateLocalId();
   }
 
   private static String digits(final long val, final int digits)
@@ -114,7 +99,12 @@ public class ConfigService implements IConfigServiceManagement, ILocalIdGenerato
 
       m_manager.persist(clientEntity);
     }
-    m_current = new HashMap<EntityType, LocalIdEntity>();
+    final Map<EntityType, EntityTypeIdGenerator> generators = new HashMap<EntityType, EntityTypeIdGenerator>();
+
+    for (final EntityType type : EntityType.values()) {
+      generators.put(type, new EntityTypeIdGenerator(type));
+    }
+    m_generators = Collections.unmodifiableMap(generators);
 
     if (m_manager.find(UserAccountEntity.class, "admin") == null) {
       initializeAdmin();
@@ -159,5 +149,38 @@ public class ConfigService implements IConfigServiceManagement, ILocalIdGenerato
       m_manager.persist(adminRole);
     }
     userAccount.getRoles().add(adminRole);
+  }
+
+  private class EntityTypeIdGenerator
+  {
+    EntityType m_entityType;
+    long m_nextLocalId;
+    LocalIdEntity m_current;
+
+    EntityTypeIdGenerator(final EntityType entityType)
+    {
+      m_entityType = entityType;
+    }
+
+    public synchronized String generateLocalId()
+    {
+      if (m_current == null || m_nextLocalId > m_current.getHiId()) {
+        final LocalIdEntity localIdEntity = m_localIdCreator.getNextChunk(m_entityType);
+
+        m_current = localIdEntity;
+        m_nextLocalId = localIdEntity.getLoId();
+      }
+      final long localId = m_nextLocalId++;
+      final StringBuffer buffer = new StringBuffer();
+
+      buffer.append(digits(m_serverId >> 32, 8));
+      buffer.append(digits(m_serverId, 8));
+      buffer.append('-');
+      buffer.append(digits(m_entityType.getCode(), 2));
+      buffer.append('-');
+      buffer.append(digits(localId, 14));
+
+      return buffer.toString();
+    }
   }
 }

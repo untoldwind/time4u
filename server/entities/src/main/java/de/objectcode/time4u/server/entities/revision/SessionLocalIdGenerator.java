@@ -1,5 +1,6 @@
 package de.objectcode.time4u.server.entities.revision;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,14 +17,18 @@ public class SessionLocalIdGenerator implements ILocalIdGenerator
 
   SessionFactory m_sessionFactory;
   long m_clientId;
-  long m_nextLocalId;
-  Map<EntityType, LocalIdEntity> m_current;
+  Map<EntityType, EntityTypeIdGenerator> m_generators;
 
   public SessionLocalIdGenerator(final SessionFactory sessionFactory, final long clientId)
   {
     m_sessionFactory = sessionFactory;
     m_clientId = clientId;
-    m_current = new HashMap<EntityType, LocalIdEntity>();
+    final Map<EntityType, EntityTypeIdGenerator> generators = new HashMap<EntityType, EntityTypeIdGenerator>();
+
+    for (final EntityType type : EntityType.values()) {
+      generators.put(type, new EntityTypeIdGenerator(type));
+    }
+    m_generators = Collections.unmodifiableMap(generators);
 
     Transaction trx = null;
     Session session = null;
@@ -55,24 +60,9 @@ public class SessionLocalIdGenerator implements ILocalIdGenerator
     return m_clientId;
   }
 
-  public synchronized String generateLocalId(final EntityType entityType)
+  public String generateLocalId(final EntityType entityType)
   {
-    if (!m_current.containsKey(entityType) || m_nextLocalId > m_current.get(entityType).getHiId()) {
-      final LocalIdEntity localIdEntity = getNextChunk(entityType);
-      m_current.put(entityType, localIdEntity);
-      m_nextLocalId = localIdEntity.getLoId();
-    }
-    final long localId = m_nextLocalId++;
-    final StringBuffer buffer = new StringBuffer();
-
-    buffer.append(digits(m_clientId >> 32, 8));
-    buffer.append(digits(m_clientId, 8));
-    buffer.append('-');
-    buffer.append(digits(entityType.getCode(), 2));
-    buffer.append('-');
-    buffer.append(digits(localId, 14));
-
-    return buffer.toString();
+    return m_generators.get(entityType).generateLocalId();
   }
 
   private static String digits(final long val, final int digits)
@@ -115,6 +105,38 @@ public class SessionLocalIdGenerator implements ILocalIdGenerator
         session.close();
       }
     }
+  }
 
+  private class EntityTypeIdGenerator
+  {
+    EntityType m_entityType;
+    long m_nextLocalId;
+    LocalIdEntity m_current;
+
+    EntityTypeIdGenerator(final EntityType entityType)
+    {
+      m_entityType = entityType;
+    }
+
+    public synchronized String generateLocalId()
+    {
+      if (m_current == null || m_nextLocalId > m_current.getHiId()) {
+        final LocalIdEntity localIdEntity = getNextChunk(m_entityType);
+
+        m_current = localIdEntity;
+        m_nextLocalId = localIdEntity.getLoId();
+      }
+      final long localId = m_nextLocalId++;
+      final StringBuffer buffer = new StringBuffer();
+
+      buffer.append(digits(m_clientId >> 32, 8));
+      buffer.append(digits(m_clientId, 8));
+      buffer.append('-');
+      buffer.append(digits(m_entityType.getCode(), 2));
+      buffer.append('-');
+      buffer.append(digits(localId, 14));
+
+      return buffer.toString();
+    }
   }
 }
