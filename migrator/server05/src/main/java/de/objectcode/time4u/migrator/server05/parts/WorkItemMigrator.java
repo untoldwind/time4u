@@ -46,7 +46,7 @@ public class WorkItemMigrator extends BasePersonalizedMigratorPart<OldWorkitems>
       dayInfoEntity.setRevision(revisionLock.getLatestRevision());
     }
 
-    final WorkItemEntity workItemEntity = new WorkItemEntity(migrateId(EntityType.DAYINFO, oldEntity.getId()),
+    final WorkItemEntity workItemEntity = new WorkItemEntity(migrateId(EntityType.WORKITEM, oldEntity.getId()),
         dayInfoEntity);
 
     workItemEntity.setBegin(begin.get(Calendar.HOUR_OF_DAY) * 3600 + begin.get(Calendar.MINUTE) * 60

@@ -21,8 +21,8 @@ import de.objectcode.time4u.server.api.IWorkItemService;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
-import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.EntityType;
+import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.WorkItem;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
@@ -146,7 +146,7 @@ public class WorkItemServiceImpl implements IWorkItemService
     if (dayInfo.getWorkItems() != null) {
       for (final WorkItem workItem : dayInfo.getWorkItems()) {
         if (workItem.getId() == null) {
-          workItem.setId(m_idGenerator.generateLocalId(EntityType.DAYINFO));
+          workItem.setId(m_idGenerator.generateLocalId(EntityType.WORKITEM));
         }
       }
     }

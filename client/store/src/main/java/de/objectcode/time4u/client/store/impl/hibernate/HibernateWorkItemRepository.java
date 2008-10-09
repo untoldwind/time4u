@@ -239,7 +239,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
 
                 session.persist(dayInfoEntity);
               }
-              final String workItemId = m_repository.generateLocalId(EntityType.DAYINFO);
+              final String workItemId = m_repository.generateLocalId(EntityType.WORKITEM);
               workItemEntity = new WorkItemEntity(workItemId, dayInfoEntity);
 
               workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem, m_repository.getClientId());
