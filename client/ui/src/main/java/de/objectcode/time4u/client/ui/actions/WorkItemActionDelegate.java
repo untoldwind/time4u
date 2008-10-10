@@ -118,21 +118,22 @@ public class WorkItemActionDelegate implements IWorkbenchWindowActionDelegate, I
           UIPlugin.getDefault().log(e);
         }
       }
-      //    } else if ("time4u-client.workItem.continue".equals(id)) {
-      //      if (selectedWorkItem != null && !selectedWorkItem.isActive()) {
-      //        if (Activator.getDefault().isPunchedIn()) {
-      //          Activator.getDefault().punchOut();
-      //        }
-      //
-      //        final IProjectStore projectStore = Activator.getDefault().getRepository().getProjectStore();
-      //        try {
-      //          final Project project = projectStore.getProject(selectedWorkItem.getProjectId());
-      //          final Task task = projectStore.getTask(selectedWorkItem.getTaskId());
-      //          Activator.getDefault().punchIn(project, task, selectedWorkItem.getComment());
-      //        } catch (final Exception e) {
-      //          Activator.getDefault().log(e);
-      //        }
-      //      }
+    } else if ("de.objectcode.time4u.client.ui.workitem.continue".equals(id)) {
+      if (selectedWorkItem != null) {
+        if (UIPlugin.getDefault().isPunchedIn()) {
+          UIPlugin.getDefault().punchOut();
+        }
+
+        try {
+          final ProjectSummary project = RepositoryFactory.getRepository().getProjectRepository().getProjectSummary(
+              selectedWorkItem.getProjectId());
+          final TaskSummary task = RepositoryFactory.getRepository().getTaskRepository().getTaskSummary(
+              selectedWorkItem.getTaskId());
+          UIPlugin.getDefault().punchIn(project, task, selectedWorkItem.getComment());
+        } catch (final Exception e) {
+          UIPlugin.getDefault().log(e);
+        }
+      }
       //    } else if ("de.objectcode.time4u.client.workItem.tableView".equals(id)) {
       //      if (action.isChecked() && m_view != null) {
       //        m_view.setViewType(WorkItemView.ViewType.FLAT);

@@ -295,6 +295,14 @@
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.WorkItemActionDelegate"
+               icon="icons/ContinueWorkItem.gif"
+               id="de.objectcode.time4u.client.ui.workitem.continue"
+               label="%action.workItem.continue.label"
+               menubarPath="objectGroup"
+               tooltip="%action.workItem.continue.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.WorkItemActionDelegate"
                icon="icons/WorkItem.gif"
                id="de.objectcode.time4u.client.ui.workitem.edit"
                label="%action.workItem.edit.label"
@@ -551,6 +559,27 @@
                style="push"
                toolbarPath="workItem/additions"
                tooltip="%action.workItem.delete.tooltip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+                  </objectClass>
+                  <objectState
+                        name="has"
+                        value="WORKITEM">
+                  </objectState>
+               </and>
+            </enablement>
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.WorkItemActionDelegate"
+               icon="icons/ContinueWorkItem.gif"
+               id="de.objectcode.time4u.client.ui.workitem.continue"
+               label="%action.workItem.continue.label"
+               menubarPath="workItemMenu/workItemGroup"
+               style="push"
+               toolbarPath="workItem/additions"
+               tooltip="%action.workItem.continue.tooltip">
             <enablement>
                <and>
                   <objectClass
