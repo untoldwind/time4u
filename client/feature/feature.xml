@@ -3,18 +3,19 @@
       id="de.objectcode.time4u.client.feature"
       label="Time4U feature"
       version="0.9.1"
-      provider-name="objectcode.de">
+      provider-name="objectcode.de"
+      plugin="de.objectcode.time4u.client.ui">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+   <description url="http://time4u.sourceforge.net">
+      Time4U client feature
    </description>
 
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
+   <copyright url="http://www.opensource.org/licenses/mit-license.php">
+      MIT license
    </copyright>
 
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
+   <license url="http://www.opensource.org/licenses/mit-license.php">
+      MIT license
    </license>
 
    <plugin

@@ -6,7 +6,7 @@
    <aboutInfo>
       <image path="product_lg.gif"/>
       <text>
-         RCP Mail template created by PDE
+         Time4U client 0.9.1
       </text>
    </aboutInfo>
 
@@ -57,9 +57,9 @@
       <plugin id="org.eclipse.jface.databinding"/>
       <plugin id="org.eclipse.osgi"/>
       <plugin id="org.eclipse.swt"/>
-      <plugin id="org.eclipse.swt.carbon.macosx"/>
+      <plugin id="org.eclipse.swt.carbon.macosx" fragment="true"/>
       <plugin id="org.eclipse.ui"/>
-      <plugin id="org.eclipse.ui.carbon"/>
+      <plugin id="org.eclipse.ui.carbon" fragment="true"/>
       <plugin id="org.eclipse.ui.workbench"/>
    </plugins>
 
