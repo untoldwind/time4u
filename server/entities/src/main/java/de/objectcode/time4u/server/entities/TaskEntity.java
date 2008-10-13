@@ -1,6 +1,5 @@
 package de.objectcode.time4u.server.entities;
 
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import de.objectcode.time4u.server.api.data.MetaProperty;
-import de.objectcode.time4u.server.api.data.MetaType;
 import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.entities.context.IPersistenceContext;
@@ -43,7 +41,7 @@ public class TaskEntity
   /** The project the task belongs too. */
   private ProjectEntity m_project;
   /** All meta properties of the task. */
-  private Map<String, TaskProperty> m_metaProperties;
+  private Map<String, TaskMetaPropertyEntity> m_metaProperties;
   /** Revision number (increased every time something has changed) */
   private long m_revision;
   /** Client id of the last modification */
@@ -133,13 +131,13 @@ public class TaskEntity
   }
 
   @MapKey(name = "name")
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "task")
-  public Map<String, TaskProperty> getMetaProperties()
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "entityId")
+  public Map<String, TaskMetaPropertyEntity> getMetaProperties()
   {
     return m_metaProperties;
   }
 
-  public void setMetaProperties(final Map<String, TaskProperty> metaProperties)
+  public void setMetaProperties(final Map<String, TaskMetaPropertyEntity> metaProperties)
   {
     m_metaProperties = metaProperties;
   }
@@ -197,16 +195,8 @@ public class TaskEntity
     task.setDescription(m_description);
 
     if (m_metaProperties != null) {
-      for (final TaskProperty property : m_metaProperties.values()) {
-        if (property.getBoolValue() != null) {
-          task.setMetaProperty(new MetaProperty(property.getName(), property.getBoolValue()));
-        } else if (property.getStrValue() != null) {
-          task.setMetaProperty(new MetaProperty(property.getName(), property.getStrValue()));
-        } else if (property.getDateValue() != null) {
-          task.setMetaProperty(new MetaProperty(property.getName(), property.getDateValue()));
-        } else if (property.getIntValue() != null) {
-          task.setMetaProperty(new MetaProperty(property.getName(), property.getIntValue()));
-        }
+      for (final TaskMetaPropertyEntity property : m_metaProperties.values()) {
+        task.setMetaProperty(property.toDTO());
       }
     }
   }
@@ -225,45 +215,19 @@ public class TaskEntity
     m_description = task.getDescription();
 
     if (m_metaProperties == null) {
-      m_metaProperties = new HashMap<String, TaskProperty>();
+      m_metaProperties = new HashMap<String, TaskMetaPropertyEntity>();
     }
 
     if (task.getMetaProperties() != null) {
-      for (final MetaProperty property : task.getMetaProperties().values()) {
-        TaskProperty taskProperty = m_metaProperties.get(property.getName());
+      for (final MetaProperty metaProperty : task.getMetaProperties().values()) {
+        TaskMetaPropertyEntity property = m_metaProperties.get(metaProperty.getName());
 
-        if (taskProperty == null) {
-          taskProperty = new TaskProperty();
-          taskProperty.setName(property.getName());
-          taskProperty.setTask(this);
+        if (property == null) {
+          property = new TaskMetaPropertyEntity();
 
-          m_metaProperties.put(property.getName(), taskProperty);
+          m_metaProperties.put(metaProperty.getName(), property);
         }
-
-        switch (MetaType.valueOf(property.getType())) {
-          case STRING: {
-            taskProperty.setStrValue(property.getValue());
-            break;
-          }
-
-          case INTEGER: {
-            taskProperty.setIntValue(Integer.parseInt(property.getValue()));
-            break;
-          }
-
-          case BOOLEAN: {
-            taskProperty.setBoolValue(Boolean.parseBoolean(property.getValue()));
-            break;
-          }
-
-          case DATE: {
-            try {
-              taskProperty.setDateValue(MetaProperty.g_format.parse(property.getValue()));
-            } catch (final ParseException e) {
-            }
-            break;
-          }
-        }
+        property.fromDTO(metaProperty);
       }
     }
   }

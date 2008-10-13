@@ -33,6 +33,11 @@ import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.data.WorkItem;
 
+/**
+ * Helper class to create the tray icon and its context menu.
+ * 
+ * @author junglas
+ */
 public class ApplicationTray implements IRepositoryListener
 {
   private final Image m_punchedInImage;

@@ -1,6 +1,5 @@
 package de.objectcode.time4u.server.entities;
 
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import de.objectcode.time4u.server.api.data.MetaProperty;
-import de.objectcode.time4u.server.api.data.MetaType;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.entities.context.IPersistenceContext;
@@ -43,12 +41,12 @@ public class ProjectEntity
   /** Parent project */
   private ProjectEntity m_parent;
   /** Meta properties of the project */
-  private Map<String, ProjectProperty> m_metaProperties;
+  private Map<String, ProjectMetaPropertyEntity> m_metaProperties;
   /** Revision number (increased every time something has changed) */
   private long m_revision;
   /** Client id of the last modification */
   private long m_lastModifiedByClient;
-  /** Helper string containing all primary keys of all parent projects (usefull for querying all sub-projects. */
+  /** Helper string containing all primary keys of all parent projects (useful for querying all sub-projects. */
   private String m_parentKey;
 
   /**
@@ -133,13 +131,13 @@ public class ProjectEntity
   }
 
   @MapKey(name = "name")
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "project")
-  public Map<String, ProjectProperty> getMetaProperties()
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "entityId")
+  public Map<String, ProjectMetaPropertyEntity> getMetaProperties()
   {
     return m_metaProperties;
   }
 
-  public void setMetaProperties(final Map<String, ProjectProperty> metaProperties)
+  public void setMetaProperties(final Map<String, ProjectMetaPropertyEntity> metaProperties)
   {
     m_metaProperties = metaProperties;
   }
@@ -233,16 +231,8 @@ public class ProjectEntity
     project.setDescription(m_description);
 
     if (m_metaProperties != null) {
-      for (final ProjectProperty property : m_metaProperties.values()) {
-        if (property.getBoolValue() != null) {
-          project.setMetaProperty(new MetaProperty(property.getName(), property.getBoolValue()));
-        } else if (property.getStrValue() != null) {
-          project.setMetaProperty(new MetaProperty(property.getName(), property.getStrValue()));
-        } else if (property.getDateValue() != null) {
-          project.setMetaProperty(new MetaProperty(property.getName(), property.getDateValue()));
-        } else if (property.getIntValue() != null) {
-          project.setMetaProperty(new MetaProperty(property.getName(), property.getIntValue()));
-        }
+      for (final ProjectMetaPropertyEntity property : m_metaProperties.values()) {
+        project.setMetaProperty(property.toDTO());
       }
     }
   }
@@ -259,47 +249,20 @@ public class ProjectEntity
     m_description = project.getDescription();
 
     if (m_metaProperties == null) {
-      m_metaProperties = new HashMap<String, ProjectProperty>();
+      m_metaProperties = new HashMap<String, ProjectMetaPropertyEntity>();
     }
 
     if (project.getMetaProperties() != null) {
-      for (final MetaProperty property : project.getMetaProperties().values()) {
-        ProjectProperty projectProperty = m_metaProperties.get(property.getName());
+      for (final MetaProperty metaProperty : project.getMetaProperties().values()) {
+        ProjectMetaPropertyEntity property = m_metaProperties.get(metaProperty.getName());
 
-        if (projectProperty == null) {
-          projectProperty = new ProjectProperty();
-          projectProperty.setName(property.getName());
-          projectProperty.setProject(this);
+        if (property == null) {
+          property = new ProjectMetaPropertyEntity();
 
-          m_metaProperties.put(property.getName(), projectProperty);
+          m_metaProperties.put(metaProperty.getName(), property);
         }
-
-        switch (MetaType.valueOf(property.getType())) {
-          case STRING: {
-            projectProperty.setStrValue(property.getValue());
-            break;
-          }
-
-          case INTEGER: {
-            projectProperty.setIntValue(Integer.parseInt(property.getValue()));
-            break;
-          }
-
-          case BOOLEAN: {
-            projectProperty.setBoolValue(Boolean.parseBoolean(property.getValue()));
-            break;
-          }
-
-          case DATE: {
-            try {
-              projectProperty.setDateValue(MetaProperty.g_format.parse(property.getValue()));
-            } catch (final ParseException e) {
-            }
-            break;
-          }
-        }
+        property.fromDTO(metaProperty);
       }
     }
-
   }
 }

@@ -6,6 +6,11 @@ import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
+/**
+ * Configure the workbench window.
+ * 
+ * @author junglas
+ */
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
 {
 

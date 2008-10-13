@@ -1,17 +1,23 @@
 package de.objectcode.time4u.server.entities;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.Person;
+import de.objectcode.time4u.server.api.data.PersonSummary;
 
 /**
  * Person entity.
@@ -42,6 +48,8 @@ public class PersonEntity
   private Set<TeamEntity> m_memberOf;
   /** Timestamp of the last synchronization */
   private Date m_lastSynchronize;
+  /** Meta properties of the person */
+  Map<String, PersonMetaPropertyEntity> m_metaProperties;
 
   protected PersonEntity()
   {
@@ -162,6 +170,18 @@ public class PersonEntity
     m_deleted = deleted;
   }
 
+  @MapKey(name = "name")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "entityId")
+  public Map<String, PersonMetaPropertyEntity> getMetaProperties()
+  {
+    return m_metaProperties;
+  }
+
+  public void setMetaProperties(final Map<String, PersonMetaPropertyEntity> metaProperties)
+  {
+    m_metaProperties = metaProperties;
+  }
+
   @Override
   public int hashCode()
   {
@@ -184,7 +204,7 @@ public class PersonEntity
     return m_id.equals(castObj.m_id);
   }
 
-  public void toDTO(final Person person)
+  public void toSummaryDTO(final PersonSummary person)
   {
     person.setId(m_id);
     person.setRevision(m_revision);
@@ -194,6 +214,18 @@ public class PersonEntity
     person.setEmail(m_email);
     person.setDeleted(m_deleted);
     person.setLastSynchronize(m_lastSynchronize);
+
+  }
+
+  public void toDTO(final Person person)
+  {
+    toSummaryDTO(person);
+
+    if (m_metaProperties != null) {
+      for (final PersonMetaPropertyEntity property : m_metaProperties.values()) {
+        person.setMetaProperty(property.toDTO());
+      }
+    }
   }
 
   public void fromDTO(final Person person)
@@ -203,5 +235,22 @@ public class PersonEntity
     m_surname = person.getSurname();
     m_email = person.getEmail();
     m_deleted = person.isDeleted();
+
+    if (m_metaProperties == null) {
+      m_metaProperties = new HashMap<String, PersonMetaPropertyEntity>();
+    }
+
+    if (person.getMetaProperties() != null) {
+      for (final MetaProperty metaProperty : person.getMetaProperties().values()) {
+        PersonMetaPropertyEntity property = m_metaProperties.get(metaProperty.getName());
+
+        if (property == null) {
+          property = new PersonMetaPropertyEntity();
+
+          m_metaProperties.put(metaProperty.getName(), property);
+        }
+        property.fromDTO(metaProperty);
+      }
+    }
   }
 }

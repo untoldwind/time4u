@@ -1,6 +1,9 @@
 package de.objectcode.time4u.server.api.data;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -18,6 +21,8 @@ public class DayInfo extends DayInfoSummary
 
   /** All workitems of the day. */
   private List<WorkItem> m_workItems;
+  /** Map of all meta properties of the dayinfo. */
+  private Map<String, MetaProperty> m_metaProperties;
 
   public List<WorkItem> getWorkItems()
   {
@@ -27,6 +32,35 @@ public class DayInfo extends DayInfoSummary
   public void setWorkItems(final List<WorkItem> workItems)
   {
     m_workItems = workItems;
+  }
+
+  public Map<String, MetaProperty> getMetaProperties()
+  {
+    if (m_metaProperties == null) {
+      return Collections.emptyMap();
+    }
+    return m_metaProperties;
+  }
+
+  public void setMetaProperties(final Map<String, MetaProperty> metaProperties)
+  {
+    m_metaProperties = metaProperties;
+  }
+
+  public void setMetaProperty(final MetaProperty metaProperty)
+  {
+    if (m_metaProperties == null) {
+      m_metaProperties = new HashMap<String, MetaProperty>();
+    }
+    m_metaProperties.put(metaProperty.getName(), metaProperty);
+  }
+
+  public MetaProperty getMetaProperty(final String name)
+  {
+    if (m_metaProperties != null) {
+      return m_metaProperties.get(name);
+    }
+    return null;
   }
 
 }

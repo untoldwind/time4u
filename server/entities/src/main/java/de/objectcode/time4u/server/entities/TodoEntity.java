@@ -1,7 +1,7 @@
 package de.objectcode.time4u.server.entities;
 
-import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.CascadeType;
@@ -17,7 +17,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import de.objectcode.time4u.server.api.data.MetaProperty;
-import de.objectcode.time4u.server.api.data.MetaType;
 import de.objectcode.time4u.server.api.data.Todo;
 
 /**
@@ -54,7 +53,7 @@ public class TodoEntity
   /** Deadline of the todo (optional) */
   private Date m_deadline;
   /** All meta properties of the todo. */
-  private Map<String, TodoProperty> m_metaProperties;
+  private Map<String, TodoMetaPropertyEntity> m_metaProperties;
   /** Revision number (increased every time something has changed) */
   private long m_revision;
   /** Client id of the last modification */
@@ -211,14 +210,14 @@ public class TodoEntity
     m_task = task;
   }
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "todo")
   @MapKey(name = "name")
-  public Map<String, TodoProperty> getMetaProperties()
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "entityId")
+  public Map<String, TodoMetaPropertyEntity> getMetaProperties()
   {
     return m_metaProperties;
   }
 
-  public void setMetaProperties(final Map<String, TodoProperty> metaProperties)
+  public void setMetaProperties(final Map<String, TodoMetaPropertyEntity> metaProperties)
   {
     m_metaProperties = metaProperties;
   }
@@ -271,42 +270,20 @@ public class TodoEntity
     m_completedAt = todo.getCompletedAt();
     m_deadline = todo.getDeadline();
 
+    if (m_metaProperties == null) {
+      m_metaProperties = new HashMap<String, TodoMetaPropertyEntity>();
+    }
+
     if (todo.getMetaProperties() != null) {
-      for (final MetaProperty property : todo.getMetaProperties()) {
-        TodoProperty todoProperty = m_metaProperties.get(property.getName());
+      for (final MetaProperty metaProperty : todo.getMetaProperties().values()) {
+        TodoMetaPropertyEntity property = m_metaProperties.get(metaProperty.getName());
 
-        if (todoProperty == null) {
-          todoProperty = new TodoProperty();
-          todoProperty.setName(property.getName());
-          todoProperty.setTodo(this);
+        if (property == null) {
+          property = new TodoMetaPropertyEntity();
 
-          m_metaProperties.put(property.getName(), todoProperty);
+          m_metaProperties.put(metaProperty.getName(), property);
         }
-
-        switch (MetaType.valueOf(property.getType())) {
-          case STRING: {
-            todoProperty.setStrValue(property.getValue());
-            break;
-          }
-
-          case INTEGER: {
-            todoProperty.setIntValue(Integer.parseInt(property.getValue()));
-            break;
-          }
-
-          case BOOLEAN: {
-            todoProperty.setBoolValue(Boolean.parseBoolean(property.getValue()));
-            break;
-          }
-
-          case DATE: {
-            try {
-              todoProperty.setDateValue(MetaProperty.g_format.parse(property.getValue()));
-            } catch (final ParseException e) {
-            }
-            break;
-          }
-        }
+        property.fromDTO(metaProperty);
       }
     }
   }
@@ -341,16 +318,8 @@ public class TodoEntity
     todo.setPriority(m_priority);
 
     if (m_metaProperties != null) {
-      for (final TodoProperty property : m_metaProperties.values()) {
-        if (property.getBoolValue() != null) {
-          todo.addMetaProperties(new MetaProperty(property.getName(), property.getBoolValue()));
-        } else if (property.getStrValue() != null) {
-          todo.addMetaProperties(new MetaProperty(property.getName(), property.getStrValue()));
-        } else if (property.getDateValue() != null) {
-          todo.addMetaProperties(new MetaProperty(property.getName(), property.getDateValue()));
-        } else if (property.getIntValue() != null) {
-          todo.addMetaProperties(new MetaProperty(property.getName(), property.getIntValue()));
-        }
+      for (final TodoMetaPropertyEntity property : m_metaProperties.values()) {
+        todo.setMetaProperty(property.toDTO());
       }
     }
   }

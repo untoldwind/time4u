@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,6 +27,7 @@ import javax.persistence.UniqueConstraint;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
+import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.WorkItem;
 import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 
@@ -58,6 +60,8 @@ public class DayInfoEntity
   private Set<DayTagEntity> m_tags;
   /** Set of workitem of this day. */
   private Map<String, WorkItemEntity> m_workItems;
+  /** Meta properties of the dayinfo */
+  Map<String, DayInfoMetaPropertyEntity> m_metaProperties;
 
   /**
    * Default constructor for hibernate.
@@ -198,6 +202,18 @@ public class DayInfoEntity
     m_workItems = workItems;
   }
 
+  @MapKey(name = "name")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "entityId")
+  public Map<String, DayInfoMetaPropertyEntity> getMetaProperties()
+  {
+    return m_metaProperties;
+  }
+
+  public void setMetaProperties(final Map<String, DayInfoMetaPropertyEntity> metaProperties)
+  {
+    m_metaProperties = metaProperties;
+  }
+
   /**
    * Validate the dayinfo and all attached workitems.
    * 
@@ -272,6 +288,12 @@ public class DayInfoEntity
 
       dayinfo.setWorkItems(workItems);
     }
+
+    if (m_metaProperties != null) {
+      for (final DayInfoMetaPropertyEntity property : m_metaProperties.values()) {
+        dayinfo.setMetaProperty(property.toDTO());
+      }
+    }
   }
 
   public void fromDTO(final IPersistenceContext context, final DayInfo dayInfo)
@@ -305,6 +327,19 @@ public class DayInfoEntity
       if (!workItemIds.contains(entity.getId())) {
         context.delete(entity);
         it.remove();
+      }
+    }
+
+    if (dayInfo.getMetaProperties() != null) {
+      for (final MetaProperty metaProperty : dayInfo.getMetaProperties().values()) {
+        DayInfoMetaPropertyEntity property = m_metaProperties.get(metaProperty.getName());
+
+        if (property == null) {
+          property = new DayInfoMetaPropertyEntity();
+
+          m_metaProperties.put(metaProperty.getName(), property);
+        }
+        property.fromDTO(metaProperty);
       }
     }
   }

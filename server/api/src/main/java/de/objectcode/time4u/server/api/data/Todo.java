@@ -1,8 +1,9 @@
 package de.objectcode.time4u.server.api.data;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlType;
 
@@ -46,8 +47,8 @@ public class Todo implements ISynchronizableData
   private Date m_completedAt;
   /** Optional deadline of the todo. */
   private Date m_deadline;
-  /** Map of all meta properties of the todo. */
-  private List<MetaProperty> m_metaProperties;
+  /** Map of all meta properties of the team. */
+  private Map<String, MetaProperty> m_metaProperties;
 
   public String getReporterId()
   {
@@ -199,22 +200,33 @@ public class Todo implements ISynchronizableData
     m_deleted = deleted;
   }
 
-  public List<MetaProperty> getMetaProperties()
+  public Map<String, MetaProperty> getMetaProperties()
   {
+    if (m_metaProperties == null) {
+      return Collections.emptyMap();
+    }
     return m_metaProperties;
   }
 
-  public void setMetaProperties(final List<MetaProperty> metaProperties)
+  public void setMetaProperties(final Map<String, MetaProperty> metaProperties)
   {
     m_metaProperties = metaProperties;
   }
 
-  public void addMetaProperties(final MetaProperty metaProperty)
+  public void setMetaProperty(final MetaProperty metaProperty)
   {
     if (m_metaProperties == null) {
-      m_metaProperties = new ArrayList<MetaProperty>();
+      m_metaProperties = new HashMap<String, MetaProperty>();
     }
-    m_metaProperties.add(metaProperty);
+    m_metaProperties.put(metaProperty.getName(), metaProperty);
+  }
+
+  public MetaProperty getMetaProperty(final String name)
+  {
+    if (m_metaProperties != null) {
+      return m_metaProperties.get(name);
+    }
+    return null;
   }
 
 }

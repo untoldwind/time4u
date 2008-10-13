@@ -1,10 +1,13 @@
 package de.objectcode.time4u.server.entities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -13,9 +16,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapKey;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.Team;
+import de.objectcode.time4u.server.api.data.TeamSummary;
 
 /**
  * Team entity.
@@ -42,6 +49,8 @@ public class TeamEntity
   private long m_revision;
   /** Client id of the last modification */
   private long m_lastModifiedByClient;
+  /** Meta properties of the team */
+  Map<String, TeamMetaPropertyEntity> m_metaProperties;
 
   /**
    * Default construtor for hibernate.
@@ -148,6 +157,18 @@ public class TeamEntity
     m_deleted = deleted;
   }
 
+  @MapKey(name = "name")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "entityId")
+  public Map<String, TeamMetaPropertyEntity> getMetaProperties()
+  {
+    return m_metaProperties;
+  }
+
+  public void setMetaProperties(final Map<String, TeamMetaPropertyEntity> metaProperties)
+  {
+    m_metaProperties = metaProperties;
+  }
+
   @Override
   public int hashCode()
   {
@@ -170,7 +191,7 @@ public class TeamEntity
     return m_id.equals(castObj.m_id);
   }
 
-  public void toDTO(final Team team)
+  public void toSummaryDTO(final TeamSummary team)
   {
     team.setId(m_id);
     team.setRevision(m_revision);
@@ -178,6 +199,12 @@ public class TeamEntity
     team.setName(m_name);
     team.setDescription(m_description);
     team.setDeleted(m_deleted);
+  }
+
+  public void toDTO(final Team team)
+  {
+    toSummaryDTO(team);
+
     final List<String> ownerIds = new ArrayList<String>();
 
     for (final PersonEntity person : m_owners) {
@@ -190,6 +217,12 @@ public class TeamEntity
       memberIds.add(person.getId());
     }
     team.setMemberIds(memberIds);
+
+    if (m_metaProperties != null) {
+      for (final TeamMetaPropertyEntity property : m_metaProperties.values()) {
+        team.setMetaProperty(property.toDTO());
+      }
+    }
   }
 
   public void fromDTO(final EntityManager entityManager, final Team team)
@@ -217,6 +250,23 @@ public class TeamEntity
     if (team.getMemberIds() != null) {
       for (final String id : team.getMemberIds()) {
         m_members.add(entityManager.find(PersonEntity.class, id));
+      }
+    }
+
+    if (m_metaProperties == null) {
+      m_metaProperties = new HashMap<String, TeamMetaPropertyEntity>();
+    }
+
+    if (team.getMetaProperties() != null) {
+      for (final MetaProperty metaProperty : team.getMetaProperties().values()) {
+        TeamMetaPropertyEntity property = m_metaProperties.get(metaProperty.getName());
+
+        if (property == null) {
+          property = new TeamMetaPropertyEntity();
+
+          m_metaProperties.put(metaProperty.getName(), property);
+        }
+        property.fromDTO(metaProperty);
       }
     }
   }
