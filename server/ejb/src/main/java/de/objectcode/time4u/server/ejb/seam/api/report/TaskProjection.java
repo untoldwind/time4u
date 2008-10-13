@@ -1,18 +1,18 @@
 package de.objectcode.time4u.server.ejb.seam.api.report;
 
-public enum DayInfoProjection implements IProjection
+public enum TaskProjection implements IProjection
 {
-  DATE(ColumnType.DATE, "Date") {
+  NAME(ColumnType.NAME, "Name") {
     public Object[] project(final IRowDataAdapter rowData)
     {
-      return new Object[] { rowData.getDayInfo().getDate() };
+      return new Object[] { rowData.getTask().getName() };
     }
   };
 
   ColumnType m_columnType;
   String m_header;
 
-  private DayInfoProjection(final ColumnType columnType, final String header)
+  private TaskProjection(final ColumnType columnType, final String header)
   {
     m_columnType = columnType;
     m_header = header;
@@ -22,5 +22,4 @@ public enum DayInfoProjection implements IProjection
   {
     return new ColumnDefinition(m_columnType, m_header, index);
   }
-
 }

@@ -11,15 +11,24 @@
 			<table>
 				<s:decorate template="../templates/decorateTableField.xhtml">
 					<ui:define name="label">Month</ui:define>
-					<h:selectOneMenu value="#{user.monthReportController.selectedMonth.month}">
+					<h:selectOneMenu
+						value="#{user.monthReportController.selectedMonth.month}">
 						<s:selectItems value="#{user.monthReportController.monthValues}"
 							var="month" itemValue="#{month.value}" label="#{month.label}" />
 					</h:selectOneMenu>
 				</s:decorate>
 				<s:decorate template="../templates/decorateTableField.xhtml">
 					<ui:define name="label">Year</ui:define>
-					<rich:inputNumberSpinner value="#{user.monthReportController.selectedMonth.year}" minValue="1900" maxValue="2500" step="1"/>
+					<rich:inputNumberSpinner
+						value="#{user.monthReportController.selectedMonth.year}" minValue="1900"
+						maxValue="2500" step="1" />
 				</s:decorate>
+				<tr>
+					<td colspan="3">
+						<a4j:commandButton action="#{user.monthReportController.generate}"
+							value="Generate" />
+					</td>
+				</tr>
 			</table>
 		</h:form>
 	</ui:define>

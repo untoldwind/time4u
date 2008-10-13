@@ -2,40 +2,41 @@ package de.objectcode.time4u.server.ejb.seam.api.report;
 
 public enum WorkItemProjection implements IProjection
 {
-  COMMENT(new ColumnDefinition(ColumnType.DESCRIPTION, "Comment")) {
+  COMMENT(ColumnType.DESCRIPTION, "Comment") {
     public Object[] project(final IRowDataAdapter rowData)
     {
       return new Object[] { rowData.getWorkItem().getComment() };
     }
   },
-  BEGIN(new ColumnDefinition(ColumnType.TIME, "Begin")) {
+  BEGIN(ColumnType.TIME, "Begin") {
     public Object[] project(final IRowDataAdapter rowData)
     {
       return new Object[] { rowData.getWorkItem().getBegin() };
     }
   },
-  END(new ColumnDefinition(ColumnType.TIME, "End")) {
+  END(ColumnType.TIME, "End") {
     public Object[] project(final IRowDataAdapter rowData)
     {
       return new Object[] { rowData.getWorkItem().getEnd() };
     }
   },
-  DURATION(new ColumnDefinition(ColumnType.TIME, "Duration")) {
+  DURATION(ColumnType.TIME, "Duration") {
     public Object[] project(final IRowDataAdapter rowData)
     {
       return new Object[] { rowData.getWorkItem().getEnd() - rowData.getWorkItem().getBegin() };
     }
   };
+  ColumnType m_columnType;
+  String m_header;
 
-  private ColumnDefinition m_columnDefinition;
-
-  private WorkItemProjection(final ColumnDefinition columnDefinition)
+  private WorkItemProjection(final ColumnType columnType, final String header)
   {
-    m_columnDefinition = columnDefinition;
+    m_columnType = columnType;
+    m_header = header;
   }
 
-  public ColumnDefinition getColumnDefinition()
+  public ColumnDefinition getColumnDefinition(final int index)
   {
-    return m_columnDefinition;
+    return new ColumnDefinition(m_columnType, m_header, index);
   }
 }

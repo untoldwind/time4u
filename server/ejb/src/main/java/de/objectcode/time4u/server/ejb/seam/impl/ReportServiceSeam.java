@@ -57,11 +57,14 @@ public class ReportServiceSeam implements IReportServiceLocal
     }
 
     final StringBuffer queryStr = new StringBuffer("from " + WorkItemEntity.class.getName()
-        + " where w.dayInfo.person.id in (:allowedPersons)");
+        + " w where w.dayInfo.person.id in (:allowedPersons)");
 
     if (reportDefinition.getFilter() != null) {
+      queryStr.append(" and ");
       queryStr.append(reportDefinition.getFilter().getWhereClause(EntityType.WORKITEM));
     }
+
+    queryStr.append(" order by w.dayInfo.date asc, w.begin asc");
 
     final Query query = m_manager.createQuery(queryStr.toString());
 

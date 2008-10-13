@@ -2,40 +2,42 @@ package de.objectcode.time4u.server.ejb.seam.api.report;
 
 public enum PersonProjection implements IProjection
 {
-  GIVEN_NAME(new ColumnDefinition(ColumnType.NAME, "Given name")) {
+  GIVEN_NAME(ColumnType.NAME, "Given name") {
     public Object[] project(final IRowDataAdapter rowData)
     {
       return new Object[] { rowData.getPerson().getGivenName() };
     }
   },
-  SURNAME(new ColumnDefinition(ColumnType.NAME, "Surname")) {
+  SURNAME(ColumnType.NAME, "Surname") {
     public Object[] project(final IRowDataAdapter rowData)
     {
       return new Object[] { rowData.getPerson().getSurname() };
     }
   },
-  NAME(new ColumnDefinition(ColumnType.NAME, "Name")) {
+  NAME(ColumnType.NAME, "Name") {
     public Object[] project(final IRowDataAdapter rowData)
     {
       return new Object[] { rowData.getPerson().getGivenName() + " " + rowData.getPerson().getSurname() };
     }
   },
-  EMAIL(new ColumnDefinition(ColumnType.NAME, "Email")) {
+  EMAIL(ColumnType.NAME, "Email") {
     public Object[] project(final IRowDataAdapter rowData)
     {
       return new Object[] { rowData.getPerson().getEmail() };
     }
   };
 
-  private ColumnDefinition m_columnDefinition;
+  ColumnType m_columnType;
+  String m_header;
 
-  private PersonProjection(final ColumnDefinition columnDefinition)
+  private PersonProjection(final ColumnType columnType, final String header)
   {
-    m_columnDefinition = columnDefinition;
+    m_columnType = columnType;
+    m_header = header;
   }
 
-  public ColumnDefinition getColumnDefinition()
+  public ColumnDefinition getColumnDefinition(final int index)
   {
-    return m_columnDefinition;
+    return new ColumnDefinition(m_columnType, m_header, index);
   }
 }

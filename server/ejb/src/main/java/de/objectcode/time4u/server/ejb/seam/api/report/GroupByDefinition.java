@@ -2,16 +2,26 @@ package de.objectcode.time4u.server.ejb.seam.api.report;
 
 public class GroupByDefinition
 {
-  IProjection m_projection;
+  IProjection m_valueProjection;
+  IProjection m_labelProjection;
 
-  public IProjection getProjection()
+  public IProjection getValueProjection()
   {
-    return m_projection;
+    return m_valueProjection;
   }
 
-  public void setProjection(final IProjection projection)
+  public void setValueProjection(final IProjection valueProjection)
   {
-    m_projection = projection;
+    m_valueProjection = valueProjection;
   }
 
+  public IProjection getLabelProjection()
+  {
+    return m_labelProjection;
+  }
+
+  public void setLabelProjection(final IProjection labelProjection)
+  {
+    m_labelProjection = labelProjection;
+  }
 }
