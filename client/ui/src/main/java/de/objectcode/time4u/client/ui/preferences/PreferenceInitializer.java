@@ -15,6 +15,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
   {
     final IPreferenceStore store = UIPlugin.getDefault().getPreferenceStore();
 
+    store.setDefault(PreferenceConstants.UI_SHOW_TRAY_ICON, true);
+
     store.setDefault(PreferenceConstants.UI_CONFIRM_PROJECT_DELETE, true);
     store.setDefault(PreferenceConstants.UI_CONFIRM_TASK_DELETE, true);
     store.setDefault(PreferenceConstants.UI_CONFIRM_WORKITEM_DELETE, false);

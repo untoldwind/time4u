@@ -1,5 +1,6 @@
 package de.objectcode.time4u.client.ui.preferences;
 
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -16,6 +17,7 @@ public class UIPreferencesPage extends FieldEditorPreferencePage implements IWor
   @Override
   protected void createFieldEditors()
   {
+    addField(new BooleanFieldEditor(PreferenceConstants.UI_SHOW_TRAY_ICON, "Show &Tray icon", getFieldEditorParent()));
   }
 
 }
