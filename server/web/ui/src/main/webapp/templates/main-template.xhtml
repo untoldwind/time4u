@@ -7,11 +7,16 @@
 
 	<ui:define name="content">
 		<a4j:form>
-			<h:panelGrid id="grid" columns="2" cellspacing="4">
+			<h:panelGrid id="grid" columns="3" cellspacing="4">
 				<rich:dropDownMenu value="Time4U">
 					<rich:menuItem submitMode="ajax" value="Overview" action="/user/main.xhtml"/>
 					<rich:menuItem submitMode="ajax" value="Logout"
 						action="#{identity.logout}" />
+				</rich:dropDownMenu>
+
+				<rich:dropDownMenu value="Report" rendered="#{s:hasRole('user')}">
+					<rich:menuItem submitMode="ajax" value="Month report"
+						action="#{user.monthReportController.enter}" rendered="#{s:hasRole('user')}" />
 				</rich:dropDownMenu>
 
 				<rich:dropDownMenu value="Admin" rendered="#{s:hasRole('admin')}">
