@@ -1,12 +1,19 @@
 package de.objectcode.time4u.server.ejb.seam.api.report;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class WorkItemReportDefinition extends BaseReportDefinition
 {
   List<IProjection> m_projections;
   List<GroupByDefinition> m_groupByDefinitions;
+
+  public WorkItemReportDefinition()
+  {
+    m_projections = new ArrayList<IProjection>();
+    m_groupByDefinitions = new ArrayList<GroupByDefinition>();
+  }
 
   public List<IProjection> getProjections()
   {
@@ -20,9 +27,6 @@ public class WorkItemReportDefinition extends BaseReportDefinition
 
   public void addProjection(final IProjection projection)
   {
-    if (m_projections == null) {
-      m_projections = new ArrayList<IProjection>();
-    }
     m_projections.add(projection);
   }
 
@@ -34,6 +38,11 @@ public class WorkItemReportDefinition extends BaseReportDefinition
   public void setGroupByDefinitions(final List<GroupByDefinition> groupByDefinitions)
   {
     m_groupByDefinitions = groupByDefinitions;
+  }
+
+  public void addGroupByDefinition(final GroupByDefinition groupBy)
+  {
+    m_groupByDefinitions.add(groupBy);
   }
 
   public ReportResult createResult()
@@ -70,6 +79,12 @@ public class WorkItemReportDefinition extends BaseReportDefinition
       }
     }
 
-    reportResult.addRow(row);
+    final LinkedList<ValueLabelPair> groups = new LinkedList<ValueLabelPair>();
+
+    for (final GroupByDefinition groupBy : m_groupByDefinitions) {
+      groups.add(groupBy.project(rowData));
+    }
+
+    reportResult.addRow(groups, row);
   }
 }

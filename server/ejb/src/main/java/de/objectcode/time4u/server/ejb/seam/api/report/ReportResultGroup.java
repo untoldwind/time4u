@@ -7,29 +7,29 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class ReportResult
+public class ReportResultGroup
 {
-  String m_name;
-  List<ColumnDefinition> m_columns;
+  Object m_value;
+  Object m_label;
   List<ReportRow> m_rows;
   Map<Object, ReportResultGroup> m_groups;
 
-  public ReportResult(final String name, final List<ColumnDefinition> columns)
+  public ReportResultGroup(final ValueLabelPair valueLabel)
   {
-    m_name = name;
-    m_columns = columns;
+    m_value = valueLabel.getValue();
+    m_label = valueLabel.getLabel();
     m_rows = new ArrayList<ReportRow>();
     m_groups = new TreeMap<Object, ReportResultGroup>();
   }
 
-  public String getName()
+  public Object getValue()
   {
-    return m_name;
+    return m_value;
   }
 
-  public List<ColumnDefinition> getColumns()
+  public Object getLabel()
   {
-    return m_columns;
+    return m_label;
   }
 
   public List<ReportRow> getRows()
@@ -41,7 +41,6 @@ public class ReportResult
   {
     return !m_groups.isEmpty();
   }
-
   public Collection<ReportResultGroup> getGroups()
   {
     return m_groups.values();

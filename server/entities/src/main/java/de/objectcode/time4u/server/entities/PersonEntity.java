@@ -118,7 +118,7 @@ public class PersonEntity
     m_memberOf = memberOf;
   }
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "owners")
+  @ManyToMany(fetch = FetchType.LAZY, mappedBy = "owners")
   public Set<TeamEntity> getResponsibleFor()
   {
     return m_responsibleFor;
