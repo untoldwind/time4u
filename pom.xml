@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.objectcode.time4u</groupId>
 	<artifactId>time4u</artifactId>
@@ -21,7 +22,8 @@
 			<id>time4u-sourceforge</id>
 			<name>Sourceforge web site</name>
 			<!--
-				url>sftp://web.sourceforge.net/home/groups/t/ti/time4u/htdocs</url -->
+				url>sftp://web.sourceforge.net/home/groups/t/ti/time4u/htdocs</url
+			-->
 			<url>file:///Users/junglas/workspaces/w3/time4u-site</url>
 		</site>
 	</distributionManagement>
@@ -434,6 +436,13 @@
 				<groupId>org.jboss.resteasy</groupId>
 				<artifactId>resteasy-jaxrs</artifactId>
 				<version>1.0-beta-8</version>
+			</dependency>
+
+			<!-- Freemarker -->
+			<dependency>
+				<groupId>org.freemarker</groupId>
+				<artifactId>freemarker</artifactId>
+				<version>2.3.14</version>
 			</dependency>
 
 			<!-- JDBC -->

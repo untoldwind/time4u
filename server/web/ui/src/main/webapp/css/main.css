@@ -149,7 +149,7 @@ td.report {
 	padding:4px;
 }
 
-tr.reportGroupHeader {
+td.reportGroupHeader {
 	border-top:1px solid #C0C0C0;
 	background-color:#E8F0F8;
 }

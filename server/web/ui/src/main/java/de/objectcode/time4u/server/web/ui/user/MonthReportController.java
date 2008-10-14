@@ -34,7 +34,8 @@ public class MonthReportController
   public static enum Variant
   {
     FLAT("Flat"),
-    GROUPBY_PERSON("GroupBy Person");
+    GROUPBY_PERSON("GroupBy Person"),
+    GROUPBY_DATE_PERSON("GroupBy Date/Person");
 
     private String m_label;
 
@@ -149,6 +150,17 @@ public class MonthReportController
         definition.addProjection(WorkItemProjection.END);
         definition.addProjection(WorkItemProjection.DURATION);
         definition.addProjection(WorkItemProjection.COMMENT);
+        definition.addGroupByDefinition(new GroupByDefinition(PersonProjection.ID, PersonProjection.NAME));
+        break;
+      case GROUPBY_DATE_PERSON:
+        definition.setFilter(DateRangeFilter.filterMonth(m_selectedMonth.getYear(), m_selectedMonth.getMonth()));
+        definition.addProjection(ProjectProjection.PATH);
+        definition.addProjection(TaskProjection.NAME);
+        definition.addProjection(WorkItemProjection.BEGIN);
+        definition.addProjection(WorkItemProjection.END);
+        definition.addProjection(WorkItemProjection.DURATION);
+        definition.addProjection(WorkItemProjection.COMMENT);
+        definition.addGroupByDefinition(new GroupByDefinition(DayInfoProjection.DATE, DayInfoProjection.DATE));
         definition.addGroupByDefinition(new GroupByDefinition(PersonProjection.ID, PersonProjection.NAME));
         break;
     }

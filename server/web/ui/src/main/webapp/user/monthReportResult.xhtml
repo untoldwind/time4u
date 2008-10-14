@@ -3,7 +3,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
-	template="../templates/main-template.xhtml">
+	xmlns:t4u="http://www.objectcode.de/time4u" template="../templates/main-template.xhtml">
 
 	<ui:define name="title">Month report</ui:define>
 	<ui:define name="contentDetail">
@@ -11,7 +11,8 @@
 			<table class="report">
 				<thead class="report reportHeader">
 					<tr class="report reportHeader">
-						<ui:repeat value="#{user.monthReportController.reportResult.groupByColumns}"
+						<ui:repeat
+							value="#{user.monthReportController.reportResult.groupByColumns}"
 							var="column">
 							<th class="report reportHeader">#{column.header}</th>
 						</ui:repeat>
@@ -27,21 +28,28 @@
 						<tr class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
 							<ui:repeat value="#{user.monthReportController.reportResult.columns}"
 								var="column">
-								<td class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'} report#{column.columnType}">
-									<h:outputText value="#{row.data[column.index]}" converter="#{user.monthReportController.getConverter(column.columnType)}"/>
+								<td
+									class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'} report#{column.columnType}">
+									<h:outputText value="#{row.data[column.index]}"
+										converter="#{user.monthReportController.getConverter(column.columnType)}" />
 								</td>
 							</ui:repeat>
 						</tr>
 					</ui:repeat>
-					<ui:repeat value="#{user.monthReportController.reportResult.groups}" var="group" rendered="#{user.monthReportController.reportResult.hasGroups}">
+					<ui:repeat value="#{user.monthReportController.reportResult.groups}"
+						var="group" rendered="#{user.monthReportController.reportResult.hasGroups}">
 						<tr class="report reportGroupHeader">
 							<td class="report reportGroupHeader">
-								<h:outputText value="#{group.label}" converter="#{user.monthReportController.getConverter(user.monthReportController.reportResult.groupByColumns[0].columnType)}"/>
+								<h:outputText value="#{group.label}"
+									converter="#{user.monthReportController.getConverter(user.monthReportController.reportResult.groupByColumns[0].columnType)}" />
 							</td>
-							<td class="report reportGroupHeader" colspan="#{user.monthReportController.reportResult.columns.size() + user.monthReportController.reportResult.groupByColumns.size() - 1}"/>
+							<td class="report reportGroupHeader"
+								colspan="#{user.monthReportController.reportResult.columns.size() + user.monthReportController.reportResult.groupByColumns.size() - 1}" />
 						</tr>
 						<ui:include src="reportResultGroup.xhtml">
-							<ui:param name="report" value="#{group}"/>
+							<ui:param name="report" value="#{group}" />
+							<ui:param name="depth" value="1"/>
+								value="#{user.monthReportController.reportResult.groupByColumns.size()}" />
 						</ui:include>
 					</ui:repeat>
 				</tbody>

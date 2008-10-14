@@ -58,7 +58,7 @@ public class ReportResultBase
         final List<ColumnDefinition> groupByColumns = new ArrayList<ColumnDefinition>();
 
         if (m_groupByColumns.size() > 1) {
-          groupByColumns.addAll(m_groupByColumns.subList(1, m_groupByColumns.size() - 1));
+          groupByColumns.addAll(m_groupByColumns.subList(1, m_groupByColumns.size() ));
         }
         group = new ReportResultGroup(top, m_columns, groupByColumns);
 

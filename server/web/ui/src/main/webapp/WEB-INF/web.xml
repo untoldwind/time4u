@@ -68,6 +68,12 @@
 		<param-name>facelets.DEVELOPMENT</param-name>
 		<param-value>true</param-value>
 	</context-param>
+	
+	<!--  context-param>
+		<param-name>facelets.LIBRARIES</param-name>
+		<param-value>/WEB-INF/time4u.taglib.xml</param-value>
+	</context-param -->
+
 
 	<session-config>
 		<session-timeout>60</session-timeout>
