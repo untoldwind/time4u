@@ -10,24 +10,23 @@ import javax.ws.rs.QueryParam;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import de.objectcode.time4u.server.api.IProjectService;
+import de.objectcode.time4u.server.api.ITaskService;
 import de.objectcode.time4u.server.api.data.FilterResult;
-import de.objectcode.time4u.server.api.data.Project;
-import de.objectcode.time4u.server.api.data.ProjectSummary;
-import de.objectcode.time4u.server.api.filter.ProjectFilter;
+import de.objectcode.time4u.server.api.data.Task;
+import de.objectcode.time4u.server.api.data.TaskSummary;
+import de.objectcode.time4u.server.api.filter.TaskFilter;
 
-public class Projects
+public class Tasks
 {
-  private final static Log LOG = LogFactory.getLog(Projects.class);
+  private final static Log LOG = LogFactory.getLog(Tasks.class);
+  private ITaskService m_taskService;
 
-  private final IProjectService m_projectService;
-
-  public Projects()
+  public Tasks()
   {
     try {
       final InitialContext ctx = new InitialContext();
 
-      m_projectService = (IProjectService) ctx.lookup("time4u-server/ProjectService/remote");
+      m_taskService = (ITaskService) ctx.lookup("time4u-server/TaskService/remote");
     } catch (final Exception e) {
       LOG.error("Exception", e);
       throw new RuntimeException("Inizialize failed", e);
@@ -37,31 +36,31 @@ public class Projects
   @GET
   @Path("/")
   @Produces("text/xml")
-  public FilterResult<? extends ProjectSummary> getProjectSummaries(@QueryParam("active") final Boolean active,
+  public FilterResult<? extends TaskSummary> getProjectSummaries(@QueryParam("active") final Boolean active,
       @QueryParam("deleted") final Boolean deleted, @QueryParam("minRevision") final Long minRevision,
       @QueryParam("maxRevision") final Long maxRevision, @QueryParam("full") final boolean full)
   {
-    final ProjectFilter filter = new ProjectFilter();
+    final TaskFilter filter = new TaskFilter();
     filter.setActive(active);
     filter.setDeleted(deleted);
     filter.setMinRevision(minRevision);
     filter.setMaxRevision(maxRevision);
 
     if (full) {
-      return m_projectService.getProjects(filter);
+      return m_taskService.getTasks(filter);
     }
-    return m_projectService.getProjectSumaries(filter);
+    return m_taskService.getTaskSummaries(filter);
   }
 
   @Path("/{id}")
-  public ProjectResource getProject(@PathParam("id") final String projctId)
+  public TaskResource getTask(@PathParam("id") final String taskId)
   {
-    final Project project = m_projectService.getProject(projctId);
+    final Task task = m_taskService.getTask(taskId);
 
-    if (project == null) {
+    if (task == null) {
       return null;
     }
-
-    return new ProjectResource(project);
+    return new TaskResource(task);
   }
+
 }
