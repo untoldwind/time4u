@@ -4,5 +4,5 @@ public interface IProjection
 {
   ColumnDefinition getColumnDefinition(int index);
 
-  Object[] project(IRowDataAdapter rowData);
+  Object project(IRowDataAdapter rowData);
 }

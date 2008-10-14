@@ -3,9 +3,15 @@ package de.objectcode.time4u.server.ejb.seam.api.report;
 public enum DayInfoProjection implements IProjection
 {
   DATE(ColumnType.DATE, "Date") {
-    public Object[] project(final IRowDataAdapter rowData)
+    public Object project(final IRowDataAdapter rowData)
     {
-      return new Object[] { rowData.getDayInfo().getDate() };
+      return rowData.getDayInfo().getDate();
+    }
+  },
+  SUM_DURATIONS(ColumnType.TIME, "Sum durations") {
+    public Object project(final IRowDataAdapter rowData)
+    {
+      return rowData.getDayInfo().getSumDurations();
     }
   };
 

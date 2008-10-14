@@ -15,6 +15,7 @@ import de.objectcode.time4u.server.ejb.seam.api.IReportServiceLocal;
 import de.objectcode.time4u.server.ejb.seam.api.filter.DateRangeFilter;
 import de.objectcode.time4u.server.ejb.seam.api.report.ColumnType;
 import de.objectcode.time4u.server.ejb.seam.api.report.DayInfoProjection;
+import de.objectcode.time4u.server.ejb.seam.api.report.GroupByDefinition;
 import de.objectcode.time4u.server.ejb.seam.api.report.PersonProjection;
 import de.objectcode.time4u.server.ejb.seam.api.report.ProjectProjection;
 import de.objectcode.time4u.server.ejb.seam.api.report.ReportResult;
@@ -22,6 +23,7 @@ import de.objectcode.time4u.server.ejb.seam.api.report.TaskProjection;
 import de.objectcode.time4u.server.ejb.seam.api.report.WorkItemProjection;
 import de.objectcode.time4u.server.ejb.seam.api.report.WorkItemReportDefinition;
 import de.objectcode.time4u.server.web.ui.converter.DateConverter;
+import de.objectcode.time4u.server.web.ui.converter.StringArrayConverter;
 import de.objectcode.time4u.server.web.ui.converter.StringConverter;
 import de.objectcode.time4u.server.web.ui.converter.TimeConverter;
 
@@ -29,6 +31,29 @@ import de.objectcode.time4u.server.web.ui.converter.TimeConverter;
 @Scope(ScopeType.CONVERSATION)
 public class MonthReportController
 {
+  public static enum Variant
+  {
+    FLAT("Flat"),
+    GROUPBY_PERSON("GroupBy Person");
+
+    private String m_label;
+
+    private Variant(final String label)
+    {
+      m_label = label;
+    }
+
+    public String getLabel()
+    {
+      return m_label;
+    }
+
+    public void setLabel(final String label)
+    {
+      m_label = label;
+    }
+  }
+
   public static final String VIEW_ID = "/user/monthReport.xhtml";
 
   public static final String RESULT_VIEW_ID = "/user/monthReportResult.xhtml";
@@ -36,6 +61,7 @@ public class MonthReportController
   @In("ReportService")
   IReportServiceLocal m_reportService;
 
+  Variant m_variant = Variant.FLAT;
   MonthBean m_selectedMonth = new MonthBean();
 
   ReportResult m_reportResult;
@@ -48,6 +74,7 @@ public class MonthReportController
     m_converters.put(ColumnType.TIME, new TimeConverter());
     m_converters.put(ColumnType.DATE, new DateConverter());
     m_converters.put(ColumnType.NAME, new StringConverter());
+    m_converters.put(ColumnType.NAME_ARRAY, new StringArrayConverter());
     m_converters.put(ColumnType.DESCRIPTION, new StringConverter());
   }
 
@@ -72,6 +99,21 @@ public class MonthReportController
     return MonthEnum.values();
   }
 
+  public Variant getVariant()
+  {
+    return m_variant;
+  }
+
+  public void setVariant(final Variant variant)
+  {
+    m_variant = variant;
+  }
+
+  public Variant[] getVariants()
+  {
+    return Variant.values();
+  }
+
   public ReportResult getReportResult()
   {
     return m_reportResult;
@@ -86,15 +128,30 @@ public class MonthReportController
   {
     final WorkItemReportDefinition definition = new WorkItemReportDefinition();
 
-    definition.setFilter(DateRangeFilter.filterMonth(m_selectedMonth.getYear(), m_selectedMonth.getMonth()));
-    definition.addProjection(PersonProjection.NAME);
-    definition.addProjection(DayInfoProjection.DATE);
-    definition.addProjection(ProjectProjection.PATH);
-    definition.addProjection(TaskProjection.NAME);
-    definition.addProjection(WorkItemProjection.BEGIN);
-    definition.addProjection(WorkItemProjection.END);
-    definition.addProjection(WorkItemProjection.DURATION);
-    definition.addProjection(WorkItemProjection.COMMENT);
+    switch (m_variant) {
+      case FLAT:
+        definition.setFilter(DateRangeFilter.filterMonth(m_selectedMonth.getYear(), m_selectedMonth.getMonth()));
+        definition.addProjection(PersonProjection.NAME);
+        definition.addProjection(DayInfoProjection.DATE);
+        definition.addProjection(ProjectProjection.PATH);
+        definition.addProjection(TaskProjection.NAME);
+        definition.addProjection(WorkItemProjection.BEGIN);
+        definition.addProjection(WorkItemProjection.END);
+        definition.addProjection(WorkItemProjection.DURATION);
+        definition.addProjection(WorkItemProjection.COMMENT);
+        break;
+      case GROUPBY_PERSON:
+        definition.setFilter(DateRangeFilter.filterMonth(m_selectedMonth.getYear(), m_selectedMonth.getMonth()));
+        definition.addProjection(DayInfoProjection.DATE);
+        definition.addProjection(ProjectProjection.PATH);
+        definition.addProjection(TaskProjection.NAME);
+        definition.addProjection(WorkItemProjection.BEGIN);
+        definition.addProjection(WorkItemProjection.END);
+        definition.addProjection(WorkItemProjection.DURATION);
+        definition.addProjection(WorkItemProjection.COMMENT);
+        definition.addGroupByDefinition(new GroupByDefinition(PersonProjection.ID, PersonProjection.NAME));
+        break;
+    }
 
     m_reportResult = m_reportService.workItemReport(definition);
 

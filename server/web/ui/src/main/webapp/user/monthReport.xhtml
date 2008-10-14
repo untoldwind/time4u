@@ -23,6 +23,15 @@
 						value="#{user.monthReportController.selectedMonth.year}" minValue="1900"
 						maxValue="2500" step="1" />
 				</s:decorate>
+				<s:decorate template="../templates/decorateTableField.xhtml">
+					<ui:define name="label">Variant</ui:define>
+					<h:selectOneMenu
+						value="#{user.monthReportController.variant}">
+						<s:selectItems value="#{user.monthReportController.variants}"
+							var="variant"  label="#{variant.label}" />
+						<s:convertEnum/>
+					</h:selectOneMenu>
+				</s:decorate>
 				<tr>
 					<td colspan="3">
 						<a4j:commandButton action="#{user.monthReportController.generate}"

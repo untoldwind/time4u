@@ -7,14 +7,20 @@ import de.objectcode.time4u.server.entities.ProjectEntity;
 
 public enum ProjectProjection implements IProjection
 {
-  NAME(ColumnType.NAME, "Project") {
-    public Object[] project(final IRowDataAdapter rowData)
+  ID(ColumnType.NAME, "Project id") {
+    public Object project(final IRowDataAdapter rowData)
     {
-      return new Object[] { rowData.getProject().getName() };
+      return rowData.getProject().getId();
     }
   },
-  PATH(ColumnType.NAME, "Project") {
-    public Object[] project(final IRowDataAdapter rowData)
+  NAME(ColumnType.NAME, "Project") {
+    public Object project(final IRowDataAdapter rowData)
+    {
+      return rowData.getProject().getName();
+    }
+  },
+  PATH(ColumnType.NAME_ARRAY, "Project") {
+    public Object project(final IRowDataAdapter rowData)
     {
       final List<String> names = new ArrayList<String>();
 
@@ -24,7 +30,7 @@ public enum ProjectProjection implements IProjection
         names.add(0, current.getName());
         current = current.getParent();
       }
-      return names.toArray();
+      return names;
     }
   };
 

@@ -3,27 +3,27 @@ package de.objectcode.time4u.server.ejb.seam.api.report;
 public enum WorkItemProjection implements IProjection
 {
   COMMENT(ColumnType.DESCRIPTION, "Comment") {
-    public Object[] project(final IRowDataAdapter rowData)
+    public Object project(final IRowDataAdapter rowData)
     {
-      return new Object[] { rowData.getWorkItem().getComment() };
+      return rowData.getWorkItem().getComment();
     }
   },
   BEGIN(ColumnType.TIME, "Begin") {
-    public Object[] project(final IRowDataAdapter rowData)
+    public Object project(final IRowDataAdapter rowData)
     {
-      return new Object[] { rowData.getWorkItem().getBegin() };
+      return rowData.getWorkItem().getBegin();
     }
   },
   END(ColumnType.TIME, "End") {
-    public Object[] project(final IRowDataAdapter rowData)
+    public Object project(final IRowDataAdapter rowData)
     {
-      return new Object[] { rowData.getWorkItem().getEnd() };
+      return rowData.getWorkItem().getEnd();
     }
   },
   DURATION(ColumnType.TIME, "Duration") {
-    public Object[] project(final IRowDataAdapter rowData)
+    public Object project(final IRowDataAdapter rowData)
     {
-      return new Object[] { rowData.getWorkItem().getEnd() - rowData.getWorkItem().getBegin() };
+      return rowData.getWorkItem().getEnd() - rowData.getWorkItem().getBegin();
     }
   };
   ColumnType m_columnType;

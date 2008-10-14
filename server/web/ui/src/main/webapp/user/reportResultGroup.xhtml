@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+
+	<ui:repeat value="#{report.rows}"
+		var="row" rendered="#{!report.hasGroups}">
+		<tr class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
+			<ui:fragment rendered="#{row.index == 0}">
+				<td class="report" rowspan="#{report.rows.size()}"/>
+			</ui:fragment>
+			<ui:repeat value="#{report.columns}"
+				var="column">
+				<td
+					class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'} report#{column.columnType}">
+					<h:outputText value="#{row.data[column.index]}"
+						converter="#{user.monthReportController.getConverter(column.columnType)}" />
+				</td>
+			</ui:repeat>
+		</tr>
+	</ui:repeat>
+</ui:composition>

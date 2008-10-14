@@ -149,6 +149,11 @@ td.report {
 	padding:4px;
 }
 
+tr.reportGroupHeader {
+	border-top:1px solid #C0C0C0;
+	background-color:#E8F0F8;
+}
+
 tr.reportHeader {
 	background-color:#ECF4FE;
 }

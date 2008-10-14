@@ -11,6 +11,10 @@
 			<table class="report">
 				<thead class="report reportHeader">
 					<tr class="report reportHeader">
+						<ui:repeat value="#{user.monthReportController.reportResult.groupByColumns}"
+							var="column">
+							<th class="report reportHeader">#{column.header}</th>
+						</ui:repeat>
 						<ui:repeat value="#{user.monthReportController.reportResult.columns}"
 							var="column">
 							<th class="report reportHeader">#{column.header}</th>
@@ -19,7 +23,7 @@
 				</thead>
 				<tbody class="report">
 					<ui:repeat value="#{user.monthReportController.reportResult.rows}"
-						var="row">
+						var="row" rendered="#{!user.monthReportController.reportResult.hasGroups}">
 						<tr class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
 							<ui:repeat value="#{user.monthReportController.reportResult.columns}"
 								var="column">
@@ -28,6 +32,17 @@
 								</td>
 							</ui:repeat>
 						</tr>
+					</ui:repeat>
+					<ui:repeat value="#{user.monthReportController.reportResult.groups}" var="group" rendered="#{user.monthReportController.reportResult.hasGroups}">
+						<tr class="report reportGroupHeader">
+							<td class="report reportGroupHeader">
+								<h:outputText value="#{group.label}" converter="#{user.monthReportController.getConverter(user.monthReportController.reportResult.groupByColumns[0].columnType)}"/>
+							</td>
+							<td class="report reportGroupHeader" colspan="#{user.monthReportController.reportResult.columns.size() + user.monthReportController.reportResult.groupByColumns.size() - 1}"/>
+						</tr>
+						<ui:include src="reportResultGroup.xhtml">
+							<ui:param name="report" value="#{group}"/>
+						</ui:include>
 					</ui:repeat>
 				</tbody>
 			</table>

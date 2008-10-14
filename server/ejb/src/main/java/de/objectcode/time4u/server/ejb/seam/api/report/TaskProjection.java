@@ -2,10 +2,10 @@ package de.objectcode.time4u.server.ejb.seam.api.report;
 
 public enum TaskProjection implements IProjection
 {
-  NAME(ColumnType.NAME, "Name") {
-    public Object[] project(final IRowDataAdapter rowData)
+  NAME(ColumnType.NAME, "Task") {
+    public Object project(final IRowDataAdapter rowData)
     {
-      return new Object[] { rowData.getTask().getName() };
+      return rowData.getTask().getName();
     }
   };
 

@@ -54,7 +54,13 @@ public class WorkItemReportDefinition extends BaseReportDefinition
       columns.add(projection.getColumnDefinition(index++));
     }
 
-    return new ReportResult(m_name, columns);
+    final List<ColumnDefinition> groupByColumns = new ArrayList<ColumnDefinition>();
+    index = 0;
+    for (final GroupByDefinition groupBy : m_groupByDefinitions) {
+      groupByColumns.add(groupBy.getLabelProjection().getColumnDefinition(index++));
+    }
+
+    return new ReportResult(m_name, columns, groupByColumns);
   }
 
   public void collect(final IRowDataAdapter rowData, final ReportResult reportResult)
@@ -62,21 +68,7 @@ public class WorkItemReportDefinition extends BaseReportDefinition
     final Object[] row = new Object[m_projections.size()];
 
     for (int i = 0; i < row.length; i++) {
-      final Object[] data = m_projections.get(i).project(rowData);
-
-      if (data.length == 1) {
-        row[i] = data[0];
-      } else if (data.length > 1) {
-        final StringBuffer buffer = new StringBuffer();
-
-        for (int j = 0; j < data.length; j++) {
-          if (j > 0) {
-            buffer.append(", ");
-          }
-          buffer.append(data[j]);
-        }
-        row[i] = buffer.toString();
-      }
+      row[i] = m_projections.get(i).project(rowData);
     }
 
     final LinkedList<ValueLabelPair> groups = new LinkedList<ValueLabelPair>();

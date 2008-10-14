@@ -2,28 +2,34 @@ package de.objectcode.time4u.server.ejb.seam.api.report;
 
 public enum PersonProjection implements IProjection
 {
-  GIVEN_NAME(ColumnType.NAME, "Given name") {
-    public Object[] project(final IRowDataAdapter rowData)
+  ID(ColumnType.NAME, "Person id") {
+    public Object project(final IRowDataAdapter rowData)
     {
-      return new Object[] { rowData.getPerson().getGivenName() };
+      return rowData.getPerson().getId();
+    }
+  },
+  GIVEN_NAME(ColumnType.NAME, "Given name") {
+    public Object project(final IRowDataAdapter rowData)
+    {
+      return rowData.getPerson().getGivenName();
     }
   },
   SURNAME(ColumnType.NAME, "Surname") {
-    public Object[] project(final IRowDataAdapter rowData)
+    public Object project(final IRowDataAdapter rowData)
     {
-      return new Object[] { rowData.getPerson().getSurname() };
+      return rowData.getPerson().getSurname();
     }
   },
-  NAME(ColumnType.NAME, "Name") {
-    public Object[] project(final IRowDataAdapter rowData)
+  NAME(ColumnType.NAME, "Person") {
+    public Object project(final IRowDataAdapter rowData)
     {
-      return new Object[] { rowData.getPerson().getGivenName() + " " + rowData.getPerson().getSurname() };
+      return rowData.getPerson().getGivenName() + " " + rowData.getPerson().getSurname();
     }
   },
   EMAIL(ColumnType.NAME, "Email") {
-    public Object[] project(final IRowDataAdapter rowData)
+    public Object project(final IRowDataAdapter rowData)
     {
-      return new Object[] { rowData.getPerson().getEmail() };
+      return rowData.getPerson().getEmail();
     }
   };
 
