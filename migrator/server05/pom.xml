@@ -51,13 +51,13 @@
 	</dependencies>
 	<properties>
 		<old-version.db.driver>com.mysql.jdbc.Driver</old-version.db.driver>
-		<old-version.db.username>time4u</old-version.db.username>
-		<old-version.db.password>time4u</old-version.db.password>
-		<old-version.db.url>jdbc:mysql://192.168.23.128:3306/time4u</old-version.db.url>
+		<old-version.db.username>time4uold</old-version.db.username>
+		<old-version.db.password>time4uold</old-version.db.password>
+		<old-version.db.url>jdbc:mysql://virt-clavain:3306/time4uold</old-version.db.url>
 		<new-version.db.driver>com.mysql.jdbc.Driver</new-version.db.driver>
 		<new-version.db.username>time4u2</new-version.db.username>
 		<new-version.db.password>time4u2</new-version.db.password>
-		<new-version.db.url>jdbc:mysql://192.168.23.128:3306/time4u2</new-version.db.url>
+		<new-version.db.url>jdbc:mysql://virt-clavain:3306/time4u2</new-version.db.url>
 	</properties>
 	<build>
 		<resources>

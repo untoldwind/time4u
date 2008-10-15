@@ -58,6 +58,6 @@
 	</target>
 
 	<target name="usage">
-		<echo message="Use either: ant deploy or ant undeploy" />
+		<echo message="Use either: ant prepre, ant deploy or ant undeploy" />
 	</target>
 </project>
