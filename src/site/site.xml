@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Time4U">
+    <bannerLeft>
+      <name>Time4U</name>
+      <src>/images/Time4U_header.png</src>
+      <href>http://time4u.sourceforge.net</href>
+    </bannerLeft>
   <body>
 	<menu name="Main">
 		<item name="Introduction" href="/index.html"/>
@@ -7,6 +12,11 @@
 			<item name="Client Installation" href="/install/client.html"/>
 			<item name="Server Installation" href="/install/server.html"/>
 		</item>
+    </menu>
+    <menu name="Development">
+    	<item name="Getting started (win32)" href="/development/gettingstarted_win32.html"/>    	
+    	<item name="Project layout" href="/development/projectlayout.html"/>
+    	<item name="Database model" href="/development/databasemodel.html"/>
     </menu>
     <menu ref="parent" />
     <menu ref="modules" />

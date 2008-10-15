@@ -1,0 +1,80 @@
+   --------------
+   Project layout
+   --------------
+   junglas
+   --------------
+   
+Project layout
+
+ * <<time4u>>\
+  Base project containing main pom.xml and the main site documentation.
+  
+   * <<assemblies>>\
+    Parent project for all assemblies
+   
+     * <<client-linux-x86_64>>\
+      Assembly for the Linux x86_64 client distribution
+     
+     * <<client-mac>>\
+      Assembly for the Mac client distribution
+     
+     * <<client-win32>>\
+      Assembly for the Windows client distribution
+     
+     * <<server-deploy>>\
+      Assembly for the server distribution (containing an ant script for automatic configuration/deployment)
+     
+     * <<server-ear>>\
+      Server EAR assembly (just creates an ear file of all server components)
+     
+   * <<client>>\
+    Parent project for all client projects
+   
+     * <<store>>\
+      Eclipse plugin project containing the client-side database storage (based on Hibernate/Derby)
+     
+     * <<connection>>\
+      Eclipse plugin project containing the client-server synchronization functionality.
+     
+     * <<connection-ui>>\
+      Eclipse plugin project containing all UI parts concerning client-server synchronization.
+     
+     * <<ui>>\
+      Eclipse plugin project all other UI parts.
+     
+     * <<feature>>\
+      Eclipse feature project, also contains product definition descriptor.
+     
+   * <<server>>\
+    Parent project for all server projects
+   
+     * <<api>>\
+      Remote API of the Time4U server
+     
+     * <<entities>>\
+      All database entities (JPA conform)
+     
+     * <<ejb>>\
+      EJB3 implementation of the API, also contains Seam components.
+     
+     * <<jaas>>\
+      JAAS login module
+     
+     * <<web>>\
+      Parent project off all web components.
+     
+       * <<ui>>\
+        Main web interface
+       
+       * <<ws>>\
+        SOAP web services
+       
+       * <<rest>>\
+        REST api (experimental)
+   
+   * <<migrator>>\
+    Parent project for all migrator projects (temporary project)
+   
+     * <<server05>>\
+      Data migrator from the (historic) 0.5.x server release (temporary project)
+      
