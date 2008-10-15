@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Time4U">
   <body>
+	<menu name="Main">
+		<item name="Introduction" href="/index.html"/>
+		<item name="Download" href="/install/index.html">
+			<item name="Client Installation" href="/install/client.html"/>
+			<item name="Server Installation" href="/install/server.html"/>
+		</item>
+    </menu>
     <menu ref="parent" />
     <menu ref="modules" />
     <menu ref="reports" />

@@ -1,0 +1,61 @@
+  --------------------------
+  Time4U client installation
+  --------------------------
+  junglas
+  --------------------------
+
+Time4U client installation
+
+* Windows
+
+** Install
+
+ The Time4U client needs a Java runtime environment (JRE). Most tests have been done with Java 1.5.0, but the client should run with Java 1.6.0 as well.
+
+ A current java releases can be downloaded here:
+
+  * {{{http://java.sun.com/javase/downloads/index.jsp}Current java release}}
+
+  * {{{http://java.sun.com/javase/downloads/index_jdk5.jsp} Java 1.5.0 release}}
+
+ After installing the JRE just download the Time4U client zip and unpack it anywhere you like. At the moment there is no installer.
+
+** Uninstall
+
+ Just delete the directory where you have unpacked the client.
+ 
+ Time4U stores all data in C:\Documents and Settings\<username>\Time4U, so you might want to delete this directory too.
+ 
+* MacOS
+
+** Install
+
+ Just download and unpack the Time4U client zip and move the Time4U.app anywhere you like.
+ 
+** Uninstall
+
+ Just delete the Time4U.app.
+ 
+ Time4U stores all data in $HOME/Library/Application Support/Time4U, so you might want to delete this directory too.
+ 
+* Linux
+
+** Install
+
+ The Time4U client needs a Java runtime environment (JRE). Most tests have been done with Java 1.5.0, but the client should run with Java 1.6.0 as well.
+
+ A current java releases can be downloaded here:
+
+  * {{{http://java.sun.com/javase/downloads/index.jsp}Current java release}}
+
+  * {{{http://java.sun.com/javase/downloads/index_jdk5.jsp} Java 1.5.0 release}}
+
+ After installing the JRE just download the Time4U client tar.bz2 and unpack it anywhere you like. 
+
+** Uninstall
+
+ Just delete the directory where you have unpacked the client.
+
+ Time4U stores all data in $HOME/.time4u, so you might want to delete this directory too.
+
+ 
