@@ -29,14 +29,17 @@ public class DayFontColorProvider implements IFontProvider, IColorProvider
   Color m_regularBackground;
   Color m_regularForeground;
   Font m_regularFont;
+  Font m_italicFont;
 
   public DayFontColorProvider(final Color regularBackground, final Color regularForeground, final Font regularFont,
-      final Font boldFont, final IWorkItemRepository workItemRepository, final int year, final int month)
+      final Font boldFont, final Font italicFont, final IWorkItemRepository workItemRepository, final int year,
+      final int month)
   {
     m_regularBackground = regularBackground;
     m_regularForeground = regularForeground;
     m_regularFont = regularFont;
     m_boldFont = boldFont;
+    m_italicFont = italicFont;
 
     try {
       m_dayInfos = new HashMap<CalendarDay, DayInfoSummary>();
@@ -94,8 +97,12 @@ public class DayFontColorProvider implements IFontProvider, IColorProvider
       if (m_dayInfos != null) {
         final DayInfoSummary dayInfo = m_dayInfos.get(day);
 
-        if (dayInfo != null && dayInfo.isHasWorkItems()) {
-          return m_boldFont;
+        if (dayInfo != null) {
+          if (dayInfo.isHasWorkItems()) {
+            return m_boldFont;
+          } else if (dayInfo.isHasTags()) {
+            return m_italicFont;
+          }
         }
       }
     }

@@ -1,5 +1,6 @@
 package de.objectcode.time4u.server.entities.context;
 
+import de.objectcode.time4u.server.entities.DayTagEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
@@ -47,6 +48,8 @@ public interface IPersistenceContext
    * @return The person with id <tt>personId</tt>
    */
   PersonEntity findPerson(String personId, long clientId);
+
+  DayTagEntity findDayTag(String name);
 
   void persist(Object entity);
 

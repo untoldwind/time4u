@@ -64,4 +64,27 @@ public class DayTagEntity
     m_description = dayTag.getDescription();
     m_regularTime = dayTag.getRegularTime();
   }
+
+  @Override
+  public boolean equals(final Object obj)
+  {
+    if (obj == this) {
+      return true;
+    }
+
+    if (obj == null || !(obj instanceof DayTagEntity)) {
+      return false;
+    }
+
+    final DayTagEntity castObj = (DayTagEntity) obj;
+
+    return m_name.equals(castObj.m_name);
+  }
+
+  @Override
+  public int hashCode()
+  {
+    return m_name.hashCode();
+  }
+
 }

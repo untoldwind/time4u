@@ -54,6 +54,7 @@ public class DayInfoEntity
   private Date m_date;
   private boolean m_hasWorkItems;
   private boolean m_hasInvalidWorkItems;
+  private boolean m_hasTags;
   private int m_sumDurations;
   private int m_regularTime;
   /** Set of tags of the day */
@@ -170,6 +171,16 @@ public class DayInfoEntity
     m_hasInvalidWorkItems = hasInvalidWorkItems;
   }
 
+  public Boolean isHasTags()
+  {
+    return m_hasTags;
+  }
+
+  public void setHasTags(final Boolean hasTags)
+  {
+    m_hasTags = hasTags != null ? hasTags : false;
+  }
+
   public int getSumDurations()
   {
     return m_sumDurations;
@@ -266,12 +277,20 @@ public class DayInfoEntity
     dayinfo.setHasInvalidWorkItems(m_hasInvalidWorkItems);
     dayinfo.setRegularTime(m_regularTime);
     dayinfo.setSumDurations(m_sumDurations);
+    dayinfo.setHasTags(m_hasTags);
   }
 
   public void toDTO(final DayInfo dayinfo)
   {
     toSummaryDTO(dayinfo);
 
+    final Set<String> tags = new HashSet<String>();
+    if (m_tags != null) {
+      for (final DayTagEntity dayTag : m_tags) {
+        tags.add(dayTag.getName());
+      }
+    }
+    dayinfo.setTags(tags);
     if (m_workItems != null) {
       final List<WorkItem> workItems = new ArrayList<WorkItem>();
       for (final WorkItemEntity entity : m_workItems.values()) {
@@ -301,6 +320,23 @@ public class DayInfoEntity
     m_lastModifiedByClient = dayInfo.getLastModifiedByClient();
     m_regularTime = dayInfo.getRegularTime();
 
+    if (dayInfo.getTags() != null) {
+      final Iterator<DayTagEntity> it = m_tags.iterator();
+
+      while (it.hasNext()) {
+        if (!dayInfo.getTags().contains(it.next().getName())) {
+          it.remove();
+        }
+      }
+      for (final String tag : dayInfo.getTags()) {
+        final DayTagEntity dayTagEntity = context.findDayTag(tag);
+
+        if (dayTagEntity != null) {
+          m_tags.add(dayTagEntity);
+        }
+      }
+    }
+    m_hasTags = !m_tags.isEmpty();
     final Set<String> workItemIds = new HashSet<String>();
 
     if (dayInfo.getWorkItems() != null) {

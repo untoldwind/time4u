@@ -2,6 +2,7 @@ package de.objectcode.time4u.server.entities.context;
 
 import org.hibernate.Session;
 
+import de.objectcode.time4u.server.entities.DayTagEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
@@ -79,6 +80,11 @@ public class SessionPersistenceContext implements IPersistenceContext
     }
 
     return todo;
+  }
+
+  public DayTagEntity findDayTag(final String name)
+  {
+    return (DayTagEntity) m_session.get(DayTagEntity.class, name);
   }
 
   public void delete(final Object entity)

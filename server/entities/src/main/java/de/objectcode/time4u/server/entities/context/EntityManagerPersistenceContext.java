@@ -2,6 +2,7 @@ package de.objectcode.time4u.server.entities.context;
 
 import javax.persistence.EntityManager;
 
+import de.objectcode.time4u.server.entities.DayTagEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
@@ -79,6 +80,11 @@ public class EntityManagerPersistenceContext implements IPersistenceContext
     }
 
     return todo;
+  }
+
+  public DayTagEntity findDayTag(final String name)
+  {
+    return m_manager.find(DayTagEntity.class, name);
   }
 
   /**

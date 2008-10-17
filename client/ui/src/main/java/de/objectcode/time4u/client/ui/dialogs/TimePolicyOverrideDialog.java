@@ -1,6 +1,10 @@
 package de.objectcode.time4u.client.ui.dialogs;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.window.IShellProvider;
@@ -14,10 +18,12 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import de.objectcode.time4u.client.store.api.IWorkItemRepository;
+import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.controls.DateCombo;
 import de.objectcode.time4u.client.ui.controls.TimeCombo;
 import de.objectcode.time4u.server.api.data.CalendarDay;
+import de.objectcode.time4u.server.api.data.DayTag;
 
 public class TimePolicyOverrideDialog extends Dialog
 {
@@ -27,6 +33,7 @@ public class TimePolicyOverrideDialog extends Dialog
   Button m_usePolicyButton;
   TimeCombo m_overrideTimeCombo;
   CalendarDay m_currentDay;
+  List<Button> m_tagButtons;
 
   public TimePolicyOverrideDialog(final IShellProvider parentShell, final IWorkItemRepository workItemRepository,
       final CalendarDay currentDay)
@@ -86,6 +93,19 @@ public class TimePolicyOverrideDialog extends Dialog
     m_overrideTimeCombo = new TimeCombo(time, SWT.BORDER);
     m_overrideTimeCombo.select(0);
 
+    m_tagButtons = new ArrayList<Button>();
+
+    try {
+      final List<DayTag> dayTags = RepositoryFactory.getRepository().getWorkItemRepository().getDayTags();
+
+      for (final DayTag dayTag : dayTags) {
+        final Button tagButton = new Button(root, SWT.CHECK);
+        tagButton.setText(dayTag.getName());
+        m_tagButtons.add(tagButton);
+      }
+    } catch (final Exception e) {
+      UIPlugin.getDefault().log(e);
+    }
     return composite;
   }
 
@@ -103,7 +123,15 @@ public class TimePolicyOverrideDialog extends Dialog
     }
 
     try {
-      m_workItemRepository.setRegularTime(new CalendarDay(from), new CalendarDay(until), regularTime);
+      final Set<String> tags = new HashSet<String>();
+
+      for (final Button tagButton : m_tagButtons) {
+        if (tagButton.getSelection()) {
+          tags.add(tagButton.getText());
+        }
+      }
+
+      m_workItemRepository.setRegularTime(new CalendarDay(from), new CalendarDay(until), regularTime, tags);
     } catch (final Exception e) {
       UIPlugin.getDefault().log(e);
     }

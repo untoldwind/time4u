@@ -64,7 +64,7 @@ public class TimePolicyActionDelegate implements IWorkbenchWindowActionDelegate,
     } else if ("de.objectcode.time4u.client.ui.timepolicy.markregular".equals(id)) {
       if (selectedDay != null) {
         try {
-          RepositoryFactory.getRepository().getWorkItemRepository().setRegularTime(selectedDay, selectedDay, -1);
+          RepositoryFactory.getRepository().getWorkItemRepository().setRegularTime(selectedDay, selectedDay, -1, null);
         } catch (final Exception e) {
           UIPlugin.getDefault().log(e);
         }
@@ -72,7 +72,7 @@ public class TimePolicyActionDelegate implements IWorkbenchWindowActionDelegate,
     } else if ("de.objectcode.time4u.client.ui.timepolicy.markfree".equals(id)) {
       if (selectedDay != null) {
         try {
-          RepositoryFactory.getRepository().getWorkItemRepository().setRegularTime(selectedDay, selectedDay, 0);
+          RepositoryFactory.getRepository().getWorkItemRepository().setRegularTime(selectedDay, selectedDay, 0, null);
         } catch (final Exception e) {
           UIPlugin.getDefault().log(e);
         }

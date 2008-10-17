@@ -1,6 +1,7 @@
 package de.objectcode.time4u.client.store.api;
 
 import java.util.List;
+import java.util.Set;
 
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
@@ -100,7 +101,8 @@ public interface IWorkItemRepository
    */
   void setActiveWorkItem(WorkItem workitem) throws RepositoryException;
 
-  void setRegularTime(CalendarDay from, CalendarDay until, int regularTime) throws RepositoryException;
+  void setRegularTime(CalendarDay from, CalendarDay until, Integer regularTime, Set<String> tags)
+      throws RepositoryException;
 
   /**
    * Get all time policies matching a filter condition.

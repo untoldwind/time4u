@@ -29,6 +29,8 @@ public class DayInfoSummary implements ISynchronizableData
   private boolean m_hasWorkItems;
   /** Flag if the day has invalid workitems */
   private boolean m_hasInvalidWorkItems;
+  /** Flag if the day has tags */
+  private boolean m_hasTags;
   /** The regular working time for the day (usually calculated by time policies) */
   private int m_regularTime;
   /** Sum of all workitem durations or that day */
@@ -119,5 +121,16 @@ public class DayInfoSummary implements ISynchronizableData
   public void setSumDurations(final int sumDurations)
   {
     m_sumDurations = sumDurations;
+  }
+
+  @XmlAttribute
+  public boolean isHasTags()
+  {
+    return m_hasTags;
+  }
+
+  public void setHasTags(final boolean hasTags)
+  {
+    m_hasTags = hasTags;
   }
 }

@@ -1,7 +1,9 @@
 package de.objectcode.time4u.client.ui.views;
 
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.action.Action;
@@ -32,6 +34,7 @@ import de.objectcode.time4u.client.ui.util.CompoundSelectionEntityType;
 import de.objectcode.time4u.client.ui.util.CompoundSelectionProvider;
 import de.objectcode.time4u.client.ui.util.SelectionServiceAdapter;
 import de.objectcode.time4u.server.api.data.CalendarDay;
+import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayTag;
 
 public class CalendarView extends ViewPart implements SWTCalendarListener, IRepositoryListener
@@ -48,6 +51,7 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
   private CompoundSelectionProvider m_selectionProvider;
 
   Font m_boldFont;
+  Font m_italicFont;
 
   /**
    * This is a callback that will allow us to create the viewer and initialize it.
@@ -71,20 +75,26 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
     m_calendar.setCalendar(selection.getCalendar());
 
     final Font originalFont = m_calendar.getFont();
-    final FontData fontData[] = originalFont.getFontData();
+    final FontData boldFontData[] = originalFont.getFontData();
+    final FontData italicFontData[] = originalFont.getFontData();
 
     // Adding the bold attribute
-    for (int i = 0; i < fontData.length; i++) {
-      fontData[i].setStyle(fontData[i].getStyle() | SWT.BOLD);
+    for (int i = 0; i < boldFontData.length; i++) {
+      boldFontData[i].setStyle(boldFontData[i].getStyle() | SWT.BOLD);
+    }
+    for (int i = 0; i < italicFontData.length; i++) {
+      italicFontData[i].setStyle(italicFontData[i].getStyle() | SWT.ITALIC);
     }
 
-    m_boldFont = new Font(m_calendar.getDisplay(), fontData);
+    m_boldFont = new Font(m_calendar.getDisplay(), boldFontData);
+    m_italicFont = new Font(m_calendar.getDisplay(), italicFontData);
 
     try {
       final IWorkItemRepository workItemRepository = RepositoryFactory.getRepository().getWorkItemRepository();
 
       final DayFontColorProvider provider = new DayFontColorProvider(m_calendar.getBackground(), m_calendar
-          .getForeground(), m_calendar.getFont(), m_boldFont, workItemRepository, m_currentYear, m_currentMonth);
+          .getForeground(), m_calendar.getFont(), m_boldFont, m_italicFont, workItemRepository, m_currentYear,
+          m_currentMonth);
 
       m_calendar.setColorProvider(provider);
       m_calendar.setFontProvider(provider);
@@ -101,20 +111,26 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
         menuMgr.add(new GroupMarker("calendarGroup"));
         menuMgr.add(new Separator());
         menuMgr.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
-
-        List<DayTag> dayTags = null;
+        final CalendarDay selection = (CalendarDay) m_selectionProvider
+            .getSelection(CompoundSelectionEntityType.CALENDARDAY);
+        Assert.isNotNull(selection);
 
         try {
-          dayTags = RepositoryFactory.getRepository().getWorkItemRepository().getDayTags();
+          final DayInfo dayInfo = RepositoryFactory.getRepository().getWorkItemRepository().getDayInfo(selection);
+          final List<DayTag> dayTags = RepositoryFactory.getRepository().getWorkItemRepository().getDayTags();
+
+          final Set<String> currentTags = dayInfo != null ? dayInfo.getTags() : new HashSet<String>();
+
+          if (!dayTags.isEmpty()) {
+            menuMgr.add(new Separator());
+            for (final DayTag dayTag : dayTags) {
+              menuMgr.add(new SetDayTagAction(selection, currentTags, dayTag));
+            }
+          }
         } catch (final Exception e) {
+          UIPlugin.getDefault().log(e);
         }
 
-        if (dayTags != null && !dayTags.isEmpty()) {
-          menuMgr.add(new Separator());
-          for (final DayTag dayTag : dayTags) {
-            menuMgr.add(new SetDayTagAction(dayTag));
-          }
-        }
       }
     });
 
@@ -154,7 +170,8 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
     try {
       final IWorkItemRepository workItemRepository = RepositoryFactory.getRepository().getWorkItemRepository();
       final DayFontColorProvider provider = new DayFontColorProvider(m_calendar.getBackground(), m_calendar
-          .getForeground(), m_calendar.getFont(), m_boldFont, workItemRepository, m_currentYear, m_currentMonth);
+          .getForeground(), m_calendar.getFont(), m_boldFont, m_italicFont, workItemRepository, m_currentYear,
+          m_currentMonth);
 
       m_calendar.setColorProvider(provider);
       m_calendar.setFontProvider(provider);
@@ -215,10 +232,39 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
 
   static class SetDayTagAction extends Action
   {
-    SetDayTagAction(final DayTag dayTag)
+    CalendarDay m_currentDay;
+    Set<String> m_currentTags;
+    DayTag m_dayTag;
+
+    SetDayTagAction(final CalendarDay currentDay, final Set<String> currentTags, final DayTag dayTag)
     {
+      super(dayTag.getName(), Action.AS_CHECK_BOX);
+
       setText(dayTag.getName());
+      setToolTipText(dayTag.getDescription());
+
+      m_currentDay = currentDay;
+      m_currentTags = currentTags;
+      m_dayTag = dayTag;
+
+      setChecked(m_currentTags.contains(m_dayTag.getName()));
     }
 
+    @Override
+    public void run()
+    {
+      if (m_currentTags.contains(m_dayTag.getName())) {
+        m_currentTags.remove(m_dayTag.getName());
+      } else {
+        m_currentTags.add(m_dayTag.getName());
+      }
+
+      try {
+        RepositoryFactory.getRepository().getWorkItemRepository().setRegularTime(m_currentDay, m_currentDay, null,
+            m_currentTags);
+      } catch (final Exception e) {
+        UIPlugin.getDefault().log(e);
+      }
+    }
   }
 }

@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -396,8 +397,8 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
     m_repository.fireRepositoryEvent(new ActiveWorkItemRepositoryEvent(workItem));
   }
 
-  public void setRegularTime(final CalendarDay fromDay, final CalendarDay untilDay, final int regularTime)
-      throws RepositoryException
+  public void setRegularTime(final CalendarDay fromDay, final CalendarDay untilDay, final Integer regularTime,
+      final Set<String> tags) throws RepositoryException
   {
     final List<DayInfoSummary> result = m_hibernateTemplate
         .executeInTransaction(new HibernateTemplate.Operation<List<DayInfoSummary>>() {
@@ -422,12 +423,47 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
                     .getLatestRevision(), m_repository.getClientId(), (PersonEntity) session.get(PersonEntity.class,
                     m_repository.getOwner().getId()), new Date(from.getTimeInMillis()));
 
-                dayInfoEntity.setRegularTime(regularTime);
+                if (regularTime != null) {
+                  dayInfoEntity.setRegularTime(regularTime);
+                }
+                if (tags != null) {
+                  final Set<DayTagEntity> dayTags = new HashSet<DayTagEntity>();
+
+                  for (final String tag : tags) {
+                    final DayTagEntity dayTag = (DayTagEntity) session.get(DayTagEntity.class, tag);
+
+                    if (dayTag != null) {
+                      dayTags.add(dayTag);
+                    }
+                  }
+
+                  dayInfoEntity.setTags(dayTags);
+                  dayInfoEntity.setHasTags(!dayTags.isEmpty());
+                }
                 session.persist(dayInfoEntity);
               } else {
                 dayInfoEntity.setRevision(revisionLock.getLatestRevision());
                 dayInfoEntity.setLastModifiedByClient(m_repository.getClientId());
-                dayInfoEntity.setRegularTime(regularTime);
+                if (regularTime != null) {
+                  dayInfoEntity.setRegularTime(regularTime);
+                }
+                if (tags != null) {
+                  final Iterator<DayTagEntity> it = dayInfoEntity.getTags().iterator();
+
+                  while (it.hasNext()) {
+                    if (!tags.contains(it.next().getName())) {
+                      it.remove();
+                    }
+                  }
+                  for (final String tag : tags) {
+                    final DayTagEntity dayTag = (DayTagEntity) session.get(DayTagEntity.class, tag);
+
+                    if (dayTag != null) {
+                      dayInfoEntity.getTags().add(dayTag);
+                    }
+                  }
+                  dayInfoEntity.setHasTags(!dayInfoEntity.getTags().isEmpty());
+                }
               }
 
               final DayInfoSummary dayInfo = new DayInfoSummary();
