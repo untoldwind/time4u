@@ -1,9 +1,13 @@
 package de.objectcode.time4u.client.ui.views;
 
 import java.util.Calendar;
+import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.SWT;
@@ -28,6 +32,7 @@ import de.objectcode.time4u.client.ui.util.CompoundSelectionEntityType;
 import de.objectcode.time4u.client.ui.util.CompoundSelectionProvider;
 import de.objectcode.time4u.client.ui.util.SelectionServiceAdapter;
 import de.objectcode.time4u.server.api.data.CalendarDay;
+import de.objectcode.time4u.server.api.data.DayTag;
 
 public class CalendarView extends ViewPart implements SWTCalendarListener, IRepositoryListener
 {
@@ -89,9 +94,29 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
 
     final MenuManager menuMgr = new MenuManager();
 
-    menuMgr.add(new GroupMarker("calendarGroup"));
-    menuMgr.add(new Separator());
-    menuMgr.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
+    menuMgr.setRemoveAllWhenShown(true);
+    menuMgr.addMenuListener(new IMenuListener() {
+      public void menuAboutToShow(final IMenuManager manager)
+      {
+        menuMgr.add(new GroupMarker("calendarGroup"));
+        menuMgr.add(new Separator());
+        menuMgr.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
+
+        List<DayTag> dayTags = null;
+
+        try {
+          dayTags = RepositoryFactory.getRepository().getWorkItemRepository().getDayTags();
+        } catch (final Exception e) {
+        }
+
+        if (dayTags != null && !dayTags.isEmpty()) {
+          menuMgr.add(new Separator());
+          for (final DayTag dayTag : dayTags) {
+            menuMgr.add(new SetDayTagAction(dayTag));
+          }
+        }
+      }
+    });
 
     final Menu menu = menuMgr.createContextMenu(m_calendar);
 
@@ -188,4 +213,12 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
     }
   }
 
+  static class SetDayTagAction extends Action
+  {
+    SetDayTagAction(final DayTag dayTag)
+    {
+      setText(dayTag.getName());
+    }
+
+  }
 }

@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -19,10 +20,22 @@ public class DayInfo extends DayInfoSummary
 {
   private static final long serialVersionUID = -2048583139605476186L;
 
+  /** All tags of this day */
+  private Set<String> m_tags;
   /** All workitems of the day. */
   private List<WorkItem> m_workItems;
   /** Map of all meta properties of the dayinfo. */
   private Map<String, MetaProperty> m_metaProperties;
+
+  public Set<String> getTags()
+  {
+    return m_tags;
+  }
+
+  public void setTags(final Set<String> tags)
+  {
+    m_tags = tags;
+  }
 
   public List<WorkItem> getWorkItems()
   {

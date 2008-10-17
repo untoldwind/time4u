@@ -37,7 +37,7 @@ public class FilterResult<T> implements Serializable
   @XmlElementRefs( { @XmlElementRef(type = Project.class), @XmlElementRef(type = ProjectSummary.class),
       @XmlElementRef(type = Task.class), @XmlElementRef(type = TaskSummary.class),
       @XmlElementRef(type = DayInfo.class), @XmlElementRef(type = DayInfoSummary.class),
-      @XmlElementRef(type = WeekTimePolicy.class) })
+      @XmlElementRef(type = WeekTimePolicy.class), @XmlElementRef(type = DayTag.class) })
   public List<T> getResults()
   {
     return results;

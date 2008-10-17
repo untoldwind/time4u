@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import de.objectcode.time4u.server.api.data.DayTag;
+
 @Entity
 @Table(name = "T4U_DAYTAGS")
 public class DayTagEntity
@@ -47,5 +49,19 @@ public class DayTagEntity
   public void setRegularTime(final Integer regularTime)
   {
     m_regularTime = regularTime;
+  }
+
+  public void toDTO(final DayTag dayTag)
+  {
+    dayTag.setName(m_name);
+    dayTag.setDescription(m_description);
+    dayTag.setRegularTime(m_regularTime);
+  }
+
+  public void fromDTO(final DayTag dayTag)
+  {
+    m_name = dayTag.getName();
+    m_description = dayTag.getDescription();
+    m_regularTime = dayTag.getRegularTime();
   }
 }

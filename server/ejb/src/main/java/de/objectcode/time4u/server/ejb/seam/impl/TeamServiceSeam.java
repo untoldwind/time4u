@@ -14,8 +14,6 @@ import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.Name;
-import org.jboss.seam.annotations.Observer;
-import org.jboss.seam.annotations.RaiseEvent;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
 import org.jboss.seam.annotations.security.Restrict;
@@ -49,7 +47,6 @@ public class TeamServiceSeam implements ITeamServiceLocal
 
   @SuppressWarnings("unchecked")
   @Factory("admin.teamList")
-  @Observer("admin.teamList.updated")
   @Restrict("#{s:hasRole('admin')}")
   public void initTeams()
   {
@@ -63,7 +60,6 @@ public class TeamServiceSeam implements ITeamServiceLocal
     return m_manager.find(TeamEntity.class, id);
   }
 
-  @RaiseEvent("admin.teamList.updated")
   @Restrict("#{s:hasRole('admin')}")
   public void storeTeam(final TeamEntity teamEntity)
   {
@@ -75,6 +71,8 @@ public class TeamServiceSeam implements ITeamServiceLocal
     teamEntity.setRevision(revisionLock.getLatestRevision());
     teamEntity.setLastModifiedByClient(m_idGenerator.getClientId());
     m_manager.merge(teamEntity);
+
+    initTeams();
   }
 
 }

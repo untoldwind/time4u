@@ -12,6 +12,7 @@ import de.objectcode.time4u.server.api.IWorkItemService;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
+import de.objectcode.time4u.server.api.data.DayTag;
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.TimePolicy;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
@@ -78,6 +79,14 @@ public class WorkItemServiceWS implements IWorkItemService
       LOG.info("storeTimePolicy: " + timePolicy);
     }
     return m_workItemService.storeTimePolicy(timePolicy);
+  }
+
+  public FilterResult<DayTag> getDayTags()
+  {
+    if (LOG.isInfoEnabled()) {
+      LOG.info("getDayTags: ");
+    }
+    return m_workItemService.getDayTags();
   }
 
 }

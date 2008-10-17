@@ -3,7 +3,9 @@ package de.objectcode.time4u.client.store.impl.hibernate;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -19,6 +21,7 @@ import de.objectcode.time4u.client.store.api.event.WorkItemRepositoryEvent;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
+import de.objectcode.time4u.server.api.data.DayTag;
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.TimePolicy;
 import de.objectcode.time4u.server.api.data.WeekTimePolicy;
@@ -27,6 +30,7 @@ import de.objectcode.time4u.server.api.filter.DayInfoFilter;
 import de.objectcode.time4u.server.api.filter.TimePolicyFilter;
 import de.objectcode.time4u.server.entities.ActiveWorkItemEntity;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
+import de.objectcode.time4u.server.entities.DayTagEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.TimePolicyEntity;
 import de.objectcode.time4u.server.entities.WeekTimePolicyEntity;
@@ -528,6 +532,64 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
     m_repository.fireRepositoryEvent(new TimePolicyRepositoryEvent(result));
 
     return result;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public List<DayTag> getDayTags() throws RepositoryException
+  {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<List<DayTag>>() {
+      public List<DayTag> perform(final Session session)
+      {
+        final Criteria criteria = session.createCriteria(DayTagEntity.class);
+        criteria.addOrder(Order.asc("name"));
+
+        final List<DayTag> result = new ArrayList<DayTag>();
+        for (final Object row : criteria.list()) {
+          final DayTag dayTag = new DayTag();
+
+          ((DayTagEntity) row).toDTO(dayTag);
+
+          result.add(dayTag);
+        }
+
+        return result;
+      }
+    });
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void storeDayTags(final List<DayTag> dayTags) throws RepositoryException
+  {
+    m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Object>() {
+      public Object perform(final Session session)
+      {
+        final Set<String> names = new HashSet<String>();
+
+        for (final DayTag dayTag : dayTags) {
+          names.add(dayTag.getName());
+
+          final DayTagEntity entity = new DayTagEntity();
+          entity.fromDTO(dayTag);
+          session.merge(entity);
+        }
+
+        final Criteria criteria = session.createCriteria(DayTagEntity.class);
+
+        for (final Object row : criteria.list()) {
+          final DayTagEntity entity = (DayTagEntity) row;
+
+          if (!names.contains(entity.getName())) {
+            session.delete(entity);
+          }
+        }
+
+        return null;
+      }
+    });
   }
 
   private static class DayInfoWorkItemHolder

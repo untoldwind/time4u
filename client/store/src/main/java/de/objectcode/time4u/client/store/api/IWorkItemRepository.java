@@ -5,6 +5,7 @@ import java.util.List;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
+import de.objectcode.time4u.server.api.data.DayTag;
 import de.objectcode.time4u.server.api.data.TimePolicy;
 import de.objectcode.time4u.server.api.data.WorkItem;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
@@ -122,4 +123,26 @@ public interface IWorkItemRepository
    *           on error
    */
   TimePolicy storeTimePolicy(TimePolicy timePolicy, boolean modifiedByOwner) throws RepositoryException;
+
+  /**
+   * Get all allowed day tags.
+   * 
+   * @return A list of all day tags.
+   * 
+   * @throws RepositoryException
+   *           on error
+   */
+  List<DayTag> getDayTags() throws RepositoryException;
+
+  /**
+   * Store/update the list of allowed day tags.
+   * 
+   * All tags that are not in this list will be removed.
+   * 
+   * @param dayTags
+   *          The list of all day tags
+   * @throws RepositoryException
+   *           on error
+   */
+  void storeDayTags(List<DayTag> dayTags) throws RepositoryException;
 }

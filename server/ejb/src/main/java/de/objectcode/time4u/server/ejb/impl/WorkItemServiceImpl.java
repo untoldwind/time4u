@@ -21,6 +21,7 @@ import de.objectcode.time4u.server.api.IWorkItemService;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
+import de.objectcode.time4u.server.api.data.DayTag;
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.TimePolicy;
@@ -29,6 +30,7 @@ import de.objectcode.time4u.server.api.data.WorkItem;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
 import de.objectcode.time4u.server.api.filter.TimePolicyFilter;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
+import de.objectcode.time4u.server.entities.DayTagEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.TimePolicyEntity;
 import de.objectcode.time4u.server.entities.WeekTimePolicyEntity;
@@ -221,6 +223,23 @@ public class WorkItemServiceImpl implements IWorkItemService
     }
 
     return null;
+  }
+
+  public FilterResult<DayTag> getDayTags()
+  {
+    final Query query = m_manager.createQuery("from " + DayTagEntity.class.getName() + " t order by t.name asc");
+
+    final List<DayTag> result = new ArrayList<DayTag>();
+
+    for (final Object row : query.getResultList()) {
+      final DayTag dayTag = new DayTag();
+
+      ((DayTagEntity) row).toDTO(dayTag);
+
+      result.add(dayTag);
+    }
+
+    return new FilterResult<DayTag>(result);
   }
 
   private Query createQuery(final DayInfoFilter filter, final PersonEntity person)
