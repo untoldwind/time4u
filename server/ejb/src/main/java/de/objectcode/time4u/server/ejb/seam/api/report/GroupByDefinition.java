@@ -1,9 +1,20 @@
 package de.objectcode.time4u.server.ejb.seam.api.report;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlType(name = "group-by")
+@XmlRootElement(name = "group-by")
 public class GroupByDefinition
 {
   IProjection m_valueProjection;
   IProjection m_labelProjection;
+
+  public GroupByDefinition()
+  {
+  }
 
   public GroupByDefinition(final IProjection valueProjection, final IProjection labelProjection)
   {
@@ -11,6 +22,11 @@ public class GroupByDefinition
     m_labelProjection = labelProjection;
   }
 
+  @XmlElements( { @XmlElement(name = "project", type = ProjectProjection.class),
+      @XmlElement(name = "task", type = TaskProjection.class),
+      @XmlElement(name = "workitem", type = WorkItemProjection.class),
+      @XmlElement(name = "person", type = PersonProjection.class),
+      @XmlElement(name = "dayinfo", type = DayInfoProjection.class) })
   public IProjection getValueProjection()
   {
     return m_valueProjection;
@@ -21,6 +37,11 @@ public class GroupByDefinition
     m_valueProjection = valueProjection;
   }
 
+  @XmlElements( { @XmlElement(name = "project", type = ProjectProjection.class),
+      @XmlElement(name = "task", type = TaskProjection.class),
+      @XmlElement(name = "workitem", type = WorkItemProjection.class),
+      @XmlElement(name = "person", type = PersonProjection.class),
+      @XmlElement(name = "dayinfo", type = DayInfoProjection.class) })
   public IProjection getLabelProjection()
   {
     return m_labelProjection;

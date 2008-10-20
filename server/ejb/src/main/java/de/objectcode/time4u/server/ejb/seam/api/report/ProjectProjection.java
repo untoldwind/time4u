@@ -3,8 +3,13 @@ package de.objectcode.time4u.server.ejb.seam.api.report;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlType;
+
 import de.objectcode.time4u.server.entities.ProjectEntity;
 
+@XmlEnum
+@XmlType(name = "project-projection")
 public enum ProjectProjection implements IProjection
 {
   ID(ColumnType.NAME, "Project id") {

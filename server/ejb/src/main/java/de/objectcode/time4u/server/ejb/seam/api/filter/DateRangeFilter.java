@@ -4,15 +4,26 @@ import java.sql.Date;
 import java.util.Calendar;
 
 import javax.persistence.Query;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import de.objectcode.time4u.server.api.data.EntityType;
+import de.objectcode.time4u.server.ejb.seam.api.io.DateXmlAdatper;
 
+@XmlType(name = "date-range")
+@XmlRootElement(name = "date-range")
 public class DateRangeFilter implements IFilter
 {
-  private final Date m_from;
-  private final Date m_until;
+  private Date m_from;
+  private Date m_until;
 
-  private DateRangeFilter(final Date from, final Date until)
+  public DateRangeFilter()
+  {
+  }
+
+  public DateRangeFilter(final Date from, final Date until)
   {
     m_from = from;
     m_until = until;
@@ -28,6 +39,30 @@ public class DateRangeFilter implements IFilter
       default:
         throw new RuntimeException("DateRangeFilter not applicable for entity type: " + entityType);
     }
+  }
+
+  @XmlJavaTypeAdapter(DateXmlAdatper.class)
+  @XmlAttribute
+  public Date getFrom()
+  {
+    return m_from;
+  }
+
+  public void setFrom(final Date from)
+  {
+    m_from = from;
+  }
+
+  @XmlJavaTypeAdapter(DateXmlAdatper.class)
+  @XmlAttribute
+  public Date getUntil()
+  {
+    return m_until;
+  }
+
+  public void setUntil(final Date until)
+  {
+    m_until = until;
   }
 
   public void setParameters(final EntityType entityType, final Query query)

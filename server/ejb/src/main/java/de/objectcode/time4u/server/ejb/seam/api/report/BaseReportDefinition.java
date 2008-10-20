@@ -1,14 +1,25 @@
 package de.objectcode.time4u.server.ejb.seam.api.report;
 
-import de.objectcode.time4u.server.api.data.EntityType;
-import de.objectcode.time4u.server.ejb.seam.api.filter.IFilter;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementRefs;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
+import de.objectcode.time4u.server.api.data.EntityType;
+import de.objectcode.time4u.server.ejb.seam.api.filter.AndFilter;
+import de.objectcode.time4u.server.ejb.seam.api.filter.DateRangeFilter;
+import de.objectcode.time4u.server.ejb.seam.api.filter.IFilter;
+import de.objectcode.time4u.server.ejb.seam.api.filter.OrFilter;
+
+@XmlType(name = "report")
 public abstract class BaseReportDefinition
 {
   protected String m_name;
   protected String m_description;
   protected IFilter m_filter;
 
+  @XmlAttribute
   public String getName()
   {
     return m_name;
@@ -29,6 +40,8 @@ public abstract class BaseReportDefinition
     m_description = description;
   }
 
+  @XmlElementRefs( { @XmlElementRef(type = AndFilter.class), @XmlElementRef(type = OrFilter.class),
+      @XmlElementRef(type = DateRangeFilter.class) })
   public IFilter getFilter()
   {
     return m_filter;
@@ -39,6 +52,7 @@ public abstract class BaseReportDefinition
     m_filter = filter;
   }
 
+  @XmlTransient
   public abstract EntityType getEntityType();
 
   public abstract ReportResult createResult();

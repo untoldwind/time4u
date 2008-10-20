@@ -1,5 +1,10 @@
 package de.objectcode.time4u.server.ejb.seam.api.report;
 
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlEnum
+@XmlType(name = "person-projection")
 public enum PersonProjection implements IProjection
 {
   ID(ColumnType.NAME, "Person id") {

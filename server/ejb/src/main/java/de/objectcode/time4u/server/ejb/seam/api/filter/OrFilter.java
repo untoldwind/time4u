@@ -5,12 +5,18 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.Query;
+import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementRefs;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import de.objectcode.time4u.server.api.data.EntityType;
 
+@XmlType(name = "or")
+@XmlRootElement(name = "or")
 public class OrFilter implements IFilter
 {
-  private final List<IFilter> m_filters = new ArrayList<IFilter>();
+  private List<IFilter> m_filters = new ArrayList<IFilter>();
 
   public OrFilter()
   {
@@ -26,6 +32,18 @@ public class OrFilter implements IFilter
   public void add(final IFilter filter)
   {
     m_filters.add(filter);
+  }
+
+  @XmlElementRefs( { @XmlElementRef(type = AndFilter.class), @XmlElementRef(type = OrFilter.class),
+      @XmlElementRef(type = DateRangeFilter.class) })
+  public List<IFilter> getFilters()
+  {
+    return m_filters;
+  }
+
+  public void setFilters(final List<IFilter> filters)
+  {
+    m_filters = filters;
   }
 
   public String getWhereClause(final EntityType entityType)

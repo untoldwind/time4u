@@ -4,8 +4,16 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import de.objectcode.time4u.server.api.data.EntityType;
 
+@XmlType(name = "workitem-report")
+@XmlRootElement(name = "workitem-report")
 public class WorkItemReportDefinition extends BaseReportDefinition
 {
   List<IProjection> m_projections;
@@ -17,6 +25,12 @@ public class WorkItemReportDefinition extends BaseReportDefinition
     m_groupByDefinitions = new ArrayList<GroupByDefinition>();
   }
 
+  @XmlElementWrapper
+  @XmlElements( { @XmlElement(name = "project", type = ProjectProjection.class),
+      @XmlElement(name = "task", type = TaskProjection.class),
+      @XmlElement(name = "workitem", type = WorkItemProjection.class),
+      @XmlElement(name = "person", type = PersonProjection.class),
+      @XmlElement(name = "dayinfo", type = DayInfoProjection.class) })
   public List<IProjection> getProjections()
   {
     return m_projections;
