@@ -18,6 +18,7 @@ import de.objectcode.time4u.server.entities.TaskEntity;
 import de.objectcode.time4u.server.entities.TaskMetaPropertyEntity;
 import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.TeamMetaPropertyEntity;
+import de.objectcode.time4u.server.entities.TimePolicyEntity;
 import de.objectcode.time4u.server.entities.TodoEntity;
 import de.objectcode.time4u.server.entities.TodoMetaPropertyEntity;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
@@ -72,6 +73,7 @@ public class TestSessionFactory
     cfg.addAnnotatedClass(TodoEntity.class);
     cfg.addAnnotatedClass(TodoMetaPropertyEntity.class);
     cfg.addAnnotatedClass(ActiveWorkItemEntity.class);
+    cfg.addAnnotatedClass(TimePolicyEntity.class);
 
     return cfg.buildSessionFactory();
   }

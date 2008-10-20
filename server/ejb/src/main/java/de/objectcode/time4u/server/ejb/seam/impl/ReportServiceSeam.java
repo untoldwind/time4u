@@ -1,6 +1,8 @@
 package de.objectcode.time4u.server.ejb.seam.impl;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,6 +31,7 @@ import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
 import de.objectcode.time4u.server.entities.TeamEntity;
+import de.objectcode.time4u.server.entities.TimePolicyEntity;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 
@@ -71,7 +74,7 @@ public class ReportServiceSeam implements IReportServiceLocal
         break;
       case DAYINFO:
         queryStr.append(DayInfoEntity.class.getName());
-        queryStr.append(" d wehere d.person.id in (:allowedPersons)");
+        queryStr.append(" d where d.person.id in (:allowedPersons)");
         orderStr = " order by d.date asc";
         rowDataAdapter = new DayInfoRowDataAdapter();
         break;
@@ -141,6 +144,18 @@ public class ReportServiceSeam implements IReportServiceLocal
     {
       return m_currentWorkItem;
     }
+
+    public List<TimePolicyEntity> getTimePolicies()
+    {
+      final List<TimePolicyEntity> timePolicies = new ArrayList<TimePolicyEntity>();
+
+      for (final TimePolicyEntity timePolicy : m_currentWorkItem.getDayInfo().getPerson().getTimePolicies()) {
+        if (!timePolicy.isDeleted()) {
+          timePolicies.add(timePolicy);
+        }
+      }
+      return timePolicies;
+    }
   }
 
   private static class DayInfoRowDataAdapter implements IExtendedRowDataAdapter
@@ -175,6 +190,18 @@ public class ReportServiceSeam implements IReportServiceLocal
     public WorkItemEntity getWorkItem()
     {
       return null;
+    }
+
+    public List<TimePolicyEntity> getTimePolicies()
+    {
+      final List<TimePolicyEntity> timePolicies = new ArrayList<TimePolicyEntity>();
+
+      for (final TimePolicyEntity timePolicy : m_currentDayInfo.getPerson().getTimePolicies()) {
+        if (!timePolicy.isDeleted()) {
+          timePolicies.add(timePolicy);
+        }
+      }
+      return timePolicies;
     }
 
   }

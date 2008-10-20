@@ -87,4 +87,17 @@ public class DateRangeFilter implements IFilter
 
     return new DateRangeFilter(from, until);
   }
+
+  public static DateRangeFilter filterWeek(final int year, final int week)
+  {
+    final Calendar calendar = Calendar.getInstance();
+
+    calendar.set(year, 0, 1, 0, 0, 0);
+    calendar.set(Calendar.WEEK_OF_YEAR, week);
+    final Date from = new Date(calendar.getTimeInMillis());
+    calendar.add(Calendar.WEEK_OF_YEAR, 1);
+    final Date until = new Date(calendar.getTimeInMillis());
+
+    return new DateRangeFilter(from, until);
+  }
 }

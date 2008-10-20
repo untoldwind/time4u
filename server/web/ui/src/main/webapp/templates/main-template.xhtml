@@ -21,6 +21,11 @@
 						action="#{user.reportController.enter('workitem-month-byperson')}" rendered="#{s:hasRole('user')}" />
 					<rich:menuItem submitMode="ajax" value="Workitem month by date/person"
 						action="#{user.reportController.enter('workitem-month-bydateperson')}" rendered="#{s:hasRole('user')}" />
+					<rich:menuItem submitMode="ajax" value="Dayinfo month"
+						action="#{user.reportController.enter('dayinfo-month-flat')}" rendered="#{s:hasRole('user')}" />
+
+					<rich:menuItem submitMode="ajax" value="Workitem week"
+						action="#{user.reportController.enter('workitem-week-flat')}" rendered="#{s:hasRole('user')}" />
 				</rich:dropDownMenu>
 
 				<rich:dropDownMenu value="Admin" rendered="#{s:hasRole('admin')}">

@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import de.objectcode.time4u.server.api.data.MetaProperty;
@@ -48,6 +49,8 @@ public class PersonEntity
   private Set<TeamEntity> m_memberOf;
   /** Timestamp of the last synchronization */
   private Date m_lastSynchronize;
+  /** Time policies of the person */
+  Set<TimePolicyEntity> m_timePolicies;
   /** Meta properties of the person */
   Map<String, PersonMetaPropertyEntity> m_metaProperties;
 
@@ -168,6 +171,18 @@ public class PersonEntity
   public void setDeleted(final boolean deleted)
   {
     m_deleted = deleted;
+  }
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
+  @OrderBy
+  public Set<TimePolicyEntity> getTimePolicies()
+  {
+    return m_timePolicies;
+  }
+
+  public void setTimePolicies(final Set<TimePolicyEntity> timePolicies)
+  {
+    m_timePolicies = timePolicies;
   }
 
   @MapKey(name = "name")

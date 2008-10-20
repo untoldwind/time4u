@@ -140,4 +140,6 @@ public abstract class TimePolicyEntity
     m_validFrom = timePolicy.getValidFrom() != null ? timePolicy.getValidFrom().getDate() : null;
     m_validUntil = timePolicy.getValidUntil() != null ? timePolicy.getValidUntil().getDate() : null;
   }
+
+  public abstract int getRegularTime(final Date day);
 }

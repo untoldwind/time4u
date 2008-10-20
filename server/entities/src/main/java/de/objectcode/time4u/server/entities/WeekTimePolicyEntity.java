@@ -1,5 +1,8 @@
 package de.objectcode.time4u.server.entities;
 
+import java.sql.Date;
+import java.util.Calendar;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -125,5 +128,38 @@ public class WeekTimePolicyEntity extends TimePolicyEntity
     m_fridayTime = timePolicy.getFridayTime();
     m_saturdayTime = timePolicy.getSaturdayTime();
     m_sundayTime = timePolicy.getSundayTime();
+  }
+
+  @Override
+  public int getRegularTime(final Date date)
+  {
+    if (m_validFrom != null && m_validFrom.compareTo(date) > 0) {
+      return -1;
+    }
+    if (m_validUntil != null && m_validUntil.compareTo(date) < 0) {
+      return -1;
+    }
+
+    final Calendar calendar = Calendar.getInstance();
+
+    calendar.setTime(date);
+
+    switch (calendar.get(Calendar.DAY_OF_WEEK)) {
+      case Calendar.MONDAY:
+        return m_mondayTime;
+      case Calendar.TUESDAY:
+        return m_tuesdayTime;
+      case Calendar.WEDNESDAY:
+        return m_wednesdayTime;
+      case Calendar.THURSDAY:
+        return m_thursdayTime;
+      case Calendar.FRIDAY:
+        return m_fridayTime;
+      case Calendar.SATURDAY:
+        return m_saturdayTime;
+      case Calendar.SUNDAY:
+        return m_sundayTime;
+    }
+    return -1;
   }
 }
