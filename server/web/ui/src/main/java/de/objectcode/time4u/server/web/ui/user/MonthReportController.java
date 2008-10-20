@@ -165,7 +165,7 @@ public class MonthReportController
         break;
     }
 
-    m_reportResult = m_reportService.workItemReport(definition);
+    m_reportResult = m_reportService.generateReport(definition);
 
     return RESULT_VIEW_ID;
   }

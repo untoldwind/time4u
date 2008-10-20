@@ -19,9 +19,9 @@ import org.jboss.seam.security.Identity;
 
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.ejb.seam.api.IReportServiceLocal;
+import de.objectcode.time4u.server.ejb.seam.api.report.BaseReportDefinition;
 import de.objectcode.time4u.server.ejb.seam.api.report.IRowDataAdapter;
 import de.objectcode.time4u.server.ejb.seam.api.report.ReportResult;
-import de.objectcode.time4u.server.ejb.seam.api.report.WorkItemReportDefinition;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
@@ -44,7 +44,7 @@ public class ReportServiceSeam implements IReportServiceLocal
   @In("org.jboss.seam.security.identity")
   Identity m_identity;
 
-  public ReportResult workItemReport(final WorkItemReportDefinition reportDefinition)
+  public ReportResult generateReport(final BaseReportDefinition reportDefinition)
   {
     final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, m_identity.getPrincipal().getName());
     final Set<String> allowedPersonIds = new HashSet<String>();
@@ -56,15 +56,30 @@ public class ReportServiceSeam implements IReportServiceLocal
       }
     }
 
-    final StringBuffer queryStr = new StringBuffer("from " + WorkItemEntity.class.getName()
-        + " w where w.dayInfo.person.id in (:allowedPersons)");
+    final StringBuffer queryStr = new StringBuffer("from ");
+    String orderStr = null;
+    IExtendedRowDataAdapter rowDataAdapter = null;
+    switch (reportDefinition.getEntityType()) {
+      case WORKITEM:
+        queryStr.append(WorkItemEntity.class.getName());
+        queryStr.append(" w where w.dayInfo.person.id in (:allowedPersons)");
+        orderStr = " order by w.dayInfo.date asc, w.begin asc";
+        rowDataAdapter = new WorkItemRowDataAdapter();
+        break;
+      case DAYINFO:
+        queryStr.append(DayInfoEntity.class.getName());
+        queryStr.append(" d wehere d.person.id in (:allowedPersons)");
+        orderStr = " order by d.date asc";
+        rowDataAdapter = new DayInfoRowDataAdapter();
+        break;
+    }
 
     if (reportDefinition.getFilter() != null) {
       queryStr.append(" and ");
-      queryStr.append(reportDefinition.getFilter().getWhereClause(EntityType.WORKITEM));
+      queryStr.append(reportDefinition.getFilter().getWhereClause(reportDefinition.getEntityType()));
     }
 
-    queryStr.append(" order by w.dayInfo.date asc, w.begin asc");
+    queryStr.append(orderStr);
 
     final Query query = m_manager.createQuery(queryStr.toString());
 
@@ -74,10 +89,9 @@ public class ReportServiceSeam implements IReportServiceLocal
     }
 
     final ReportResult reportResult = reportDefinition.createResult();
-    final WorkItemRowDataAdapter rowDataAdapter = new WorkItemRowDataAdapter();
 
     for (final Object row : query.getResultList()) {
-      rowDataAdapter.setCurrentWorkItem((WorkItemEntity) row);
+      rowDataAdapter.setCurrentRow(row);
 
       reportDefinition.collect(rowDataAdapter, reportResult);
     }
@@ -86,13 +100,18 @@ public class ReportServiceSeam implements IReportServiceLocal
     return reportResult;
   }
 
-  private static class WorkItemRowDataAdapter implements IRowDataAdapter
+  private static interface IExtendedRowDataAdapter extends IRowDataAdapter
+  {
+    void setCurrentRow(Object row);
+  }
+
+  private static class WorkItemRowDataAdapter implements IExtendedRowDataAdapter
   {
     WorkItemEntity m_currentWorkItem;
 
-    public void setCurrentWorkItem(final WorkItemEntity currentWorkItem)
+    public void setCurrentRow(final Object currentWorkItem)
     {
-      m_currentWorkItem = currentWorkItem;
+      m_currentWorkItem = (WorkItemEntity) currentWorkItem;
     }
 
     public DayInfoEntity getDayInfo()
@@ -119,5 +138,41 @@ public class ReportServiceSeam implements IReportServiceLocal
     {
       return m_currentWorkItem;
     }
+  }
+
+  private static class DayInfoRowDataAdapter implements IExtendedRowDataAdapter
+  {
+    DayInfoEntity m_currentDayInfo;
+
+    public void setCurrentRow(final Object row)
+    {
+      m_currentDayInfo = (DayInfoEntity) row;
+    }
+
+    public DayInfoEntity getDayInfo()
+    {
+      return m_currentDayInfo;
+    }
+
+    public PersonEntity getPerson()
+    {
+      return m_currentDayInfo.getPerson();
+    }
+
+    public ProjectEntity getProject()
+    {
+      return null;
+    }
+
+    public TaskEntity getTask()
+    {
+      return null;
+    }
+
+    public WorkItemEntity getWorkItem()
+    {
+      return null;
+    }
+
   }
 }

@@ -6,12 +6,12 @@ import java.util.List;
 
 import de.objectcode.time4u.server.api.data.EntityType;
 
-public class WorkItemReportDefinition extends BaseReportDefinition
+public class DayInfoReportDefinition extends BaseReportDefinition
 {
   List<IProjection> m_projections;
   List<GroupByDefinition> m_groupByDefinitions;
 
-  public WorkItemReportDefinition()
+  public DayInfoReportDefinition()
   {
     m_projections = new ArrayList<IProjection>();
     m_groupByDefinitions = new ArrayList<GroupByDefinition>();
@@ -50,7 +50,7 @@ public class WorkItemReportDefinition extends BaseReportDefinition
   @Override
   public EntityType getEntityType()
   {
-    return EntityType.WORKITEM;
+    return EntityType.DAYINFO;
   }
 
   @Override
@@ -89,4 +89,5 @@ public class WorkItemReportDefinition extends BaseReportDefinition
 
     reportResult.addRow(groups, row);
   }
+
 }

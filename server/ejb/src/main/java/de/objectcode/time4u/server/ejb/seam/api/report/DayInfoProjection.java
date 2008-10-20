@@ -1,5 +1,10 @@
 package de.objectcode.time4u.server.ejb.seam.api.report;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import de.objectcode.time4u.server.entities.DayTagEntity;
+
 public enum DayInfoProjection implements IProjection
 {
   DATE(ColumnType.DATE, "Date") {
@@ -12,6 +17,17 @@ public enum DayInfoProjection implements IProjection
     public Object project(final IRowDataAdapter rowData)
     {
       return rowData.getDayInfo().getSumDurations();
+    }
+  },
+  TAGS(ColumnType.NAME_ARRAY, "Tags") {
+    public Object project(final IRowDataAdapter rowData)
+    {
+      final List<String> tags = new ArrayList<String>();
+
+      for (final DayTagEntity dayTag : rowData.getDayInfo().getTags()) {
+        tags.add(dayTag.getName());
+      }
+      return tags;
     }
   };
 

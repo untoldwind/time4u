@@ -1,5 +1,6 @@
 package de.objectcode.time4u.server.ejb.seam.api.report;
 
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.ejb.seam.api.filter.IFilter;
 
 public abstract class BaseReportDefinition
@@ -38,4 +39,9 @@ public abstract class BaseReportDefinition
     m_filter = filter;
   }
 
+  public abstract EntityType getEntityType();
+
+  public abstract ReportResult createResult();
+
+  public abstract void collect(final IRowDataAdapter rowData, final ReportResult reportResult);
 }
