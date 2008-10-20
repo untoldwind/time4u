@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core" xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="../templates/main-template.xhtml">
+
+	<ui:define name="title">Report: #{user.reportDefinition.name}
+	</ui:define>
+	<ui:define name="contentDetail">
+		<h:form>
+			<h:panelGrid columns="1">
+				<h:panelGrid columns="2">
+					<h:outputText value="Name:" />
+					<h:outputText value="#{user.reportDefinition.name}" />
+
+					<h:outputText value="Description:" />
+					<h:outputText value="#{user.reportDefinition.description}" />
+
+					<c:forEach items="#{user.reportParameters}" var="parameter">
+						<h:outputText value="#{parameter.label}" />
+						<ui:include src="parameter/#{parameter.type.id}.xhtml" />
+					</c:forEach>
+				</h:panelGrid>
+				<h:panelGrid columns="1">
+					<a4j:commandButton action="#{user.reportController.generate}"
+						value="Generate" />
+				</h:panelGrid>
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

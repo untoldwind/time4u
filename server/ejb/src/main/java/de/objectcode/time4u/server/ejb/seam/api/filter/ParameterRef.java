@@ -20,6 +20,15 @@ public class ParameterRef implements IFilter
 
   ReportParameterDefinition m_parameter;
 
+  public ParameterRef()
+  {
+  }
+
+  public ParameterRef(final ReportParameterDefinition parameter)
+  {
+    m_parameter = parameter;
+  }
+
   @XmlAttribute
   @XmlIDREF
   public ReportParameterDefinition getParameter()

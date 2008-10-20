@@ -23,7 +23,7 @@ public enum ReportParameterType
     m_id = id;
     m_valueClass = valueClass;
     try {
-      m_valueConstructor = m_valueClass.getConstructor(String.class);
+      m_valueConstructor = m_valueClass.getConstructor(String.class, String.class);
     } catch (final Exception e) {
       throw new RuntimeException("Initialization exception", e);
     }
@@ -34,10 +34,10 @@ public enum ReportParameterType
     return m_id;
   }
 
-  public BaseParameterValue newValueInstance(final String name)
+  public BaseParameterValue newValueInstance(final String name, final String label)
   {
     try {
-      return m_valueConstructor.newInstance(name);
+      return m_valueConstructor.newInstance(name, label);
     } catch (final Exception e) {
       throw new RuntimeException("Initialization exception", e);
     }

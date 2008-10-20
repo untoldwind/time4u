@@ -26,11 +26,12 @@ public class GroupByDefinition implements Serializable
     m_labelProjection = labelProjection;
   }
 
-  @XmlElements( { @XmlElement(name = "project", type = ProjectProjection.class),
-      @XmlElement(name = "task", type = TaskProjection.class),
-      @XmlElement(name = "workitem", type = WorkItemProjection.class),
-      @XmlElement(name = "person", type = PersonProjection.class),
-      @XmlElement(name = "dayinfo", type = DayInfoProjection.class) })
+  @XmlElements( {
+      @XmlElement(name = "value-project", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = ProjectProjection.class),
+      @XmlElement(name = "value-task", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = TaskProjection.class),
+      @XmlElement(name = "value-workitem", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = WorkItemProjection.class),
+      @XmlElement(name = "value-person", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = PersonProjection.class),
+      @XmlElement(name = "value-dayinfo", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = DayInfoProjection.class) })
   public IProjection getValueProjection()
   {
     return m_valueProjection;
@@ -41,11 +42,12 @@ public class GroupByDefinition implements Serializable
     m_valueProjection = valueProjection;
   }
 
-  @XmlElements( { @XmlElement(name = "project", type = ProjectProjection.class),
-      @XmlElement(name = "task", type = TaskProjection.class),
-      @XmlElement(name = "workitem", type = WorkItemProjection.class),
-      @XmlElement(name = "person", type = PersonProjection.class),
-      @XmlElement(name = "dayinfo", type = DayInfoProjection.class) })
+  @XmlElements( {
+      @XmlElement(name = "label-project", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = ProjectProjection.class),
+      @XmlElement(name = "label-task", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = TaskProjection.class),
+      @XmlElement(name = "label-workitem", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = WorkItemProjection.class),
+      @XmlElement(name = "label-person", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = PersonProjection.class),
+      @XmlElement(name = "label-dayinfo", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = DayInfoProjection.class) })
   public IProjection getLabelProjection()
   {
     return m_labelProjection;

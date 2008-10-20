@@ -4,14 +4,14 @@
 	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
 	<table>
-		<s:decorate template="../templates/decorateTableField.xhtml">
+		<s:decorate template="../../templates/decorateTableField.xhtml">
 			<ui:define name="label">Month</ui:define>
 			<h:selectOneMenu value="#{parameter.month}">
 				<s:selectItems value="#{parameter.monthValues}"
 					var="month" itemValue="#{month.value}" label="#{month.label}" />
 			</h:selectOneMenu>
 		</s:decorate>
-		<s:decorate template="../templates/decorateTableField.xhtml">
+		<s:decorate template="../../templates/decorateTableField.xhtml">
 			<ui:define name="label">Year</ui:define>
 			<rich:inputNumberSpinner
 				value="#{parameter.year}" minValue="1900"

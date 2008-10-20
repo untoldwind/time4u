@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,12 +28,13 @@ public class WorkItemReportDefinition extends BaseReportDefinition
     m_groupByDefinitions = new ArrayList<GroupByDefinition>();
   }
 
-  @XmlElementWrapper
-  @XmlElements( { @XmlElement(name = "project", type = ProjectProjection.class),
-      @XmlElement(name = "task", type = TaskProjection.class),
-      @XmlElement(name = "workitem", type = WorkItemProjection.class),
-      @XmlElement(name = "person", type = PersonProjection.class),
-      @XmlElement(name = "dayinfo", type = DayInfoProjection.class) })
+  @XmlElementWrapper(name = "projections", namespace = "http://objectcode.de/time4u/ejb/seam/report")
+  @XmlElements( {
+      @XmlElement(name = "project", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = ProjectProjection.class),
+      @XmlElement(name = "task", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = TaskProjection.class),
+      @XmlElement(name = "workitem", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = WorkItemProjection.class),
+      @XmlElement(name = "person", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = PersonProjection.class),
+      @XmlElement(name = "dayinfo", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = DayInfoProjection.class) })
   public List<IProjection> getProjections()
   {
     return m_projections;
@@ -48,7 +50,8 @@ public class WorkItemReportDefinition extends BaseReportDefinition
     m_projections.add(projection);
   }
 
-  @XmlElementWrapper
+  @XmlElementWrapper(name = "group-bys", namespace = "http://objectcode.de/time4u/ejb/seam/report")
+  @XmlElementRef
   public List<GroupByDefinition> getGroupByDefinitions()
   {
     return m_groupByDefinitions;

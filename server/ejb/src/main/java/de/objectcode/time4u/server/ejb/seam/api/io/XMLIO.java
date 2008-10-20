@@ -14,16 +14,25 @@ import org.apache.commons.logging.LogFactory;
 
 import de.objectcode.time4u.server.ejb.seam.api.report.BaseReportDefinition;
 
+/**
+ * Helper class to read/write report definition from/to xml files.
+ * 
+ * @author junglas
+ */
 public class XMLIO
 {
   private static final Log LOG = LogFactory.getLog(XMLIO.class);
 
+  /** Singleton instance. */
   public static final XMLIO INSTANCE = new XMLIO();
 
   private Marshaller marshaller;
   private Unmarshaller unmarshaller;
 
-  public XMLIO()
+  /**
+   * Singleton constructor.
+   */
+  private XMLIO()
   {
     try {
       final JAXBContext context = JAXBContext
@@ -37,6 +46,15 @@ public class XMLIO
     }
   }
 
+  /**
+   * Read a report definition from an xml stream.
+   * 
+   * @param in
+   *          The xml intput stream
+   * @return The report definition
+   * @throws IOException
+   *           on error
+   */
   public BaseReportDefinition read(final InputStream in) throws IOException
   {
     try {
@@ -47,10 +65,20 @@ public class XMLIO
     }
   }
 
-  public void write(final BaseReportDefinition messageFormatModel, final OutputStream out) throws IOException
+  /**
+   * Write a report definition to an xml stream.
+   * 
+   * @param definition
+   *          The report definition
+   * @param out
+   *          The xml output stream
+   * @throws IOException
+   *           on error
+   */
+  public void write(final BaseReportDefinition definition, final OutputStream out) throws IOException
   {
     try {
-      marshaller.marshal(messageFormatModel, out);
+      marshaller.marshal(definition, out);
     } catch (final JAXBException e) {
       LOG.error("Exception", e);
       throw new IOException(e.toString());

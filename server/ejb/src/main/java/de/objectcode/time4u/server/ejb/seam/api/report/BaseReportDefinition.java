@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementRefs;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -44,6 +45,7 @@ public abstract class BaseReportDefinition implements Serializable
     m_name = name;
   }
 
+  @XmlElement(name = "description", namespace = "http://objectcode.de/time4u/ejb/seam/report")
   public String getDescription()
   {
     return m_description;
@@ -66,7 +68,8 @@ public abstract class BaseReportDefinition implements Serializable
     m_filter = filter;
   }
 
-  @XmlElementWrapper
+  @XmlElementWrapper(name = "parameters", namespace = "http://objectcode.de/time4u/ejb/seam/report")
+  @XmlElementRef
   public List<ReportParameterDefinition> getParameters()
   {
     return m_parameters;

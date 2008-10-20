@@ -13,9 +13,9 @@ public class MonthParameterValue extends BaseParameterValue
   private int m_month;
   private int m_year;
 
-  public MonthParameterValue(final String name)
+  public MonthParameterValue(final String name, final String label)
   {
-    super(name, ReportParameterType.MONTH);
+    super(name, label, ReportParameterType.MONTH);
 
     final Calendar calendar = Calendar.getInstance();
 
@@ -23,9 +23,9 @@ public class MonthParameterValue extends BaseParameterValue
     m_year = calendar.get(Calendar.YEAR);
   }
 
-  public MonthParameterValue(final String name, final int month, final int year)
+  public MonthParameterValue(final String name, final String label, final int year, final int month)
   {
-    super(name, ReportParameterType.MONTH);
+    super(name, label, ReportParameterType.MONTH);
 
     m_month = month;
     m_year = year;

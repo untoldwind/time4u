@@ -14,19 +14,19 @@
 				<td
 					class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'} report#{column.columnType}">
 					<h:outputText value="#{row.data[column.index]}"
-						converter="#{user.monthReportController.getConverter(column.columnType)}" />
+						converter="#{user.reportConverters.get(column.columnType)}" />
 				</td>
 			</ui:repeat>
 		</tr>
 	</ui:repeat>
-	<c:if test="#{depth &lt; user.monthReportController.reportResult.groupByColumns.size()}">
+	<c:if test="#{depth &lt; user.reportResult.groupByColumns.size()}">
 		<ui:repeat value="#{report.groups}" var="group"
 			rendered="#{report.hasGroups}">
 			<tr class="report">
 				<td colspan="#{depth}" class="report"/>
 				<td class="report reportGroupHeader">
 					<h:outputText value="#{group.label}"
-						converter="#{user.monthReportController.getConverter(report.groupByColumns[0].columnType)}" />
+						converter="#{user.reportConverters.get(report.groupByColumns[0].columnType)}" />
 				</td>
 				<td class="report reportGroupHeader"
 					colspan="#{report.columns.size() + depth - 1}">
