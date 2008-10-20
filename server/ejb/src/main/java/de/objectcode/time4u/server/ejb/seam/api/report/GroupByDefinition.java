@@ -1,5 +1,7 @@
 package de.objectcode.time4u.server.ejb.seam.api.report;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -7,8 +9,10 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlType(name = "group-by")
 @XmlRootElement(name = "group-by")
-public class GroupByDefinition
+public class GroupByDefinition implements Serializable
 {
+  private static final long serialVersionUID = -2139909328575789214L;
+
   IProjection m_valueProjection;
   IProjection m_labelProjection;
 

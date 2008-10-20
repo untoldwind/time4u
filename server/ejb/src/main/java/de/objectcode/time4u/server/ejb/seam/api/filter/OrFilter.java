@@ -3,6 +3,7 @@ package de.objectcode.time4u.server.ejb.seam.api.filter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Query;
 import javax.xml.bind.annotation.XmlElementRef;
@@ -11,11 +12,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import de.objectcode.time4u.server.api.data.EntityType;
+import de.objectcode.time4u.server.ejb.seam.api.report.parameter.BaseParameterValue;
 
 @XmlType(name = "or")
 @XmlRootElement(name = "or")
 public class OrFilter implements IFilter
 {
+  private static final long serialVersionUID = -6096667240200394101L;
+
   private List<IFilter> m_filters = new ArrayList<IFilter>();
 
   public OrFilter()
@@ -35,7 +39,7 @@ public class OrFilter implements IFilter
   }
 
   @XmlElementRefs( { @XmlElementRef(type = AndFilter.class), @XmlElementRef(type = OrFilter.class),
-      @XmlElementRef(type = DateRangeFilter.class) })
+      @XmlElementRef(type = DateRangeFilter.class), @XmlElementRef(type = ParameterRef.class) })
   public List<IFilter> getFilters()
   {
     return m_filters;
@@ -46,7 +50,7 @@ public class OrFilter implements IFilter
     m_filters = filters;
   }
 
-  public String getWhereClause(final EntityType entityType)
+  public String getWhereClause(final EntityType entityType, final Map<String, BaseParameterValue> parameters)
   {
     if (m_filters.isEmpty()) {
       return "";
@@ -54,7 +58,7 @@ public class OrFilter implements IFilter
     final StringBuffer buffer = new StringBuffer("(");
     final Iterator<IFilter> it = m_filters.iterator();
     while (it.hasNext()) {
-      buffer.append(it.next().getWhereClause(entityType));
+      buffer.append(it.next().getWhereClause(entityType, parameters));
       if (it.hasNext()) {
         buffer.append(" or ");
       }
@@ -63,10 +67,11 @@ public class OrFilter implements IFilter
     return buffer.toString();
   }
 
-  public void setParameters(final EntityType entityType, final Query query)
+  public void setQueryParameters(final EntityType entityType, final Query query,
+      final Map<String, BaseParameterValue> parameters)
   {
     for (final IFilter filter : m_filters) {
-      filter.setParameters(entityType, query);
+      filter.setQueryParameters(entityType, query, parameters);
     }
   }
 }

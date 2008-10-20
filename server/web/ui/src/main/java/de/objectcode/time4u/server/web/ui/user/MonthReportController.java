@@ -22,6 +22,7 @@ import de.objectcode.time4u.server.ejb.seam.api.report.ReportResult;
 import de.objectcode.time4u.server.ejb.seam.api.report.TaskProjection;
 import de.objectcode.time4u.server.ejb.seam.api.report.WorkItemProjection;
 import de.objectcode.time4u.server.ejb.seam.api.report.WorkItemReportDefinition;
+import de.objectcode.time4u.server.ejb.seam.api.report.parameter.BaseParameterValue;
 import de.objectcode.time4u.server.web.ui.converter.DateConverter;
 import de.objectcode.time4u.server.web.ui.converter.StringArrayConverter;
 import de.objectcode.time4u.server.web.ui.converter.StringConverter;
@@ -61,6 +62,8 @@ public class MonthReportController
 
   @In("ReportService")
   IReportServiceLocal m_reportService;
+
+  Map<String, BaseParameterValue> m_parameters;
 
   Variant m_variant = Variant.FLAT;
   MonthBean m_selectedMonth = new MonthBean();
@@ -165,7 +168,7 @@ public class MonthReportController
         break;
     }
 
-    m_reportResult = m_reportService.generateReport(definition);
+    m_reportResult = m_reportService.generateReport(definition, m_parameters);
 
     return RESULT_VIEW_ID;
   }

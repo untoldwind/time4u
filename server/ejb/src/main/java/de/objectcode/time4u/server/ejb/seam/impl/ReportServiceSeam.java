@@ -1,6 +1,7 @@
 package de.objectcode.time4u.server.ejb.seam.impl;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.ejb.Local;
@@ -22,6 +23,7 @@ import de.objectcode.time4u.server.ejb.seam.api.IReportServiceLocal;
 import de.objectcode.time4u.server.ejb.seam.api.report.BaseReportDefinition;
 import de.objectcode.time4u.server.ejb.seam.api.report.IRowDataAdapter;
 import de.objectcode.time4u.server.ejb.seam.api.report.ReportResult;
+import de.objectcode.time4u.server.ejb.seam.api.report.parameter.BaseParameterValue;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
@@ -44,7 +46,8 @@ public class ReportServiceSeam implements IReportServiceLocal
   @In("org.jboss.seam.security.identity")
   Identity m_identity;
 
-  public ReportResult generateReport(final BaseReportDefinition reportDefinition)
+  public ReportResult generateReport(final BaseReportDefinition reportDefinition,
+      final Map<String, BaseParameterValue> parameters)
   {
     final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, m_identity.getPrincipal().getName());
     final Set<String> allowedPersonIds = new HashSet<String>();
@@ -76,7 +79,7 @@ public class ReportServiceSeam implements IReportServiceLocal
 
     if (reportDefinition.getFilter() != null) {
       queryStr.append(" and ");
-      queryStr.append(reportDefinition.getFilter().getWhereClause(reportDefinition.getEntityType()));
+      queryStr.append(reportDefinition.getFilter().getWhereClause(reportDefinition.getEntityType(), parameters));
     }
 
     queryStr.append(orderStr);
@@ -85,7 +88,7 @@ public class ReportServiceSeam implements IReportServiceLocal
 
     query.setParameter("allowedPersons", allowedPersonIds);
     if (reportDefinition.getFilter() != null) {
-      reportDefinition.getFilter().setParameters(EntityType.WORKITEM, query);
+      reportDefinition.getFilter().setQueryParameters(EntityType.WORKITEM, query, parameters);
     }
 
     final ReportResult reportResult = reportDefinition.createResult();

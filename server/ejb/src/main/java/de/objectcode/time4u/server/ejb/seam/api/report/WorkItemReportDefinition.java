@@ -16,6 +16,8 @@ import de.objectcode.time4u.server.api.data.EntityType;
 @XmlRootElement(name = "workitem-report")
 public class WorkItemReportDefinition extends BaseReportDefinition
 {
+  private static final long serialVersionUID = 4683950609367326486L;
+
   List<IProjection> m_projections;
   List<GroupByDefinition> m_groupByDefinitions;
 
@@ -46,6 +48,7 @@ public class WorkItemReportDefinition extends BaseReportDefinition
     m_projections.add(projection);
   }
 
+  @XmlElementWrapper
   public List<GroupByDefinition> getGroupByDefinitions()
   {
     return m_groupByDefinitions;

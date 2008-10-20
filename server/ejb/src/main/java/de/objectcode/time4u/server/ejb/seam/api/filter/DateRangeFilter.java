@@ -2,6 +2,7 @@ package de.objectcode.time4u.server.ejb.seam.api.filter;
 
 import java.sql.Date;
 import java.util.Calendar;
+import java.util.Map;
 
 import javax.persistence.Query;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -11,11 +12,14 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.ejb.seam.api.io.DateXmlAdatper;
+import de.objectcode.time4u.server.ejb.seam.api.report.parameter.BaseParameterValue;
 
 @XmlType(name = "date-range")
 @XmlRootElement(name = "date-range")
 public class DateRangeFilter implements IFilter
 {
+  private static final long serialVersionUID = 7407579906174361131L;
+
   private Date m_from;
   private Date m_until;
 
@@ -29,7 +33,7 @@ public class DateRangeFilter implements IFilter
     m_until = until;
   }
 
-  public String getWhereClause(final EntityType entityType)
+  public String getWhereClause(final EntityType entityType, final Map<String, BaseParameterValue> parameters)
   {
     switch (entityType) {
       case DAYINFO:
@@ -65,7 +69,8 @@ public class DateRangeFilter implements IFilter
     m_until = until;
   }
 
-  public void setParameters(final EntityType entityType, final Query query)
+  public void setQueryParameters(final EntityType entityType, final Query query,
+      final Map<String, BaseParameterValue> parameters)
   {
     query.setParameter("from", m_from);
     query.setParameter("until", m_until);
