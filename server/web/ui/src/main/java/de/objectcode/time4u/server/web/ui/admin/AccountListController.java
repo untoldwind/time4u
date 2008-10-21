@@ -11,6 +11,7 @@ import org.jboss.seam.international.StatusMessages;
 import de.objectcode.time4u.server.ejb.seam.api.IAccountServiceLocal;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 import de.objectcode.time4u.server.utils.DefaultPasswordEncoder;
+import de.objectcode.time4u.server.web.ui.common.PasswordConfirm;
 
 @Name("admin.accountListController")
 @Scope(ScopeType.CONVERSATION)
@@ -23,7 +24,7 @@ public class AccountListController
 
   UserAccountEntity m_selectedAccount;
 
-  @In("admin.passwordConfirm")
+  @In("common.passwordConfirm")
   PasswordConfirm m_passwordConfirm;
 
   @Begin(join = true)

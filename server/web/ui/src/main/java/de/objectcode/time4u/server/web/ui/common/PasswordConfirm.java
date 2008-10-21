@@ -1,11 +1,11 @@
-package de.objectcode.time4u.server.web.ui.admin;
+package de.objectcode.time4u.server.web.ui.common;
 
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 
-@Name("admin.passwordConfirm")
+@Name("common.passwordConfirm")
 @AutoCreate
 @Scope(ScopeType.EVENT)
 public class PasswordConfirm
