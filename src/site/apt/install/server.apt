@@ -55,7 +55,7 @@ but you probably want to choose different directories than suggested.
   
    * Ensure that the MySQL user can connect from localhost and has all rights on the database (except grant)
   
-  [[1]] Download and install the {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-deploy-0.9.1.tar.bz2}Time4U Server distribution package}}
+  [[1]] Download and install the {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-deploy-0.9.2.tar.bz2}Time4U Server distribution package}}
   
    * Unpack the zip or tar.bz2 somewhere in your home-directory.
    
