@@ -120,11 +120,12 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
           final List<DayTag> dayTags = RepositoryFactory.getRepository().getWorkItemRepository().getDayTags();
 
           final Set<String> currentTags = dayInfo != null ? dayInfo.getTags() : new HashSet<String>();
+          final int regularTime = dayInfo.getRegularTime();
 
           if (!dayTags.isEmpty()) {
             menuMgr.add(new Separator());
             for (final DayTag dayTag : dayTags) {
-              menuMgr.add(new SetDayTagAction(selection, currentTags, dayTag));
+              menuMgr.add(new SetDayTagAction(selection, regularTime, currentTags, dayTag));
             }
           }
         } catch (final Exception e) {
@@ -236,7 +237,8 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
     Set<String> m_currentTags;
     DayTag m_dayTag;
 
-    SetDayTagAction(final CalendarDay currentDay, final Set<String> currentTags, final DayTag dayTag)
+    SetDayTagAction(final CalendarDay currentDay, final int regularTime, final Set<String> currentTags,
+        final DayTag dayTag)
     {
       super(dayTag.getName(), Action.AS_CHECK_BOX);
 
@@ -248,6 +250,11 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
       m_dayTag = dayTag;
 
       setChecked(m_currentTags.contains(m_dayTag.getName()));
+
+      if (!currentTags.isEmpty()) {
+        setEnabled(currentTags.contains(dayTag.getName()) || dayTag.getRegularTime() == null
+            || dayTag.getRegularTime() == regularTime);
+      }
     }
 
     @Override
@@ -260,8 +267,8 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
       }
 
       try {
-        RepositoryFactory.getRepository().getWorkItemRepository().setRegularTime(m_currentDay, m_currentDay, null,
-            m_currentTags);
+        RepositoryFactory.getRepository().getWorkItemRepository().setRegularTime(m_currentDay, m_currentDay,
+            m_dayTag.getRegularTime(), m_currentTags);
       } catch (final Exception e) {
         UIPlugin.getDefault().log(e);
       }
