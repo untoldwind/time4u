@@ -26,7 +26,7 @@ public class ReceiveDayTagsCommand implements ISynchronizationCommand
     try {
       final FilterResult<DayTag> dayTags = context.getWorkItemService().getDayTags();
 
-      if (dayTags != null) {
+      if (dayTags != null && dayTags.getResults() != null) {
         context.getRepository().getWorkItemRepository().storeDayTags(dayTags.getResults());
       } else {
         context.getRepository().getWorkItemRepository().storeDayTags(new ArrayList<DayTag>());
