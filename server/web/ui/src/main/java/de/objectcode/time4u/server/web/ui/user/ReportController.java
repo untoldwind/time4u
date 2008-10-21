@@ -83,6 +83,11 @@ public class ReportController
     return VIEW_ID;
   }
 
+  public String back()
+  {
+    return VIEW_ID;
+  }
+
   public String generate()
   {
     final Map<String, BaseParameterValue> parameters = new HashMap<String, BaseParameterValue>();

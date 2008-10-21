@@ -8,4 +8,5 @@ public interface IPersonServiceLocal
 
   PersonEntity getPerson(String id);
 
+  void initAllowedPersons();
 }

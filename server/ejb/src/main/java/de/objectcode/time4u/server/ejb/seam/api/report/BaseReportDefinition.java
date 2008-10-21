@@ -18,6 +18,7 @@ import de.objectcode.time4u.server.ejb.seam.api.filter.DateRangeFilter;
 import de.objectcode.time4u.server.ejb.seam.api.filter.IFilter;
 import de.objectcode.time4u.server.ejb.seam.api.filter.OrFilter;
 import de.objectcode.time4u.server.ejb.seam.api.filter.ParameterRef;
+import de.objectcode.time4u.server.ejb.seam.api.filter.PersonFilter;
 
 @XmlType(name = "report")
 public abstract class BaseReportDefinition implements Serializable
@@ -57,7 +58,8 @@ public abstract class BaseReportDefinition implements Serializable
   }
 
   @XmlElementRefs( { @XmlElementRef(type = AndFilter.class), @XmlElementRef(type = OrFilter.class),
-      @XmlElementRef(type = DateRangeFilter.class), @XmlElementRef(type = ParameterRef.class) })
+      @XmlElementRef(type = DateRangeFilter.class), @XmlElementRef(type = ParameterRef.class),
+      @XmlElementRef(type = PersonFilter.class) })
   public IFilter getFilter()
   {
     return m_filter;

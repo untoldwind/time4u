@@ -8,6 +8,7 @@
 	<ui:define name="title">Report: #{user.reportDefinition.name}</ui:define>
 	<ui:define name="contentDetail">
 		<h:form>
+			<a4j:commandLink action="#{user.reportController.back}" value="Back"/>
 			<table class="report">
 				<thead class="report reportHeader">
 					<tr class="report reportHeader">

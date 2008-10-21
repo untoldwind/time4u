@@ -3,10 +3,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
-	<s:div>
-		<rich:inputNumberSpinner value="#{parameter.week}"
-			minValue="1" maxValue="53" step="1" />
-		<rich:inputNumberSpinner value="#{parameter.year}"
-			minValue="1900" maxValue="2500" step="1" />
-	</s:div>
+	<h:selectOneMenu value="#{parameter.personId}">
+		<s:selectItems value="#{user.allowedPersonList.wrappedData}"
+			var="person" itemValue="#{person.id}" label="#{person.givenName} #{person.surname}" />
+	</h:selectOneMenu>
 </ui:composition>
