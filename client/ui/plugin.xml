@@ -292,6 +292,17 @@
                label="%action.workItem.delete.label"
                menubarPath="additions"
                tooltip="%action.workItem.delete.tooltip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+                  </objectClass>
+                  <objectState
+                        name="WORKITEM.active"
+                        value="false">
+                  </objectState>
+               </and>
+            </enablement>
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.WorkItemActionDelegate"
@@ -567,6 +578,10 @@
                   <objectState
                         name="has"
                         value="WORKITEM">
+                  </objectState>
+                  <objectState
+                        name="WORKITEM.active"
+                        value="false">
                   </objectState>
                </and>
             </enablement>
