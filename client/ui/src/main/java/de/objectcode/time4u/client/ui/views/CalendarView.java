@@ -120,7 +120,7 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
           final List<DayTag> dayTags = RepositoryFactory.getRepository().getWorkItemRepository().getDayTags();
 
           final Set<String> currentTags = dayInfo != null ? dayInfo.getTags() : new HashSet<String>();
-          final int regularTime = dayInfo.getRegularTime();
+          final int regularTime = dayInfo != null ? dayInfo.getRegularTime() : -1;
 
           if (!dayTags.isEmpty()) {
             menuMgr.add(new Separator());
