@@ -124,9 +124,7 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
         null,
         null,
         new ComboViewerCellEditor(m_tableViewer.getTable(), new TaskContentProvider(RepositoryFactory.getRepository()
-            .getTaskRepository(), false), new TaskLabelProvider()),
-
-        new TextCellEditor(m_tableViewer.getTable()) });
+            .getTaskRepository(), false), new TaskLabelProvider()), new TextCellEditor(m_tableViewer.getTable()) });
 
     m_tableViewer.setCellModifier(new WorkItemTableCellModifier());
     m_tableViewer.addDropSupport(DND.DROP_COPY | DND.DROP_MOVE | DND.DROP_DEFAULT, new Transfer[] { TaskTransfer
@@ -212,9 +210,11 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
             try {
               switch (m_activeViewType) {
                 case FLAT: {
-                  final ISelection selection = m_tableViewer.getSelection();
-                  m_tableViewer.refresh();
-                  m_tableViewer.setSelection(selection);
+                  if (!m_tableViewer.isCellEditorActive()) {
+                    final ISelection selection = m_tableViewer.getSelection();
+                    m_tableViewer.refresh();
+                    m_tableViewer.setSelection(selection);
+                  }
 
                   break;
                 }
@@ -236,16 +236,18 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
           {
             switch (m_activeViewType) {
               case FLAT: {
-                if (((WorkItemRepositoryEvent) event).getWorkItems() != null) {
-                  for (final WorkItem workItem : ((WorkItemRepositoryEvent) event).getWorkItems()) {
-                    m_tableViewer.update(workItem, new String[] { "begin", "end", "duration", "project", "task",
-                        "comment" });
+                if (!m_tableViewer.isCellEditorActive()) {
+                  if (((WorkItemRepositoryEvent) event).getWorkItems() != null) {
+                    for (final WorkItem workItem : ((WorkItemRepositoryEvent) event).getWorkItems()) {
+                      m_tableViewer.update(workItem, new String[] { "begin", "end", "duration", "project", "task",
+                          "comment" });
+                    }
                   }
-                }
 
-                final ISelection selection = m_tableViewer.getSelection();
-                m_tableViewer.refresh();
-                m_tableViewer.setSelection(selection);
+                  final ISelection selection = m_tableViewer.getSelection();
+                  m_tableViewer.refresh();
+                  m_tableViewer.setSelection(selection);
+                }
                 break;
               }
             }
