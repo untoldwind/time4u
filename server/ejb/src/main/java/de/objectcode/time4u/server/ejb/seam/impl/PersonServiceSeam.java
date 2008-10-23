@@ -56,7 +56,7 @@ public class PersonServiceSeam implements IPersonServiceLocal
   public void initPersons()
   {
     final Query query = m_manager.createQuery("from " + PersonEntity.class.getName()
-        + " p where p.deleted = false order by p.surename asc");
+        + " p where p.deleted = false order by p.surname asc");
 
     m_persons = query.getResultList();
   }
