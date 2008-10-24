@@ -2,6 +2,7 @@ package de.objectcode.time4u.client.store.test;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +28,11 @@ public class HibernateProjectRepositoryTest
   @Test(dataProvider = "rootProjects")
   public void testCreateRoot(final Project project) throws Exception
   {
-    final Project result = repository.getProjectRepository().storeProject(project, true);
+    assertNull(project.getId());
 
-    assertNotNull(result);
-    assertNotNull(result.getId());
+    repository.getProjectRepository().storeProject(project, true);
+
+    assertNotNull(project.getId());
 
     final RepositoryEventCollector collector = HibernateTestRepositoryFactory
         .getEventCollector(RepositoryEventType.PROJECT);
@@ -39,23 +41,24 @@ public class HibernateProjectRepositoryTest
     assertEquals(collector.getEvents().size(), 1);
     collector.clearEvents();
 
-    final Project result2 = repository.getProjectRepository().getProject(result.getId());
+    final Project result2 = repository.getProjectRepository().getProject(project.getId());
 
-    assertEquals(result2.getId(), result.getId());
+    assertEquals(result2.getId(), project.getId());
     assertEquals(result2.getName(), project.getName());
     assertEquals(result2.getDescription(), project.getDescription());
 
-    rootProjects.add(result);
+    rootProjects.add(project);
   }
 
   @Test(dependsOnMethods = "testCreateRoot", dataProvider = "subProjects")
   public void testCreateSub(final Project project) throws Exception
   {
-    final Project result = repository.getProjectRepository().storeProject(project, true);
+    assertNull(project.getId());
 
-    assertNotNull(result);
-    assertNotNull(result.getId());
-    assertNotNull(result.getParentId());
+    repository.getProjectRepository().storeProject(project, true);
+
+    assertNotNull(project.getId());
+    assertNotNull(project.getParentId());
 
     final RepositoryEventCollector collector = HibernateTestRepositoryFactory
         .getEventCollector(RepositoryEventType.PROJECT);
@@ -64,9 +67,9 @@ public class HibernateProjectRepositoryTest
     assertEquals(collector.getEvents().size(), 1);
     collector.clearEvents();
 
-    final Project result2 = repository.getProjectRepository().getProject(result.getId());
+    final Project result2 = repository.getProjectRepository().getProject(project.getId());
 
-    assertEquals(result2.getId(), result.getId());
+    assertEquals(result2.getId(), project.getId());
     assertEquals(result2.getName(), project.getName());
     assertEquals(result2.getDescription(), project.getDescription());
   }

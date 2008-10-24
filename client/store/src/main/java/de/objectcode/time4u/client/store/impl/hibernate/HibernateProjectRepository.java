@@ -43,7 +43,7 @@ public class HibernateProjectRepository implements IProjectRepository
    */
   public Project getProject(final String projectId) throws RepositoryException
   {
-    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Project>() {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<Project>() {
       public Project perform(final Session session)
       {
         final ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, projectId);
@@ -64,7 +64,7 @@ public class HibernateProjectRepository implements IProjectRepository
    */
   public ProjectSummary getProjectSummary(final String projectId) throws RepositoryException
   {
-    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<ProjectSummary>() {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<ProjectSummary>() {
       public ProjectSummary perform(final Session session)
       {
         final ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, projectId);
@@ -85,7 +85,7 @@ public class HibernateProjectRepository implements IProjectRepository
    */
   public List<Project> getProjects(final ProjectFilter filter) throws RepositoryException
   {
-    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<List<Project>>() {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<List<Project>>() {
       public List<Project> perform(final Session session)
       {
         final Criteria criteria = session.createCriteria(ProjectEntity.class);
@@ -144,7 +144,7 @@ public class HibernateProjectRepository implements IProjectRepository
    */
   public List<ProjectSummary> getProjectSumaries(final ProjectFilter filter) throws RepositoryException
   {
-    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<List<ProjectSummary>>() {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<List<ProjectSummary>>() {
       public List<ProjectSummary> perform(final Session session)
       {
         final Criteria criteria = session.createCriteria(ProjectEntity.class);
@@ -200,10 +200,10 @@ public class HibernateProjectRepository implements IProjectRepository
   /**
    * {@inheritDoc}
    */
-  public Project storeProject(final Project project, final boolean modifiedByOwner) throws RepositoryException
+  public void storeProject(final Project project, final boolean modifiedByOwner) throws RepositoryException
   {
-    final Project result = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Project>() {
-      public Project perform(final Session session)
+    m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation() {
+      public void perform(final Session session)
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
         final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PROJECT, null);
@@ -222,17 +222,11 @@ public class HibernateProjectRepository implements IProjectRepository
         session.merge(projectEntity);
         session.flush();
 
-        final Project result = new Project();
-
-        projectEntity.toDTO(result);
-
-        return result;
+        projectEntity.toDTO(project);
       }
     });
 
-    m_repository.fireRepositoryEvent(new ProjectRepositoryEvent(result));
-
-    return result;
+    m_repository.fireRepositoryEvent(new ProjectRepositoryEvent(project));
   }
 
   /**
@@ -240,31 +234,32 @@ public class HibernateProjectRepository implements IProjectRepository
    */
   public void deleteProject(final Project project) throws RepositoryException
   {
-    final Project result = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Project>() {
-      public Project perform(final Session session)
-      {
-        final ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, project.getId());
+    final Project result = m_hibernateTemplate
+        .executeInTransaction(new HibernateTemplate.OperationWithResult<Project>() {
+          public Project perform(final Session session)
+          {
+            final ProjectEntity projectEntity = (ProjectEntity) session.get(ProjectEntity.class, project.getId());
 
-        if (projectEntity == null) {
-          return null;
-        }
+            if (projectEntity == null) {
+              return null;
+            }
 
-        final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
-        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PROJECT, null);
+            final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
+            final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PROJECT, null);
 
-        projectEntity.setDeleted(true);
-        projectEntity.setRevision(revisionLock.getLatestRevision());
-        projectEntity.setLastModifiedByClient(m_repository.getClientId());
+            projectEntity.setDeleted(true);
+            projectEntity.setRevision(revisionLock.getLatestRevision());
+            projectEntity.setLastModifiedByClient(m_repository.getClientId());
 
-        session.flush();
+            session.flush();
 
-        final Project result = new Project();
+            final Project result = new Project();
 
-        projectEntity.toDTO(result);
+            projectEntity.toDTO(result);
 
-        return result;
-      }
-    });
+            return result;
+          }
+        });
 
     if (result != null) {
       m_repository.fireRepositoryEvent(new ProjectRepositoryEvent(result));
@@ -273,7 +268,7 @@ public class HibernateProjectRepository implements IProjectRepository
 
   public List<ProjectSummary> getProjectPath(final String projectId) throws RepositoryException
   {
-    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<List<ProjectSummary>>() {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<List<ProjectSummary>>() {
       public List<ProjectSummary> perform(final Session session)
       {
         final List<ProjectSummary> result = new ArrayList<ProjectSummary>();

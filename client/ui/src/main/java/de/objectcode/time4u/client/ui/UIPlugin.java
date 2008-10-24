@@ -222,7 +222,7 @@ public class UIPlugin extends AbstractUIPlugin
   {
     pushTask(project, task);
 
-    WorkItem workItem = new WorkItem();
+    final WorkItem workItem = new WorkItem();
     final Calendar calendar = Calendar.getInstance();
     final int hour = calendar.get(Calendar.HOUR_OF_DAY);
     final int minute = calendar.get(Calendar.MINUTE);
@@ -236,7 +236,7 @@ public class UIPlugin extends AbstractUIPlugin
     workItem.setComment(comment != null ? comment : "");
 
     try {
-      workItem = RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem);
+      RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem);
       RepositoryFactory.getRepository().getWorkItemRepository().setActiveWorkItem(workItem);
     } catch (final Exception e) {
       log(e);

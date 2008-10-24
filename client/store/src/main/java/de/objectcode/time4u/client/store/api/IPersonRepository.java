@@ -20,6 +20,6 @@ public interface IPersonRepository
    * @return The stored person (including generated id for new persons)
    * @throws RepositoryException
    */
-  Person storePerson(Person person, boolean modifiedByOwner) throws RepositoryException;
+  void storePerson(Person person, boolean modifiedByOwner) throws RepositoryException;
 
 }

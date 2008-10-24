@@ -41,7 +41,7 @@ public class HibernateServerConnectionRepository implements IServerConnectionRep
    */
   public List<ServerConnection> getServerConnections() throws RepositoryException
   {
-    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<List<ServerConnection>>() {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<List<ServerConnection>>() {
       public List<ServerConnection> perform(final Session session)
       {
         final Criteria criteria = session.createCriteria(ServerConnectionEntity.class);
@@ -69,7 +69,7 @@ public class HibernateServerConnectionRepository implements IServerConnectionRep
   public ServerConnection storeServerConnection(final ServerConnection serverConnection) throws RepositoryException
   {
     final ServerConnection result = m_hibernateTemplate
-        .executeInTransaction(new HibernateTemplate.Operation<ServerConnection>() {
+        .executeInTransaction(new HibernateTemplate.OperationWithResult<ServerConnection>() {
           public ServerConnection perform(final Session session)
           {
             ServerConnectionEntity serverConnectionEntity;
@@ -109,7 +109,7 @@ public class HibernateServerConnectionRepository implements IServerConnectionRep
    */
   public void deleteServerConnection(final ServerConnection serverConnection) throws RepositoryException
   {
-    m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Object>() {
+    m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<Object>() {
       public Object perform(final Session session)
       {
         if (serverConnection.getId() >= 0) {
@@ -132,7 +132,7 @@ public class HibernateServerConnectionRepository implements IServerConnectionRep
       throws RepositoryException
   {
     return m_hibernateTemplate
-        .executeInTransaction(new HibernateTemplate.Operation<Map<EntityType, SynchronizationStatus>>() {
+        .executeInTransaction(new HibernateTemplate.OperationWithResult<Map<EntityType, SynchronizationStatus>>() {
           public Map<EntityType, SynchronizationStatus> perform(final Session session)
           {
             final Criteria criteria = session.createCriteria(SynchronizationStatusEntity.class);
@@ -171,7 +171,7 @@ public class HibernateServerConnectionRepository implements IServerConnectionRep
   public void storeSynchronizationStatus(final long serverConnectionId,
       final SynchronizationStatus synchronizationStatus) throws RepositoryException
   {
-    m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Object>() {
+    m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<Object>() {
       public Object perform(final Session session)
       {
         final Criteria criteria = session.createCriteria(SynchronizationStatusEntity.class);

@@ -68,7 +68,7 @@ public interface ITaskRepository
    * @throws RepositoryException
    *           on error
    */
-  Task storeTask(Task task, boolean modifiedByOwner) throws RepositoryException;
+  void storeTask(Task task, boolean modifiedByOwner) throws RepositoryException;
 
   /**
    * Store a collection of tasks at once. Only one revision number is generated for this oeration.
@@ -79,7 +79,7 @@ public interface ITaskRepository
    * @throws RepositoryException
    *           on error
    */
-  List<Task> storeTasks(List<Task> tasks, boolean modifiedByOwner) throws RepositoryException;
+  void storeTasks(List<Task> tasks, boolean modifiedByOwner) throws RepositoryException;
 
   void deleteTask(Task task) throws RepositoryException;
 }

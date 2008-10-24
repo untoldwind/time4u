@@ -30,13 +30,43 @@ public class HibernateTemplate
   /**
    * Execute a database operation in its own transaction.
    * 
+   * @param operation
+   *          The operation to be executed
+   */
+  public void executeInTransaction(final Operation operation) throws RepositoryException
+  {
+    Transaction trx = null;
+    Session session = null;
+    try {
+      session = m_sessionFactory.openSession();
+      trx = session.beginTransaction();
+
+      operation.perform(session);
+
+      trx.commit();
+    } catch (final Exception e) {
+      //      StorePlugin.getDefault().log(e);
+      throw new RepositoryException(e);
+    } finally {
+      if (trx != null && trx.isActive()) {
+        trx.rollback();
+      }
+      if (session != null) {
+        session.close();
+      }
+    }
+  }
+
+  /**
+   * Execute a database operation in its own transaction.
+   * 
    * @param <T>
    *          The result class
    * @param operation
    *          The operation to be executed
    * @return The result of <tt>operation<tt>
    */
-  public <T> T executeInTransaction(final Operation<T> operation) throws RepositoryException
+  public <T> T executeInTransaction(final OperationWithResult<T> operation) throws RepositoryException
   {
     Transaction trx = null;
     Session session = null;
@@ -64,13 +94,21 @@ public class HibernateTemplate
 
   /**
    * A generic database operation.
+   */
+  public interface Operation
+  {
+    void perform(Session session);
+  }
+
+  /**
+   * A generic database operation with result.
    * 
    * @author junglas
    * 
    * @param <T>
    *          The result class
    */
-  public interface Operation<T>
+  public interface OperationWithResult<T>
   {
     T perform(Session session);
   }

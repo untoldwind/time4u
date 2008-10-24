@@ -29,7 +29,7 @@ public class HibernateStatisticRepository extends BaseStatisticRepository
   protected void iterateWorkItems(final Date from, final Date until, final IStatisticCollector collector)
       throws RepositoryException
   {
-    m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Object>() {
+    m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<Object>() {
       public Object perform(final Session session)
       {
         final Criteria criteria = session.createCriteria(WorkItemEntity.class);

@@ -31,10 +31,10 @@ public class HibernatePersonRepository implements IPersonRepository
   /**
    * {@inheritDoc}
    */
-  public Person storePerson(final Person person, final boolean modifiedByOwner) throws RepositoryException
+  public void storePerson(final Person person, final boolean modifiedByOwner) throws RepositoryException
   {
-    final Person result = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Person>() {
-      public Person perform(final Session session)
+    m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation() {
+      public void perform(final Session session)
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
         final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.PERSON, null);
@@ -53,16 +53,10 @@ public class HibernatePersonRepository implements IPersonRepository
         session.merge(personEntity);
         session.flush();
 
-        final Person result = new Person();
-
-        personEntity.toDTO(result);
-
-        return result;
+        personEntity.toDTO(person);
       }
     });
 
-    m_repository.fireRepositoryEvent(new PersonRepositoryEvent(result));
-
-    return result;
+    m_repository.fireRepositoryEvent(new PersonRepositoryEvent(person));
   }
 }

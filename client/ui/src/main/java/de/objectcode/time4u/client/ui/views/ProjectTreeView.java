@@ -65,6 +65,8 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
     menuMgr.add(new Separator());
     menuMgr.add(new GroupMarker("objectGroup"));
     menuMgr.add(new Separator());
+    menuMgr.add(new GroupMarker("deleteGroup"));
+    menuMgr.add(new Separator());
     menuMgr.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
 
     final Menu menu = menuMgr.createContextMenu(m_viewer.getControl());

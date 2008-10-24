@@ -43,7 +43,7 @@ public class HibernateTaskRepository implements ITaskRepository
    */
   public Task getTask(final String taskId) throws RepositoryException
   {
-    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Task>() {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<Task>() {
       public Task perform(final Session session)
       {
         final TaskEntity taskEntity = (TaskEntity) session.get(TaskEntity.class, taskId);
@@ -64,7 +64,7 @@ public class HibernateTaskRepository implements ITaskRepository
    */
   public TaskSummary getTaskSummary(final String taskId) throws RepositoryException
   {
-    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<TaskSummary>() {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<TaskSummary>() {
       public TaskSummary perform(final Session session)
       {
         final TaskEntity taskEntity = (TaskEntity) session.get(TaskEntity.class, taskId);
@@ -85,7 +85,7 @@ public class HibernateTaskRepository implements ITaskRepository
    */
   public List<Task> getTasks(final TaskFilter filter) throws RepositoryException
   {
-    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<List<Task>>() {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<List<Task>>() {
       public List<Task> perform(final Session session)
       {
         final Criteria criteria = session.createCriteria(TaskEntity.class);
@@ -139,7 +139,7 @@ public class HibernateTaskRepository implements ITaskRepository
    */
   public List<TaskSummary> getTaskSummaries(final TaskFilter filter) throws RepositoryException
   {
-    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<List<TaskSummary>>() {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<List<TaskSummary>>() {
       public List<TaskSummary> perform(final Session session)
       {
         final Criteria criteria = session.createCriteria(TaskEntity.class);
@@ -191,10 +191,10 @@ public class HibernateTaskRepository implements ITaskRepository
   /**
    * {@inheritDoc}
    */
-  public Task storeTask(final Task task, final boolean modifiedByOwner) throws RepositoryException
+  public void storeTask(final Task task, final boolean modifiedByOwner) throws RepositoryException
   {
-    final Task result = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Task>() {
-      public Task perform(final Session session)
+    m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation() {
+      public void perform(final Session session)
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
 
@@ -217,32 +217,25 @@ public class HibernateTaskRepository implements ITaskRepository
         session.merge(taskEntity);
         session.flush();
 
-        final Task result = new Task();
-
-        taskEntity.toDTO(result);
-
-        return result;
+        taskEntity.toDTO(task);
       }
     });
 
-    m_repository.fireRepositoryEvent(new TaskRepositoryEvent(result));
-
-    return result;
+    m_repository.fireRepositoryEvent(new TaskRepositoryEvent(task));
   }
 
   /**
    * {@inheritDoc}
    */
-  public List<Task> storeTasks(final List<Task> tasks, final boolean modifiedByOwner) throws RepositoryException
+  public void storeTasks(final List<Task> tasks, final boolean modifiedByOwner) throws RepositoryException
   {
-    final List<Task> result = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<List<Task>>() {
-      public List<Task> perform(final Session session)
+    m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation() {
+      public void perform(final Session session)
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
 
         final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.TASK, null);
 
-        final List<Task> results = new ArrayList<Task>();
         for (final Task task : tasks) {
           if (task.getId() == null) {
             task.setId(m_repository.generateLocalId(EntityType.TASK));
@@ -261,18 +254,12 @@ public class HibernateTaskRepository implements ITaskRepository
           session.merge(taskEntity);
           session.flush();
 
-          final Task result = new Task();
-          taskEntity.toDTO(result);
-          results.add(result);
+          taskEntity.toDTO(task);
         }
-
-        return results;
       }
     });
 
-    m_repository.fireRepositoryEvent(new TaskRepositoryEvent(result));
-
-    return result;
+    m_repository.fireRepositoryEvent(new TaskRepositoryEvent(tasks));
   }
 
   /**
@@ -280,7 +267,7 @@ public class HibernateTaskRepository implements ITaskRepository
    */
   public void deleteTask(final Task task) throws RepositoryException
   {
-    final Task result = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Task>() {
+    final Task result = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<Task>() {
       public Task perform(final Session session)
       {
         final TaskEntity taskEntity = (TaskEntity) session.get(TaskEntity.class, task.getId());

@@ -170,7 +170,7 @@
                icon="icons/DeleteProject.gif"
                id="de.objectcode.time4u.client.ui.project.delete"
                label="%action.project.delete.label"
-               menubarPath="additions"
+               menubarPath="deleteGroup"
                tooltip="%action.project.delete.tooltip">
          </action>
       </viewerContribution>
@@ -184,6 +184,15 @@
                label="%action.project.new.label"
                menubarPath="newGroup"
                tooltip="%action.project.new.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"
+               id="de.objectcode.time4u.client.ui.project.onlyActive"
+               label="%action.project.onlyActive.label"
+               menubarPath="additions"
+               state="false"
+               style="toggle"
+               tooltip="%action.project.onlyActive.tooltip">
          </action>
       </viewerContribution>
       <viewerContribution
@@ -213,7 +222,7 @@
                icon="icons/DeleteTask.gif"
                id="de.objectcode.time4u.client.ui.task.delete"
                label="%action.task.delete.label"
-               menubarPath="additions"
+               menubarPath="deleteGroup"
                tooltip="%action.task.delete.tooltip">
          </action>
       </viewerContribution>
@@ -238,6 +247,19 @@
                label="%action.task.new.label"
                menubarPath="newGroup"
                tooltip="%action.task.new.tooltip">
+         </action>
+      </viewerContribution>
+      <viewerContribution
+            id="de.objectcode.client.ui.view.taskListContribution3"
+            targetID="de.objectcode.time4u.client.ui.view.taskList">
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TaskActionDelegate"
+               id="de.objectcode.time4u.client.task.ui.onlyActive"
+               label="%action.task.onlyActive.label"
+               menubarPath="additions"
+               state="false"
+               style="toggle"
+               tooltip="%action.task.onlyActive.tooltip">
          </action>
       </viewerContribution>
       <viewerContribution
@@ -427,6 +449,15 @@
          </menu>
          <action
                class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"
+               id="de.objectcode.time4u.client.ui.project.onlyActive"
+               label="%action.project.onlyActive.label"
+               menubarPath="projectMenu/projectGroup"
+               state="false"
+               style="toggle"
+               tooltip="%action.project.onlyActive.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"
                icon="icons/DeleteProject.gif"
                id="de.objectcode.time4u.client.ui.project.delete"
                label="%action.project.delete.label"
@@ -477,6 +508,15 @@
                style="push"
                toolbarPath="project/additions"
                tooltip="%action.project.new.tooltip"/>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TaskActionDelegate"
+               id="de.objectcode.time4u.client.task.ui.onlyActive"
+               label="%action.task.onlyActive.label"
+               menubarPath="projectMenu/taskGroup"
+               state="false"
+               style="toggle"
+               tooltip="%action.task.onlyActive.tooltip">
+         </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.TaskActionDelegate"
                icon="icons/DeleteTask.gif"

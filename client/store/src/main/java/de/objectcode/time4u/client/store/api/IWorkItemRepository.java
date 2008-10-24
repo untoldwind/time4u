@@ -77,7 +77,7 @@ public interface IWorkItemRepository
    * @throws RepositoryException
    *           on error
    */
-  WorkItem storeWorkItem(WorkItem workItem) throws RepositoryException;
+  void storeWorkItem(WorkItem workItem) throws RepositoryException;
 
   /**
    * Delete a single workitem.

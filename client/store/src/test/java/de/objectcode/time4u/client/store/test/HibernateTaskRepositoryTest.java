@@ -2,6 +2,7 @@ package de.objectcode.time4u.client.store.test;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 
 import java.util.List;
 
@@ -32,10 +33,11 @@ public class HibernateTaskRepositoryTest
   @Test(dataProvider = "tasks")
   public void testCreate(final Task task) throws Exception
   {
-    final Task result = repository.getTaskRepository().storeTask(task, true);
+    assertNull(task.getId());
 
-    assertNotNull(result);
-    assertNotNull(result.getId());
+    repository.getTaskRepository().storeTask(task, true);
+
+    assertNotNull(task.getId());
 
     final RepositoryEventCollector collector = HibernateTestRepositoryFactory
         .getEventCollector(RepositoryEventType.TASK);
@@ -44,9 +46,9 @@ public class HibernateTaskRepositoryTest
     assertEquals(collector.getEvents().size(), 1);
     collector.clearEvents();
 
-    final Task result2 = repository.getTaskRepository().getTask(result.getId());
+    final Task result2 = repository.getTaskRepository().getTask(task.getId());
 
-    assertEquals(result2.getId(), result.getId());
+    assertEquals(result2.getId(), task.getId());
     assertEquals(result2.getName(), task.getName());
     assertEquals(result2.getDescription(), task.getDescription());
     assertEquals(result2.getProjectId(), task.getProjectId());

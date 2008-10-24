@@ -213,7 +213,7 @@ public class HibernateRepository implements IRepository
       return;
     }
 
-    m_owner = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Person>() {
+    m_owner = m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<Person>() {
       public Person perform(final Session session)
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
@@ -263,7 +263,7 @@ public class HibernateRepository implements IRepository
 
   public Map<EntityType, Long> getRevisionStatus() throws RepositoryException
   {
-    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Map<EntityType, Long>>() {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<Map<EntityType, Long>>() {
       public Map<EntityType, Long> perform(final Session session)
       {
         final Criteria criteria = session.createCriteria(RevisionEntity.class);
@@ -308,7 +308,7 @@ public class HibernateRepository implements IRepository
 
   private void initialize() throws RepositoryException
   {
-    m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation<Object>() {
+    m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<Object>() {
       public Object perform(final Session session)
       {
         ClientDataEntity clientData = (ClientDataEntity) session.get(ClientDataEntity.class, 1);

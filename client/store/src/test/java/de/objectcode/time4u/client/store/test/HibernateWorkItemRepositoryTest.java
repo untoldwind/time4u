@@ -35,10 +35,11 @@ public class HibernateWorkItemRepositoryTest
   @Test(dataProvider = "workitems")
   public void testCreate(final WorkItem workItem) throws Exception
   {
-    final WorkItem result = repository.getWorkItemRepository().storeWorkItem(workItem);
+    assertNull(workItem.getId());
 
-    assertNotNull(result);
-    assertNotNull(result.getId());
+    repository.getWorkItemRepository().storeWorkItem(workItem);
+
+    assertNotNull(workItem.getId());
 
     RepositoryEventCollector collector = HibernateTestRepositoryFactory.getEventCollector(RepositoryEventType.WORKITEM);
 
