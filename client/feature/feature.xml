@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.objectcode.time4u.client.feature"
+      label="Time4U feature"
+      version="0.9.3"
+      provider-name="objectcode.de"
+      plugin="de.objectcode.time4u.client.ui">
+
+   <description url="http://time4u.sourceforge.net">
+      Time4U client feature
+   </description>
+
+   <copyright url="http://www.opensource.org/licenses/mit-license.php">
+      MIT license
+   </copyright>
+
+   <license url="http://www.opensource.org/licenses/mit-license.php">
+      MIT license
+   </license>
+
+   <plugin
+         id="de.objectcode.time4u.client.connection"
+         download-size="0"
+         install-size="0"
+         version="0.9.3"
+         unpack="false"/>
+
+   <plugin
+         id="de.objectcode.time4u.client.store"
+         download-size="0"
+         install-size="0"
+         version="0.9.3"
+         unpack="false"/>
+
+   <plugin
+         id="de.objectcode.time4u.client.ui"
+         download-size="0"
+         install-size="0"
+         version="0.9.3"
+         unpack="false"/>
+
+   <plugin
+         id="de.objectcode.time4u.client.connection.ui"
+         download-size="0"
+         install-size="0"
+         version="0.9.3"
+         unpack="false"/>
+
+</feature>

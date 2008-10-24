@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Time4U ui plugin
+Bundle-SymbolicName: de.objectcode.time4u.client.ui;singleton:=true
+Bundle-Version: 0.9.3
+Bundle-Activator: de.objectcode.time4u.client.ui.UIPlugin
+Bundle-Vendor: objectcode.de
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ de.objectcode.time4u.client.store
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
+Bundle-Localization: plugin

@@ -1,0 +1,96 @@
+   -----------------------------------
+   Win32 Developer Step-by-Step Guide
+   -----------------------------------
+   junglas
+   -----------------------------------
+
+Win32 Developer Step-by-Step Guide
+
+* Introduction
+
+ This is only supposed to work if you <<really>> follow this guide step-by-step.
+
+ I will not accept any bug-reports with "I skipped this and that, because I consider that useless/I don't like it/I'm used to do it differently/I can't read/..."
+
+* Prelimaries
+
+ * Install subversion command-line client from [[http://subversion.tigris.org/getting.html#windows|subversion.tigris.org]] (in case of doubt pick Tigris Apache 2.0 and the en-us.msi installer)
+
+ * Install Java SDK 1.5.0 from {{{http://java.sun.com/javase/downloads/index_jdk5.jsp|java.sun.com}}}
+
+ * Download Eclipse for RCP/Plugin-in Developers from {{{http://www.eclipse.org/downloads/|www.eclipse.org}}} (ensure that it is the eclipse-rcp-ganymede-SR1-win32.zip) and unpack it somewhere (e.g. C:\java\eclipse)
+
+ * Download Maven 2.0.9 from {{{http://maven.apache.org/download.html|maven.apache.org}}} (e.g. C:\java\apache-maven-2.0.9)
+
+ * Test prelimaries
+
+  Set User Environment Variables in Windows System Preferences/System:
+
+---
+JAVA_HOME=C:\Programme\Java\jdk1.5.0_16
+PATH=%JAVA_HOME%\bin;%PATH%;C:\java\apache-maven-2.0.9\bin
+---
+
+  Open a command line to test all prelimaries:
+
+---
+>java -version
+java version "1.5.0_16"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.5.0_16-b02)
+Java HotSpot(TM) Client VM (build 1.5.0_16-b02, mixed mode, sharing)[[code]]
+
+>svn --version
+svn, Version 1.5.1 (r32289)
+   .... blahblah ...
+
+>mvn -version
+Maven version: 2.0.9
+Java version: 1.5.0_16
+OS name: "windows xp" version: "5.1" arch: "x86" Family: "windows"
+---
+
+* Getting started with Maven
+
+ Create a workspace-directory and check-out time4u from sourceforge:
+
+---
+>cd C:\java
+>mkdir workspace
+>cd workspace
+>svn co https://time4u.svn.sourceforge.net/svnroot/time4u/overhaul/trunk time4u
+---
+
+ Ensure that you have an internet connection (especially to repo1.maven.org,repository.jboss.org and download.java.net).
+Import all eclipse-plugins to local maven repository:
+
+---
+>cd time4u
+>mvn -DstripQualifier=true eclipse:to-maven
+---
+
+ When prompted enter the directory you have extracted eclipse to (e.g. C:\java\eclipse).
+
+ Do an intial build:
+
+---
+>mvn clean install
+---
+
+ This should finish with no errors.
+You now already have a client for your operating system in assemblies/client-win32/target.
+
+* Getting started with Eclipse
+
+ * Fire up eclipse and choose C:\java\workspace as your workspace directory (eclipse should consider this empty)
+ 
+ * Use this moment to install some helpful eclipse plugins. Select "Help/Software Updates ..." then switch to "Available Software" and use "Add Site...":
+ 
+   * M2Eclipse (http://m2eclipse.sonatype.org/update might become http://m2eclipse.codehaus.org/update in near future). Install the "Maven Integration" part
+   
+   * Subclipse ({{{http://subclipse.tigris.org/update_1.4.x}http://subclipse.tigris.org/update_1.4.x}}). Pick the "Subclipse" and "SVNKit Adapter" parts
+   
+ * After restarting Eclipse use "File/Import..." and select "General/Existing Projects into Workspace". The root directory will be "C:\java\workspace\time4u" (Eclipse will only find one project, that's ok).
+ 
+ * Repeat the step above with root directory "C:\java\workspace\time4u\client" (Eclipse will now find all client projects)
+ 
+ * Repeat the step above with root directory "C:\java\workspace\time4u\server" (Eclipse will now find all server projects)

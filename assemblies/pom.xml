@@ -1,0 +1,20 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+	<groupId>de.objectcode.time4u</groupId>
+	<artifactId>time4u</artifactId>
+	<version>0.9.3-SNAPSHOT</version>
+    <relativePath>..</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>de.objectcode.time4u.assemblies</groupId>
+  <artifactId>assemblies</artifactId>
+  <name>time4u-assemblies</name>
+  <packaging>pom</packaging>
+  <modules>
+  	<module>server-ear</module>
+  	<module>server-deploy</module>
+  	<module>client-mac</module>
+  	<module>client-win32</module>
+  	<module>client-linux-x86_64</module>
+  </modules>
+</project>

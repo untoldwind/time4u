@@ -1,0 +1,81 @@
+<definitions name='LoginServiceWSService' targetNamespace='http://objectcode.de/time4u/api/ws'
+	xmlns='http://schemas.xmlsoap.org/wsdl/' xmlns:ns1='http://objectcode.de/time4u/api/data'
+	xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' xmlns:tns='http://objectcode.de/time4u/api/ws'
+	xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+	<types>
+		<xs:schema targetNamespace='http://objectcode.de/time4u/api/data'
+			version='1.0' xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+			<xs:complexType name='registration-info'>
+				<xs:sequence>
+					<xs:element name='clientId' type='xs:long' />
+					<xs:element minOccurs='0' name='email' type='xs:string' />
+					<xs:element minOccurs='0' name='givenName' type='xs:string' />
+					<xs:element minOccurs='0' name='hashedPassword' type='xs:string' />
+
+					<xs:element minOccurs='0' name='personId' type='xs:string' />
+					<xs:element minOccurs='0' name='surname' type='xs:string' />
+					<xs:element minOccurs='0' name='userId' type='xs:string' />
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</types>
+	<message name='ILoginService_registerLogin'>
+		<part name='arg0' type='ns1:registration-info'></part>
+
+	</message>
+	<message name='ILoginService_checkLoginResponse'>
+		<part name='return' type='xsd:boolean'></part>
+	</message>
+	<message name='ILoginService_checkLogin'>
+		<part name='arg0' type='xsd:string'></part>
+	</message>
+	<message name='ILoginService_registerLoginResponse'>
+		<part name='return' type='xsd:boolean'></part>
+
+	</message>
+	<portType name='ILoginService'>
+		<operation name='checkLogin' parameterOrder='arg0'>
+			<input message='tns:ILoginService_checkLogin'></input>
+			<output message='tns:ILoginService_checkLoginResponse'></output>
+		</operation>
+		<operation name='registerLogin' parameterOrder='arg0'>
+			<input message='tns:ILoginService_registerLogin'></input>
+			<output message='tns:ILoginService_registerLoginResponse'></output>
+
+		</operation>
+	</portType>
+	<binding name='ILoginServiceBinding' type='tns:ILoginService'>
+		<soap:binding style='rpc'
+			transport='http://schemas.xmlsoap.org/soap/http' />
+		<operation name='checkLogin'>
+			<soap:operation soapAction='' />
+			<input>
+				<soap:body namespace='http://objectcode.de/time4u/api/ws'
+					use='literal' />
+			</input>
+
+			<output>
+				<soap:body namespace='http://objectcode.de/time4u/api/ws'
+					use='literal' />
+			</output>
+		</operation>
+		<operation name='registerLogin'>
+			<soap:operation soapAction='' />
+			<input>
+				<soap:body namespace='http://objectcode.de/time4u/api/ws'
+					use='literal' />
+			</input>
+
+			<output>
+				<soap:body namespace='http://objectcode.de/time4u/api/ws'
+					use='literal' />
+			</output>
+		</operation>
+	</binding>
+	<service name='LoginServiceWSService'>
+		<port binding='tns:ILoginServiceBinding' name='LoginServiceWSPort'>
+			<soap:address location='http://127.0.0.1:8080/time4u-ws/LoginService' />
+		</port>
+
+	</service>
+</definitions>

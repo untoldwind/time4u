@@ -1,0 +1,63 @@
+<project name="Deploy time4u server" default="usage" basedir=".">
+	<description>
+		${ant.project.name}
+		${line.separator}
+	</description>
+
+	<property file="build.properties" />
+
+	<target name="checkprereq.check">
+		<condition property="prereq.ok">
+			<and>
+				<available file="./build.properties" />
+				<isset property="db.engine" />
+				<isset property="jboss.home" />
+				<isset property="jboss.config" />
+				<available file="${jboss.home}/bin/run.sh" />
+			</and>
+		</condition>
+	</target>
+
+	<target name="checkprereq" depends="checkprereq.check" unless="prereq.ok">
+		<fail message="Please set properties in build.properties" />
+	</target>
+
+	<target name="prepare" depends="checkprereq" description="Prepare a JBoss for Time4U">
+		<mkdir dir="${jboss.home}/server/${jboss.config}" />
+		<copy todir="${jboss.home}/server/${jboss.config}">
+			<fileset dir="${jboss.home}/server/messaging" />
+		</copy>
+		<copy todir="${jboss.home}/server/${jboss.config}/lib">
+			<fileset dir="db/${db.engine}/driver" />
+		</copy>
+		<copy todir="${jboss.home}/server/${jboss.config}/conf">
+			<fileset dir="db/${db.engine}" includes="*.cfg.xml" />
+		</copy>
+		<copy todir="${jboss.home}/server/${jboss.config}/deploy">
+			<fileset dir="db/${db.engine}" includes="*-ds.xml" />
+			<filterset>
+				<filter token="db.host" value="${db.host}" />
+				<filter token="db.name" value="${db.name}" />
+				<filter token="db.user" value="${db.user}" />
+				<filter token="db.password" value="${db.password}" />
+			</filterset>
+		</copy>
+		<delete file="${jboss.home}/server/${jboss.config}/deploy/jboss-messaging.sar/hsqldb-persistence-service.xml"/>
+		<copy todir="${jboss.home}/server/${jboss.config}/deploy/jboss-messaging.sar">
+			<fileset dir="db/${db.engine}" includes="*-persistence-service.xml"/>
+		</copy>
+		<copy todir="${jboss.home}/bin">
+			<fileset dir="." includes="run-time4u.conf"/>
+		</copy>
+	</target>
+
+	<target name="deploy" depends="checkprereq" description="Deploy Time4U server">
+		<copy todir="${jboss.home}/server/${jboss.config}/deploy">
+			<fileset dir="ear"/>
+		</copy>
+	</target>
+
+	<target name="usage">
+		<echo message="Use either: ant prepre, ant deploy or ant undeploy" />
+	</target>
+</project>

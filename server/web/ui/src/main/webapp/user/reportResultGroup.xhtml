@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core" xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:repeat value="#{report.rows}" var="row" rendered="#{!report.hasGroups}">
+		<tr class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
+			<ui:fragment rendered="#{row.index == 0}">
+				<td colspan="#{depth}" class="report" rowspan="#{report.rows.size()}" />
+			</ui:fragment>
+			<ui:repeat value="#{report.columns}" var="column">
+				<td
+					class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'} report#{column.columnType}">
+					<h:outputText value="#{row.data[column.index]}"
+						converter="#{user.reportConverters.get(column.columnType)}" />
+				</td>
+			</ui:repeat>
+		</tr>
+	</ui:repeat>
+	<c:if test="#{depth &lt; user.reportResult.groupByColumns.size()}">
+		<ui:repeat value="#{report.groups}" var="group"
+			rendered="#{report.hasGroups}">
+			<tr class="report">
+				<td colspan="#{depth}" class="report"/>
+				<td class="report reportGroupHeader">
+					<h:outputText value="#{group.label}"
+						converter="#{user.reportConverters.get(report.groupByColumns[0].columnType)}" />
+				</td>
+				<td class="report reportGroupHeader"
+					colspan="#{report.columns.size() + depth - 1}">
+				</td>
+			</tr>
+			<ui:include src="reportResultGroup.xhtml">
+				<ui:param name="report" value="#{group}" />
+				<ui:param name="depth" value="#{depth + 1}" />
+			</ui:include>
+		</ui:repeat>
+	</c:if>
+</ui:composition>

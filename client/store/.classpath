@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="lib" path="target/dependency/streambuffer.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/stax-ex.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/stax-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/sjsxp.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/saaj-impl.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/saaj-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/resolver.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/jaxws-rt.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/jaxws-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/activation.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/jaxb-impl.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/jsr181-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/jaxb-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/jta.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/commons-collections.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/persistence-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/commons-logging.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/asm-attrs.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/asm.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/cglib.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/dom4j.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/hibernate-annotations.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/hibernate.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/time4u-server-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/time4u-server-entities.jar"/>
+	<classpathentry exported="true" kind="lib" path="target/dependency/derby.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="lib" path="target/dependency/testng-jdk15.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workitem-report xmlns="http://objectcode.de/time4u/ejb/seam/report"
+	xmlns:filter="http://objectcode.de/time4u/ejb/seam/filter" name="workitem-month-ofperson">
+	<description>Workitem month report of person</description>
+	<filter:and>
+		<filter:parameter-ref parameter="month" />
+		<filter:parameter-ref parameter="person" />
+	</filter:and>
+	<parameters>
+		<parameter type="MONTH" name="month" label="Month"/>
+		<parameter type="PERSON" name="person" label="Person"/>
+	</parameters>
+	<group-bys />
+	<projections>
+		<person>NAME</person>
+		<dayinfo>DATE</dayinfo>
+		<project>PATH</project>
+		<task>NAME</task>
+		<workitem>BEGIN</workitem>
+		<workitem>END</workitem>
+		<workitem>DURATION</workitem>
+		<workitem>COMMENT</workitem>
+	</projections>
+</workitem-report>

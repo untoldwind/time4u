@@ -1,0 +1,78 @@
+<definitions name='PersonServiceWSService' targetNamespace='http://objectcode.de/time4u/api/ws' xmlns='http://schemas.xmlsoap.org/wsdl/' xmlns:ns1='http://objectcode.de/time4u/api/data' xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' xmlns:tns='http://objectcode.de/time4u/api/ws' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+ <types>
+  <xs:schema targetNamespace='http://objectcode.de/time4u/api/data' version='1.0' xmlns:tns='http://objectcode.de/time4u/api/data' xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+   <xs:element name='person' type='tns:person'/>
+   <xs:complexType name='person'>
+    <xs:complexContent>
+     <xs:extension base='tns:person-summary'>
+      <xs:sequence/>
+     </xs:extension>
+
+    </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name='person-summary'>
+    <xs:sequence/>
+    <xs:attribute name='deleted' type='xs:boolean' use='required'/>
+    <xs:attribute name='email' type='xs:string'/>
+    <xs:attribute name='givenName' type='xs:string'/>
+    <xs:attribute name='id' type='xs:string'/>
+    <xs:attribute name='lastModifiedByClient' type='xs:long' use='required'/>
+
+    <xs:attribute name='lastSynchronize' type='xs:dateTime'/>
+    <xs:attribute name='revision' type='xs:long' use='required'/>
+    <xs:attribute name='surname' type='xs:string'/>
+   </xs:complexType>
+  </xs:schema>
+ </types>
+ <message name='IPersonService_registerClientResponse'>
+  <part name='return' type='xsd:boolean'></part>
+ </message>
+
+ <message name='IPersonService_registerClient'>
+  <part name='arg0' type='xsd:long'></part>
+ </message>
+ <message name='IPersonService_getSelf'></message>
+ <message name='IPersonService_getSelfResponse'>
+  <part name='return' type='ns1:person'></part>
+ </message>
+ <portType name='IPersonService'>
+  <operation name='getSelf'>
+
+   <input message='tns:IPersonService_getSelf'></input>
+   <output message='tns:IPersonService_getSelfResponse'></output>
+  </operation>
+  <operation name='registerClient' parameterOrder='arg0'>
+   <input message='tns:IPersonService_registerClient'></input>
+   <output message='tns:IPersonService_registerClientResponse'></output>
+  </operation>
+ </portType>
+ <binding name='IPersonServiceBinding' type='tns:IPersonService'>
+
+  <soap:binding style='rpc' transport='http://schemas.xmlsoap.org/soap/http'/>
+  <operation name='getSelf'>
+   <soap:operation soapAction=''/>
+   <input>
+    <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
+   </input>
+   <output>
+    <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
+   </output>
+
+  </operation>
+  <operation name='registerClient'>
+   <soap:operation soapAction=''/>
+   <input>
+    <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
+   </input>
+   <output>
+    <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
+   </output>
+
+  </operation>
+ </binding>
+ <service name='PersonServiceWSService'>
+  <port binding='tns:IPersonServiceBinding' name='PersonServiceWSPort'>
+   <soap:address location='http://127.0.0.1:8080/time4u-ws/secure/PersonService'/>
+  </port>
+ </service>
+</definitions>

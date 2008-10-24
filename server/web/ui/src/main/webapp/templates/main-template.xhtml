@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+	template="template.xhtml">
+
+	<ui:define name="content">
+		<a4j:form>
+			<h:panelGrid id="grid" columns="3" cellspacing="4">
+				<rich:dropDownMenu value="Time4U">
+					<rich:menuItem submitMode="ajax" value="Overview" action="/user/main.xhtml"/>
+					<rich:menuItem submitMode="ajax" value="Change password" action="#{user.changePasswordController.enter}"/>
+					<rich:menuItem submitMode="ajax" value="Logout"
+						action="#{identity.logout}" />
+				</rich:dropDownMenu>
+
+				<rich:dropDownMenu value="Report" rendered="#{s:hasRole('user')}">
+					<rich:menuItem submitMode="ajax" value="Workitem month"
+						action="#{user.reportController.enter('workitem-month-flat')}" rendered="#{s:hasRole('user')}" />
+					<rich:menuItem submitMode="ajax" value="Workitem month by person"
+						action="#{user.reportController.enter('workitem-month-byperson')}" rendered="#{s:hasRole('user')}" />
+					<rich:menuItem submitMode="ajax" value="Workitem month by date/person"
+						action="#{user.reportController.enter('workitem-month-bydateperson')}" rendered="#{s:hasRole('user')}" />
+					<rich:menuItem submitMode="ajax" value="Workitem month of person"
+						action="#{user.reportController.enter('workitem-month-ofperson')}" rendered="#{s:hasRole('user')}" />
+					<rich:menuItem submitMode="ajax" value="Dayinfo month"
+						action="#{user.reportController.enter('dayinfo-month-flat')}" rendered="#{s:hasRole('user')}" />
+					<rich:menuItem submitMode="ajax" value="Dayinfo month by person"
+						action="#{user.reportController.enter('dayinfo-month-byperson')}" rendered="#{s:hasRole('user')}" />
+
+					<rich:menuItem submitMode="ajax" value="Workitem week"
+						action="#{user.reportController.enter('workitem-week-flat')}" rendered="#{s:hasRole('user')}" />
+				</rich:dropDownMenu>
+
+				<rich:dropDownMenu value="Admin" rendered="#{s:hasRole('admin')}">
+					<rich:menuItem submitMode="ajax" value="Accounts"
+						action="#{admin.accountListController.enter}" rendered="#{s:hasRole('admin')}" />
+
+					<rich:menuItem submitMode="ajax" value="Teams"
+						action="#{admin.teamListController.enter}" rendered="#{s:hasRole('admin')}" />
+
+					<rich:menuItem submitMode="ajax" value="Day tags"
+						action="#{admin.dayTagListController.enter}" rendered="#{s:hasRole('admin')}" />
+				</rich:dropDownMenu>
+			</h:panelGrid>
+		</a4j:form>
+		<ui:insert name="contentDetail" />
+	</ui:define>
+</ui:composition>

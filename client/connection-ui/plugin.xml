@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="de.objectcode.time4u.ui.client.connection.ui.serverActionSet"
+            label="Service Connection ActionSet"
+            visible="true">
+         <menu
+               id="serverMenu"
+               label="%menu.server.label"
+               path="connectionAdditions">
+            <groupMarker
+                  name="newServerGroup">
+            </groupMarker>
+            <separator
+                  name="time4u-client-connection-ui.separator1">
+            </separator>
+            <groupMarker
+                  name="serverGroup">
+            </groupMarker>
+            <separator
+                  name="time4u-client-connection-ui.separator2">
+            </separator>
+            <groupMarker
+                  name="viewGroup">
+            </groupMarker>
+         </menu>
+         <action
+               class="de.objectcode.time4u.client.connection.ui.actions.ConnectionActionDelegate"
+               id="de.objectcode.time4u.client.connection.new"
+               label="%action.connection.new.label"
+               menubarPath="serverMenu/newServerGroup"
+               style="push"
+               tooltip="%action.connection.new.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.connection.ui.actions.ConnectionActionDelegate"
+               id="de.objectcode.time4u.client.connection.manage"
+               label="%action.connection.manage.label"
+               menubarPath="serverMenu/serverGroup"
+               style="push"
+               tooltip="%action.connection.manage.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.connection.ui.actions.ConnectionActionDelegate"
+               id="de.objectcode.time4u.client.connection.openView"
+               label="%action.synchronize.openView"
+               menubarPath="serverMenu/viewGroup"
+               style="push">
+         </action>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="de.objectcode.time4u.client.connection.ui.views.SynchronizeView"
+            icon="icons/Synchronize.gif"
+            id="de.objectcode.time4u.client.connection.ui.syncrhonizeView"
+            name="%synchronizeView.label"
+            restorable="true">
+      </view>
+   </extension>
+
+</plugin>

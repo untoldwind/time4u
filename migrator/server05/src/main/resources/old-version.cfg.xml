@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+ <session-factory name="OldSessionFactory">
+  <property name="hibernate.connection.driver_class">${old-version.db.driver}</property>
+  <property name="hibernate.connection.password">${old-version.db.password}</property>
+  <property name="hibernate.connection.url">${old-version.db.url}</property>
+  <property name="hibernate.connection.username">${old-version.db.username}</property>
+  <property name="hibernate.default_schema">${old-version.db.username}</property>
+  <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+  <property name="hibernate.hbm2ddl.auto">validate</property>
+  <property name="hibernatetool.metadatadialect">org.hibernate.cfg.reveng.dialect.MySQLMetaDataDialect</property>
+  <property name="hibernate.connection.useUnicode">true</property>
+  <property name="hibernate.connection.characterEncoding">UTF-8</property>
+  <property name="hibernate.connection.charSet">UTF-8</property>
+  
+ </session-factory>
+</hibernate-configuration>

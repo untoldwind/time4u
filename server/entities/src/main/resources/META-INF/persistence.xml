@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+	version="1.0">
+	<persistence-unit name="time4u">
+		<jta-data-source>java:/Time4UDS</jta-data-source>
+		<properties>
+			<property name="hibernate.ejb.cfgfile" value="/time4u-hibernate.cfg.xml"/>
+			<property name="jboss.entity.manager.jndi.name" value="java:/time4u-server/EntityManager" />
+			<property name="jboss.entity.manager.factory.jndi.name"
+				value="java:/time4u-server/EntityManagerFactory" />
+		</properties>
+	</persistence-unit>
+</persistence>

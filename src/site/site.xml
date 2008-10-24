@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Time4U">
+    <bannerLeft>
+      <name>Time4U</name>
+      <src>/images/Time4U_header.png</src>
+      <href>http://time4u.sourceforge.net</href>
+    </bannerLeft>
+  <body>
+	<menu name="Main">
+		<item name="Introduction" href="/index.html"/>
+		<item name="Download" href="/install/index.html">
+			<item name="Client Installation" href="/install/client.html"/>
+			<item name="Server Installation" href="/install/server.html"/>
+		</item>
+    </menu>
+    <menu name="Development">
+    	<item name="Getting started (win32)" href="/development/gettingstarted_win32.html"/>    	
+    	<item name="Project layout" href="/development/projectlayout.html"/>
+    	<item name="Database model" href="/development/databasemodel.html"/>
+    </menu>
+    <menu ref="parent" />
+    <menu ref="modules" />
+    <menu ref="reports" />
+  </body>
+  <publishDate position="navigation-bottom"/>
+  <poweredBy>
+	<logo name="Maven" href="http://maven.apache.org/"
+       img="http://maven.apache.org/images/logos/maven-feather.png"/>
+  	<logo name="Sourcefored" href="http://sourceforge.net"
+  	   img="http://sourceforge.net/sflogo.php?group_id=239870&amp;type=2"/>
+  </poweredBy>
+</project>

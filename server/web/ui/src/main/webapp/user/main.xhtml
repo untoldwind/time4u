@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+	template="../templates/main-template.xhtml">
+
+	<ui:define name="title">Main</ui:define>
+	<ui:define name="contentDetail">
+		<h:form>
+			<rich:dataTable value="#{user.workItemListController.workItems}"
+				var="workItem" rowClasses="first,second" columnClasses="narrow,wide">
+				<rich:column>
+					<f:facet name="header">Day</f:facet>
+					#{workItem.day}
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Begin</f:facet>
+					<h:outputText value="#{workItem.begin}" converter="timeConverter"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">End</f:facet>
+					<h:outputText value="#{workItem.end}" converter="timeConverter"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Project</f:facet>
+					#{workItem.projectName}
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Task</f:facet>
+					#{workItem.taskName}
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Comment</f:facet>
+					#{workItem.comment}
+				</rich:column>
+			</rich:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

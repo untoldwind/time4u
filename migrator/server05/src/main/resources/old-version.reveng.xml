@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+  <table-filter match-name="PERSONS_HISTORY" exclude="true"></table-filter>
+  <table-filter match-name="PERSONS_HISTORY_TO_TEAMS" exclude="true"></table-filter>
+  <table-filter match-name="PROJECTS_HISTORY" exclude="true"></table-filter>
+  <table-filter match-name="TASKS_HISTORY" exclude="true"></table-filter>
+  <table-filter match-name="TEAMS_HISTORY" exclude="true"></table-filter>
+  <table-filter match-name="TODOS_HISTORY" exclude="true"></table-filter>
+  <table-filter match-name="TIMEPOLICIES_HISTORY" exclude="true"></table-filter>
+
+</hibernate-reverse-engineering>

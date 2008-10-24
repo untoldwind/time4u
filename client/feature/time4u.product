@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.4"?>
+
+<product name="Time4U" id="de.objectcode.time4u.client.ui.product" application="de.objectcode.time4u.client.ui.application" version="0.9.2" useFeatures="true">
+
+   <aboutInfo>
+      <image path="product_lg.gif"/>
+      <text>
+         Time4U client 0.9.3
+      </text>
+   </aboutInfo>
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+   </launcherArgs>
+
+   <windowImages i16="/time4u-client-ui/icons/Time4U.gif" i32="/time4u-client-ui/icons/Time4U_32.gif" i48="/time4u-client-ui/icons/Time4U_48.gif" i64="/time4u-client-ui/icons/Time4U_64.gif" i128="/time4u-client-ui/icons/Time4U_128.gif"/>
+
+   <splash
+      location="de.objectcode.time4u.client.ui"
+      startupProgressRect="285,5,160,15"
+      startupMessageRect="290,25,155,15"
+      startupForegroundColor="000000" />
+   <launcher name="Time4U">
+      <macosx icon="/time4u-client-ui/icons/Time4U.icns"/>
+      <solaris/>
+      <win useIco="true">
+         <ico path="/time4u-client-ui/icons/Time4U.ico"/>
+         <bmp/>
+      </win>
+   </launcher>
+
+
+   <vm>
+   </vm>
+
+   <plugins>
+      <plugin id="com.ibm.icu"/>
+      <plugin id="de.objectcode.time4u.store"/>
+      <plugin id="de.objectcode.time4u.ui"/>
+      <plugin id="org.eclipse.core.commands"/>
+      <plugin id="org.eclipse.core.contenttype"/>
+      <plugin id="org.eclipse.core.databinding"/>
+      <plugin id="org.eclipse.core.expressions"/>
+      <plugin id="org.eclipse.core.jobs"/>
+      <plugin id="org.eclipse.core.runtime"/>
+      <plugin id="org.eclipse.core.runtime.compatibility.registry" fragment="true"/>
+      <plugin id="org.eclipse.equinox.app"/>
+      <plugin id="org.eclipse.equinox.common"/>
+      <plugin id="org.eclipse.equinox.preferences"/>
+      <plugin id="org.eclipse.equinox.registry"/>
+      <plugin id="org.eclipse.help"/>
+      <plugin id="org.eclipse.jface"/>
+      <plugin id="org.eclipse.jface.databinding"/>
+      <plugin id="org.eclipse.osgi"/>
+      <plugin id="org.eclipse.swt"/>
+      <plugin id="org.eclipse.swt.carbon.macosx" fragment="true"/>
+      <plugin id="org.eclipse.ui"/>
+      <plugin id="org.eclipse.ui.carbon" fragment="true"/>
+      <plugin id="org.eclipse.ui.workbench"/>
+   </plugins>
+
+   <features>
+      <feature id="de.objectcode.time4u.client.feature" version="0.9.3"/>
+      <feature id="org.eclipse.rcp" version="3.4.100.r341_v20080814-989JESIEdAciFYfkZZsBfSwQ2341"/>
+   </features>
+
+</product>

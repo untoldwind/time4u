@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+	version="2.4">
+
+	<listener>
+		<listener-class>de.objectcode.time4u.server.web.ws.WSContextListener</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>PingServiceWS</servlet-name>
+		<servlet-class>de.objectcode.time4u.server.web.ws.PingServiceWS</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>LoginServiceWS</servlet-name>
+		<servlet-class>de.objectcode.time4u.server.web.ws.LoginServiceWS</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>PersonServiceWS</servlet-name>
+		<servlet-class>de.objectcode.time4u.server.web.ws.PersonServiceWS</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>RevisionServiceWS</servlet-name>
+		<servlet-class>de.objectcode.time4u.server.web.ws.RevisionServiceWS</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ProjectServiceWS</servlet-name>
+		<servlet-class>de.objectcode.time4u.server.web.ws.ProjectServiceWS</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>TaskServiceWS</servlet-name>
+		<servlet-class>de.objectcode.time4u.server.web.ws.TaskServiceWS</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>WorkItemServiceWS</servlet-name>
+		<servlet-class>de.objectcode.time4u.server.web.ws.WorkItemServiceWS</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>PingServiceWS</servlet-name>
+		<url-pattern>/PingService</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PingServiceWS</servlet-name>
+		<url-pattern>/secure/PingService</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>LoginServiceWS</servlet-name>
+		<url-pattern>/LoginService</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>PersonServiceWS</servlet-name>
+		<url-pattern>/secure/PersonService</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>RevisionServiceWS</servlet-name>
+		<url-pattern>/secure/RevisionService</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ProjectServiceWS</servlet-name>
+		<url-pattern>/secure/ProjectService</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>TaskServiceWS</servlet-name>
+		<url-pattern>/secure/TaskService</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>WorkItemServiceWS</servlet-name>
+		<url-pattern>/secure/WorkItemService</url-pattern>
+	</servlet-mapping>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>HtmlAdaptor</web-resource-name>
+			<description> WebService security </description>
+			<url-pattern>/secure/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>user</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>Time4U webservice</realm-name>
+	</login-config>
+	
+	<security-role>
+		<role-name>user</role-name>
+	</security-role>
+</web-app>

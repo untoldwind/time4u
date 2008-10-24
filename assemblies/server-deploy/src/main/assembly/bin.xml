@@ -1,0 +1,36 @@
+<assembly>
+<!--  <id>mockups</id> -->
+  <formats>
+    <format>zip</format>
+    <format>tar.bz2</format>
+  </formats>
+  <fileSets>
+  	<fileSet>
+  		<directory>src/main/script</directory>
+  		<outputDirectory></outputDirectory>
+  	</fileSet>
+  </fileSets>
+  <dependencySets>
+    <dependencySet>
+      <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
+      <outputDirectory>/ear</outputDirectory>
+      <includes>
+      	<include>de.objectcode.time4u.assemblies:time4u-assemblies-ear</include>
+      </includes>
+    </dependencySet>
+    <dependencySet>
+      <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
+      <outputDirectory>/db/mysql/driver</outputDirectory>
+      <includes>
+      	<include>mysql:mysql-connector-java</include>
+      </includes>
+    </dependencySet>
+    <dependencySet>
+      <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
+      <outputDirectory>/db/derby/driver</outputDirectory>
+      <includes>
+      	<include>org.apache.derby:derby</include>
+      </includes>
+    </dependencySet>
+  </dependencySets>
+</assembly>

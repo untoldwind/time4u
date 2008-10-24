@@ -1,0 +1,53 @@
+<definitions name='PingServiceWSService' targetNamespace='http://objectcode.de/time4u/api/ws'
+	xmlns='http://schemas.xmlsoap.org/wsdl/' xmlns:ns1='http://objectcode.de/time4u/api/data'
+	xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' xmlns:tns='http://objectcode.de/time4u/api/ws'
+	xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+	<types>
+		<xs:schema targetNamespace='http://objectcode.de/time4u/api/data'
+			version='1.0' xmlns:tns='http://objectcode.de/time4u/api/data'
+			xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+			<xs:element name='ping-result' type='tns:ping-result' />
+			<xs:complexType name='ping-result'>
+				<xs:sequence>
+					<xs:element name='apiVersionMajor' type='xs:int' />
+					<xs:element name='apiVersionMinor' type='xs:int' />
+					<xs:element minOccurs='0' name='serverVersion' type='xs:string' />
+
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</types>
+	<message name='IPingService_pingResponse'>
+		<part name='return' type='ns1:ping-result'></part>
+	</message>
+	<message name='IPingService_ping'></message>
+	<portType name='IPingService'>
+
+		<operation name='ping'>
+			<input message='tns:IPingService_ping'></input>
+			<output message='tns:IPingService_pingResponse'></output>
+		</operation>
+	</portType>
+	<binding name='IPingServiceBinding' type='tns:IPingService'>
+		<soap:binding style='rpc'
+			transport='http://schemas.xmlsoap.org/soap/http' />
+		<operation name='ping'>
+			<soap:operation soapAction='' />
+
+			<input>
+				<soap:body namespace='http://objectcode.de/time4u/api/ws'
+					use='literal' />
+			</input>
+			<output>
+				<soap:body namespace='http://objectcode.de/time4u/api/ws'
+					use='literal' />
+			</output>
+		</operation>
+	</binding>
+	<service name='PingServiceWSService'>
+
+		<port binding='tns:IPingServiceBinding' name='PingServiceWSPort'>
+			<soap:address location='http://127.0.0.1:8080/time4u-ws/secure/PingService' />
+		</port>
+	</service>
+</definitions>

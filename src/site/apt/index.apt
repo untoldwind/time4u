@@ -1,0 +1,24 @@
+  -------
+  Time4U
+  -------
+  junglas
+  -------
+
+Time4U
+
+* Introduction
+  
+ Time4U is a time-tracking tool with client-server synchronization.
+
+ The main idea is that several people are working together in teams track their times using the client. The client is can be used without network access altogether, but whenever it has access 
+to the server (e.g. via VPN) it synchronize its data (either automatically or triggered by the user. At the end of the month (or week) the team-leaders or accountants can use the data on the
+server to create billings, performance reports etc.
+
+ Please note: Time4U is NOT intended to spy on employees! Every user is responsible to track the correct times with the client and can change (or manipulate) his/her data in any way.
+The intention of this software is to get rid of cumbersome time sheets (either on paper or electronically) or at least help to create them automatically.
+
+* Sourceforge
+
+ This project is hosted on Sourceforge.net
+ 
+ You might also want to visit the {{{http://sourceforge.net/projects/time4u}Sourceforge project page}} of Time4U.

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+	template="../templates/main-template.xhtml">
+
+	<ui:define name="title">Accounts</ui:define>
+	<ui:define name="contentDetail">
+		<h:form>
+			<h:panelGroup>
+				<a4j:region renderRegionOnly="true">
+					<rich:dataTable id="accountListTable" rows="10"
+						value="#{admin.accountList}" var="userAccount" rowClasses="first,second"
+						columnClasses="narrow,wide">
+						<rich:column>
+							<h:outputText value="*"
+								rendered="#{userAccount.userId == admin.accountListController.selectedAccount.userId}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">User Id</f:facet>
+							<a4j:commandLink action="#{admin.accountListController.select(userAccount)}"
+								reRender="accountDetail"
+								rendered="#{userAccount.userId != admin.accountListController.selectedAccount.userId}">
+								#{userAccount.userId}
+						</a4j:commandLink>
+							<h:outputText value="#{userAccount.userId}"
+								rendered="#{userAccount.userId == admin.accountListController.selectedAccount.userId}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Name</f:facet>
+							#{userAccount.person.givenName} #{userAccount.person.surname}
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">EMail</f:facet>
+							#{userAccount.person.email}
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Last login</f:facet>
+							#{userAccount.lastLogin}
+						</rich:column>
+						<f:facet name="footer">
+							<rich:datascroller for="accountListTable"
+								pageIndexVar="pageIndex" pagesVar="pages">
+								<f:facet name="pages">
+									<h:outputText value="#{pageIndex} / #{pages}"></h:outputText>
+								</f:facet>
+							</rich:datascroller>
+						</f:facet>
+					</rich:dataTable>
+				</a4j:region>
+				<h:panelGroup id="accountDetail"
+					rendered="#{admin.accountListController.hasSelection}">
+					<rich:tabPanel switchType="client">
+						<rich:tab label="Account">
+							<table>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">UserId</ui:define>
+									<h:outputText
+										value="#{admin.accountListController.selectedAccount.userId}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Password</ui:define>
+									<h:inputSecret value="#{common.passwordConfirm.password}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Password Confirm</ui:define>
+									<h:inputSecret value="#{common.passwordConfirm.passwordConfirm}" />
+								</s:decorate>
+								<tr>
+									<td colspan="3">
+										<a4j:commandButton
+											action="#{admin.accountListController.resetPassword}" value="Reset Password" />
+									</td>
+								</tr>
+							</table>
+						</rich:tab>
+						<rich:tab label="Personal Information">
+							<table>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Griven name</ui:define>
+									<h:inputText
+										value="#{admin.accountListController.selectedAccount.person.givenName}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Surname</ui:define>
+									<h:inputText
+										value="#{admin.accountListController.selectedAccount.person.surname}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Email</ui:define>
+									<h:inputText
+										value="#{admin.accountListController.selectedAccount.person.email}" />
+								</s:decorate>
+								<tr>
+									<td colspan="3">
+										<a4j:commandButton
+											action="#{admin.accountListController.updatePerson}" value="Update" />
+									</td>
+								</tr>								
+							</table>
+						</rich:tab>
+					</rich:tabPanel>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>

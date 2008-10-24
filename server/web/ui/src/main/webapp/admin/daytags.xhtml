@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+	template="../templates/main-template.xhtml">
+
+	<ui:define name="title">Day tags</ui:define>
+	<ui:define name="contentDetail">
+		<h:form>
+			<h:panelGroup>
+				<a4j:region renderRegionOnly="true">
+					<rich:dataTable id="dayTagTable" rows="10"
+						value="#{admin.dayTagList}" var="dayTag" rowClasses="first,second"
+						columnClasses="narrow,wide">
+						<rich:column>
+							<h:outputText value="*"
+								rendered="#{dayTag.name == admin.dayTagListController.selectedDayTag.name}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Name</f:facet>
+							<a4j:commandLink action="#{admin.dayTagListController.select(dayTag)}"
+								reRender="dayTagDetail"
+								rendered="#{dayTag.name != admin.dayTagListController.selectedDayTag.name}">
+								#{dayTag.name}
+						</a4j:commandLink>
+							<h:outputText value="#{dayTag.name}"
+								rendered="#{dayTag.name == admin.dayTagListController.selectedDayTag.name}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Description</f:facet>
+							#{dayTag.description}
+						</rich:column>
+						<f:facet name="footer">
+							<rich:datascroller for="dayTagTable"
+								pageIndexVar="pageIndex" pagesVar="pages">
+								<f:facet name="pages">
+									<h:outputText value="#{pageIndex} / #{pages}"></h:outputText>
+								</f:facet>
+							</rich:datascroller>
+						</f:facet>
+					</rich:dataTable>
+				</a4j:region>
+				<h:panelGroup>
+					<a4j:commandButton action="#{admin.dayTagListController.newDayTag}"
+						value="New" reRender="dayTagDetail" />
+				</h:panelGroup>
+				<h:panelGroup id="dayTagDetail"
+					rendered="#{admin.dayTagListController.hasSelection}">
+					<table>
+						<s:decorate template="../templates/decorateTableField.xhtml">
+							<ui:define name="label">Name</ui:define>
+							<h:inputText value="#{admin.dayTagListController.selectedDayTag.name}" />
+						</s:decorate>
+						<s:decorate template="../templates/decorateTableField.xhtml">
+							<ui:define name="label">Description</ui:define>
+							<h:inputText
+								value="#{admin.dayTagListController.selectedDayTag.description}" />
+						</s:decorate>
+						<s:decorate template="../templates/decorateTableField.xhtml">
+							<ui:define name="label">Regular time</ui:define>
+							<h:inputText
+								value="#{admin.dayTagListController.selectedDayTag.regularTime}" converter="timeConverter"/>
+						</s:decorate>
+						<tr>
+							<td colspan="3">
+								<a4j:commandButton action="#{admin.dayTagListController.updateDayTag}"
+									value="Update" reRender="dayTagTable"/>
+								<a4j:commandButton action="#{admin.dayTagListController.deleteDayTag}"
+									value="Delete" reRender="dayTagTable"/>
+							</td>
+						</tr>
+					</table>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>

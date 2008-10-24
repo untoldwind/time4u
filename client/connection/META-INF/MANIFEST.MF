@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Time4U client server connection
+Bundle-SymbolicName: de.objectcode.time4u.client.connection
+Bundle-Version: 0.9.3
+Bundle-Activator: de.objectcode.time4u.client.connection.ConnectionPlugin
+Bundle-Vendor: objectcode.de
+Require-Bundle: org.eclipse.core.runtime,
+ de.objectcode.time4u.client.store
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .
+Export-Package: de.objectcode.time4u.client.connection.api

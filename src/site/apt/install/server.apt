@@ -1,0 +1,93 @@
+  --------------------------
+  Time4U server installation
+  --------------------------
+  junglas
+  --------------------------
+
+Time4U server installation
+
+ The server is intended to run on a JBoss AS 4.2.x. For first time installation you a strongly encouraged to follow the step-by-step guide below.
+ 
+* Step-by-step
+
+ This guide is intended to install the Time4U server on a Linux system. The steps to install the server on a different platform are the same,
+but you probably want to choose different directories than suggested.
+
+  [[1]] Install a Java JDK: {{{http://java.sun.com/javase/downloads/index_jdk5.jsp} Java 1.5.0 release}}
+
+    * Consult the included readmes and manuals how to install the JDK on your system.
+
+    * Ensure that the JAVA_HOME environment variable is correctly set or include the "bin" directory of the JDK in your PATH environment variable.
+ 
+  [[1]] Install a {{{http://mysql.org}MySQL server 5.1}}
+
+   Consult the includes readmes and manuals how to install MySQL on your system.
+ 
+  [[1]] Install the {{{http://ant.apache.org/bindownload.cgi}Apache ant tool 1.7.0 (or higher)}}
+
+    * Just unpack the zip or tar.bz2 somewhere (e.g. /opt/apache-ant)
+
+    * Add the "bin" directory to your PATH environment variable so you can invoke Ant from your command-line by typing "ant" (e.g. PATH=$PATH:/opt/apache-ant/bin)
+ 
+  [[1]] Install the {{{http://www.jboss.org/jbossas/downloads/}JBoss AS 4.2.3.GA}}
+
+    * Just unpack the zip or tar.bz2 somwhere (e.g. /srv/jboss).
+    
+    * Ensure that the JBOSS_HOME environment variable is correcty set.
+    
+    * Consult the JBoss documentation how to start JBoss as a service (i.e. automatically on system boot)
+ 
+  [[1]] Download and unpack the {{{http://www.jboss.org/jbossmessaging/downloads/}JBoss Messaging 1.4.0.SP3}}
+  
+    * Unpack the zip or tar.bz2 somewhere in your home-directory.
+    
+    * Open a command-line:
+    
+---
+> cd jboss-messaging-1.4.0.SP3/util
+
+> export JBOSS_HOME=<path to JBoss>
+
+> ant -f release-admin.xml
+---
+
+  [[1]] Create a MySQL database for the Time4U server.
+  
+   * Ensure that the MySQL user can connect from localhost and has all rights on the database (except grant)
+  
+  [[1]] Download and install the {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-deploy-0.9.2.tar.bz2}Time4U Server distribution package}}
+  
+   * Unpack the zip or tar.bz2 somewhere in your home-directory.
+   
+   * Create/edit the build.properties file (a build-example.properties is included)
+
+---
+jboss.home=<path to JBoss>
+jboss.config=time4u
+db.engine=mysql
+db.host=localhost
+db.name=<mysql datbase name>
+db.user=<mysql user>
+db.password=<mysql password>
+---
+ 
+   * Deploy the application files:
+
+---
+cd time4u-assemblies-deploy
+
+ant prepare
+ant deploy
+---
+   
+  [[1]] Start the JBoss server:
+  
+---
+cd <path to JBoss>/bin
+
+./run.sh -c time4u
+---
+  
+  [[1]] Check installation by invoking the web-interface: http://server:8080/time4u
+  
+   
