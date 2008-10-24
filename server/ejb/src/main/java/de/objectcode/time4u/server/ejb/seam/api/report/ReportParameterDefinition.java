@@ -9,14 +9,24 @@ import javax.xml.bind.annotation.XmlType;
 
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.BaseParameterValue;
 
+/**
+ * Definition of a report parameter.
+ * 
+ * Report parameters are queried from the user before the report can be created.
+ * 
+ * @author junglas
+ */
 @XmlType(name = "parameter")
 @XmlRootElement(name = "parameter")
 public class ReportParameterDefinition implements Serializable
 {
   private static final long serialVersionUID = -5009598721487830111L;
 
+  /** Name of the parameter. */
   private String m_name;
+  /** Label of the parameter to be presented in the UI. */
   private String m_label;
+  /** Value type of the parameter. */
   private ReportParameterType m_type;
 
   public ReportParameterDefinition()

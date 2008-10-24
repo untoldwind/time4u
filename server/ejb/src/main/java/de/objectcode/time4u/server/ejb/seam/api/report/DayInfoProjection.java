@@ -25,6 +25,12 @@ public enum DayInfoProjection implements IProjection
     {
       return rowData.getDayInfo().getSumDurations();
     }
+
+    @Override
+    public IAggregation createAggregation()
+    {
+      return new SumAggregation();
+    }
   },
   REGULAR_TIME(ColumnType.TIME, "Regular time") {
     public Object project(final IRowDataAdapter rowData)
@@ -74,4 +80,8 @@ public enum DayInfoProjection implements IProjection
     return new ColumnDefinition(m_columnType, m_header, index);
   }
 
+  public IAggregation createAggregation()
+  {
+    return null;
+  }
 }

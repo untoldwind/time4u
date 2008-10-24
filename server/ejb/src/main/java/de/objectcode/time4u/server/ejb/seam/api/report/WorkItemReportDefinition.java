@@ -1,9 +1,9 @@
 package de.objectcode.time4u.server.ejb.seam.api.report;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -21,6 +21,7 @@ public class WorkItemReportDefinition extends BaseReportDefinition
 
   List<IProjection> m_projections;
   List<GroupByDefinition> m_groupByDefinitions;
+  boolean m_aggregate;
 
   public WorkItemReportDefinition()
   {
@@ -67,6 +68,17 @@ public class WorkItemReportDefinition extends BaseReportDefinition
     m_groupByDefinitions.add(groupBy);
   }
 
+  @XmlAttribute
+  public boolean isAggregate()
+  {
+    return m_aggregate;
+  }
+
+  public void setAggregate(final boolean aggregate)
+  {
+    m_aggregate = aggregate;
+  }
+
   @Override
   public EntityType getEntityType()
   {
@@ -74,39 +86,9 @@ public class WorkItemReportDefinition extends BaseReportDefinition
   }
 
   @Override
-  public ReportResult createResult()
+  public IReportDataCollector createDataCollector()
   {
-    final List<ColumnDefinition> columns = new ArrayList<ColumnDefinition>();
-
-    int index = 0;
-    for (final IProjection projection : m_projections) {
-      columns.add(projection.getColumnDefinition(index++));
-    }
-
-    final List<ColumnDefinition> groupByColumns = new ArrayList<ColumnDefinition>();
-    index = 0;
-    for (final GroupByDefinition groupBy : m_groupByDefinitions) {
-      groupByColumns.add(groupBy.getLabelProjection().getColumnDefinition(index++));
-    }
-
-    return new ReportResult(m_name, columns, groupByColumns);
+    return new ListReportDataCollector(m_name, m_projections, m_groupByDefinitions);
   }
 
-  @Override
-  public void collect(final IRowDataAdapter rowData, final ReportResult reportResult)
-  {
-    final Object[] row = new Object[m_projections.size()];
-
-    for (int i = 0; i < row.length; i++) {
-      row[i] = m_projections.get(i).project(rowData);
-    }
-
-    final LinkedList<ValueLabelPair> groups = new LinkedList<ValueLabelPair>();
-
-    for (final GroupByDefinition groupBy : m_groupByDefinitions) {
-      groups.add(groupBy.project(rowData));
-    }
-
-    reportResult.addRow(groups, row);
-  }
 }

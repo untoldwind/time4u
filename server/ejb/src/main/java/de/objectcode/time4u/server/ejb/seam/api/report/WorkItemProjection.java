@@ -30,6 +30,12 @@ public enum WorkItemProjection implements IProjection
     {
       return rowData.getWorkItem().getEnd() - rowData.getWorkItem().getBegin();
     }
+
+    @Override
+    public IAggregation createAggregation()
+    {
+      return new SumAggregation();
+    }
   };
   ColumnType m_columnType;
   String m_header;
@@ -43,5 +49,10 @@ public enum WorkItemProjection implements IProjection
   public ColumnDefinition getColumnDefinition(final int index)
   {
     return new ColumnDefinition(m_columnType, m_header, index);
+  }
+
+  public IAggregation createAggregation()
+  {
+    return null;
   }
 }

@@ -1,9 +1,17 @@
 package de.objectcode.time4u.server.ejb.seam.api.report;
 
+/**
+ * Definition of a column in a report result.
+ * 
+ * @author junglas
+ */
 public class ColumnDefinition
 {
-  ColumnType m_columnType;
+  /** Column header. */
   String m_header;
+  /** Column data type. */
+  ColumnType m_columnType;
+  /** Index of the column. */
   int m_index;
 
   public ColumnDefinition(final ColumnType columnType, final String header, final int index)

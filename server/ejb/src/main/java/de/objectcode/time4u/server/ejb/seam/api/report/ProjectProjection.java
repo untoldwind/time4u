@@ -53,4 +53,8 @@ public enum ProjectProjection implements IProjection
     return new ColumnDefinition(m_columnType, m_header, index);
   }
 
+  public IAggregation createAggregation()
+  {
+    return null;
+  }
 }

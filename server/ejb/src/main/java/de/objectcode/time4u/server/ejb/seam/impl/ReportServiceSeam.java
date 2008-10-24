@@ -23,6 +23,7 @@ import org.jboss.seam.security.Identity;
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.ejb.seam.api.IReportServiceLocal;
 import de.objectcode.time4u.server.ejb.seam.api.report.BaseReportDefinition;
+import de.objectcode.time4u.server.ejb.seam.api.report.IReportDataCollector;
 import de.objectcode.time4u.server.ejb.seam.api.report.IRowDataAdapter;
 import de.objectcode.time4u.server.ejb.seam.api.report.ReportResult;
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.BaseParameterValue;
@@ -94,16 +95,16 @@ public class ReportServiceSeam implements IReportServiceLocal
       reportDefinition.getFilter().setQueryParameters(EntityType.WORKITEM, query, parameters);
     }
 
-    final ReportResult reportResult = reportDefinition.createResult();
+    final IReportDataCollector dataCollector = reportDefinition.createDataCollector();
 
     for (final Object row : query.getResultList()) {
       rowDataAdapter.setCurrentRow(row);
 
-      reportDefinition.collect(rowDataAdapter, reportResult);
+      dataCollector.collect(rowDataAdapter);
     }
     m_manager.clear();
 
-    return reportResult;
+    return dataCollector.getReportResult();
   }
 
   private static interface IExtendedRowDataAdapter extends IRowDataAdapter

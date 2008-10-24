@@ -20,14 +20,23 @@ import de.objectcode.time4u.server.ejb.seam.api.filter.OrFilter;
 import de.objectcode.time4u.server.ejb.seam.api.filter.ParameterRef;
 import de.objectcode.time4u.server.ejb.seam.api.filter.PersonFilter;
 
+/**
+ * A generic report definition.
+ * 
+ * @author junglas
+ */
 @XmlType(name = "report")
 public abstract class BaseReportDefinition implements Serializable
 {
   private static final long serialVersionUID = -8401403739035061630L;
 
+  /** The (internal) name of the report. */
   protected String m_name;
+  /** Description of the report. */
   protected String m_description;
+  /** Filter criteria on the data. */
   protected IFilter m_filter;
+  /** Report parameters to be queried from the user. */
   protected List<ReportParameterDefinition> m_parameters;
 
   protected BaseReportDefinition()
@@ -90,7 +99,5 @@ public abstract class BaseReportDefinition implements Serializable
   @XmlTransient
   public abstract EntityType getEntityType();
 
-  public abstract ReportResult createResult();
-
-  public abstract void collect(final IRowDataAdapter rowData, final ReportResult reportResult);
+  public abstract IReportDataCollector createDataCollector();
 }

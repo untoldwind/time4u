@@ -11,6 +11,7 @@ public class ReportResultBase
   protected List<ColumnDefinition> m_columns;
   protected List<ColumnDefinition> m_groupByColumns;
   protected List<ReportRow> m_rows;
+  protected Object[] m_aggregates;
   protected Map<Object, ReportResultGroup> m_groups;
 
   protected ReportResultBase(final List<ColumnDefinition> columns, final List<ColumnDefinition> groupByColumns)
@@ -41,6 +42,21 @@ public class ReportResultBase
     return !m_groupByColumns.isEmpty();
   }
 
+  public boolean isHasAggregates()
+  {
+    return m_aggregates != null;
+  }
+
+  public Object[] getAggregates()
+  {
+    return m_aggregates;
+  }
+
+  public void setAggregates(final Object[] aggregates)
+  {
+    m_aggregates = aggregates;
+  }
+
   public List<ReportResultGroup> getGroups()
   {
     return new ArrayList<ReportResultGroup>(m_groups.values());
@@ -58,7 +74,7 @@ public class ReportResultBase
         final List<ColumnDefinition> groupByColumns = new ArrayList<ColumnDefinition>();
 
         if (m_groupByColumns.size() > 1) {
-          groupByColumns.addAll(m_groupByColumns.subList(1, m_groupByColumns.size() ));
+          groupByColumns.addAll(m_groupByColumns.subList(1, m_groupByColumns.size()));
         }
         group = new ReportResultGroup(top, m_columns, groupByColumns);
 

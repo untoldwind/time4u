@@ -5,4 +5,6 @@ public interface IProjection
   ColumnDefinition getColumnDefinition(int index);
 
   Object project(IRowDataAdapter rowData);
+
+  IAggregation createAggregation();
 }
