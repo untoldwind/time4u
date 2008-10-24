@@ -43,6 +43,18 @@ public class CompoundSelectionAdapterFactory implements IAdapterFactory
 
       if ("has".equals(name)) {
         return selection.getSelection(CompoundSelectionEntityType.valueOf(value)) != null;
+      } else if ("PROJECT.active".equals(name)) {
+        final ProjectSummary project = (ProjectSummary) selection.getSelection(CompoundSelectionEntityType.PROJECT);
+
+        if (project != null) {
+          return Boolean.parseBoolean(value) == project.isActive();
+        }
+      } else if ("TASK.active".equals(name)) {
+        final TaskSummary task = (TaskSummary) selection.getSelection(CompoundSelectionEntityType.TASK);
+
+        if (task != null) {
+          return Boolean.parseBoolean(value) == task.isActive();
+        }
       } else if ("WORKITEM.active".equals(name)) {
         final WorkItem workItem = (WorkItem) selection.getSelection(CompoundSelectionEntityType.WORKITEM);
 

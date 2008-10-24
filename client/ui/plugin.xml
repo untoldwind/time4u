@@ -247,6 +247,17 @@
                label="%action.task.new.label"
                menubarPath="newGroup"
                tooltip="%action.task.new.tooltip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+                  </objectClass>
+                  <objectState
+                        name="PROJECT.active"
+                        value="true">
+                  </objectState>
+               </and>
+            </enablement>
          </action>
       </viewerContribution>
       <viewerContribution
@@ -291,6 +302,21 @@
                label="%action.workItem.new.label"
                menubarPath="newGroup"
                tooltip="%action.workItem.new.tooltip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+                  </objectClass>
+                  <objectState
+                        name="PROJECT.active"
+                        value="true">
+                  </objectState>
+                  <objectState
+                        name="TASK.active"
+                        value="true">
+                  </objectState>
+               </and>
+            </enablement>
          </action>
       </viewerContribution>
       <viewerContribution
@@ -578,6 +604,10 @@
                         name="has"
                         value="PROJECT">
                   </objectState>
+                  <objectState
+                        name="PROJECT.active"
+                        value="true">
+                  </objectState>
                </and>
             </enablement>
          </action>
@@ -693,6 +723,14 @@
                   <objectState
                         name="has"
                         value="CALENDARDAY">
+                  </objectState>
+                  <objectState
+                        name="PROJECT.active"
+                        value="true">
+                  </objectState>
+                  <objectState
+                        name="TASK.active"
+                        value="true">
                   </objectState>
                </and>
             </enablement>

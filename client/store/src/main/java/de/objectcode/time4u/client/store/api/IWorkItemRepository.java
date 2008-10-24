@@ -65,7 +65,7 @@ public interface IWorkItemRepository
    * @return
    * @throws RepositoryException
    */
-  DayInfo storeDayInfo(DayInfo dayInfo, boolean modifiedByOwner) throws RepositoryException;
+  void storeDayInfo(DayInfo dayInfo, boolean modifiedByOwner) throws RepositoryException;
 
   /**
    * Store a single workitem.
@@ -124,7 +124,7 @@ public interface IWorkItemRepository
    * @throws RepositoryException
    *           on error
    */
-  TimePolicy storeTimePolicy(TimePolicy timePolicy, boolean modifiedByOwner) throws RepositoryException;
+  void storeTimePolicy(TimePolicy timePolicy, boolean modifiedByOwner) throws RepositoryException;
 
   /**
    * Get all allowed day tags.
