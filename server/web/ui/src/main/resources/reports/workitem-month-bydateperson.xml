@@ -7,11 +7,11 @@
 		<parameter type="MONTH" name="month" label="Month"/>
 	</parameters>
 	<group-bys>
-		<group-by>
+		<group-by mode="LIST">
 			<label-dayinfo>DATE</label-dayinfo>
 			<value-dayinfo>DATE</value-dayinfo>
 		</group-by>
-		<group-by>
+		<group-by mode="LIST_WITH_AGGREGATE">
 			<label-person>NAME</label-person>
 			<value-person>ID</value-person>
 		</group-by>

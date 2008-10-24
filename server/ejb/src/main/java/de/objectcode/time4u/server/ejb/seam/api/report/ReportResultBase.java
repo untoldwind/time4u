@@ -52,9 +52,24 @@ public class ReportResultBase
     return m_aggregates;
   }
 
-  public void setAggregates(final Object[] aggregates)
+  public void setAggregates(final List<Object> groupKey, final Object[] aggregates)
   {
-    m_aggregates = aggregates;
+    if (groupKey == null) {
+      m_aggregates = aggregates;
+    } else {
+      ReportResultBase current = this;
+
+      for (final Object key : groupKey) {
+        if (current == null) {
+          break;
+        }
+        current = current.m_groups.get(key);
+      }
+
+      if (current != null) {
+        current.m_aggregates = aggregates;
+      }
+    }
   }
 
   public List<ReportResultGroup> getGroups()

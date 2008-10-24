@@ -8,7 +8,7 @@
 	<ui:repeat value="#{report.rows}" var="row" rendered="#{!report.hasGroups}">
 		<tr class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
 			<ui:fragment rendered="#{row.index == 0}">
-				<td colspan="#{depth}" class="report" rowspan="#{report.rows.size()}" />
+				<td colspan="#{depth}" class="report" rowspan="#{report.rows.size() + (report.hasAggregates ? 1 : 0)}" />
 			</ui:fragment>
 			<ui:repeat value="#{report.columns}" var="column">
 				<td
@@ -38,4 +38,16 @@
 			</ui:include>
 		</ui:repeat>
 	</c:if>
+	<ui:fragment rendered="#{report.hasAggregates}">
+		<tr class="report reportGroupFooter">
+			<ui:repeat value="#{report.columns}"
+				var="column">
+				<td
+					class="report reportGroupFooter">
+					<h:outputText value="#{report.aggregates[column.index]}"
+						converter="#{user.reportConverters.get(column.columnType)}" />
+				</td>
+			</ui:repeat>
+		</tr>
+	</ui:fragment>
 </ui:composition>

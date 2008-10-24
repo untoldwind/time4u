@@ -154,6 +154,10 @@ td.reportGroupHeader {
 	background-color:#E8F0F8;
 }
 
+tr.reportGroupFooter {
+	background-color:#F1F1F1;
+}
+
 tr.reportHeader {
 	background-color:#ECF4FE;
 }

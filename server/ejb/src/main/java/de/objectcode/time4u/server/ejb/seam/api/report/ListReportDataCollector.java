@@ -12,14 +12,16 @@ public class ListReportDataCollector implements IReportDataCollector
   private final List<IProjection> m_projections;
   private final List<GroupByDefinition> m_groupByDefinitions;
   private final ReportResult m_reportResult;
-  private final Map<Object[], IAggregation[]> m_aggregations;
+  private final Map<List<Object>, IAggregation[]> m_aggregations;
+  private final boolean m_aggregate;
 
   ListReportDataCollector(final String name, final List<IProjection> projections, final boolean aggregate,
       final List<GroupByDefinition> groupByDefinitions)
   {
-    m_aggregations = new HashMap<Object[], IAggregation[]>();
+    m_aggregations = new HashMap<List<Object>, IAggregation[]>();
     m_projections = Collections.unmodifiableList(projections);
     m_groupByDefinitions = Collections.unmodifiableList(groupByDefinitions);
+    m_aggregate = aggregate;
 
     final List<ColumnDefinition> columns = new ArrayList<ColumnDefinition>();
 
@@ -35,16 +37,6 @@ public class ListReportDataCollector implements IReportDataCollector
     }
 
     m_reportResult = new ReportResult(name, columns, groupByColumns);
-
-    if (aggregate) {
-      final IAggregation[] aggregations = new IAggregation[m_projections.size()];
-
-      for (int i = 0; i < aggregations.length; i++) {
-        aggregations[i] = m_projections.get(i).createAggregation();
-      }
-
-      m_aggregations.put(null, aggregations);
-    }
   }
 
   public ReportResult getReportResult()
@@ -60,11 +52,21 @@ public class ListReportDataCollector implements IReportDataCollector
       row[i] = m_projections.get(i).project(rowData);
     }
 
-    aggregate(null, row);
+    if (m_aggregate) {
+      aggregate(null, row);
+    }
+
     final LinkedList<ValueLabelPair> groups = new LinkedList<ValueLabelPair>();
+    final List<Object> groupKey = new ArrayList<Object>();
 
     for (final GroupByDefinition groupBy : m_groupByDefinitions) {
-      groups.add(groupBy.project(rowData));
+      final ValueLabelPair group = groupBy.project(rowData);
+      groups.add(group);
+      groupKey.add(group.getValue());
+
+      if (groupBy.getMode().isAggregate()) {
+        aggregate(groupKey, row);
+      }
     }
 
     m_reportResult.addRow(groups, row);
@@ -72,39 +74,39 @@ public class ListReportDataCollector implements IReportDataCollector
 
   public void finish()
   {
-    for (final IAggregation[] aggregations : m_aggregations.values()) {
+    for (final Map.Entry<List<Object>, IAggregation[]> entry : m_aggregations.entrySet()) {
+      final IAggregation[] aggregations = entry.getValue();
+      final Object[] aggregates = new Object[aggregations.length];
+
       for (int i = 0; i < aggregations.length; i++) {
         if (aggregations[i] != null) {
           aggregations[i].finish();
-        }
-      }
-    }
-
-    final IAggregation[] mainAggregations = m_aggregations.get(null);
-    if (mainAggregations != null) {
-      final Object[] aggregates = new Object[mainAggregations.length];
-
-      for (int i = 0; i < mainAggregations.length; i++) {
-        if (mainAggregations[i] != null) {
-          aggregates[i] = mainAggregations[i].getAggregate();
+          aggregates[i] = aggregations[i].getAggregate();
         }
       }
 
-      m_reportResult.setAggregates(aggregates);
+      m_reportResult.setAggregates(entry.getKey(), aggregates);
     }
   }
 
-  private void aggregate(final Object[] key, final Object[] row)
+  private void aggregate(final List<Object> key, final Object[] row)
   {
-    final IAggregation[] aggregations = m_aggregations.get(key);
+    IAggregation[] aggregations = m_aggregations.get(key);
 
-    if (aggregations != null) {
+    if (aggregations == null) {
+      aggregations = new IAggregation[m_projections.size()];
+
       for (int i = 0; i < aggregations.length; i++) {
-        if (aggregations[i] != null) {
-          aggregations[i].collect(row[i]);
-        }
+        aggregations[i] = m_projections.get(i).createAggregation();
       }
+
+      m_aggregations.put(key, aggregations);
     }
 
+    for (int i = 0; i < aggregations.length; i++) {
+      if (aggregations[i] != null) {
+        aggregations[i].collect(row[i]);
+      }
+    }
   }
 }
