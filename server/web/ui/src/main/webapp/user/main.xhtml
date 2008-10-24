@@ -8,7 +8,7 @@
 	<ui:define name="title">Main</ui:define>
 	<ui:define name="contentDetail">
 		<h:form>
-			<rich:dataTable value="#{user.workItemListController.workItems}"
+			<rich:dataTable value="#{user.workItemList.workItems}"
 				var="workItem" rowClasses="first,second" columnClasses="narrow,wide">
 				<rich:column>
 					<f:facet name="header">Day</f:facet>
@@ -21,6 +21,11 @@
 				<rich:column>
 					<f:facet name="header">End</f:facet>
 					<h:outputText value="#{workItem.end}" converter="timeConverter"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Duration</f:facet>
+					<f:facet name="footer"><h:outputText value="#{user.workItemList.sumDurations}" converter="timeConverter"/></f:facet>
+					<h:outputText value="#{workItem.duration}" converter="timeConverter"/>
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">Project</f:facet>

@@ -23,6 +23,7 @@ import org.jboss.seam.security.Identity;
 
 import de.objectcode.time4u.server.ejb.seam.api.IWorkItemServiceLocal;
 import de.objectcode.time4u.server.ejb.seam.api.WorkItemData;
+import de.objectcode.time4u.server.ejb.seam.api.WorkItemList;
 import de.objectcode.time4u.server.entities.DayTagEntity;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
@@ -45,7 +46,7 @@ public class WorkItemServiceSeam implements IWorkItemServiceLocal
   List<DayTagEntity> m_dayTags;
 
   @Restrict("#{s:hasRole('user')}")
-  public List<WorkItemData> getWorkItemData(final Date from, final Date until)
+  public WorkItemList getWorkItemData(final Date from, final Date until)
   {
     final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, m_identity.getPrincipal().getName());
 
@@ -66,7 +67,7 @@ public class WorkItemServiceSeam implements IWorkItemServiceLocal
           (String) rowData[4], (String) rowData[5], ((String) rowData[6]).split(":"), (String) rowData[7],
           (String) rowData[8], (String) rowData[9]));
     }
-    return result;
+    return new WorkItemList(result);
   }
 
   @Factory("admin.dayTagList")

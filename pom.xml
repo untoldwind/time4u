@@ -12,9 +12,9 @@
 		<module>migrator</module>
 	</modules>
 	<scm>
-		<connection>scm:svn:https://time4u.svn.sourceforge.net/svnroot/time4u/overhaul/trunk</connection>
-		<developerConnection>scm:svn:https://time4u.svn.sourceforge.net/svnroot/time4u/overhaul/trunk</developerConnection>
-		<url>http://sourceforge.net/projects/time4u/trunk</url>
+		<connection>scm:svn:https://time4u.svn.sourceforge.net/svnroot/time4u/trunk</connection>
+		<developerConnection>scm:svn:https://time4u.svn.sourceforge.net/svnroot/time4u/trunk</developerConnection>
+		<url>http://time4u.svn.sourceforge.net/viewvc/time4u/trunk</url>
 	</scm>
 	<distributionManagement>
 		<site>

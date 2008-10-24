@@ -2,16 +2,16 @@ package de.objectcode.time4u.server.web.ui.user;
 
 import java.sql.Date;
 import java.util.Calendar;
-import java.util.List;
 
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Create;
+import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 
 import de.objectcode.time4u.server.ejb.seam.api.IWorkItemServiceLocal;
-import de.objectcode.time4u.server.ejb.seam.api.WorkItemData;
+import de.objectcode.time4u.server.ejb.seam.api.WorkItemList;
 
 @Name("user.workItemListController")
 @Scope(ScopeType.CONVERSATION)
@@ -52,7 +52,8 @@ public class WorkItemListController
     m_year = year;
   }
 
-  public List<WorkItemData> getWorkItems()
+  @Factory(value = "user.workItemList", scope = ScopeType.EVENT)
+  public WorkItemList getWorkItems()
   {
     final Calendar calendar = Calendar.getInstance();
     calendar.clear();

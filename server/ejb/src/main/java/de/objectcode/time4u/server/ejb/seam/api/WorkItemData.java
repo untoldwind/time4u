@@ -46,6 +46,11 @@ public class WorkItemData
     return m_end;
   }
 
+  public int getDuration()
+  {
+    return m_end - m_begin;
+  }
+
   public String getComment()
   {
     return m_comment;
