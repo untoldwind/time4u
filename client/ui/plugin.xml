@@ -630,6 +630,12 @@
             <groupMarker
                   name="timePolicyGroup">
             </groupMarker>
+            <separator
+                  name="time4u-client-ui.separator1">
+            </separator>
+            <groupMarker
+                  name="tagsGroup">
+            </groupMarker>
          </menu>
          <action
                class="de.objectcode.time4u.client.ui.actions.WorkItemActionDelegate"
@@ -799,6 +805,27 @@
                menubarPath="workItemMenu/timePolicyGroup"
                style="push"
                tooltip="%action.timepolicy.manage.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.DayInfoActionDelegate"
+               icon="icons/DayInfoTags.gif"
+               id="de.objectcode.time4u.client.ui.tags"
+               label="%action.dayInfo.tags.label"
+               menubarPath="workItemMenu/tagsGroup"
+               style="pulldown"
+               toolbarPath="dayInfo/additions"
+               tooltip="%action.dayInfo.tags.tooltip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+                  </objectClass>
+                  <objectState
+                        name="has"
+                        value="CALENDARDAY">
+                  </objectState>
+               </and>
+            </enablement>
          </action>
       </actionSet>
       <actionSet

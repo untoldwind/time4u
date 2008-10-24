@@ -23,21 +23,26 @@ public class TimePolicyActionDelegate implements IWorkbenchWindowActionDelegate,
   IWorkbenchWindow m_window;
   IAdaptable m_selection;
 
-  public void dispose()
-  {
-  }
-
+  /**
+   * {@inheritDoc}
+   */
   public void init(final IWorkbenchWindow window)
   {
     m_shellProvider = new SameShellProvider(window.getShell());
     m_window = window;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void init(final IViewPart view)
   {
     m_shellProvider = view.getSite();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void run(final IAction action)
   {
     final String id = action.getId();
@@ -80,6 +85,9 @@ public class TimePolicyActionDelegate implements IWorkbenchWindowActionDelegate,
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void selectionChanged(final IAction action, final ISelection selection)
   {
     if (selection instanceof IAdaptable) {
@@ -94,4 +102,10 @@ public class TimePolicyActionDelegate implements IWorkbenchWindowActionDelegate,
 
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  public void dispose()
+  {
+  }
 }

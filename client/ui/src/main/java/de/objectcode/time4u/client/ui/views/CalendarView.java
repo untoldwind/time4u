@@ -131,7 +131,6 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
         } catch (final Exception e) {
           UIPlugin.getDefault().log(e);
         }
-
       }
     });
 

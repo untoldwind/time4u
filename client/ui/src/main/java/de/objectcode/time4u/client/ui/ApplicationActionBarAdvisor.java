@@ -108,6 +108,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     coolBar.add(new ToolBarContributionItem(taskToolBarManager, "task"));
     final IToolBarManager workItemToolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
     coolBar.add(new ToolBarContributionItem(workItemToolbar, "workItem"));
+    final IToolBarManager dayInfoToolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
+    coolBar.add(new ToolBarContributionItem(dayInfoToolbar, "dayInfo"));
     //    toolbar.add(openViewAction);
     //    toolbar.add(messagePopupAction);
   }
