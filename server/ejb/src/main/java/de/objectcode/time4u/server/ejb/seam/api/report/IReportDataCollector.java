@@ -5,4 +5,6 @@ public interface IReportDataCollector
   ReportResult getReportResult();
 
   void collect(final IRowDataAdapter rowData);
+
+  void finish();
 }

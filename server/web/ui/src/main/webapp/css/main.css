@@ -165,3 +165,7 @@ tr.reportEven {
 tr.reportOdd {
 	background-color:#DDDDDD;
 }
+
+tr.reportFooter {
+	background-color:#F1F1F1;
+}

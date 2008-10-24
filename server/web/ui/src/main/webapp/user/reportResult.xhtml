@@ -9,6 +9,8 @@
 	<ui:define name="contentDetail">
 		<h:form>
 			<a4j:commandLink action="#{user.reportController.back}" value="Back"/>
+			<div>	#{user.reportResult}		#{user.reportResult.hasAggregates}</div>
+			
 			<table class="report">
 				<thead class="report reportHeader">
 					<tr class="report reportHeader">
@@ -53,6 +55,18 @@
 								value="#{user.reportResult.groupByColumns.size()}" />
 						</ui:include>
 					</ui:repeat>
+					<ui:fragment rendered="#{user.reportResult.hasAggregates}">
+						<tr class="report reportFooter">
+							<ui:repeat value="#{user.reportResult.columns}"
+								var="column">
+								<td
+									class="report reportFooter">
+									<h:outputText value="#{user.reportResult.aggregates[column.index]}"
+										converter="#{user.reportConverters.get(column.columnType)}" />
+								</td>
+							</ui:repeat>
+						</tr>
+					</ui:fragment>
 				</tbody>
 			</table>
 		</h:form>

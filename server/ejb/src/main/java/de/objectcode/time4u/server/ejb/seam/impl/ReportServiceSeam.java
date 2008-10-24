@@ -102,6 +102,7 @@ public class ReportServiceSeam implements IReportServiceLocal
 
       dataCollector.collect(rowDataAdapter);
     }
+    dataCollector.finish();
     m_manager.clear();
 
     return dataCollector.getReportResult();

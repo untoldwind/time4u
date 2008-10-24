@@ -88,7 +88,7 @@ public class WorkItemReportDefinition extends BaseReportDefinition
   @Override
   public IReportDataCollector createDataCollector()
   {
-    return new ListReportDataCollector(m_name, m_projections, m_groupByDefinitions);
+    return new ListReportDataCollector(m_name, m_projections, m_aggregate, m_groupByDefinitions);
   }
 
 }
