@@ -2,6 +2,8 @@ package de.objectcode.time4u.migrator.server05;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -35,8 +37,10 @@ import de.objectcode.time4u.server.entities.TaskEntity;
 import de.objectcode.time4u.server.entities.TaskMetaPropertyEntity;
 import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.TeamMetaPropertyEntity;
+import de.objectcode.time4u.server.entities.TimePolicyEntity;
 import de.objectcode.time4u.server.entities.TodoEntity;
 import de.objectcode.time4u.server.entities.TodoMetaPropertyEntity;
+import de.objectcode.time4u.server.entities.WeekTimePolicyEntity;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 import de.objectcode.time4u.server.entities.account.UserRoleEntity;
@@ -53,7 +57,7 @@ public class Migrator
   SessionFactory m_newSessionFactory;
   List<IMigratorPart> m_migratorParts;
 
-  Migrator()
+  Migrator() throws Exception
   {
     m_oldSessionFactory = buildOldSessionFactory();
     m_newSessionFactory = buildNewSessionFactory();
@@ -66,11 +70,18 @@ public class Migrator
     m_migratorParts.add(new WorkItemMigrator());
   }
 
-  private SessionFactory buildNewSessionFactory()
+  private SessionFactory buildNewSessionFactory() throws Exception
   {
     final AnnotationConfiguration cfg = new AnnotationConfiguration();
 
     cfg.configure("new-version.cfg.xml");
+
+    final Properties properties = new Properties();
+
+    properties.load(getClass().getClassLoader().getResourceAsStream("new-version.properties"));
+    for (final Map.Entry<Object, Object> entry : properties.entrySet()) {
+      cfg.setProperty(entry.getKey().toString(), entry.getValue().toString());
+    }
 
     cfg.addAnnotatedClass(RevisionEntity.class);
     cfg.addAnnotatedClass(LocalIdEntity.class);
@@ -94,15 +105,24 @@ public class Migrator
     cfg.addAnnotatedClass(ClientEntity.class);
     cfg.addAnnotatedClass(UserAccountEntity.class);
     cfg.addAnnotatedClass(UserRoleEntity.class);
+    cfg.addAnnotatedClass(TimePolicyEntity.class);
+    cfg.addAnnotatedClass(WeekTimePolicyEntity.class);
 
     return cfg.buildSessionFactory();
   }
 
-  private SessionFactory buildOldSessionFactory()
+  private SessionFactory buildOldSessionFactory() throws Exception
   {
     final AnnotationConfiguration cfg = new AnnotationConfiguration();
 
     cfg.configure("old-version.cfg.xml");
+
+    final Properties properties = new Properties();
+
+    properties.load(getClass().getClassLoader().getResourceAsStream("old-version.properties"));
+    for (final Map.Entry<Object, Object> entry : properties.entrySet()) {
+      cfg.setProperty(entry.getKey().toString(), entry.getValue().toString());
+    }
 
     cfg.addAnnotatedClass(OldProjects.class);
     cfg.addAnnotatedClass(OldTasks.class);
@@ -139,8 +159,12 @@ public class Migrator
 
   public static void main(final String args[])
   {
-    final Migrator migrator = new Migrator();
+    try {
+      final Migrator migrator = new Migrator();
 
-    migrator.run();
+      migrator.run();
+    } catch (final Exception e) {
+      e.printStackTrace();
+    }
   }
 }
