@@ -23,6 +23,9 @@ public interface IRepository
   /** Get the task repository. */
   ITaskRepository getTaskRepository();
 
+  /** Get the todo repository. */
+  ITodoRepository getTodoRepository();
+
   /** Get the workitem repository */
   IWorkItemRepository getWorkItemRepository();
 

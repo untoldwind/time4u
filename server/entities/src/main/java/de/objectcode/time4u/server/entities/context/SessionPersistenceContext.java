@@ -6,6 +6,7 @@ import de.objectcode.time4u.server.entities.DayTagEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
+import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.TodoEntity;
 
 public class SessionPersistenceContext implements IPersistenceContext
@@ -80,6 +81,19 @@ public class SessionPersistenceContext implements IPersistenceContext
     }
 
     return todo;
+  }
+
+  public TeamEntity findTeam(final String teamId, final long clientId)
+  {
+    TeamEntity team = (TeamEntity) m_session.get(TeamEntity.class, teamId);
+
+    if (team == null) {
+      team = new TeamEntity(teamId, -1L, clientId, teamId);
+
+      m_session.persist(team);
+    }
+
+    return team;
   }
 
   public DayTagEntity findDayTag(final String name)

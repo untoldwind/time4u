@@ -82,6 +82,7 @@ public class HibernateRepository implements IRepository
   private final HibernatePersonRepository m_personRepository;
   private final HibernateProjectRepository m_projectRepository;
   private final HibernateTaskRepository m_taskRepository;
+  private final HibernateTodoRepository m_todoRepository;
   private final HibernateWorkItemRepository m_workItemRepository;
   private final HibernateStatisticRepository m_statisticRepository;
   private final HibernateServerConnectionRepository m_serverConnectionRepository;
@@ -99,6 +100,7 @@ public class HibernateRepository implements IRepository
     m_personRepository = new HibernatePersonRepository(this, m_hibernateTemplate);
     m_projectRepository = new HibernateProjectRepository(this, m_hibernateTemplate);
     m_taskRepository = new HibernateTaskRepository(this, m_hibernateTemplate);
+    m_todoRepository = new HibernateTodoRepository(this, m_hibernateTemplate);
     m_workItemRepository = new HibernateWorkItemRepository(this, m_hibernateTemplate);
     m_statisticRepository = new HibernateStatisticRepository(this, m_hibernateTemplate);
     m_serverConnectionRepository = new HibernateServerConnectionRepository(this, m_hibernateTemplate);
@@ -128,6 +130,14 @@ public class HibernateRepository implements IRepository
   public ITaskRepository getTaskRepository()
   {
     return MonitoringProxy.getMonitoringProxy(ITaskRepository.class, m_taskRepository);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public HibernateTodoRepository getTodoRepository()
+  {
+    return m_todoRepository;
   }
 
   /**

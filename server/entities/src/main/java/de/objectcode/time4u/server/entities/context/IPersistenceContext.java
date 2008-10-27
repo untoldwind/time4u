@@ -4,6 +4,7 @@ import de.objectcode.time4u.server.entities.DayTagEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
+import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.TodoEntity;
 
 /**
@@ -48,6 +49,8 @@ public interface IPersistenceContext
    * @return The person with id <tt>personId</tt>
    */
   PersonEntity findPerson(String personId, long clientId);
+
+  TeamEntity findTeam(String teamId, long clientId);
 
   DayTagEntity findDayTag(String name);
 

@@ -3,14 +3,16 @@ package de.objectcode.time4u.server.entities;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
@@ -18,6 +20,7 @@ import javax.persistence.Table;
 
 import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.Todo;
+import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 
 /**
  * Todo entity.
@@ -52,6 +55,12 @@ public class TodoEntity
   private Date m_completedAt;
   /** Deadline of the todo (optional) */
   private Date m_deadline;
+  /** Estimated time. */
+  private Integer m_estimatedTime;
+  /** Depends on todos. */
+  private Set<TodoEntity> m_dependsOn;
+  /** Todos depending on this one. */
+  private Set<TodoEntity> m_dependents;
   /** All meta properties of the todo. */
   private Map<String, TodoMetaPropertyEntity> m_metaProperties;
   /** Revision number (increased every time something has changed) */
@@ -210,6 +219,39 @@ public class TodoEntity
     m_task = task;
   }
 
+  public Integer getEstimatedTime()
+  {
+    return m_estimatedTime;
+  }
+
+  public void setEstimatedTime(final Integer estimatedTime)
+  {
+    m_estimatedTime = estimatedTime;
+  }
+
+  @ManyToMany(fetch = FetchType.LAZY)
+  public Set<TodoEntity> getDependsOn()
+  {
+    return m_dependsOn;
+  }
+
+  public void setDependsOn(final Set<TodoEntity> dependsOn)
+  {
+    m_dependsOn = dependsOn;
+  }
+
+  @ManyToMany(fetch = FetchType.LAZY, mappedBy = "dependsOn")
+  @JoinTable(name = "T4U_TODOS_DEPENDS", joinColumns = { @JoinColumn(name = "dependent_id") }, inverseJoinColumns = { @JoinColumn(name = "dependsOn_id") })
+  public Set<TodoEntity> getDependents()
+  {
+    return m_dependents;
+  }
+
+  public void setDependents(final Set<TodoEntity> dependents)
+  {
+    m_dependents = dependents;
+  }
+
   @MapKey(name = "name")
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "entityId")
   public Map<String, TodoMetaPropertyEntity> getMetaProperties()
@@ -242,27 +284,27 @@ public class TodoEntity
     m_lastModifiedByClient = lastModifiedByClient;
   }
 
-  public void fromDTO(final EntityManager entityManager, final Todo todo)
+  public void fromDTO(final IPersistenceContext context, final Todo todo)
   {
     m_lastModifiedByClient = todo.getLastModifiedByClient();
-    m_task = entityManager.find(TaskEntity.class, todo.getTaskId());
+    m_task = context.findTask(todo.getTaskId(), todo.getLastModifiedByClient());
     m_createdAt = todo.getCreatedAt();
     m_header = todo.getHeader();
     m_description = todo.getDescription();
     m_priority = todo.getPriority();
 
     if (todo.getReporterId() != null) {
-      m_reporter = entityManager.find(PersonEntity.class, todo.getReporterId());
+      m_reporter = context.findPerson(todo.getReporterId(), todo.getLastModifiedByClient());
     } else {
       m_reporter = null;
     }
     if (todo.getAssignedToPersonId() != null) {
-      m_assignedToPerson = entityManager.find(PersonEntity.class, todo.getAssignedToPersonId());
+      m_assignedToPerson = context.findPerson(todo.getAssignedToPersonId(), todo.getLastModifiedByClient());
     } else {
       m_assignedToPerson = null;
     }
     if (todo.getAssignedToTeamId() != null) {
-      m_assignedToTeam = entityManager.find(TeamEntity.class, todo.getAssignedToTeamId());
+      m_assignedToTeam = context.findTeam(todo.getAssignedToTeamId(), todo.getLastModifiedByClient());
     } else {
       m_assignedToTeam = null;
     }
