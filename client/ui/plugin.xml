@@ -102,7 +102,7 @@
             name="Time4U">
          <property
                name="aboutText"
-               value="Time4U client 0.9.3">
+               value="Time4U client 0.9.4">
          </property>
          <property
                name="windowImages"

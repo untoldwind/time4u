@@ -2,7 +2,7 @@
 <feature
       id="de.objectcode.time4u.client.feature"
       label="Time4U feature"
-      version="0.9.3"
+      version="0.9.4"
       provider-name="objectcode.de"
       plugin="de.objectcode.time4u.client.ui">
 
@@ -22,28 +22,28 @@
          id="de.objectcode.time4u.client.connection"
          download-size="0"
          install-size="0"
-         version="0.9.3"
+         version="0.9.4"
          unpack="false"/>
 
    <plugin
          id="de.objectcode.time4u.client.store"
          download-size="0"
          install-size="0"
-         version="0.9.3"
+         version="0.9.4"
          unpack="false"/>
 
    <plugin
          id="de.objectcode.time4u.client.ui"
          download-size="0"
          install-size="0"
-         version="0.9.3"
+         version="0.9.4"
          unpack="false"/>
 
    <plugin
          id="de.objectcode.time4u.client.connection.ui"
          download-size="0"
          install-size="0"
-         version="0.9.3"
+         version="0.9.4"
          unpack="false"/>
 
 </feature>
