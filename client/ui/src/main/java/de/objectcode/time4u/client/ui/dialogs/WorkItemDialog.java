@@ -35,7 +35,6 @@ import de.objectcode.time4u.client.ui.provider.TaskContentProvider;
 import de.objectcode.time4u.client.ui.provider.TaskLabelProvider;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
-import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.data.WorkItem;
@@ -256,8 +255,8 @@ public class WorkItemDialog extends Dialog
     if (projectSelection instanceof IStructuredSelection) {
       final Object obj = ((IStructuredSelection) projectSelection).getFirstElement();
 
-      if (obj != null && obj instanceof Project) {
-        m_workItem.setProjectId(((Project) obj).getId());
+      if (obj != null && obj instanceof ProjectSummary) {
+        m_workItem.setProjectId(((ProjectSummary) obj).getId());
       }
     }
     final ISelection taskSelection = m_taskViewer.getSelection();
