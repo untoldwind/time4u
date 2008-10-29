@@ -289,7 +289,7 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
 
       final DayInfo dayInfo = RepositoryFactory.getRepository().getWorkItemRepository().getDayInfo(m_currentDay);
 
-      if (dayInfo.getWorkItems() != null) {
+      if (dayInfo != null && dayInfo.getWorkItems() != null) {
         for (final WorkItem workItem : dayInfo.getWorkItems()) {
           if (workItem.getBegin() > maxTime) {
             maxTime = workItem.getBegin();
@@ -299,6 +299,12 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
             maxTime = workItem.getEnd();
           }
         }
+      } else {
+        final Calendar calendar = Calendar.getInstance();
+        final int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        final int minute = calendar.get(Calendar.MINUTE);
+
+        maxTime = hour * 3600 + minute * 60;
       }
 
       final WorkItem workItem = new WorkItem();
