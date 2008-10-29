@@ -685,6 +685,7 @@
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.WorkItemActionDelegate"
+               definitionId="de.objectcode.time4u.client.ui.workitem.edit"
                icon="icons/WorkItem.gif"
                id="de.objectcode.time4u.client.ui.workitem.edit"
                label="%action.workItem.edit.label"

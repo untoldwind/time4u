@@ -2,12 +2,16 @@ package de.objectcode.time4u.client.ui.views;
 
 import java.util.Calendar;
 
+import org.eclipse.core.commands.Command;
+import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
@@ -23,6 +27,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.ViewPart;
 
@@ -31,6 +36,7 @@ import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
 import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
 import de.objectcode.time4u.client.store.api.event.WorkItemRepositoryEvent;
+import de.objectcode.time4u.client.ui.ICommandIds;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.controls.ComboViewerCellEditor;
 import de.objectcode.time4u.client.ui.controls.TimeComboCellEditor;
@@ -138,6 +144,21 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
         doDropTask((TaskTransfer.ProjectTask) event.data);
       }
     });
+    m_tableViewer.addDoubleClickListener(new IDoubleClickListener() {
+      public void doubleClick(final DoubleClickEvent event)
+      {
+        try {
+          final ICommandService commandService = (ICommandService) getSite().getWorkbenchWindow().getWorkbench()
+              .getService(ICommandService.class);
+          final Command command = commandService.getCommand(ICommandIds.CMD_WORKITEM_EDIT);
+
+          command.executeWithChecks(new ExecutionEvent());
+        } catch (final Exception e) {
+          UIPlugin.getDefault().log(e);
+        }
+      }
+    });
+
     final MenuManager menuMgr = new MenuManager();
     menuMgr.add(new GroupMarker("newGroup"));
     menuMgr.add(new Separator());
