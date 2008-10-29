@@ -117,7 +117,7 @@ public class HibernateWorkItemRepositoryTest
   public Object[][] getWorkItems() throws Exception
   {
     final List<TaskSummary> taskSummaries = repository.getTaskRepository().getTaskSummaries(
-        new TaskFilter(null, null, null, null, TaskFilter.Order.ID));
+        new TaskFilter(null, null, null, null, null, TaskFilter.Order.ID));
 
     assertNotNull(taskSummaries);
     assertEquals(taskSummaries.size(), 90);

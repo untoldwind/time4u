@@ -58,13 +58,13 @@ public class HibernateTaskRepositoryTest
   public void testFind() throws Exception
   {
     final List<TaskSummary> taskSummaries = repository.getTaskRepository().getTaskSummaries(
-        new TaskFilter(null, null, null, null, TaskFilter.Order.ID));
+        new TaskFilter(null, null, null, null, null, TaskFilter.Order.ID));
 
     assertNotNull(taskSummaries);
     assertEquals(taskSummaries.size(), 90);
 
     final List<ProjectSummary> projectSummaries = repository.getProjectRepository().getProjectSumaries(
-        new ProjectFilter(null, null, null, null, Order.ID));
+        new ProjectFilter(null, null, null, null, null, Order.ID));
 
     assertNotNull(projectSummaries);
     assertEquals(projectSummaries.size(), 30);
@@ -83,7 +83,7 @@ public class HibernateTaskRepositoryTest
   public Object[][] getTasks() throws Exception
   {
     final List<ProjectSummary> projectSummaries = repository.getProjectRepository().getProjectSumaries(
-        new ProjectFilter(null, null, null, null, Order.ID));
+        new ProjectFilter(null, null, null, null, null, Order.ID));
 
     assertNotNull(projectSummaries);
     assertEquals(projectSummaries.size(), 30);

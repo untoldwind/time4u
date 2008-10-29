@@ -20,6 +20,10 @@
 		<servlet-class>de.objectcode.time4u.server.web.ws.PersonServiceWS</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>TeamServiceWS</servlet-name>
+		<servlet-class>de.objectcode.time4u.server.web.ws.TeamServiceWS</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>RevisionServiceWS</servlet-name>
 		<servlet-class>de.objectcode.time4u.server.web.ws.RevisionServiceWS</servlet-class>
 	</servlet>
@@ -40,6 +44,7 @@
 		<servlet-name>PingServiceWS</servlet-name>
 		<url-pattern>/PingService</url-pattern>
 	</servlet-mapping>
+
 	<servlet-mapping>
 		<servlet-name>PingServiceWS</servlet-name>
 		<url-pattern>/secure/PingService</url-pattern>
@@ -53,6 +58,11 @@
 	<servlet-mapping>
 		<servlet-name>PersonServiceWS</servlet-name>
 		<url-pattern>/secure/PersonService</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>TeamServiceWS</servlet-name>
+		<url-pattern>/secure/TeamService</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -13,6 +14,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author junglas
  */
 @XmlType(name = "team")
+@XmlRootElement(name = "team")
 public class Team extends TeamSummary
 {
   private static final long serialVersionUID = -2393342879169250933L;

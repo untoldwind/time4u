@@ -5,7 +5,9 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
+import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Team;
+import de.objectcode.time4u.server.api.filter.TeamFilter;
 
 /**
  * Remote team service interface.
@@ -17,11 +19,14 @@ import de.objectcode.time4u.server.api.data.Team;
 public interface ITeamService
 {
   /**
-   * Store a team. This method either inserts a new teams or updates an existing one.
+   * Get all teams matching a filter condition.
    * 
-   * @param team
-   *          The team to be stored
+   * @param filter
+   *          The filter condition
+   * @return A tasks matching <tt>filter</tt>
+   * @throws RepositoryException
+   *           on error
    */
   @WebMethod
-  Team storeTeam(Team team);
+  FilterResult<Team> getTeams(TeamFilter filter);
 }

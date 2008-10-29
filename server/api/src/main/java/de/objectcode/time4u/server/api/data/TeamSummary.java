@@ -1,5 +1,6 @@
 package de.objectcode.time4u.server.api.data;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -8,6 +9,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author junglas
  */
 @XmlType(name = "team-summary")
+@XmlRootElement(name = "team-summary")
 public class TeamSummary implements ISynchronizableData
 {
   private static final long serialVersionUID = 2474866300948380742L;

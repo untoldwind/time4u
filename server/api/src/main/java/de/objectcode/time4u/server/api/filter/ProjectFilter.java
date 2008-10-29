@@ -34,12 +34,13 @@ public class ProjectFilter implements Serializable
     m_order = Order.ID;
   }
 
-  public ProjectFilter(final Boolean active, final Boolean deleted, final Long minRevision, final String parentProject,
-      final Order order)
+  public ProjectFilter(final Boolean active, final Boolean deleted, final Long minRevision, final Long maxRevision,
+      final String parentProject, final Order order)
   {
     m_active = active;
     m_deleted = deleted;
     m_minRevision = minRevision;
+    m_maxRevision = maxRevision;
     m_parentProject = parentProject;
     m_order = order;
   }
@@ -139,7 +140,7 @@ public class ProjectFilter implements Serializable
    */
   public static ProjectFilter filterRootProjects(final boolean onlyActive)
   {
-    return new ProjectFilter(onlyActive ? true : null, false, null, "", Order.NAME);
+    return new ProjectFilter(onlyActive ? true : null, false, null, null, "", Order.NAME);
   }
 
   /**
@@ -153,7 +154,7 @@ public class ProjectFilter implements Serializable
    */
   public static ProjectFilter filterChildProjects(final String parentProjectId, final boolean onlyActive)
   {
-    return new ProjectFilter(onlyActive ? true : null, false, null, parentProjectId, Order.NAME);
+    return new ProjectFilter(onlyActive ? true : null, false, null, null, parentProjectId, Order.NAME);
   }
 
   public static enum Order

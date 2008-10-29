@@ -36,7 +36,7 @@ public interface ITaskRepository
   TaskSummary getTaskSummary(String taskId) throws RepositoryException;
 
   /**
-   * Get all taks matching a filter condition.
+   * Get all tasks matching a filter condition.
    * 
    * @param filter
    *          The filter condition
@@ -47,7 +47,7 @@ public interface ITaskRepository
   List<Task> getTasks(TaskFilter filter) throws RepositoryException;
 
   /**
-   * Get all taks matching a filter condition.
+   * Get all tasks matching a filter condition.
    * 
    * @param filter
    *          The filter condition

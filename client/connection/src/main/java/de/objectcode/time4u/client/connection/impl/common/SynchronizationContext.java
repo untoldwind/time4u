@@ -4,9 +4,11 @@ import java.util.Map;
 
 import de.objectcode.time4u.client.store.api.IRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
+import de.objectcode.time4u.server.api.IPersonService;
 import de.objectcode.time4u.server.api.IProjectService;
 import de.objectcode.time4u.server.api.IRevisionService;
 import de.objectcode.time4u.server.api.ITaskService;
+import de.objectcode.time4u.server.api.ITeamService;
 import de.objectcode.time4u.server.api.IWorkItemService;
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.SynchronizationStatus;
@@ -28,16 +30,21 @@ public class SynchronizationContext
   private final IProjectService m_projectService;
   private final ITaskService m_taskService;
   private final IWorkItemService m_workItemService;
+  private final IPersonService m_personService;
+  private final ITeamService m_teamService;
 
   public SynchronizationContext(final IRepository repository, final long serverConnectionId,
       final IRevisionService revisionService, final IProjectService projectService, final ITaskService taskService,
-      final IWorkItemService workItemService) throws RepositoryException
+      final IWorkItemService workItemService, final IPersonService personService, final ITeamService teamService)
+      throws RepositoryException
   {
     m_repository = repository;
     m_serverConnectionId = serverConnectionId;
     m_projectService = projectService;
     m_taskService = taskService;
     m_workItemService = workItemService;
+    m_personService = personService;
+    m_teamService = teamService;
 
     m_synchronizationStatus = m_repository.getServerConnectionRepository().getSynchronizationStatus(
         m_serverConnectionId);
@@ -85,4 +92,13 @@ public class SynchronizationContext
     return m_workItemService;
   }
 
+  public IPersonService getPersonService()
+  {
+    return m_personService;
+  }
+
+  public ITeamService getTeamService()
+  {
+    return m_teamService;
+  }
 }

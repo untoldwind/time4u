@@ -34,6 +34,7 @@ import de.objectcode.time4u.server.api.IPingService;
 import de.objectcode.time4u.server.api.IProjectService;
 import de.objectcode.time4u.server.api.IRevisionService;
 import de.objectcode.time4u.server.api.ITaskService;
+import de.objectcode.time4u.server.api.ITeamService;
 import de.objectcode.time4u.server.api.IWorkItemService;
 import de.objectcode.time4u.server.api.data.Person;
 import de.objectcode.time4u.server.api.data.PingResult;
@@ -52,6 +53,7 @@ public class WSConnection implements IConnection
   private final ILoginService m_loginService;
   private final IRevisionService m_revisionService;
   private final IPersonService m_personService;
+  private final ITeamService m_teamService;
   private final IProjectService m_projectService;
   private final ITaskService m_taskService;
   private final IWorkItemService m_workItemService;
@@ -76,6 +78,7 @@ public class WSConnection implements IConnection
     m_loginService = getServicePort("LoginService", ILoginService.class, false);
     m_revisionService = getServicePort("RevisionService", IRevisionService.class, true);
     m_personService = getServicePort("PersonService", IPersonService.class, true);
+    m_teamService = getServicePort("TeamService", ITeamService.class, true);
     m_projectService = getServicePort("ProjectService", IProjectService.class, true);
     m_taskService = getServicePort("TaskService", ITaskService.class, true);
     m_workItemService = getServicePort("WorkItemService", IWorkItemService.class, true);
@@ -173,7 +176,8 @@ public class WSConnection implements IConnection
 
     try {
       final SynchronizationContext context = new SynchronizationContext(RepositoryFactory.getRepository(),
-          m_serverConnection.getId(), m_revisionService, m_projectService, m_taskService, m_workItemService);
+          m_serverConnection.getId(), m_revisionService, m_projectService, m_taskService, m_workItemService,
+          m_personService, m_teamService);
 
       for (final ISynchronizationCommand command : m_synchronizationCommands) {
         if (monitor.isCanceled()) {

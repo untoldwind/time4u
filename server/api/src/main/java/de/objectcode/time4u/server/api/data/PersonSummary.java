@@ -3,6 +3,7 @@ package de.objectcode.time4u.server.api.data;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -11,6 +12,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author junglas
  */
 @XmlType(name = "person-summary")
+@XmlRootElement(name = "person-summary")
 public class PersonSummary implements ISynchronizableData
 {
   private static final long serialVersionUID = 2399244105597561898L;

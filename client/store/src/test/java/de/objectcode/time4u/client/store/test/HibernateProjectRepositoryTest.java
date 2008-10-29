@@ -78,7 +78,7 @@ public class HibernateProjectRepositoryTest
   public void testFind() throws Exception
   {
     List<ProjectSummary> projectSummaries = repository.getProjectRepository().getProjectSumaries(
-        new ProjectFilter(null, null, null, null, Order.ID));
+        new ProjectFilter(null, null, null, null, null, Order.ID));
 
     assertNotNull(projectSummaries);
     assertEquals(projectSummaries.size(), 30);

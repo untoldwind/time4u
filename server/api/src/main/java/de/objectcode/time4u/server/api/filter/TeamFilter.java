@@ -5,19 +5,15 @@ import java.io.Serializable;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * A filter condition for querying tasks.
+ * A filter condition for team queries.
  * 
  * @author junglas
  */
-@XmlType(name = "task-filter")
-public class TaskFilter implements Serializable
+@XmlType(name = "team-filter")
+public class TeamFilter implements Serializable
 {
-  private static final long serialVersionUID = 6557945403193307426L;
+  private static final long serialVersionUID = 9149340416608560743L;
 
-  /** Condition for the project (optional). */
-  String m_project;
-  /** Condition for the active flag (optional). */
-  Boolean m_active;
   /** Condition for the delete flag (optional). */
   Boolean m_deleted;
   /** Minimum (inclusive) revision number (i.e. only revisions greater or equals are returned). */
@@ -26,43 +22,20 @@ public class TaskFilter implements Serializable
   Long m_maxRevision;
   /** Client id of the last modification */
   Long m_lastModifiedByClient;
-  /** Desired order. */
+  /** Desired order */
   Order m_order;
 
-  public TaskFilter()
+  public TeamFilter()
   {
     m_order = Order.ID;
   }
 
-  public TaskFilter(final Boolean active, final Boolean deleted, final Long minRevision, final Long maxRevision,
-      final String project, final Order order)
+  public TeamFilter(final Boolean deleted, final Long minRevision, final Long maxRevision, final Order order)
   {
-    m_active = active;
     m_deleted = deleted;
     m_minRevision = minRevision;
     m_maxRevision = maxRevision;
-    m_project = project;
     m_order = order;
-  }
-
-  public String getProject()
-  {
-    return m_project;
-  }
-
-  public void setProject(final String project)
-  {
-    m_project = project;
-  }
-
-  public Boolean getActive()
-  {
-    return m_active;
-  }
-
-  public void setActive(final Boolean active)
-  {
-    m_active = active;
   }
 
   public Boolean getDeleted()
@@ -118,10 +91,8 @@ public class TaskFilter implements Serializable
   @Override
   public String toString()
   {
-    final StringBuffer buffer = new StringBuffer("TaskFilter(");
-    buffer.append("active=").append(m_active);
-    buffer.append(",deleted=").append(m_deleted);
-    buffer.append(",project=").append(m_project);
+    final StringBuffer buffer = new StringBuffer("TeamFilter(");
+    buffer.append("deleted=").append(m_deleted);
     buffer.append(",minRevision=").append(m_minRevision);
     buffer.append(",maxRevision=").append(m_maxRevision);
     buffer.append(",lastModifiedByClient=").append(m_lastModifiedByClient);
@@ -131,23 +102,9 @@ public class TaskFilter implements Serializable
     return buffer.toString();
   }
 
-  /**
-   * Convenient method to create a "only tasks of a given project" filter.
-   * 
-   * @param projectId
-   *          The id of the project
-   * @param onlyActive
-   *          <tt>true</tt> if only active tasks should be filters
-   * @return The desired filter condition
-   */
-  public static TaskFilter filterProjectTasks(final String projectId, final boolean onlyActive)
-  {
-    return new TaskFilter(onlyActive ? true : null, false, null, null, projectId, Order.NAME);
-  }
-
   public static enum Order
   {
     ID,
-    NAME;
+    NAME
   }
 }

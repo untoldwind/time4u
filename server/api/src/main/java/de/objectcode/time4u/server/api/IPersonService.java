@@ -5,7 +5,9 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
+import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Person;
+import de.objectcode.time4u.server.api.filter.PersonFilter;
 
 /**
  * Remote person service interface.
@@ -32,4 +34,16 @@ public interface IPersonService
    */
   @WebMethod
   boolean registerClient(long clientId);
+
+  /**
+   * Get all persons matching a filter condition.
+   * 
+   * @param filter
+   *          The filter condition
+   * @return A tasks matching <tt>filter</tt>
+   * @throws RepositoryException
+   *           on error
+   */
+  @WebMethod
+  FilterResult<Person> getPersons(PersonFilter filter);
 }

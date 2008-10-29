@@ -1,6 +1,10 @@
 package de.objectcode.time4u.client.store.api;
 
+import java.util.List;
+
 import de.objectcode.time4u.server.api.data.Person;
+import de.objectcode.time4u.server.api.data.PersonSummary;
+import de.objectcode.time4u.server.api.filter.PersonFilter;
 
 /**
  * Client side person repository interface.
@@ -9,6 +13,28 @@ import de.objectcode.time4u.server.api.data.Person;
  */
 public interface IPersonRepository
 {
+  /**
+   * Get all persons matching a filter condition.
+   * 
+   * @param filter
+   *          The filter condition
+   * @return A tasks matching <tt>filter</tt>
+   * @throws RepositoryException
+   *           on error
+   */
+  List<Person> getPersons(PersonFilter filter) throws RepositoryException;
+
+  /**
+   * Get all persons matching a filter condition.
+   * 
+   * @param filter
+   *          The filter condition
+   * @return A tasks matching <tt>filter</tt>
+   * @throws RepositoryException
+   *           on error
+   */
+  List<PersonSummary> getPersonSummaries(PersonFilter filter) throws RepositoryException;
+
   /**
    * Store information about a person.
    * 

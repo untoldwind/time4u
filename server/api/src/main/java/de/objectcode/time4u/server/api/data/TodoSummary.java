@@ -23,6 +23,8 @@ public class TodoSummary implements ISynchronizableData
   private String m_description;
   /** Optional server id of the person who created the todo. */
   private String m_reporterId;
+  /** Flag if this is a summary of a todo group. */
+  private boolean m_group;
   /** Todo group id */
   private String m_groupdId;
 
@@ -94,6 +96,16 @@ public class TodoSummary implements ISynchronizableData
   public boolean isDeleted()
   {
     return m_deleted;
+  }
+
+  public boolean isGroup()
+  {
+    return m_group;
+  }
+
+  public void setGroup(final boolean group)
+  {
+    m_group = group;
   }
 
   public String getGroupdId()

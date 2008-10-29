@@ -9,7 +9,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import de.objectcode.time4u.server.api.IPersonService;
+import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Person;
+import de.objectcode.time4u.server.api.filter.PersonFilter;
 
 @WebService(targetNamespace = "http://objectcode.de/time4u/api/ws", endpointInterface = "de.objectcode.time4u.server.api.IPersonService")
 @SOAPBinding(style = Style.RPC)
@@ -35,6 +37,17 @@ public class PersonServiceWS implements IPersonService
 
   public boolean registerClient(final long clientId)
   {
+    if (LOG.isInfoEnabled()) {
+      LOG.info("registerClient: " + clientId);
+    }
     return m_personService.registerClient(clientId);
+  }
+
+  public FilterResult<Person> getPersons(final PersonFilter filter)
+  {
+    if (LOG.isInfoEnabled()) {
+      LOG.info("getPersons: " + filter);
+    }
+    return m_personService.getPersons(filter);
   }
 }
