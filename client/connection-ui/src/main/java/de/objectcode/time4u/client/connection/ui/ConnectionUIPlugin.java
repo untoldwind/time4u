@@ -14,12 +14,15 @@ import org.osgi.framework.BundleContext;
 import de.objectcode.time4u.client.connection.ui.dialogs.ExceptionDialog;
 import de.objectcode.time4u.client.connection.ui.jobs.SynchronizeJob;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
+import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
+import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
+import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
 import de.objectcode.time4u.server.api.data.ServerConnection;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class ConnectionUIPlugin extends AbstractUIPlugin
+public class ConnectionUIPlugin extends AbstractUIPlugin implements IRepositoryListener
 {
 
   // The plug-in ID
@@ -55,9 +58,12 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
 
       m_synchronizeJobs.put(serverConnection.getId(), job);
     }
+    RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.SERVER_CONNECTION, this);
 
-    for (final SynchronizeJob job : m_synchronizeJobs.values()) {
-      job.reschedule();
+    synchronized (m_synchronizeJobs) {
+      for (final SynchronizeJob job : m_synchronizeJobs.values()) {
+        job.reschedule();
+      }
     }
   }
 
@@ -67,6 +73,7 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
   @Override
   public void stop(final BundleContext context) throws Exception
   {
+    RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.SERVER_CONNECTION, this);
     plugin = null;
     super.stop(context);
   }
@@ -83,7 +90,9 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
 
   public SynchronizeJob getSynchronizeJob(final long serverConnectionId)
   {
-    return m_synchronizeJobs.get(serverConnectionId);
+    synchronized (m_synchronizeJobs) {
+      return m_synchronizeJobs.get(serverConnectionId);
+    }
   }
 
   public String getString(final String key)
@@ -115,6 +124,27 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
       }
     } catch (final Throwable ex) {
       getLog().log(new Status(Status.ERROR, PLUGIN_ID, Status.ERROR, e.toString(), ex));
+    }
+  }
+
+  public void handleRepositoryEvent(final RepositoryEvent event)
+  {
+    synchronized (m_synchronizeJobs) {
+      try {
+        m_synchronizeJobs.clear();
+
+        for (final ServerConnection serverConnection : RepositoryFactory.getRepository()
+            .getServerConnectionRepository().getServerConnections()) {
+          final SynchronizeJob job = new SynchronizeJob(serverConnection);
+
+          m_synchronizeJobs.put(serverConnection.getId(), job);
+        }
+      } catch (final Exception e) {
+        log(e);
+      }
+      for (final SynchronizeJob job : m_synchronizeJobs.values()) {
+        job.reschedule();
+      }
     }
   }
 
