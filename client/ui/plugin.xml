@@ -70,6 +70,13 @@
             name="%punchView.title"
             restorable="true">
       </view>
+      <view
+            class="de.objectcode.time4u.client.ui.views.TodoTreeView"
+            icon="icons/wrench.gif"
+            id="de.objectcode.time4u.client.ui.view.todoTree"
+            name="%todoView.label"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

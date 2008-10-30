@@ -27,6 +27,8 @@ public class TodoSummary implements ISynchronizableData
   private boolean m_group;
   /** Todo group id */
   private String m_groupdId;
+  /** State of the todo. */
+  private TodoState m_state;
 
   public String getId()
   {
@@ -116,6 +118,16 @@ public class TodoSummary implements ISynchronizableData
   public void setGroupdId(final String groupdId)
   {
     m_groupdId = groupdId;
+  }
+
+  public TodoState getState()
+  {
+    return m_state;
+  }
+
+  public void setState(final TodoState state)
+  {
+    m_state = state;
   }
 
 }
