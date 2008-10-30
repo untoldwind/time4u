@@ -17,6 +17,9 @@ public interface IRepository
   /** Get the person repository. */
   IPersonRepository getPersonRepository();
 
+  /** Get the team repository. */
+  ITeamRepository getTeamRepository();
+
   /** Get the project repository. */
   IProjectRepository getProjectRepository();
 

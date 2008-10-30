@@ -9,6 +9,7 @@ public enum RepositoryEventType
   ACTIVE_WORKITEM,
   TODO,
   PERSON,
+  TEAM,
   TIMEPOLICY,
   SERVER_CONNECTION
 }

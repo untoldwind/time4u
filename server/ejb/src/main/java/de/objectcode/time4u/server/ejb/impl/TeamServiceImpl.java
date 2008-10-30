@@ -1,7 +1,9 @@
 package de.objectcode.time4u.server.ejb.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.annotation.security.RolesAllowed;
@@ -19,6 +21,7 @@ import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Team;
 import de.objectcode.time4u.server.api.filter.TeamFilter;
 import de.objectcode.time4u.server.entities.TeamEntity;
+import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 
 @Stateless
 @Remote(ITeamService.class)
@@ -34,15 +37,30 @@ public class TeamServiceImpl implements ITeamService
   @RolesAllowed("user")
   public FilterResult<Team> getTeams(final TeamFilter filter)
   {
+    final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, m_sessionContext.getCallerPrincipal()
+        .getName());
+    final Set<String> allowedTeamIds = new HashSet<String>();
+
+    for (final TeamEntity team : userAccount.getPerson().getResponsibleFor()) {
+      allowedTeamIds.add(team.getId());
+    }
+    for (final TeamEntity team : userAccount.getPerson().getMemberOf()) {
+      allowedTeamIds.add(team.getId());
+    }
+
     final Query query = createQuery(filter);
     final List<Team> result = new ArrayList<Team>();
 
     for (final Object row : query.getResultList()) {
-      final Team team = new Team();
+      final TeamEntity teamEntity = (TeamEntity) row;
 
-      ((TeamEntity) row).toDTO(team);
+      if (allowedTeamIds.contains(teamEntity.getId())) {
+        final Team team = new Team();
 
-      result.add(team);
+        teamEntity.toDTO(team);
+
+        result.add(team);
+      }
     }
 
     return new FilterResult<Team>(result);

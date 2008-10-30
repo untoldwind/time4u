@@ -8,6 +8,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 import de.objectcode.time4u.client.ui.dialogs.PersonListDialog;
+import de.objectcode.time4u.client.ui.dialogs.TeamListDialog;
 
 public class TodoActionDelegate implements IWorkbenchWindowActionDelegate
 {
@@ -24,6 +25,10 @@ public class TodoActionDelegate implements IWorkbenchWindowActionDelegate
 
     if ("de.objectcode.time4u.client.ui.todo.person".equals(id)) {
       final PersonListDialog dialog = new PersonListDialog(m_shellProvider);
+
+      dialog.open();
+    } else if ("de.objectcode.time4u.client.ui.todo.team".equals(id)) {
+      final TeamListDialog dialog = new TeamListDialog(m_shellProvider);
 
       dialog.open();
     }

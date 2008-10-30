@@ -5,18 +5,18 @@ import java.util.Collection;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import de.objectcode.time4u.client.store.api.IPersonRepository;
+import de.objectcode.time4u.client.store.api.ITeamRepository;
 import de.objectcode.time4u.client.ui.UIPlugin;
-import de.objectcode.time4u.server.api.data.PersonSummary;
-import de.objectcode.time4u.server.api.filter.PersonFilter;
+import de.objectcode.time4u.server.api.data.TeamSummary;
+import de.objectcode.time4u.server.api.filter.TeamFilter;
 
-public class PersonContentProvider implements IStructuredContentProvider
+public class TeamContentProvider implements IStructuredContentProvider
 {
-  private final IPersonRepository m_personRepository;
+  private final ITeamRepository m_teamRepository;
 
-  public PersonContentProvider(final IPersonRepository personRepository)
+  public TeamContentProvider(final ITeamRepository teamRepository)
   {
-    m_personRepository = personRepository;
+    m_teamRepository = teamRepository;
   }
 
   /**
@@ -25,10 +25,10 @@ public class PersonContentProvider implements IStructuredContentProvider
   public Object[] getElements(final Object inputElement)
   {
     try {
-      final Collection<PersonSummary> persons = m_personRepository.getPersonSummaries(PersonFilter.filterAll());
+      final Collection<TeamSummary> teams = m_teamRepository.getTeamSummaries(TeamFilter.filterAll());
 
-      if (persons != null) {
-        return persons.toArray();
+      if (teams != null) {
+        return teams.toArray();
       }
     } catch (final Exception e) {
       UIPlugin.getDefault().log(e);

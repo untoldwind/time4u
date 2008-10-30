@@ -88,6 +88,11 @@ public class TeamFilter implements Serializable
     m_order = order;
   }
 
+  public static TeamFilter filterAll()
+  {
+    return new TeamFilter(false, 0L, null, Order.NAME);
+  }
+
   @Override
   public String toString()
   {

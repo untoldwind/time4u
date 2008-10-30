@@ -10,7 +10,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -23,6 +22,7 @@ import javax.persistence.Table;
 import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.Team;
 import de.objectcode.time4u.server.api.data.TeamSummary;
+import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 
 /**
  * Team entity.
@@ -225,7 +225,7 @@ public class TeamEntity
     }
   }
 
-  public void fromDTO(final EntityManager entityManager, final Team team)
+  public void fromDTO(final IPersistenceContext context, final Team team)
   {
     m_lastModifiedByClient = team.getLastModifiedByClient();
     m_name = team.getName();
@@ -238,7 +238,7 @@ public class TeamEntity
     m_owners.clear();
     if (team.getOwnerIds() != null) {
       for (final String id : team.getOwnerIds()) {
-        m_owners.add(entityManager.find(PersonEntity.class, id));
+        m_owners.add(context.findPerson(id, team.getLastModifiedByClient()));
       }
     }
 
@@ -249,7 +249,7 @@ public class TeamEntity
     m_members.clear();
     if (team.getMemberIds() != null) {
       for (final String id : team.getMemberIds()) {
-        m_members.add(entityManager.find(PersonEntity.class, id));
+        m_members.add(context.findPerson(id, team.getLastModifiedByClient()));
       }
     }
 

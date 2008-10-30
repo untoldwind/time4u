@@ -23,7 +23,7 @@ public class EntityManagerPersistenceContext implements IPersistenceContext
    */
   public PersonEntity findPerson(final String personId, final long clientId)
   {
-    PersonEntity person = m_manager.find(PersonEntity.class, PersonEntity.class);
+    PersonEntity person = m_manager.find(PersonEntity.class, personId);
 
     if (person == null) {
       person = new PersonEntity(personId, -1L, clientId);

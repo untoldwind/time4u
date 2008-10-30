@@ -25,6 +25,8 @@ import de.objectcode.time4u.client.store.api.IRepository;
 import de.objectcode.time4u.client.store.api.IServerConnectionRepository;
 import de.objectcode.time4u.client.store.api.IStatisticRepository;
 import de.objectcode.time4u.client.store.api.ITaskRepository;
+import de.objectcode.time4u.client.store.api.ITeamRepository;
+import de.objectcode.time4u.client.store.api.ITodoRepository;
 import de.objectcode.time4u.client.store.api.IWorkItemRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
@@ -83,6 +85,7 @@ public class HibernateRepository implements IRepository
   private final IKeyChainEncoder m_keyChainEncoder;
 
   private final HibernatePersonRepository m_personRepository;
+  private final HibernateTeamRepository m_teamRepository;
   private final HibernateProjectRepository m_projectRepository;
   private final HibernateTaskRepository m_taskRepository;
   private final HibernateTodoRepository m_todoRepository;
@@ -101,6 +104,7 @@ public class HibernateRepository implements IRepository
     initialize();
 
     m_personRepository = new HibernatePersonRepository(this, m_hibernateTemplate);
+    m_teamRepository = new HibernateTeamRepository(this, m_hibernateTemplate);
     m_projectRepository = new HibernateProjectRepository(this, m_hibernateTemplate);
     m_taskRepository = new HibernateTaskRepository(this, m_hibernateTemplate);
     m_todoRepository = new HibernateTodoRepository(this, m_hibernateTemplate);
@@ -122,6 +126,14 @@ public class HibernateRepository implements IRepository
   /**
    * {@inheritDoc}
    */
+  public ITeamRepository getTeamRepository()
+  {
+    return MonitoringProxy.getMonitoringProxy(ITeamRepository.class, m_teamRepository);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   public IProjectRepository getProjectRepository()
   {
     return MonitoringProxy.getMonitoringProxy(IProjectRepository.class, m_projectRepository);
@@ -138,9 +150,9 @@ public class HibernateRepository implements IRepository
   /**
    * {@inheritDoc}
    */
-  public HibernateTodoRepository getTodoRepository()
+  public ITodoRepository getTodoRepository()
   {
-    return m_todoRepository;
+    return MonitoringProxy.getMonitoringProxy(ITodoRepository.class, m_todoRepository);
   }
 
   /**

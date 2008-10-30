@@ -23,7 +23,7 @@ public class SessionPersistenceContext implements IPersistenceContext
    */
   public PersonEntity findPerson(final String personId, final long clientId)
   {
-    PersonEntity person = (PersonEntity) m_session.get(PersonEntity.class, PersonEntity.class);
+    PersonEntity person = (PersonEntity) m_session.get(PersonEntity.class, personId);
 
     if (person == null) {
       person = new PersonEntity(personId, -1L, clientId);

@@ -2,19 +2,19 @@ package de.objectcode.time4u.client.store.api;
 
 import java.util.List;
 
-import de.objectcode.time4u.server.api.data.Person;
-import de.objectcode.time4u.server.api.data.PersonSummary;
-import de.objectcode.time4u.server.api.filter.PersonFilter;
+import de.objectcode.time4u.server.api.data.Team;
+import de.objectcode.time4u.server.api.data.TeamSummary;
+import de.objectcode.time4u.server.api.filter.TeamFilter;
 
 /**
- * Client side person repository interface.
+ * Client side team repository interface.
  * 
  * @author junglas
  */
-public interface IPersonRepository
+public interface ITeamRepository
 {
   /**
-   * Get all persons matching a filter condition.
+   * Get all teams matching a filter condition.
    * 
    * @param filter
    *          The filter condition
@@ -22,10 +22,10 @@ public interface IPersonRepository
    * @throws RepositoryException
    *           on error
    */
-  List<Person> getPersons(PersonFilter filter) throws RepositoryException;
+  List<Team> getTeams(TeamFilter filter) throws RepositoryException;
 
   /**
-   * Get all persons matching a filter condition.
+   * Get all teams matching a filter condition.
    * 
    * @param filter
    *          The filter condition
@@ -33,13 +33,13 @@ public interface IPersonRepository
    * @throws RepositoryException
    *           on error
    */
-  List<PersonSummary> getPersonSummaries(PersonFilter filter) throws RepositoryException;
+  List<TeamSummary> getTeamSummaries(TeamFilter filter) throws RepositoryException;
 
   /**
-   * Store information about a person.
+   * Store information of a team.
    * 
-   * @param person
-   *          Information about a person.
+   * @param team
+   *          The team to be stored
    * @param modifiedByOwner
    *          <tt>true</tt> If the modification is done by the repository owner (in UI this should always be
    *          <tt>true</tt>)
@@ -47,6 +47,5 @@ public interface IPersonRepository
    * @throws RepositoryException
    *           on error
    */
-  void storePerson(Person person, boolean modifiedByOwner) throws RepositoryException;
-
+  void storeTeam(final Team team, final boolean modifiedByOwner) throws RepositoryException;
 }

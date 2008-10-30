@@ -2,7 +2,9 @@ package de.objectcode.time4u.server.ejb.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.annotation.security.RolesAllowed;
@@ -21,6 +23,7 @@ import de.objectcode.time4u.server.api.data.Person;
 import de.objectcode.time4u.server.api.filter.PersonFilter;
 import de.objectcode.time4u.server.entities.ClientEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
+import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 
 @Stateless
@@ -72,15 +75,33 @@ public class PersonServiceImpl implements IPersonService
   @RolesAllowed("user")
   public FilterResult<Person> getPersons(final PersonFilter filter)
   {
+    final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, m_sessionContext.getCallerPrincipal()
+        .getName());
+    final Set<String> allowedTeamIds = new HashSet<String>();
+
+    for (final TeamEntity team : userAccount.getPerson().getResponsibleFor()) {
+      allowedTeamIds.add(team.getId());
+    }
+    for (final TeamEntity team : userAccount.getPerson().getMemberOf()) {
+      allowedTeamIds.add(team.getId());
+    }
+
     final Query query = createQuery(filter);
     final List<Person> result = new ArrayList<Person>();
 
     for (final Object row : query.getResultList()) {
-      final Person person = new Person();
+      final PersonEntity personEntity = (PersonEntity) row;
 
-      ((PersonEntity) row).toDTO(person);
+      for (final TeamEntity team : personEntity.getMemberOf()) {
+        if (allowedTeamIds.contains(team.getId())) {
+          final Person person = new Person();
 
-      result.add(person);
+          personEntity.toDTO(person);
+
+          result.add(person);
+          break;
+        }
+      }
     }
 
     return new FilterResult<Person>(result);

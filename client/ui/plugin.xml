@@ -89,6 +89,12 @@
             id="de.objectcode.time4u.client.ui.task.edit"
             name="Task Edit">
       </command>
+      <command
+            categoryId="de.objectcode.time4u.client.ui.category"
+            description="WorkItem Edit"
+            id="de.objectcode.time4u.client.ui.workitem.edit"
+            name="WorkItem Edit">
+      </command>
 
    </extension>
    <extension
@@ -841,6 +847,14 @@
                   name="personGroup">
             </groupMarker>
          </menu>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               id="de.objectcode.time4u.client.ui.todo.team"
+               label="%action.todo.teams.label"
+               menubarPath="todoMenu/personGroup"
+               style="push"
+               tooltip="%action.todo.teams.tooltip">
+         </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
                id="de.objectcode.time4u.client.ui.todo.person"

@@ -20,6 +20,7 @@ import org.jboss.seam.annotations.security.Restrict;
 
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.ejb.seam.api.ITeamServiceLocal;
+import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
@@ -64,6 +65,7 @@ public class TeamServiceSeam implements ITeamServiceLocal
   public void storeTeam(final TeamEntity teamEntity)
   {
     final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(EntityType.TEAM, null);
+    final IRevisionLock personRevisionLock = m_revisionGenerator.getNextRevision(EntityType.PERSON, null);
 
     if (teamEntity.getId() == null) {
       teamEntity.setId(m_idGenerator.generateLocalId(EntityType.TEAM));
@@ -72,6 +74,10 @@ public class TeamServiceSeam implements ITeamServiceLocal
     teamEntity.setLastModifiedByClient(m_idGenerator.getClientId());
     m_manager.merge(teamEntity);
 
+    for (final PersonEntity person : teamEntity.getMembers()) {
+      person.setLastModifiedByClient(m_idGenerator.getClientId());
+      person.setRevision(personRevisionLock.getLatestRevision());
+    }
     initTeams();
   }
 

@@ -90,7 +90,7 @@ public class PersonFilter implements Serializable
 
   public static PersonFilter filterAll()
   {
-    return new PersonFilter(false, null, null, Order.NAME);
+    return new PersonFilter(false, 0L, null, Order.NAME);
   }
 
   @Override
