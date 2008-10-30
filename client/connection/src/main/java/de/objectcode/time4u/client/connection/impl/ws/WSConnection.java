@@ -19,6 +19,7 @@ import de.objectcode.time4u.client.connection.impl.common.ISynchronizationComman
 import de.objectcode.time4u.client.connection.impl.common.SynchronizationContext;
 import de.objectcode.time4u.client.connection.impl.common.down.ReceiveDayInfoChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.down.ReceiveDayTagsCommand;
+import de.objectcode.time4u.client.connection.impl.common.down.ReceivePersonChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.down.ReceiveProjectChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.down.ReceiveTaskChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.down.ReceiveTimePolicyChangesCommand;
@@ -66,6 +67,7 @@ public class WSConnection implements IConnection
     m_synchronizationCommands.add(new SendTaskChangesCommand());
     m_synchronizationCommands.add(new SendDayInfoChangesCommand());
     m_synchronizationCommands.add(new SendTimePolicyChangesCommand());
+    m_synchronizationCommands.add(new ReceivePersonChangesCommand());
     m_synchronizationCommands.add(new ReceiveDayTagsCommand());
     m_synchronizationCommands.add(new ReceiveProjectChangesCommand());
     m_synchronizationCommands.add(new ReceiveTaskChangesCommand());

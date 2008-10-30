@@ -830,6 +830,27 @@
          </action>
       </actionSet>
       <actionSet
+            id="de.objectcode.time4u.ui.client.todoActionSet"
+            label="Todo Action Set"
+            visible="true">
+         <menu
+               id="todoMenu"
+               label="%menu.todo.label"
+               path="todoAdditions">
+            <groupMarker
+                  name="personGroup">
+            </groupMarker>
+         </menu>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               id="de.objectcode.time4u.client.ui.todo.person"
+               label="%action.todo.persons.label"
+               menubarPath="todoMenu/personGroup"
+               style="push"
+               tooltip="%action.todo.persons.tooltip">
+         </action>
+      </actionSet>
+      <actionSet
             id="de.objectcode.time4u.ui.client.perspectiveActionSet"
             label="Perspective Action Set"
             visible="true">

@@ -49,11 +49,10 @@ public class PersonListDialog extends Dialog
 
     final Composite composite = (Composite) super.createDialogArea(parent);
     final Composite root = new Composite(composite, SWT.NONE);
-    root.setLayout(new GridLayout(2, false));
+    root.setLayout(new GridLayout(1, false));
     root.setLayoutData(new GridData(GridData.FILL_BOTH));
 
     final GridData gridData = new GridData(GridData.FILL_BOTH);
-    gridData.verticalSpan = 5;
     gridData.grabExcessHorizontalSpace = true;
     gridData.grabExcessVerticalSpace = true;
     gridData.widthHint = 90 * width;
@@ -61,19 +60,23 @@ public class PersonListDialog extends Dialog
     m_personsViewer = new TableViewer(root, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
     m_personsViewer.getTable().setLayoutData(gridData);
     final TableLayout layout = new TableLayout();
-    layout.addColumnData(new ColumnPixelData(50 * width, true));
-    layout.addColumnData(new ColumnPixelData(40 * width, true));
+    layout.addColumnData(new ColumnPixelData(30 * width, true));
+    layout.addColumnData(new ColumnPixelData(30 * width, true));
+    layout.addColumnData(new ColumnPixelData(30 * width, true));
     m_personsViewer.getTable().setHeaderVisible(true);
     m_personsViewer.getTable().setLinesVisible(true);
     m_personsViewer.getTable().setLayout(layout);
-    final TableColumn urlColumn = new TableColumn(m_personsViewer.getTable(), SWT.LEFT);
-    urlColumn.setText("Url");
-    final TableColumn lastSynchronizeColumn = new TableColumn(m_personsViewer.getTable(), SWT.LEFT);
-    lastSynchronizeColumn.setText("Last synchronize");
-    m_personsViewer.setColumnProperties(new String[] { "url", "lastSynchronize" });
+    final TableColumn surnameColumn = new TableColumn(m_personsViewer.getTable(), SWT.LEFT);
+    surnameColumn.setText("Surname");
+    final TableColumn givenNameColumn = new TableColumn(m_personsViewer.getTable(), SWT.LEFT);
+    givenNameColumn.setText("Given name");
+    final TableColumn emailColumn = new TableColumn(m_personsViewer.getTable(), SWT.LEFT);
+    emailColumn.setText("Email");
+    m_personsViewer.setColumnProperties(new String[] { "surname", "givenName", "email" });
     m_personsViewer.setContentProvider(new PersonContentProvider(RepositoryFactory.getRepository()
         .getPersonRepository()));
     m_personsViewer.setLabelProvider(new PersonTableLabelProvider());
+    m_personsViewer.setInput(new Object());
 
     return composite;
   }
