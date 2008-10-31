@@ -1,10 +1,15 @@
 package de.objectcode.time4u.client.ui.views;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
@@ -17,9 +22,11 @@ import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
@@ -27,6 +34,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.ViewPart;
@@ -48,9 +56,13 @@ import de.objectcode.time4u.client.ui.provider.WorkItemTableContentProvider;
 import de.objectcode.time4u.client.ui.provider.WorkItemTableLabelProvider;
 import de.objectcode.time4u.client.ui.util.CompoundSelectionEntityType;
 import de.objectcode.time4u.client.ui.util.CompoundSelectionProvider;
+import de.objectcode.time4u.client.ui.util.DateFormat;
 import de.objectcode.time4u.client.ui.util.SelectionServiceAdapter;
+import de.objectcode.time4u.client.ui.util.TimeFormat;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
+import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.data.WorkItem;
 
 public class WorkItemView extends ViewPart implements IRepositoryListener, ISelectionListener
@@ -62,6 +74,7 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
     FLAT
   };
 
+  private Clipboard m_clipboard;
   private CalendarDay m_currentDay;
   private TableViewer m_tableViewer;
   private PageBook m_pageBook;
@@ -182,6 +195,15 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
     RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.TASK, this);
     RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.WORKITEM, this);
     RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.ACTIVE_WORKITEM, this);
+
+    m_clipboard = new Clipboard(getViewSite().getShell().getDisplay());
+    getViewSite().getActionBars().setGlobalActionHandler(ActionFactory.COPY.getId(), new Action() {
+      @Override
+      public void run()
+      {
+        doCopy();
+      }
+    });
   }
 
   /**
@@ -205,6 +227,8 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
     RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.ACTIVE_WORKITEM, this);
 
     getSite().getPage().removeSelectionListener(this);
+
+    m_clipboard.dispose();
 
     super.dispose();
   }
@@ -337,6 +361,50 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
       workItem.setComment("");
 
       RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem);
+    } catch (final Exception e) {
+      UIPlugin.getDefault().log(e);
+    }
+  }
+
+  protected void doCopy()
+  {
+    try {
+      final DayInfo dayInfo = RepositoryFactory.getRepository().getWorkItemRepository().getDayInfo(m_currentDay);
+
+      final StringWriter writer = new StringWriter();
+      final PrintWriter out = new PrintWriter(writer);
+
+      if (dayInfo != null && dayInfo.getWorkItems() != null) {
+        for (final WorkItem workItem : dayInfo.getWorkItems()) {
+          out.print(DateFormat.format(m_currentDay));
+          out.print('\t');
+          out.print(TimeFormat.format(workItem.getBegin()));
+          out.print('\t');
+          out.print(TimeFormat.format(workItem.getEnd()));
+          out.print('\t');
+          final List<ProjectSummary> projectPath = RepositoryFactory.getRepository().getProjectRepository()
+              .getProjectPath(workItem.getProjectId());
+          final Iterator<ProjectSummary> it = projectPath.iterator();
+          while (it.hasNext()) {
+            out.print(it.next().getName());
+            if (it.hasNext()) {
+              out.print('.');
+            }
+          }
+          out.print('\t');
+          final TaskSummary task = RepositoryFactory.getRepository().getTaskRepository().getTaskSummary(
+              workItem.getTaskId());
+          out.print(task.getName());
+          out.print('\t');
+          out.print(workItem.getComment());
+          out.println();
+        }
+
+        out.flush();
+        out.close();
+
+        m_clipboard.setContents(new Object[] { writer.toString() }, new Transfer[] { TextTransfer.getInstance() });
+      }
     } catch (final Exception e) {
       UIPlugin.getDefault().log(e);
     }

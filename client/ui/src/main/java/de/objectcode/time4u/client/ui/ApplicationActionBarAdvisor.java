@@ -26,6 +26,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
   // in the fill methods.  This ensures that the actions aren't recreated
   // when fillActionBars is called with FILL_PROXY.
   private IWorkbenchAction exitAction;
+  private IWorkbenchAction copyAction;
   private IWorkbenchAction aboutAction;
   private IWorkbenchAction newWindowAction;
 
@@ -51,6 +52,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     exitAction = ActionFactory.QUIT.create(window);
     register(exitAction);
 
+    copyAction = ActionFactory.COPY.create(window);
+    register(copyAction);
+
     aboutAction = ActionFactory.ABOUT.create(window);
     register(aboutAction);
 
@@ -68,10 +72,12 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
   protected void fillMenuBar(final IMenuManager menuBar)
   {
     final MenuManager fileMenu = new MenuManager("&File", IWorkbenchActionConstants.M_FILE);
+    final MenuManager editMenu = new MenuManager("&File", IWorkbenchActionConstants.M_EDIT);
     final MenuManager windowMenu = new MenuManager("&Window", IWorkbenchActionConstants.M_WINDOW);
     final MenuManager helpMenu = new MenuManager("&Help", IWorkbenchActionConstants.M_HELP);
 
     menuBar.add(fileMenu);
+    menuBar.add(editMenu);
     // Add a group marker indicating where action set menus will appear.
     menuBar.add(new GroupMarker("projectAdditions"));
     menuBar.add(new GroupMarker("todoAdditions"));
@@ -85,6 +91,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     fileMenu.add(newWindowAction);
     fileMenu.add(new Separator());
     fileMenu.add(exitAction);
+
+    // Edit
+    editMenu.add(copyAction);
 
     windowMenu.add(new GroupMarker("perspectivesGroup"));
     windowMenu.add(new Separator());
