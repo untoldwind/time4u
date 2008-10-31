@@ -15,6 +15,7 @@
   	<module>server-deploy</module>
   	<module>client-mac</module>
   	<module>client-win32</module>
+  	<module>client-linux-x86</module>
   	<module>client-linux-x86_64</module>
   </modules>
 </project>
