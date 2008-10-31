@@ -1,9 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>de.objectcode.time4u.migrator</groupId>
 		<artifactId>migrator</artifactId>
-		<version>0.9.4-SNAPSHOT</version>
+		<version>0.9.4</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
@@ -105,15 +104,10 @@
 								</goals>
 								<configuration>
 									<tasks>
-										<taskdef name="hibernatetool"
-											classname="org.hibernate.tool.ant.HibernateToolTask"
-											classpathref="maven.runtime.classpath" />
+										<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="maven.runtime.classpath" />
 										<hibernatetool templatepath="src/main/resources/templates">
-											<jdbcconfiguration configurationfile="target/classes/old-version.cfg.xml"
-												reversestrategy="de.objectcode.time4u.migrator.server05.old.strategy.Time4UReverseEngineeringStrategy"
-												packagename="de.objectcode.time4u.migrator.server05.old.entities" />
-											<hbm2java jdk5="true" ejb3="true"
-												destdir="${basedir}/src/main/java" />
+											<jdbcconfiguration configurationfile="target/classes/old-version.cfg.xml" reversestrategy="de.objectcode.time4u.migrator.server05.old.strategy.Time4UReverseEngineeringStrategy" packagename="de.objectcode.time4u.migrator.server05.old.entities" />
+											<hbm2java jdk5="true" ejb3="true" destdir="${basedir}/src/main/java" />
 										</hibernatetool>
 									</tasks>
 								</configuration>
