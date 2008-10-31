@@ -72,7 +72,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
   protected void fillMenuBar(final IMenuManager menuBar)
   {
     final MenuManager fileMenu = new MenuManager("&File", IWorkbenchActionConstants.M_FILE);
-    final MenuManager editMenu = new MenuManager("&File", IWorkbenchActionConstants.M_EDIT);
+    final MenuManager editMenu = new MenuManager("&Edit", IWorkbenchActionConstants.M_EDIT);
     final MenuManager windowMenu = new MenuManager("&Window", IWorkbenchActionConstants.M_WINDOW);
     final MenuManager helpMenu = new MenuManager("&Help", IWorkbenchActionConstants.M_HELP);
 

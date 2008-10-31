@@ -845,7 +845,7 @@
       <actionSet
             id="de.objectcode.time4u.ui.client.todoActionSet"
             label="Todo Action Set"
-            visible="true">
+            visible="false">
          <menu
                id="todoMenu"
                label="%menu.todo.label"
