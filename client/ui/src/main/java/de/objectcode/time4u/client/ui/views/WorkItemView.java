@@ -18,12 +18,15 @@ import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSourceAdapter;
+import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -155,6 +158,44 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
           return;
         }
         doDropTask((TaskTransfer.ProjectTask) event.data);
+      }
+    });
+    m_tableViewer.addDragSupport(DND.DROP_COPY | DND.DROP_MOVE | DND.DROP_DEFAULT, new Transfer[] { TextTransfer
+        .getInstance() }, new DragSourceAdapter() {
+      @Override
+      public void dragSetData(final DragSourceEvent event)
+      {
+        try {
+          final IStructuredSelection selection = (IStructuredSelection) m_tableViewer.getSelection();
+          final WorkItem workItem = (WorkItem) selection.getFirstElement();
+
+          final StringBuffer buffer = new StringBuffer();
+          buffer.append(DateFormat.format(m_currentDay));
+          buffer.append('\t');
+          buffer.append(TimeFormat.format(workItem.getBegin()));
+          buffer.append('\t');
+          buffer.append(TimeFormat.format(workItem.getEnd()));
+          buffer.append('\t');
+          final List<ProjectSummary> projectPath = RepositoryFactory.getRepository().getProjectRepository()
+              .getProjectPath(workItem.getProjectId());
+          final Iterator<ProjectSummary> it = projectPath.iterator();
+          while (it.hasNext()) {
+            buffer.append(it.next().getName());
+            if (it.hasNext()) {
+              buffer.append('.');
+            }
+          }
+          buffer.append('\t');
+          final TaskSummary task = RepositoryFactory.getRepository().getTaskRepository().getTaskSummary(
+              workItem.getTaskId());
+          buffer.append(task.getName());
+          buffer.append('\t');
+          buffer.append(workItem.getComment());
+
+          event.data = buffer.toString();
+        } catch (final Exception e) {
+          UIPlugin.getDefault().log(e);
+        }
       }
     });
     m_tableViewer.addDoubleClickListener(new IDoubleClickListener() {
