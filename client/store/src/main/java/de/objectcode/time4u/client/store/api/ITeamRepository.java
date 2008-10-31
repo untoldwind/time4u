@@ -18,7 +18,7 @@ public interface ITeamRepository
    * 
    * @param filter
    *          The filter condition
-   * @return A persons matching <tt>filter</tt>
+   * @return All teams matching <tt>filter</tt>
    * @throws RepositoryException
    *           on error
    */
@@ -29,7 +29,7 @@ public interface ITeamRepository
    * 
    * @param filter
    *          The filter condition
-   * @return A persons matching <tt>filter</tt>
+   * @return All teams matching <tt>filter</tt>
    * @throws RepositoryException
    *           on error
    */

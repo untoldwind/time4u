@@ -6,6 +6,7 @@ import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
 import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.TodoEntity;
+import de.objectcode.time4u.server.entities.TodoGroupEntity;
 
 /**
  * Persistent context.
@@ -40,6 +41,8 @@ public interface IPersistenceContext
    * @return The todo with id <tt>todoId</tt>
    */
   TodoEntity findTodo(String todoId, long clientId);
+
+  TodoGroupEntity findTodoGroup(String todoGroupId, long clientId);
 
   /**
    * Find a person.

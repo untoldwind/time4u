@@ -40,7 +40,7 @@ public interface ITaskRepository
    * 
    * @param filter
    *          The filter condition
-   * @return A tasks matching <tt>filter</tt>
+   * @return All tasks matching <tt>filter</tt>
    * @throws RepositoryException
    *           on error
    */
@@ -51,7 +51,7 @@ public interface ITaskRepository
    * 
    * @param filter
    *          The filter condition
-   * @return A tasks matching <tt>filter</tt>
+   * @return All tasks matching <tt>filter</tt>
    * @throws RepositoryException
    *           on error
    */

@@ -1,5 +1,7 @@
 package de.objectcode.time4u.server.api.data;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -29,6 +31,16 @@ public class TodoSummary implements ISynchronizableData
   private String m_groupdId;
   /** State of the todo. */
   private TodoState m_state;
+  /** Flag if the todo has been completed. */
+  private boolean m_completed;
+  /** Timestamp the todo was created. */
+  private Date m_createdAt;
+  /** Optional timestamp the todo was completed. */
+  private Date m_completedAt;
+  /** Optional deadline of the todo. */
+  private Date m_deadline;
+  /** Estimated time in seconds. */
+  private Integer m_estimatedTime;
 
   public String getId()
   {
@@ -100,6 +112,16 @@ public class TodoSummary implements ISynchronizableData
     return m_deleted;
   }
 
+  public boolean isCompleted()
+  {
+    return m_completed;
+  }
+
+  public void setCompleted(final boolean completed)
+  {
+    m_completed = completed;
+  }
+
   public boolean isGroup()
   {
     return m_group;
@@ -130,4 +152,43 @@ public class TodoSummary implements ISynchronizableData
     m_state = state;
   }
 
+  public Date getCreatedAt()
+  {
+    return m_createdAt;
+  }
+
+  public void setCreatedAt(final Date createdAt)
+  {
+    m_createdAt = createdAt;
+  }
+
+  public Date getCompletedAt()
+  {
+    return m_completedAt;
+  }
+
+  public void setCompletedAt(final Date completedAt)
+  {
+    m_completedAt = completedAt;
+  }
+
+  public Date getDeadline()
+  {
+    return m_deadline;
+  }
+
+  public void setDeadline(final Date deadline)
+  {
+    m_deadline = deadline;
+  }
+
+  public Integer getEstimatedTime()
+  {
+    return m_estimatedTime;
+  }
+
+  public void setEstimatedTime(final Integer estimatedTime)
+  {
+    m_estimatedTime = estimatedTime;
+  }
 }

@@ -23,6 +23,7 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 import de.objectcode.time4u.server.api.data.TodoState;
+import de.objectcode.time4u.server.api.data.TodoSummary;
 
 @Entity
 @Table(name = "T4U_TODOS")
@@ -54,15 +55,15 @@ public abstract class TodoBaseEntity
   /** Deadline of the todo (optional) */
   protected Date m_deadline;
   /** Depends on todos. */
-  private Set<TodoBaseEntity> m_dependsOn;
+  protected Set<TodoBaseEntity> m_dependsOn;
   /** Todos depending on this one. */
-  private Set<TodoBaseEntity> m_dependents;
+  protected Set<TodoBaseEntity> m_dependents;
   /** Teams that can see this todo. */
-  private Set<TeamEntity> m_visibleToTeams;
+  protected Set<TeamEntity> m_visibleToTeams;
   /** Persons that can see this todo. */
-  private Set<PersonEntity> m_visibleToPersons;
+  protected Set<PersonEntity> m_visibleToPersons;
   /** TodoGroup (optional) */
-  private TodoGroupEntity m_group;
+  protected TodoGroupEntity m_group;
   /** All meta properties of the todo. */
   protected Map<String, TodoMetaPropertyEntity> m_metaProperties;
 
@@ -272,4 +273,19 @@ public abstract class TodoBaseEntity
     m_group = group;
   }
 
+  protected void toSummaryDTO(final TodoSummary todo)
+  {
+    todo.setId(m_id);
+    todo.setRevision(m_revision);
+    todo.setLastModifiedByClient(m_lastModifiedByClient);
+    todo.setDeleted(m_deleted);
+    todo.setHeader(m_header);
+    todo.setDescription(m_description);
+    todo.setCompleted(m_completed);
+    todo.setCreatedAt(m_createdAt);
+    todo.setCompletedAt(m_completedAt);
+    todo.setDeadline(m_deadline);
+    todo.setReporterId(m_reporter != null ? m_reporter.getId() : null);
+    todo.setGroupdId(m_group != null ? m_group.getId() : null);
+  }
 }

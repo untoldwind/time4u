@@ -845,13 +845,19 @@
       <actionSet
             id="de.objectcode.time4u.ui.client.todoActionSet"
             label="Todo Action Set"
-            visible="false">
+            visible="true">
          <menu
                id="todoMenu"
                label="%menu.todo.label"
                path="todoAdditions">
             <groupMarker
                   name="personGroup">
+            </groupMarker>
+            <separator
+                  name="time4u-client-ui.separator1">
+            </separator>
+            <groupMarker
+                  name="todoGroup">
             </groupMarker>
          </menu>
          <action
@@ -869,6 +875,15 @@
                menubarPath="todoMenu/personGroup"
                style="push"
                tooltip="%action.todo.persons.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               icon="icons/wrench.gif"
+               id="de.objectcode.time4u.client.ui.todo.showView"
+               label="%action.todo.showView.label"
+               menubarPath="todoMenu/todoGroup"
+               style="push"
+               tooltip="%action.todo.showView.tooltip">
          </action>
       </actionSet>
       <actionSet

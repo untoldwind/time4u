@@ -50,7 +50,6 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
     m_viewer = new TreeViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
     m_viewer.setContentProvider(new ProjectContentProvider(RepositoryFactory.getRepository().getProjectRepository(),
         m_showOnlyActive));
-
     m_viewer.setLabelProvider(new ProjectLabelProvider());
     m_viewer.setInput(new Object());
 

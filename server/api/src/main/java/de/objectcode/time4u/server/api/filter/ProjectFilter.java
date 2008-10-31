@@ -14,7 +14,7 @@ public class ProjectFilter implements Serializable
 {
   private static final long serialVersionUID = 4840094656452995441L;
 
-  /** Condition for the parent project (optional, 0L = root project). */
+  /** Condition for the parent project (optional, "" = root project). */
   String m_parentProject;
   /** Condition for the active flag (optional). */
   Boolean m_active;

@@ -1,6 +1,9 @@
 package de.objectcode.time4u.server.entities;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -13,6 +16,8 @@ import javax.persistence.OneToMany;
 
 import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.Todo;
+import de.objectcode.time4u.server.api.data.TodoAssignment;
+import de.objectcode.time4u.server.api.data.TodoSummary;
 import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 
 /**
@@ -99,6 +104,7 @@ public class TodoEntity extends TodoBaseEntity
     m_header = todo.getHeader();
     m_description = todo.getDescription();
     m_priority = todo.getPriority();
+    m_estimatedTime = todo.getEstimatedTime();
 
     if (todo.getReporterId() != null) {
       m_reporter = context.findPerson(todo.getReporterId(), todo.getLastModifiedByClient());
@@ -108,6 +114,31 @@ public class TodoEntity extends TodoBaseEntity
     m_completed = todo.isCompleted();
     m_completedAt = todo.getCompletedAt();
     m_deadline = todo.getDeadline();
+    if (todo.getGroupdId() != null) {
+      m_group = context.findTodoGroup(todo.getId(), todo.getLastModifiedByClient());
+    } else {
+      m_group = null;
+    }
+
+    if (m_visibleToTeams == null) {
+      m_visibleToTeams = new HashSet<TeamEntity>();
+    }
+    m_visibleToTeams.clear();
+    if (todo.getVisibleToTeamIds() != null) {
+      for (final String teamId : todo.getVisibleToTeamIds()) {
+        m_visibleToTeams.add(context.findTeam(teamId, todo.getLastModifiedByClient()));
+      }
+    }
+
+    if (m_visibleToPersons == null) {
+      m_visibleToPersons = new HashSet<PersonEntity>();
+    }
+    m_visibleToPersons.clear();
+    if (todo.getVisibleToPersonIds() != null) {
+      for (final String personId : todo.getVisibleToPersonIds()) {
+        m_visibleToPersons.add(context.findPerson(personId, todo.getLastModifiedByClient()));
+      }
+    }
 
     if (m_metaProperties == null) {
       m_metaProperties = new HashMap<String, TodoMetaPropertyEntity>();
@@ -127,25 +158,42 @@ public class TodoEntity extends TodoBaseEntity
     }
   }
 
+  @Override
+  public void toSummaryDTO(final TodoSummary todo)
+  {
+    super.toSummaryDTO(todo);
+
+    todo.setGroup(false);
+    todo.setState(m_state);
+  }
+
   public void toDTO(final Todo todo)
   {
-    todo.setId(m_id);
-    todo.setRevision(m_revision);
-    todo.setLastModifiedByClient(m_lastModifiedByClient);
-    todo.setTaskId(m_task.getId());
-    todo.setCreatedAt(m_createdAt);
-    if (m_reporter != null) {
-      todo.setReporterId(m_reporter.getId());
-    } else {
-      todo.setReporterId(null);
-    }
+    toSummaryDTO(todo);
 
-    todo.setCompleted(m_completed);
-    todo.setCompletedAt(m_completedAt);
-    todo.setHeader(m_header);
-    todo.setDescription(m_description);
-    todo.setDeadline(m_deadline);
+    todo.setTaskId(m_task.getId());
     todo.setPriority(m_priority);
+    todo.setEstimatedTime(m_estimatedTime);
+
+    final List<TodoAssignment> assignments = new ArrayList<TodoAssignment>();
+    for (final TodoAssignmentEntity assignementEntity : m_assignments) {
+      final TodoAssignment assignment = new TodoAssignment();
+
+      assignment.setPersonId(assignementEntity.getPersonId());
+      assignment.setEstimatedTime(assignementEntity.getEstimatedTime());
+    }
+    todo.setAssignments(assignments);
+
+    final List<String> visibleToPersonIds = new ArrayList<String>();
+    for (final PersonEntity person : m_visibleToPersons) {
+      visibleToPersonIds.add(person.getId());
+    }
+    todo.setVisibleToPersonIds(visibleToPersonIds);
+    final List<String> visibleToTeamIds = new ArrayList<String>();
+    for (final TeamEntity team : m_visibleToTeams) {
+      visibleToTeamIds.add(team.getId());
+    }
+    todo.setVisibleToTeamIds(visibleToTeamIds);
 
     if (m_metaProperties != null) {
       for (final TodoMetaPropertyEntity property : m_metaProperties.values()) {

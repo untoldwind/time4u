@@ -45,6 +45,7 @@
          </action>
          <action
                class="de.objectcode.time4u.client.connection.ui.actions.ConnectionActionDelegate"
+               icon="icons/Synchronize.gif"
                id="de.objectcode.time4u.client.connection.openView"
                label="%action.synchronize.openView"
                menubarPath="serverMenu/viewGroup"

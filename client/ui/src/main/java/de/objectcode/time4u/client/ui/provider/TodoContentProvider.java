@@ -5,6 +5,9 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 import de.objectcode.time4u.client.store.api.ITodoRepository;
+import de.objectcode.time4u.client.ui.UIPlugin;
+import de.objectcode.time4u.server.api.data.TodoSummary;
+import de.objectcode.time4u.server.api.filter.TodoFilter;
 
 public class TodoContentProvider implements IStructuredContentProvider, ITreeContentProvider
 {
@@ -20,8 +23,18 @@ public class TodoContentProvider implements IStructuredContentProvider, ITreeCon
    */
   public Object[] getChildren(final Object parentElement)
   {
-    // TODO Auto-generated method stub
-    return null;
+    try {
+      if (parentElement instanceof TodoSummary) {
+        return m_todoRepository.getTodoSummaries(TodoFilter.filterTodos(((TodoSummary) parentElement).getGroupdId()))
+            .toArray();
+      } else {
+        return m_todoRepository.getTodoSummaries(TodoFilter.filterRootTodos()).toArray();
+      }
+    } catch (final Exception e) {
+      UIPlugin.getDefault().log(e);
+    }
+
+    return new Object[0];
   }
 
   /**
@@ -29,7 +42,16 @@ public class TodoContentProvider implements IStructuredContentProvider, ITreeCon
    */
   public Object getParent(final Object element)
   {
-    // TODO Auto-generated method stub
+    try {
+      if (element instanceof TodoSummary) {
+        if (((TodoSummary) element).getGroupdId() != null) {
+          return m_todoRepository.getTodoSummary(((TodoSummary) element).getGroupdId());
+        }
+      }
+    } catch (final Exception e) {
+      UIPlugin.getDefault().log(e);
+    }
+
     return null;
   }
 
@@ -38,7 +60,9 @@ public class TodoContentProvider implements IStructuredContentProvider, ITreeCon
    */
   public boolean hasChildren(final Object element)
   {
-    // TODO Auto-generated method stub
+    if (element instanceof TodoSummary) {
+      return ((TodoSummary) element).isGroup();
+    }
     return false;
   }
 
@@ -47,8 +71,7 @@ public class TodoContentProvider implements IStructuredContentProvider, ITreeCon
    */
   public Object[] getElements(final Object inputElement)
   {
-    // TODO Auto-generated method stub
-    return null;
+    return getChildren(inputElement);
   }
 
   /**

@@ -22,6 +22,8 @@ public class TodoFilter implements Serializable
   Long m_maxRevision;
   /** Client id of the last modification */
   Long m_lastModifiedByClient;
+  /** Group id (optional, "" = todo without group). */
+  String m_groupId;
   /** Desired order */
   Order m_order;
 
@@ -30,11 +32,13 @@ public class TodoFilter implements Serializable
     m_order = Order.ID;
   }
 
-  public TodoFilter(final Boolean deleted, final Long minRevision, final Long maxRevision, final Order order)
+  public TodoFilter(final Boolean deleted, final Long minRevision, final Long maxRevision, final String groupId,
+      final Order order)
   {
     m_deleted = deleted;
     m_minRevision = minRevision;
     m_maxRevision = maxRevision;
+    m_groupId = groupId;
     m_order = order;
   }
 
@@ -78,6 +82,16 @@ public class TodoFilter implements Serializable
     m_lastModifiedByClient = lastModifiedByClient;
   }
 
+  public String getGroupId()
+  {
+    return m_groupId;
+  }
+
+  public void setGroupId(final String groupId)
+  {
+    m_groupId = groupId;
+  }
+
   public Order getOrder()
   {
     return m_order;
@@ -88,6 +102,16 @@ public class TodoFilter implements Serializable
     m_order = order;
   }
 
+  public static TodoFilter filterRootTodos()
+  {
+    return new TodoFilter(false, null, null, "", Order.HEADER);
+  }
+
+  public static TodoFilter filterTodos(final String groupId)
+  {
+    return new TodoFilter(false, null, null, groupId, Order.HEADER);
+  }
+
   @Override
   public String toString()
   {
@@ -96,6 +120,7 @@ public class TodoFilter implements Serializable
     buffer.append(",minRevision=").append(m_minRevision);
     buffer.append(",maxRevision=").append(m_maxRevision);
     buffer.append(",lastModifiedByClient=").append(m_lastModifiedByClient);
+    buffer.append(",groupId=").append(m_groupId);
     buffer.append(",order=").append(m_order);
     buffer.append(")");
 
@@ -105,7 +130,6 @@ public class TodoFilter implements Serializable
   public static enum Order
   {
     ID,
-    NAME
+    HEADER
   }
-
 }

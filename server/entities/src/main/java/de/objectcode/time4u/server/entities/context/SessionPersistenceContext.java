@@ -8,6 +8,7 @@ import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
 import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.TodoEntity;
+import de.objectcode.time4u.server.entities.TodoGroupEntity;
 
 public class SessionPersistenceContext implements IPersistenceContext
 {
@@ -81,6 +82,19 @@ public class SessionPersistenceContext implements IPersistenceContext
     }
 
     return todo;
+  }
+
+  public TodoGroupEntity findTodoGroup(final String todoGroupId, final long clientId)
+  {
+    TodoGroupEntity todoGroup = (TodoGroupEntity) m_session.get(TodoGroupEntity.class, todoGroupId);
+
+    if (todoGroup == null) {
+      todoGroup = new TodoGroupEntity(todoGroupId, -1L, clientId);
+
+      m_session.persist(todoGroup);
+    }
+
+    return todoGroup;
   }
 
   public TeamEntity findTeam(final String teamId, final long clientId)

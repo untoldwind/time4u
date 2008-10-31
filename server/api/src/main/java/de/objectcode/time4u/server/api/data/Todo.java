@@ -1,8 +1,8 @@
 package de.objectcode.time4u.server.api.data;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -23,56 +23,14 @@ public class Todo extends TodoSummary
   private String m_taskId;
   /** Priority of the todo. */
   private int m_priority;
-  /** Flag if the todo has been completed. */
-  private boolean m_completed;
-  /** Timestamp the todo was created. */
-  private Date m_createdAt;
-  /** Optional timestamp the todo was completed. */
-  private Date m_completedAt;
-  /** Optional deadline of the todo. */
-  private Date m_deadline;
+  /** Ids of teams that have interest in this todo. */
+  private List<String> visibleToTeamIds;
+  /** Ids of persons that have interest in this todo. */
+  private List<String> visibleToPersonIds;
+  /** Todo assignements. */
+  private List<TodoAssignment> m_assignments;
   /** Map of all meta properties of the team. */
   private Map<String, MetaProperty> m_metaProperties;
-
-  public boolean isCompleted()
-  {
-    return m_completed;
-  }
-
-  public void setCompleted(final boolean completed)
-  {
-    m_completed = completed;
-  }
-
-  public Date getCreatedAt()
-  {
-    return m_createdAt;
-  }
-
-  public void setCreatedAt(final Date createdAt)
-  {
-    m_createdAt = createdAt;
-  }
-
-  public Date getCompletedAt()
-  {
-    return m_completedAt;
-  }
-
-  public void setCompletedAt(final Date completedAt)
-  {
-    m_completedAt = completedAt;
-  }
-
-  public Date getDeadline()
-  {
-    return m_deadline;
-  }
-
-  public void setDeadline(final Date deadline)
-  {
-    m_deadline = deadline;
-  }
 
   public int getPriority()
   {
@@ -92,6 +50,36 @@ public class Todo extends TodoSummary
   public void setTaskId(final String taskId)
   {
     m_taskId = taskId;
+  }
+
+  public List<String> getVisibleToTeamIds()
+  {
+    return visibleToTeamIds;
+  }
+
+  public void setVisibleToTeamIds(final List<String> visibleToTeamIds)
+  {
+    this.visibleToTeamIds = visibleToTeamIds;
+  }
+
+  public List<String> getVisibleToPersonIds()
+  {
+    return visibleToPersonIds;
+  }
+
+  public void setVisibleToPersonIds(final List<String> visibleToPersonIds)
+  {
+    this.visibleToPersonIds = visibleToPersonIds;
+  }
+
+  public List<TodoAssignment> getAssignments()
+  {
+    return m_assignments;
+  }
+
+  public void setAssignments(final List<TodoAssignment> assignments)
+  {
+    m_assignments = assignments;
   }
 
   public Map<String, MetaProperty> getMetaProperties()
