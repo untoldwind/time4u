@@ -418,6 +418,24 @@
                tooltip="%action.timepolicy.override.tooltip">
          </action>
       </viewerContribution>
+      <viewerContribution
+            id="de.objectcode.time4u.client.ui.view.todoTreeContribution1"
+            targetID="de.objectcode.time4u.client.ui.view.todoTree">
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               id="de.objectcode.time4u.client.ui.todoGroup.new"
+               label="%action.todoGroup.new.label"
+               menubarPath="newGroup"
+               tooltip="%action.todoGroup.new.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               id="de.objectcode.time4u.client.ui.todo.new"
+               label="%action.todo.new.label"
+               menubarPath="newGroup"
+               tooltip="%action.todo.new.tooltip">
+         </action>
+      </viewerContribution>
    </extension>
    <extension
 

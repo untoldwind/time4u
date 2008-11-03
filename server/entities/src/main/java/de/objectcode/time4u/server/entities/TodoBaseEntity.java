@@ -6,11 +6,11 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -26,8 +26,8 @@ import de.objectcode.time4u.server.api.data.TodoState;
 import de.objectcode.time4u.server.api.data.TodoSummary;
 
 @Entity
-@Table(name = "T4U_TODOS")
-@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "kind", length = 1)
+@Table(name = "T4U_TODOSBASE")
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class TodoBaseEntity
 {
   /** Primary key. */
@@ -273,7 +273,7 @@ public abstract class TodoBaseEntity
     m_group = group;
   }
 
-  protected void toSummaryDTO(final TodoSummary todo)
+  public void toSummaryDTO(final TodoSummary todo)
   {
     todo.setId(m_id);
     todo.setRevision(m_revision);

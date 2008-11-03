@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.Todo;
@@ -26,7 +26,7 @@ import de.objectcode.time4u.server.entities.context.IPersistenceContext;
  * @author junglas
  */
 @Entity
-@DiscriminatorValue("t")
+@Table(name = "T4U_TODOSDATA")
 public class TodoEntity extends TodoBaseEntity
 {
   /** The task the todo belongs to. */
@@ -63,7 +63,7 @@ public class TodoEntity extends TodoBaseEntity
     m_priority = priority;
   }
 
-  @ManyToOne(optional = false)
+  @ManyToOne(optional = true)
   @JoinColumn(name = "task_id")
   public TaskEntity getTask()
   {
@@ -99,12 +99,13 @@ public class TodoEntity extends TodoBaseEntity
   public void fromDTO(final IPersistenceContext context, final Todo todo)
   {
     m_lastModifiedByClient = todo.getLastModifiedByClient();
-    m_task = context.findTask(todo.getTaskId(), todo.getLastModifiedByClient());
+    m_task = todo.getTaskId() != null ? context.findTask(todo.getTaskId(), todo.getLastModifiedByClient()) : null;
     m_createdAt = todo.getCreatedAt();
     m_header = todo.getHeader();
     m_description = todo.getDescription();
     m_priority = todo.getPriority();
     m_estimatedTime = todo.getEstimatedTime();
+    m_state = todo.getState();
 
     if (todo.getReporterId() != null) {
       m_reporter = context.findPerson(todo.getReporterId(), todo.getLastModifiedByClient());
@@ -171,27 +172,33 @@ public class TodoEntity extends TodoBaseEntity
   {
     toSummaryDTO(todo);
 
-    todo.setTaskId(m_task.getId());
+    todo.setTaskId(m_task != null ? m_task.getId() : null);
     todo.setPriority(m_priority);
     todo.setEstimatedTime(m_estimatedTime);
 
     final List<TodoAssignment> assignments = new ArrayList<TodoAssignment>();
-    for (final TodoAssignmentEntity assignementEntity : m_assignments) {
-      final TodoAssignment assignment = new TodoAssignment();
+    if (m_assignments != null) {
+      for (final TodoAssignmentEntity assignementEntity : m_assignments) {
+        final TodoAssignment assignment = new TodoAssignment();
 
-      assignment.setPersonId(assignementEntity.getPersonId());
-      assignment.setEstimatedTime(assignementEntity.getEstimatedTime());
+        assignment.setPersonId(assignementEntity.getPersonId());
+        assignment.setEstimatedTime(assignementEntity.getEstimatedTime());
+      }
     }
     todo.setAssignments(assignments);
 
     final List<String> visibleToPersonIds = new ArrayList<String>();
-    for (final PersonEntity person : m_visibleToPersons) {
-      visibleToPersonIds.add(person.getId());
+    if (m_visibleToPersons != null) {
+      for (final PersonEntity person : m_visibleToPersons) {
+        visibleToPersonIds.add(person.getId());
+      }
     }
     todo.setVisibleToPersonIds(visibleToPersonIds);
     final List<String> visibleToTeamIds = new ArrayList<String>();
-    for (final TeamEntity team : m_visibleToTeams) {
-      visibleToTeamIds.add(team.getId());
+    if (m_visibleToTeams != null) {
+      for (final TeamEntity team : m_visibleToTeams) {
+        visibleToTeamIds.add(team.getId());
+      }
     }
     todo.setVisibleToTeamIds(visibleToTeamIds);
 

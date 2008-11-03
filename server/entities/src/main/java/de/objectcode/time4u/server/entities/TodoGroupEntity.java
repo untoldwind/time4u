@@ -6,10 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.TodoGroup;
@@ -17,7 +17,7 @@ import de.objectcode.time4u.server.api.data.TodoSummary;
 import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 
 @Entity
-@DiscriminatorValue("g")
+@Table(name = "T4U_TODOSGROUPS")
 public class TodoGroupEntity extends TodoBaseEntity
 {
   /** Todos that a port of this group. */
@@ -92,6 +92,7 @@ public class TodoGroupEntity extends TodoBaseEntity
     m_createdAt = todoGroup.getCreatedAt();
     m_header = todoGroup.getHeader();
     m_description = todoGroup.getDescription();
+    m_state = todoGroup.getState();
 
     if (todoGroup.getReporterId() != null) {
       m_reporter = context.findPerson(todoGroup.getReporterId(), todoGroup.getLastModifiedByClient());

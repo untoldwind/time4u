@@ -167,7 +167,5 @@ public class WorkItemActionDelegate implements IWorkbenchWindowActionDelegate, I
         m_selection = (IAdaptable) obj;
       }
     }
-
   }
-
 }

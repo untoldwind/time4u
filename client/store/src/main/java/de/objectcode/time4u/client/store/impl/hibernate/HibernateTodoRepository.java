@@ -1,6 +1,7 @@
 package de.objectcode.time4u.client.store.impl.hibernate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -13,9 +14,12 @@ import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.client.store.api.event.TodoRepositoryEvent;
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.Todo;
+import de.objectcode.time4u.server.api.data.TodoGroup;
 import de.objectcode.time4u.server.api.data.TodoSummary;
 import de.objectcode.time4u.server.api.filter.TodoFilter;
+import de.objectcode.time4u.server.entities.TodoBaseEntity;
 import de.objectcode.time4u.server.entities.TodoEntity;
+import de.objectcode.time4u.server.entities.TodoGroupEntity;
 import de.objectcode.time4u.server.entities.context.SessionPersistenceContext;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
@@ -61,7 +65,7 @@ public class HibernateTodoRepository implements ITodoRepository
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<TodoSummary>() {
       public TodoSummary perform(final Session session)
       {
-        final TodoEntity todoEntity = (TodoEntity) session.get(TodoEntity.class, todoId);
+        final TodoBaseEntity todoEntity = (TodoBaseEntity) session.get(TodoBaseEntity.class, todoId);
 
         if (todoEntity != null) {
           final TodoSummary todo = new TodoSummary();
@@ -137,7 +141,7 @@ public class HibernateTodoRepository implements ITodoRepository
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<List<TodoSummary>>() {
       public List<TodoSummary> perform(final Session session)
       {
-        final Criteria criteria = session.createCriteria(TodoEntity.class);
+        final Criteria criteria = session.createCriteria(TodoBaseEntity.class);
 
         if (filter.getDeleted() != null) {
           criteria.add(Restrictions.eq("deleted", filter.getDeleted()));
@@ -173,7 +177,7 @@ public class HibernateTodoRepository implements ITodoRepository
         for (final Object row : criteria.list()) {
           final TodoSummary todo = new TodoSummary();
 
-          ((TodoEntity) row).toSummaryDTO(todo);
+          ((TodoBaseEntity) row).toSummaryDTO(todo);
 
           result.add(todo);
         }
@@ -186,17 +190,17 @@ public class HibernateTodoRepository implements ITodoRepository
   /**
    * {@inheritDoc}
    */
-  public void storeTask(final Todo todo, final boolean modifiedByOwner) throws RepositoryException
+  public void storeTodo(final Todo todo, final boolean modifiedByOwner) throws RepositoryException
   {
     m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation() {
       public void perform(final Session session)
       {
         final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
-
         final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.TODO, null);
 
         if (todo.getId() == null) {
           todo.setId(m_repository.generateLocalId(EntityType.TODO));
+          todo.setCreatedAt(new Date());
         }
 
         final TodoEntity todoEntity = new TodoEntity(todo.getId(), revisionLock.getLatestRevision(), m_repository
@@ -215,6 +219,40 @@ public class HibernateTodoRepository implements ITodoRepository
     });
 
     m_repository.fireRepositoryEvent(new TodoRepositoryEvent(todo));
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void storeTodoGroup(final TodoGroup todoGroup, final boolean modifiedByOwner) throws RepositoryException
+  {
+    m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation() {
+      public void perform(final Session session)
+      {
+        final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
+        final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.TODO, null);
+
+        if (todoGroup.getId() == null) {
+          todoGroup.setId(m_repository.generateLocalId(EntityType.TODO));
+          todoGroup.setCreatedAt(new Date());
+        }
+
+        final TodoGroupEntity todoGroupEntity = new TodoGroupEntity(todoGroup.getId(),
+            revisionLock.getLatestRevision(), m_repository.getClientId());
+
+        todoGroupEntity.fromDTO(new SessionPersistenceContext(session), todoGroup);
+        if (modifiedByOwner) {
+          todoGroupEntity.setLastModifiedByClient(m_repository.getClientId());
+        }
+
+        session.merge(todoGroupEntity);
+        session.flush();
+
+        todoGroupEntity.toDTO(todoGroup);
+      }
+    });
+
+    m_repository.fireRepositoryEvent(new TodoRepositoryEvent(todoGroup));
   }
 
 }

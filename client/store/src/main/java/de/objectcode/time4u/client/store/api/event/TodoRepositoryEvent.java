@@ -3,21 +3,21 @@ package de.objectcode.time4u.client.store.api.event;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.objectcode.time4u.server.api.data.Todo;
+import de.objectcode.time4u.server.api.data.TodoSummary;
 
 public class TodoRepositoryEvent extends RepositoryEvent
 {
-  private final List<Todo> m_tasks;
+  private final List<TodoSummary> m_todos;
 
-  public TodoRepositoryEvent(final List<? extends Todo> tasks)
+  public TodoRepositoryEvent(final List<? extends TodoSummary> todos)
   {
-    m_tasks = new ArrayList<Todo>(tasks);
+    m_todos = new ArrayList<TodoSummary>(todos);
   }
 
-  public TodoRepositoryEvent(final Todo todo)
+  public TodoRepositoryEvent(final TodoSummary todo)
   {
-    m_tasks = new ArrayList<Todo>();
-    m_tasks.add(todo);
+    m_todos = new ArrayList<TodoSummary>();
+    m_todos.add(todo);
   }
 
   /**

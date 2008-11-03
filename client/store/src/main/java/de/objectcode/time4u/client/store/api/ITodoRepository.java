@@ -3,6 +3,7 @@ package de.objectcode.time4u.client.store.api;
 import java.util.List;
 
 import de.objectcode.time4u.server.api.data.Todo;
+import de.objectcode.time4u.server.api.data.TodoGroup;
 import de.objectcode.time4u.server.api.data.TodoSummary;
 import de.objectcode.time4u.server.api.filter.TodoFilter;
 
@@ -68,5 +69,18 @@ public interface ITodoRepository
    * @throws RepositoryException
    *           on error
    */
-  void storeTask(Todo todo, boolean modifiedByOwner) throws RepositoryException;
+  void storeTodo(Todo todo, boolean modifiedByOwner) throws RepositoryException;
+
+  /**
+   * Store a todo group. This method either inserts a new todo group or updates an existing one.
+   * 
+   * @param todoGroup
+   *          The todo group to be stored
+   * @param modifiedByOwner
+   *          <tt>true</tt> If the modification is done by the repository owner (in UI this should always be
+   *          <tt>true</tt>)
+   * @throws RepositoryException
+   *           on error
+   */
+  void storeTodoGroup(TodoGroup todoGroup, boolean modifiedByOwner) throws RepositoryException;
 }

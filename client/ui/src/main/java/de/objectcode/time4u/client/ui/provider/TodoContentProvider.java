@@ -25,7 +25,7 @@ public class TodoContentProvider implements IStructuredContentProvider, ITreeCon
   {
     try {
       if (parentElement instanceof TodoSummary) {
-        return m_todoRepository.getTodoSummaries(TodoFilter.filterTodos(((TodoSummary) parentElement).getGroupdId()))
+        return m_todoRepository.getTodoSummaries(TodoFilter.filterTodos(((TodoSummary) parentElement).getId()))
             .toArray();
       } else {
         return m_todoRepository.getTodoSummaries(TodoFilter.filterRootTodos()).toArray();

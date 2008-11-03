@@ -35,15 +35,15 @@ public class TodoLabelProvider extends LabelProvider
       } else {
         switch (todo.getState()) {
           case UNASSIGNED:
-            return UIPlugin.getDefault().getImage("/icons/leg-gray.gif");
+            return UIPlugin.getDefault().getImage("/icons/led-gray.gif");
           case ASSIGNED_OPEN:
-            return UIPlugin.getDefault().getImage("/icons/leg-aqua.gif");
+            return UIPlugin.getDefault().getImage("/icons/led-aqua.gif");
           case ASSIGNED_INPROGRESS:
-            return UIPlugin.getDefault().getImage("/icons/leg-yellow.gif");
+            return UIPlugin.getDefault().getImage("/icons/led-yellow.gif");
           case COMPLETED:
-            return UIPlugin.getDefault().getImage("/icons/leg-green.gif");
+            return UIPlugin.getDefault().getImage("/icons/led-green.gif");
           case REJECTED:
-            return UIPlugin.getDefault().getImage("/icons/leg-red.gif");
+            return UIPlugin.getDefault().getImage("/icons/led-red.gif");
         }
       }
     }
