@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Text;
 
 import de.objectcode.time4u.client.store.api.IProjectRepository;
 import de.objectcode.time4u.client.store.api.ITaskRepository;
+import de.objectcode.time4u.client.store.api.ITodoRepository;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.controls.ComboTreeViewer;
@@ -28,20 +29,25 @@ import de.objectcode.time4u.client.ui.provider.ProjectContentProvider;
 import de.objectcode.time4u.client.ui.provider.ProjectLabelProvider;
 import de.objectcode.time4u.client.ui.provider.TaskContentProvider;
 import de.objectcode.time4u.client.ui.provider.TaskLabelProvider;
+import de.objectcode.time4u.client.ui.provider.TodoGroupContentProvider;
+import de.objectcode.time4u.client.ui.provider.TodoLabelProvider;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.data.Todo;
 import de.objectcode.time4u.server.api.data.TodoState;
+import de.objectcode.time4u.server.api.data.TodoSummary;
 
 public class TodoDialog extends Dialog
 {
   private Text m_headerText;
   private Label m_stateLabel;
   private Text m_descriptionText;
+  private ComboTreeViewer m_groupTreeViewer;
   private ComboTreeViewer m_projectTreeViewer;
   private ComboViewer m_taskViewer;
 
   IProjectRepository m_projectRepository;
   ITaskRepository m_taskRepository;
+  ITodoRepository m_todoRepository;
 
   private final boolean m_create;
   private Todo m_todo;
@@ -54,6 +60,7 @@ public class TodoDialog extends Dialog
 
     m_projectRepository = RepositoryFactory.getRepository().getProjectRepository();
     m_taskRepository = RepositoryFactory.getRepository().getTaskRepository();
+    m_todoRepository = RepositoryFactory.getRepository().getTodoRepository();
 
     m_todo = new Todo();
     m_todo.setHeader("");
@@ -121,6 +128,16 @@ public class TodoDialog extends Dialog
     m_stateLabel.setLayoutData(gridData);
     m_stateLabel.setText(UIPlugin.getDefault().getString("todo.state." + m_todo.getState() + ".label"));
 
+    final Label groupTreeLabel = new Label(root, SWT.LEFT);
+    groupTreeLabel.setText(UIPlugin.getDefault().getString("todo.group.label"));
+
+    m_groupTreeViewer = new ComboTreeViewer(root, SWT.BORDER | SWT.DROP_DOWN);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    m_groupTreeViewer.setLayoutData(gridData);
+    m_groupTreeViewer.setContentProvider(new TodoGroupContentProvider(m_todoRepository));
+    m_groupTreeViewer.setLabelProvider(new TodoLabelProvider());
+    m_groupTreeViewer.setInput(new Object());
+
     final Label projectTreeLabel = new Label(root, SWT.LEFT);
     projectTreeLabel.setText(UIPlugin.getDefault().getString("project.label"));
 
@@ -154,6 +171,12 @@ public class TodoDialog extends Dialog
       }
     });
     try {
+      if (m_todo.getGroupdId() != null) {
+        m_groupTreeViewer.setSelection(new StructuredSelection(m_todoRepository.getTodoSummary(m_todo.getGroupdId())));
+      } else {
+        m_groupTreeViewer.setSelection(new StructuredSelection(TodoGroupContentProvider.ROOT));
+      }
+
       if (m_todo.getTaskId() != null) {
         final TaskSummary taskSummary = m_taskRepository.getTaskSummary(m_todo.getTaskId());
         m_projectTreeViewer.setSelection(new StructuredSelection(m_projectRepository.getProjectSummary(taskSummary
@@ -193,6 +216,15 @@ public class TodoDialog extends Dialog
   {
     m_todo.setHeader(m_headerText.getText());
     m_todo.setDescription(m_descriptionText.getText());
+    m_todo.setGroupdId(null);
+    final ISelection groupSelection = m_groupTreeViewer.getSelection();
+    if (groupSelection instanceof IStructuredSelection) {
+      final Object obj = ((IStructuredSelection) groupSelection).getFirstElement();
+
+      if (obj != null && obj instanceof TodoSummary) {
+        m_todo.setGroupdId(((TodoSummary) obj).getId());
+      }
+    }
     final ISelection taskSelection = m_taskViewer.getSelection();
     if (taskSelection instanceof IStructuredSelection) {
       final Object obj = ((IStructuredSelection) taskSelection).getFirstElement();

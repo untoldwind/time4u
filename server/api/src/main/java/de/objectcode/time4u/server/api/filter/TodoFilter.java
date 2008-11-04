@@ -24,6 +24,8 @@ public class TodoFilter implements Serializable
   Long m_lastModifiedByClient;
   /** Group id (optional, "" = todo without group). */
   String m_groupId;
+  /** Filter todo groups */
+  Boolean m_group;
   /** Desired order */
   Order m_order;
 
@@ -92,6 +94,16 @@ public class TodoFilter implements Serializable
     m_groupId = groupId;
   }
 
+  public Boolean getGroup()
+  {
+    return m_group;
+  }
+
+  public void setGroup(final Boolean group)
+  {
+    m_group = group;
+  }
+
   public Order getOrder()
   {
     return m_order;
@@ -110,6 +122,24 @@ public class TodoFilter implements Serializable
   public static TodoFilter filterTodos(final String groupId)
   {
     return new TodoFilter(false, null, null, groupId, Order.HEADER);
+  }
+
+  public static TodoFilter filterRootTodoGroups()
+  {
+    final TodoFilter filter = new TodoFilter(false, null, null, "", Order.HEADER);
+
+    filter.setGroup(true);
+
+    return filter;
+  }
+
+  public static TodoFilter filterTodoGroups(final String groupId)
+  {
+    final TodoFilter filter = new TodoFilter(false, null, null, groupId, Order.HEADER);
+
+    filter.setGroup(true);
+
+    return filter;
   }
 
   @Override

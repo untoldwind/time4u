@@ -2,6 +2,9 @@ package de.objectcode.time4u.client.ui.dialogs;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -15,19 +18,26 @@ import org.eclipse.swt.widgets.Text;
 
 import de.objectcode.time4u.client.store.api.IProjectRepository;
 import de.objectcode.time4u.client.store.api.ITaskRepository;
+import de.objectcode.time4u.client.store.api.ITodoRepository;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.client.ui.UIPlugin;
+import de.objectcode.time4u.client.ui.controls.ComboTreeViewer;
+import de.objectcode.time4u.client.ui.provider.TodoGroupContentProvider;
+import de.objectcode.time4u.client.ui.provider.TodoLabelProvider;
 import de.objectcode.time4u.server.api.data.TodoGroup;
 import de.objectcode.time4u.server.api.data.TodoState;
+import de.objectcode.time4u.server.api.data.TodoSummary;
 
 public class TodoGroupDialog extends Dialog
 {
   private Text m_headerText;
   private Label m_stateLabel;
   private Text m_descriptionText;
+  private ComboTreeViewer m_groupTreeViewer;
 
   IProjectRepository m_projectRepository;
   ITaskRepository m_taskRepository;
+  ITodoRepository m_todoRepository;
 
   private final boolean m_create;
   private final TodoGroup m_todoGroup;
@@ -42,8 +52,10 @@ public class TodoGroupDialog extends Dialog
     super(shellProvider);
 
     setShellStyle(SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE | getDefaultOrientation());
+
     m_projectRepository = RepositoryFactory.getRepository().getProjectRepository();
     m_taskRepository = RepositoryFactory.getRepository().getTaskRepository();
+    m_todoRepository = RepositoryFactory.getRepository().getTodoRepository();
 
     if (todoGroup == null) {
       m_todoGroup = new TodoGroup();
@@ -98,6 +110,16 @@ public class TodoGroupDialog extends Dialog
     m_stateLabel.setLayoutData(gridData);
     m_stateLabel.setText(UIPlugin.getDefault().getString("todo.state." + m_todoGroup.getState() + ".label"));
 
+    final Label groupTreeLabel = new Label(root, SWT.LEFT);
+    groupTreeLabel.setText(UIPlugin.getDefault().getString("todo.group.label"));
+
+    m_groupTreeViewer = new ComboTreeViewer(root, SWT.BORDER | SWT.DROP_DOWN);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    m_groupTreeViewer.setLayoutData(gridData);
+    m_groupTreeViewer.setContentProvider(new TodoGroupContentProvider(m_todoRepository));
+    m_groupTreeViewer.setLabelProvider(new TodoLabelProvider());
+    m_groupTreeViewer.setInput(new Object());
+
     final Label descriptionLabel = new Label(root, SWT.LEFT);
     descriptionLabel.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
     descriptionLabel.setText(UIPlugin.getDefault().getString("todo.description.label"));
@@ -108,6 +130,16 @@ public class TodoGroupDialog extends Dialog
     m_descriptionText.setLayoutData(gridData);
     m_descriptionText.setText(m_todoGroup.getDescription());
     m_descriptionText.setTextLimit(1000);
+    try {
+      if (m_todoGroup.getGroupdId() != null) {
+        m_groupTreeViewer.setSelection(new StructuredSelection(m_todoRepository.getTodoSummary(m_todoGroup
+            .getGroupdId())));
+      } else {
+        m_groupTreeViewer.setSelection(new StructuredSelection(TodoGroupContentProvider.ROOT));
+      }
+    } catch (final Exception e) {
+      UIPlugin.getDefault().log(e);
+    }
 
     return composite;
   }
@@ -127,6 +159,15 @@ public class TodoGroupDialog extends Dialog
   {
     m_todoGroup.setHeader(m_headerText.getText());
     m_todoGroup.setDescription(m_descriptionText.getText());
+    m_todoGroup.setGroupdId(null);
+    final ISelection groupSelection = m_groupTreeViewer.getSelection();
+    if (groupSelection instanceof IStructuredSelection) {
+      final Object obj = ((IStructuredSelection) groupSelection).getFirstElement();
+
+      if (obj != null && obj instanceof TodoSummary) {
+        m_todoGroup.setGroupdId(((TodoSummary) obj).getId());
+      }
+    }
 
     super.okPressed();
   }

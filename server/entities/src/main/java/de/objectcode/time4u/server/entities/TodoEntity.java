@@ -118,7 +118,7 @@ public class TodoEntity extends TodoBaseEntity
     m_completedAt = todo.getCompletedAt();
     m_deadline = todo.getDeadline();
     if (todo.getGroupdId() != null) {
-      m_group = context.findTodoGroup(todo.getId(), todo.getLastModifiedByClient());
+      m_group = context.findTodoGroup(todo.getGroupdId(), todo.getLastModifiedByClient());
     } else {
       m_group = null;
     }

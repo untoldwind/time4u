@@ -141,7 +141,16 @@ public class HibernateTodoRepository implements ITodoRepository
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<List<TodoSummary>>() {
       public List<TodoSummary> perform(final Session session)
       {
-        final Criteria criteria = session.createCriteria(TodoBaseEntity.class);
+        Criteria criteria;
+        if (filter.getGroup() != null) {
+          if (filter.getGroup()) {
+            criteria = session.createCriteria(TodoGroupEntity.class);
+          } else {
+            criteria = session.createCriteria(TodoEntity.class);
+          }
+        } else {
+          criteria = session.createCriteria(TodoBaseEntity.class);
+        }
 
         if (filter.getDeleted() != null) {
           criteria.add(Restrictions.eq("deleted", filter.getDeleted()));
