@@ -24,30 +24,4 @@
 			<classifier>jdk15</classifier>
 		</dependency>
 	</dependencies>
-	<profiles>
-		<profile>
-			<id>deploy-local</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>jboss-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>deploy-ejb</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>deploy</goal>
-								</goals>
-								<configuration>
-									<server>local.jboss</server>
-									<fileName>${project.build.directory}/${project.build.finalName}.jar</fileName>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 </project>
