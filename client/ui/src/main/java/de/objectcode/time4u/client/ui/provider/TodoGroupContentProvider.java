@@ -48,6 +48,8 @@ public class TodoGroupContentProvider implements IStructuredContentProvider, ITr
       if (element instanceof TodoSummary) {
         if (((TodoSummary) element).getGroupdId() != null) {
           return m_todoRepository.getTodoSummary(((TodoSummary) element).getGroupdId());
+        } else {
+          return ROOT;
         }
       }
     } catch (final Exception e) {

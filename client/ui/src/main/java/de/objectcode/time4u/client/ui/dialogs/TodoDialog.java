@@ -78,6 +78,10 @@ public class TodoDialog extends Dialog
 
     setShellStyle(SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE | getDefaultOrientation());
 
+    m_projectRepository = RepositoryFactory.getRepository().getProjectRepository();
+    m_taskRepository = RepositoryFactory.getRepository().getTaskRepository();
+    m_todoRepository = RepositoryFactory.getRepository().getTodoRepository();
+
     m_todo = todo;
     m_create = false;
   }

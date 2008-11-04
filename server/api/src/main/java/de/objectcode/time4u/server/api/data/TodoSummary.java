@@ -191,4 +191,36 @@ public class TodoSummary implements ISynchronizableData
   {
     m_estimatedTime = estimatedTime;
   }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public int hashCode()
+  {
+    return m_id != null ? m_id.hashCode() : 0;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean equals(final Object obj)
+  {
+    if (obj == this) {
+      return true;
+    }
+
+    if (obj == null || !(obj instanceof TodoSummary)) {
+      return false;
+    }
+
+    final TodoSummary castObj = (TodoSummary) obj;
+
+    if (m_id == null) {
+      return false;
+    }
+
+    return m_id.equals(castObj.m_id);
+  }
 }

@@ -22,6 +22,9 @@ import de.objectcode.time4u.client.ui.dialogs.TodoDialog;
 import de.objectcode.time4u.client.ui.dialogs.TodoGroupDialog;
 import de.objectcode.time4u.client.ui.views.TodoTreeView;
 import de.objectcode.time4u.server.api.data.TaskSummary;
+import de.objectcode.time4u.server.api.data.Todo;
+import de.objectcode.time4u.server.api.data.TodoGroup;
+import de.objectcode.time4u.server.api.data.TodoSummary;
 
 public class TodoActionDelegate implements IWorkbenchWindowActionDelegate, IViewActionDelegate
 {
@@ -74,6 +77,35 @@ public class TodoActionDelegate implements IWorkbenchWindowActionDelegate, IView
           RepositoryFactory.getRepository().getTodoRepository().storeTodoGroup(dialog.getTodoGroup(), true);
         } catch (final Exception e) {
           UIPlugin.getDefault().log(e);
+        }
+      }
+    } else if ("de.objectcode.time4u.client.ui.todo.edit".equals(id)) {
+      final TodoSummary selection = (TodoSummary) m_selection.getAdapter(TodoSummary.class);
+
+      if (selection != null) {
+        if (selection.isGroup()) {
+          try {
+            final TodoGroup todoGroup = RepositoryFactory.getRepository().getTodoRepository().getTodoGroup(
+                selection.getId());
+            final TodoGroupDialog dialog = new TodoGroupDialog(m_shellProvider, todoGroup);
+
+            if (dialog.open() == TodoGroupDialog.OK) {
+              RepositoryFactory.getRepository().getTodoRepository().storeTodoGroup(dialog.getTodoGroup(), true);
+            }
+          } catch (final Exception e) {
+            UIPlugin.getDefault().log(e);
+          }
+        } else {
+          try {
+            final Todo todo = RepositoryFactory.getRepository().getTodoRepository().getTodo(selection.getId());
+            final TodoDialog dialog = new TodoDialog(m_shellProvider, todo);
+
+            if (dialog.open() == TodoDialog.OK) {
+              RepositoryFactory.getRepository().getTodoRepository().storeTodo(dialog.getTodo(), true);
+            }
+          } catch (final Exception e) {
+            UIPlugin.getDefault().log(e);
+          }
         }
       }
     } else if ("de.objectcode.time4u.client.ui.todo.person".equals(id)) {

@@ -60,6 +60,27 @@ public class HibernateTodoRepository implements ITodoRepository
   /**
    * {@inheritDoc}
    */
+  public TodoGroup getTodoGroup(final String todoGroupId) throws RepositoryException
+  {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<TodoGroup>() {
+      public TodoGroup perform(final Session session)
+      {
+        final TodoGroupEntity todoEntity = (TodoGroupEntity) session.get(TodoGroupEntity.class, todoGroupId);
+
+        if (todoEntity != null) {
+          final TodoGroup todoGroup = new TodoGroup();
+          todoEntity.toDTO(todoGroup);
+
+          return todoGroup;
+        }
+        return null;
+      }
+    });
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   public TodoSummary getTodoSummary(final String todoId) throws RepositoryException
   {
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<TodoSummary>() {

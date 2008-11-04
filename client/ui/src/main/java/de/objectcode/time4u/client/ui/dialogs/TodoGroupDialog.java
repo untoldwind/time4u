@@ -31,7 +31,6 @@ import de.objectcode.time4u.server.api.data.TodoSummary;
 public class TodoGroupDialog extends Dialog
 {
   private Text m_headerText;
-  private Label m_stateLabel;
   private Text m_descriptionText;
   private ComboTreeViewer m_groupTreeViewer;
 
@@ -101,14 +100,6 @@ public class TodoGroupDialog extends Dialog
     m_headerText = new Text(root, SWT.BORDER);
     m_headerText.setLayoutData(gridData);
     m_headerText.setText(m_todoGroup.getHeader());
-
-    final Label stateLabel = new Label(root, SWT.LEFT);
-    stateLabel.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
-    stateLabel.setText(UIPlugin.getDefault().getString("todo.state.label"));
-    m_stateLabel = new Label(root, SWT.LEFT);
-    gridData = new GridData(GridData.FILL_BOTH);
-    m_stateLabel.setLayoutData(gridData);
-    m_stateLabel.setText(UIPlugin.getDefault().getString("todo.state." + m_todoGroup.getState() + ".label"));
 
     final Label groupTreeLabel = new Label(root, SWT.LEFT);
     groupTreeLabel.setText(UIPlugin.getDefault().getString("todo.group.label"));

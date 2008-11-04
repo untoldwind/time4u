@@ -436,6 +436,28 @@
                tooltip="%action.todo.new.tooltip">
          </action>
       </viewerContribution>
+      <viewerContribution
+            id="de.objectcode.time4u.client.ui.view.todoTreeContribution2"
+            targetID="de.objectcode.time4u.client.ui.view.todoTree">
+         <visibility>
+            <and>
+               <objectClass
+                     name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+               </objectClass>
+               <objectState
+                     name="has"
+                     value="TODO">
+               </objectState>
+            </and>
+         </visibility>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               id="de.objectcode.time4u.client.ui.todo.edit"
+               label="%action.todo.edit.label"
+               menubarPath="objectGroup"
+               tooltip="%action.todo.edit.tooltip">
+         </action>
+      </viewerContribution>
    </extension>
    <extension
 
@@ -481,6 +503,16 @@
             class="de.objectcode.time4u.client.ui.adapter.CompoundWorkItemAdapterFactory">
          <adapter
                type="de.objectcode.time4u.server.api.data.WorkItem">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="de.objectcode.time4u.client.ui.util.CompoundSelection"
+            class="de.objectcode.time4u.client.ui.adapter.CompoundTodoAdapterFactory">
+         <adapter
+               type="de.objectcode.time4u.server.api.data.TodoSummary">
+         </adapter>
+         <adapter
+               type="de.objectcode.time4u.server.api.data.Todo">
          </adapter>
       </factory>
 	</extension>
@@ -869,13 +901,19 @@
                label="%menu.todo.label"
                path="todoAdditions">
             <groupMarker
-                  name="personGroup">
+                  name="todoGroup">
             </groupMarker>
             <separator
                   name="time4u-client-ui.separator1">
             </separator>
             <groupMarker
-                  name="todoGroup">
+                  name="personGroup">
+            </groupMarker>
+            <separator
+                  name="time4u-client-ui.separator2">
+            </separator>
+            <groupMarker
+                  name="viewGroup">
             </groupMarker>
          </menu>
          <action
@@ -899,9 +937,44 @@
                icon="icons/wrench.gif"
                id="de.objectcode.time4u.client.ui.todo.showView"
                label="%action.todo.showView.label"
-               menubarPath="todoMenu/todoGroup"
+               menubarPath="todoMenu/viewGroup"
                style="push"
                tooltip="%action.todo.showView.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               id="de.objectcode.time4u.client.ui.todo.edit"
+               label="%action.todo.edit.label"
+               menubarPath="todoMenu/todoGroup"
+               style="push"
+               tooltip="%action.todo.edit.tooltip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+                  </objectClass>
+                  <objectState
+                        name="has"
+                        value="TODO">
+                  </objectState>
+               </and>
+            </enablement>
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               id="de.objectcode.time4u.client.ui.todoGroup.new"
+               label="%action.todoGroup.new.label"
+               menubarPath="todoMenu/todoGroup"
+               style="push"
+               tooltip="%action.todoGroup.new.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               id="de.objectcode.time4u.client.ui.todo.new"
+               label="%action.todo.new.label"
+               menubarPath="todoMenu/todoGroup"
+               style="push"
+               tooltip="%action.todo.new.tooltip">
          </action>
       </actionSet>
       <actionSet

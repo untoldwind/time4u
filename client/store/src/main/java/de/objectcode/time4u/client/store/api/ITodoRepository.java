@@ -26,6 +26,17 @@ public interface ITodoRepository
   Todo getTodo(String todoId) throws RepositoryException;
 
   /**
+   * Get a todo group by its identifier.
+   * 
+   * @param todoGroupId
+   *          The todo group id
+   * @return The todo group with id <tt>todoGroupid</tt> or <tt>null</tt>
+   * @throws RepositoryException
+   *           on error
+   */
+  TodoGroup getTodoGroup(String todoGroupId) throws RepositoryException;
+
+  /**
    * Get a todo by its identifier.
    * 
    * @param todoId
