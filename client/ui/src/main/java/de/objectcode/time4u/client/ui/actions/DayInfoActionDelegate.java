@@ -135,7 +135,7 @@ public class DayInfoActionDelegate implements IWorkbenchWindowPulldownDelegate2
         for (final DayTag dayTag : dayTags) {
           final MenuItem item = new MenuItem(menu, SWT.CHECK);
 
-          item.setText(dayTag.getName());
+          item.setText(dayTag.getLabel());
           item.setSelection(currentTags.contains(dayTag.getName()));
 
           if (!currentTags.isEmpty()) {

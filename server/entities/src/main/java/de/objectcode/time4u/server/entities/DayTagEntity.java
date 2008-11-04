@@ -34,9 +34,10 @@ public class DayTagEntity
     m_name = name;
   }
 
-  @Column(length = 50, nullable = false)
+  @Column(length = 50)
   public String getLabel()
   {
+    // TODO: Make this not-null
     return m_label;
   }
 

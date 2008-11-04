@@ -241,7 +241,7 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
     {
       super(dayTag.getName(), Action.AS_CHECK_BOX);
 
-      setText(dayTag.getName());
+      setText(dayTag.getLabel());
       setToolTipText(dayTag.getDescription());
 
       m_currentDay = currentDay;

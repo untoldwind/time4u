@@ -76,7 +76,7 @@ public class WorkItemServiceSeam implements IWorkItemServiceLocal
   public void initDayTagList()
   {
     final Query query = m_manager.createQuery("from " + DayTagEntity.class.getName()
-        + " t where t.deleted = false order by t.name asc");
+        + " t where (t.deleted is null or t.deleted = false) order by t.name asc");
 
     m_dayTags = query.getResultList();
   }
