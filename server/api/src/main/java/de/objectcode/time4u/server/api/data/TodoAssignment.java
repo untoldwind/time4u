@@ -2,6 +2,7 @@ package de.objectcode.time4u.server.api.data;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -18,7 +19,10 @@ public class TodoAssignment implements Serializable
   String m_personId;
   /** Estimated workitem for the todo for this person in seconds. */
   Integer m_estimatedTime;
+  /** Flag if the assignment has been deleted. */
+  boolean m_deleted;
 
+  @XmlAttribute
   public String getPersonId()
   {
     return m_personId;
@@ -29,6 +33,7 @@ public class TodoAssignment implements Serializable
     m_personId = personId;
   }
 
+  @XmlAttribute
   public Integer getEstimatedTime()
   {
     return m_estimatedTime;
@@ -39,4 +44,14 @@ public class TodoAssignment implements Serializable
     m_estimatedTime = estimatedTime;
   }
 
+  @XmlAttribute
+  public boolean isDeleted()
+  {
+    return m_deleted;
+  }
+
+  public void setDeleted(final boolean deleted)
+  {
+    m_deleted = deleted;
+  }
 }

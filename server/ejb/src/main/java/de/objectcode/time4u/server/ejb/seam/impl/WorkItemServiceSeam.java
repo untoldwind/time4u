@@ -75,7 +75,8 @@ public class WorkItemServiceSeam implements IWorkItemServiceLocal
   @Restrict("#{s:hasRole('user')}")
   public void initDayTagList()
   {
-    final Query query = m_manager.createQuery("from " + DayTagEntity.class.getName() + " t order by t.name asc");
+    final Query query = m_manager.createQuery("from " + DayTagEntity.class.getName()
+        + " t where t.deleted = false order by t.name asc");
 
     m_dayTags = query.getResultList();
   }
@@ -91,12 +92,9 @@ public class WorkItemServiceSeam implements IWorkItemServiceLocal
   @Restrict("#{s:hasRole('admin')}")
   public void deleteDayTag(final DayTagEntity dayTag)
   {
-    final Query query = m_manager
-        .createQuery("delete from " + DayTagEntity.class.getName() + " t where t.name = :name");
+    dayTag.setDeleted(true);
 
-    query.setParameter("name", dayTag.getName());
-
-    query.executeUpdate();
+    m_manager.merge(dayTag);
 
     initDayTagList();
   }

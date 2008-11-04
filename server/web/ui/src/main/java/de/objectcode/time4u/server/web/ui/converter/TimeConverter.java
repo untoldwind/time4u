@@ -3,11 +3,16 @@ package de.objectcode.time4u.server.web.ui.converter;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
+import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.faces.Converter;
+import org.jboss.seam.annotations.intercept.BypassInterceptors;
 
 @Name("timeConverter")
 @Converter
+@BypassInterceptors
+@Scope(ScopeType.APPLICATION)
 public class TimeConverter implements javax.faces.convert.Converter
 {
 

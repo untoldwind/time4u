@@ -28,8 +28,8 @@
 								rendered="#{dayTag.name == admin.dayTagListController.selectedDayTag.name}" />
 						</rich:column>
 						<rich:column>
-							<f:facet name="header">Description</f:facet>
-							#{dayTag.description}
+							<f:facet name="header">Label</f:facet>
+							#{dayTag.label}
 						</rich:column>
 						<f:facet name="footer">
 							<rich:datascroller for="dayTagTable"
@@ -51,6 +51,10 @@
 						<s:decorate template="../templates/decorateTableField.xhtml">
 							<ui:define name="label">Name</ui:define>
 							<h:inputText value="#{admin.dayTagListController.selectedDayTag.name}" />
+						</s:decorate>
+						<s:decorate template="../templates/decorateTableField.xhtml">
+							<ui:define name="label">Name</ui:define>
+							<h:inputText value="#{admin.dayTagListController.selectedDayTag.label}" />
 						</s:decorate>
 						<s:decorate template="../templates/decorateTableField.xhtml">
 							<ui:define name="label">Description</ui:define>

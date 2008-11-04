@@ -562,6 +562,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
       public List<DayTag> perform(final Session session)
       {
         final Criteria criteria = session.createCriteria(DayTagEntity.class);
+        criteria.add(Restrictions.or(Restrictions.isNull("deleted"), Restrictions.eq("deleted", false)));
         criteria.addOrder(Order.asc("name"));
 
         final List<DayTag> result = new ArrayList<DayTag>();
@@ -602,7 +603,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
           final DayTagEntity entity = (DayTagEntity) row;
 
           if (!names.contains(entity.getName())) {
-            session.delete(entity);
+            entity.setDeleted(true);
           }
         }
       }

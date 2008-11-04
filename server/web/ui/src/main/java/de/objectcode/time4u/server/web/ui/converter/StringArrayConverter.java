@@ -6,11 +6,16 @@ import java.util.Iterator;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
+import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.faces.Converter;
+import org.jboss.seam.annotations.intercept.BypassInterceptors;
 
 @Name("stringArrayConverter")
 @Converter
+@BypassInterceptors
+@Scope(ScopeType.APPLICATION)
 public class StringArrayConverter implements javax.faces.convert.Converter
 {
   public Object getAsObject(final FacesContext context, final UIComponent component, final String value)

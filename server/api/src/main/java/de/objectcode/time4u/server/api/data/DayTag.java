@@ -9,8 +9,10 @@ import javax.xml.bind.annotation.XmlType;
 public class DayTag
 {
   private String m_name;
+  private String m_label;
   private String m_description;
   private Integer m_regularTime;
+  private boolean m_deleted;
 
   @XmlAttribute
   public String getName()
@@ -24,6 +26,16 @@ public class DayTag
   }
 
   @XmlAttribute
+  public String getLabel()
+  {
+    return m_label;
+  }
+
+  public void setLabel(final String label)
+  {
+    m_label = label;
+  }
+
   public String getDescription()
   {
     return m_description;
@@ -45,4 +57,14 @@ public class DayTag
     m_regularTime = regularTime;
   }
 
+  @XmlAttribute
+  public boolean isDeleted()
+  {
+    return m_deleted;
+  }
+
+  public void setDeleted(final boolean deleted)
+  {
+    m_deleted = deleted;
+  }
 }

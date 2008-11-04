@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -36,7 +37,7 @@ public class TodoEntity extends TodoBaseEntity
   /** Estimated time. */
   private Integer m_estimatedTime;
   /** Assignments */
-  private Set<TodoAssignmentEntity> m_assignments;
+  private Map<String, TodoAssignmentEntity> m_assignments;
 
   /**
    * Default constructor for hibernate.
@@ -86,12 +87,13 @@ public class TodoEntity extends TodoBaseEntity
   }
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "todo")
-  public Set<TodoAssignmentEntity> getAssignments()
+  @MapKey(name = "personId")
+  public Map<String, TodoAssignmentEntity> getAssignments()
   {
     return m_assignments;
   }
 
-  public void setAssignments(final Set<TodoAssignmentEntity> assignments)
+  public void setAssignments(final Map<String, TodoAssignmentEntity> assignments)
   {
     m_assignments = assignments;
   }
@@ -119,6 +121,24 @@ public class TodoEntity extends TodoBaseEntity
       m_group = context.findTodoGroup(todo.getId(), todo.getLastModifiedByClient());
     } else {
       m_group = null;
+    }
+
+    // Merge assignments (i.e. two people grab the same todo without sync
+    if (m_assignments == null) {
+      m_assignments = new HashMap<String, TodoAssignmentEntity>();
+    }
+    if (todo.getAssignments() != null) {
+      for (final TodoAssignment assignment : todo.getAssignments()) {
+        final PersonEntity person = context.findPerson(assignment.getPersonId(), todo.getLastModifiedByClient());
+        TodoAssignmentEntity assignmentEntity = m_assignments.get(assignment.getPersonId());
+
+        if (assignmentEntity == null) {
+          assignmentEntity = new TodoAssignmentEntity(this, person);
+
+          context.persist(assignmentEntity);
+        }
+        assignmentEntity.fromDTO(assignment);
+      }
     }
 
     if (m_visibleToTeams == null) {
@@ -178,11 +198,10 @@ public class TodoEntity extends TodoBaseEntity
 
     final List<TodoAssignment> assignments = new ArrayList<TodoAssignment>();
     if (m_assignments != null) {
-      for (final TodoAssignmentEntity assignementEntity : m_assignments) {
+      for (final TodoAssignmentEntity assignementEntity : m_assignments.values()) {
         final TodoAssignment assignment = new TodoAssignment();
 
-        assignment.setPersonId(assignementEntity.getPersonId());
-        assignment.setEstimatedTime(assignementEntity.getEstimatedTime());
+        assignementEntity.toDTO(assignment);
       }
     }
     todo.setAssignments(assignments);
