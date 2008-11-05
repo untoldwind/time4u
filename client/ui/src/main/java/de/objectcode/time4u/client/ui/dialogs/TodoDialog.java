@@ -2,12 +2,15 @@ package de.objectcode.time4u.client.ui.dialogs;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableLayout;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -17,6 +20,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
 import de.objectcode.time4u.client.store.api.IProjectRepository;
@@ -25,13 +31,19 @@ import de.objectcode.time4u.client.store.api.ITodoRepository;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.controls.ComboTreeViewer;
+import de.objectcode.time4u.client.ui.provider.PersonContentProvider;
+import de.objectcode.time4u.client.ui.provider.PersonTableLabelProvider;
 import de.objectcode.time4u.client.ui.provider.ProjectContentProvider;
 import de.objectcode.time4u.client.ui.provider.ProjectLabelProvider;
 import de.objectcode.time4u.client.ui.provider.TaskContentProvider;
 import de.objectcode.time4u.client.ui.provider.TaskLabelProvider;
 import de.objectcode.time4u.client.ui.provider.TodoGroupContentProvider;
 import de.objectcode.time4u.client.ui.provider.TodoLabelProvider;
+import de.objectcode.time4u.client.ui.provider.TodoVisibilityTableContentProvider;
+import de.objectcode.time4u.client.ui.provider.TodoVisibilityTableLabelProvider;
+import de.objectcode.time4u.server.api.data.PersonSummary;
 import de.objectcode.time4u.server.api.data.TaskSummary;
+import de.objectcode.time4u.server.api.data.TeamSummary;
 import de.objectcode.time4u.server.api.data.Todo;
 import de.objectcode.time4u.server.api.data.TodoState;
 import de.objectcode.time4u.server.api.data.TodoSummary;
@@ -44,6 +56,8 @@ public class TodoDialog extends Dialog
   private ComboTreeViewer m_groupTreeViewer;
   private ComboTreeViewer m_projectTreeViewer;
   private ComboViewer m_taskViewer;
+  private ComboViewer m_reporterViewer;
+  private TableViewer m_visibilityViewer;
 
   IProjectRepository m_projectRepository;
   ITaskRepository m_taskRepository;
@@ -142,6 +156,25 @@ public class TodoDialog extends Dialog
     m_groupTreeViewer.setLabelProvider(new TodoLabelProvider());
     m_groupTreeViewer.setInput(new Object());
 
+    final Label reporterLabel = new Label(root, SWT.LEFT);
+    reporterLabel.setText(UIPlugin.getDefault().getString("todo.reporter.label"));
+
+    m_reporterViewer = new ComboViewer(root, SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    m_reporterViewer.getCombo().setLayoutData(gridData);
+    m_reporterViewer.setContentProvider(new PersonContentProvider(RepositoryFactory.getRepository()
+        .getPersonRepository()));
+    m_reporterViewer.setLabelProvider(new PersonTableLabelProvider());
+    m_reporterViewer.setInput(new Object());
+    if (m_todo.getReporterId() != null) {
+      try {
+        m_reporterViewer.setSelection(new StructuredSelection(RepositoryFactory.getRepository().getPersonRepository()
+            .getPersonSummary(m_todo.getReporterId())));
+      } catch (final Exception e) {
+        UIPlugin.getDefault().log(e);
+      }
+    }
+
     final Label projectTreeLabel = new Label(root, SWT.LEFT);
     projectTreeLabel.setText(UIPlugin.getDefault().getString("project.label"));
 
@@ -202,6 +235,62 @@ public class TodoDialog extends Dialog
     m_descriptionText.setText(m_todo.getDescription());
     m_descriptionText.setTextLimit(1000);
 
+    final TabFolder tabFolder = new TabFolder(root, SWT.BORDER);
+    gridData = new GridData(GridData.FILL_BOTH);
+    gridData.horizontalSpan = 2;
+    tabFolder.setLayoutData(gridData);
+
+    final TabItem visibilityItem = new TabItem(tabFolder, SWT.NONE);
+    visibilityItem.setText(UIPlugin.getDefault().getString("todo.visibility.label"));
+    final Composite visibilityTop = new Composite(tabFolder, SWT.NONE);
+    visibilityItem.setControl(visibilityTop);
+    visibilityTop.setLayout(new GridLayout(2, false));
+
+    m_visibilityViewer = new TableViewer(visibilityTop, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.SINGLE
+        | SWT.FULL_SELECTION);
+    final TableLayout layout = new TableLayout();
+    layout.addColumnData(new ColumnWeightData(10, 50, true));
+    layout.addColumnData(new ColumnWeightData(90, 100, true));
+    m_visibilityViewer.getTable().setHeaderVisible(true);
+    m_visibilityViewer.getTable().setLinesVisible(true);
+    m_visibilityViewer.getTable().setLayout(layout);
+    final TableColumn typeColumn = new TableColumn(m_visibilityViewer.getTable(), SWT.LEFT);
+    typeColumn.setText("Type");
+    typeColumn.setMoveable(true);
+    final TableColumn nameColumn = new TableColumn(m_visibilityViewer.getTable(), SWT.LEFT);
+    nameColumn.setText("Name");
+    nameColumn.setMoveable(true);
+    gridData = new GridData(GridData.FILL_BOTH);
+    gridData.grabExcessHorizontalSpace = true;
+    gridData.grabExcessVerticalSpace = true;
+    gridData.widthHint = convertWidthInCharsToPixels(90);
+    gridData.heightHint = convertHeightInCharsToPixels(8);
+    m_visibilityViewer.getTable().setLayoutData(gridData);
+    m_visibilityViewer.setContentProvider(new TodoVisibilityTableContentProvider(RepositoryFactory.getRepository()
+        .getPersonRepository(), RepositoryFactory.getRepository().getTeamRepository()));
+    m_visibilityViewer.setLabelProvider(new TodoVisibilityTableLabelProvider());
+    m_visibilityViewer.setInput(m_todo);
+    m_visibilityViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+      public void selectionChanged(final SelectionChangedEvent event)
+      {
+        final ISelection selection = event.getSelection();
+
+        if (selection != null && selection instanceof IStructuredSelection) {
+          final Object sel = ((IStructuredSelection) selection).getFirstElement();
+
+          if (sel instanceof PersonSummary) {
+          } else if (sel instanceof TeamSummary) {
+          }
+        }
+      }
+    });
+
+    final TabItem assignmentsItem = new TabItem(tabFolder, SWT.NONE);
+    assignmentsItem.setText(UIPlugin.getDefault().getString("todo.assignments.label"));
+    final Composite assignmentsTop = new Composite(tabFolder, SWT.NONE);
+    assignmentsItem.setControl(assignmentsTop);
+    visibilityTop.setLayout(new GridLayout(2, false));
+
     return composite;
   }
 
@@ -227,6 +316,14 @@ public class TodoDialog extends Dialog
 
       if (obj != null && obj instanceof TodoSummary) {
         m_todo.setGroupdId(((TodoSummary) obj).getId());
+      }
+    }
+    final ISelection reporterSelection = m_reporterViewer.getSelection();
+    if (reporterSelection instanceof IStructuredSelection) {
+      final Object obj = ((IStructuredSelection) reporterSelection).getFirstElement();
+
+      if (obj != null && obj instanceof PersonSummary) {
+        m_todo.setReporterId(((PersonSummary) obj).getId());
       }
     }
     final ISelection taskSelection = m_taskViewer.getSelection();

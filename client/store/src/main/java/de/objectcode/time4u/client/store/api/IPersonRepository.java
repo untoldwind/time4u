@@ -14,6 +14,11 @@ import de.objectcode.time4u.server.api.filter.PersonFilter;
 public interface IPersonRepository
 {
   /**
+   * Get a person summary by its id.
+   */
+  PersonSummary getPersonSummary(String personId) throws RepositoryException;
+
+  /**
    * Get all persons matching a filter condition.
    * 
    * @param filter

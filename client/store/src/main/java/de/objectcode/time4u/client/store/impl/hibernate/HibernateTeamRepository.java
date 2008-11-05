@@ -37,6 +37,30 @@ public class HibernateTeamRepository implements ITeamRepository
     m_hibernateTemplate = hibernateTemplate;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  public TeamSummary getTeamSummary(final String teamId) throws RepositoryException
+  {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<TeamSummary>() {
+      public TeamSummary perform(final Session session)
+      {
+        final TeamEntity teamEntity = (TeamEntity) session.get(TeamEntity.class, teamId);
+
+        if (teamEntity != null) {
+          final TeamSummary team = new TeamSummary();
+          teamEntity.toSummaryDTO(team);
+
+          return team;
+        }
+        return null;
+      }
+    });
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   public List<Team> getTeams(final TeamFilter filter) throws RepositoryException
   {
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<List<Team>>() {
@@ -81,6 +105,9 @@ public class HibernateTeamRepository implements ITeamRepository
     });
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<TeamSummary> getTeamSummaries(final TeamFilter filter) throws RepositoryException
   {
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<List<TeamSummary>>() {

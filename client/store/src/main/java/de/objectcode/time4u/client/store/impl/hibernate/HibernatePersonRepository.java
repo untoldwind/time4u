@@ -39,6 +39,27 @@ public class HibernatePersonRepository implements IPersonRepository
   /**
    * {@inheritDoc}
    */
+  public PersonSummary getPersonSummary(final String personId) throws RepositoryException
+  {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<PersonSummary>() {
+      public PersonSummary perform(final Session session)
+      {
+        final PersonEntity personEntity = (PersonEntity) session.get(PersonEntity.class, personId);
+
+        if (personEntity != null) {
+          final PersonSummary person = new PersonSummary();
+          personEntity.toSummaryDTO(person);
+
+          return person;
+        }
+        return null;
+      }
+    });
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   public List<Person> getPersons(final PersonFilter filter) throws RepositoryException
   {
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<List<Person>>() {

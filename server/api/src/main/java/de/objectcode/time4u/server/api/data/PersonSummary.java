@@ -122,4 +122,35 @@ public class PersonSummary implements ISynchronizableData
     m_lastSynchronize = lastSynchronize;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public int hashCode()
+  {
+    return m_id != null ? m_id.hashCode() : 0;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean equals(final Object obj)
+  {
+    if (obj == this) {
+      return true;
+    }
+
+    if (obj == null || !(obj instanceof PersonSummary)) {
+      return false;
+    }
+
+    final PersonSummary castObj = (PersonSummary) obj;
+
+    if (m_id == null) {
+      return false;
+    }
+
+    return m_id.equals(castObj.m_id);
+  }
 }

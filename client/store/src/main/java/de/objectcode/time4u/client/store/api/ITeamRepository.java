@@ -14,6 +14,12 @@ import de.objectcode.time4u.server.api.filter.TeamFilter;
 public interface ITeamRepository
 {
   /**
+   * Get a team summary by its id.
+   * 
+   */
+  TeamSummary getTeamSummary(String teamId) throws RepositoryException;
+
+  /**
    * Get all teams matching a filter condition.
    * 
    * @param filter
