@@ -71,7 +71,8 @@ public class TeamListDialog extends Dialog
     givenNameColumn.setText("Description");
 
     m_teamsViewer.setColumnProperties(new String[] { "name", "description" });
-    m_teamsViewer.setContentProvider(new TeamContentProvider(RepositoryFactory.getRepository().getTeamRepository()));
+    m_teamsViewer.setContentProvider(new TeamContentProvider(RepositoryFactory.getRepository().getPersonRepository(),
+        RepositoryFactory.getRepository().getTeamRepository()));
     m_teamsViewer.setLabelProvider(new TeamTableLabelProvider());
     m_teamsViewer.setInput(new Object());
 

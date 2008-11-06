@@ -22,6 +22,8 @@ public class PersonFilter implements Serializable
   Long m_maxRevision;
   /** Client id of the last modification */
   Long m_lastModifiedByClient;
+  /** Id of a team the person should be member of */
+  String m_memberOfTeamId;
   /** Desired order */
   Order m_order;
 
@@ -78,6 +80,16 @@ public class PersonFilter implements Serializable
     m_lastModifiedByClient = lastModifiedByClient;
   }
 
+  public String getMemberOfTeamId()
+  {
+    return m_memberOfTeamId;
+  }
+
+  public void setMemberOfTeamId(final String memberOfTeamId)
+  {
+    m_memberOfTeamId = memberOfTeamId;
+  }
+
   public Order getOrder()
   {
     return m_order;
@@ -93,6 +105,13 @@ public class PersonFilter implements Serializable
     return new PersonFilter(false, 0L, null, Order.NAME);
   }
 
+  public static PersonFilter filterMemberOf(final String teamId)
+  {
+    final PersonFilter filter = new PersonFilter(false, 0L, null, Order.NAME);
+    filter.setMemberOfTeamId(teamId);
+    return filter;
+  }
+
   @Override
   public String toString()
   {
@@ -101,6 +120,7 @@ public class PersonFilter implements Serializable
     buffer.append(",minRevision=").append(m_minRevision);
     buffer.append(",maxRevision=").append(m_maxRevision);
     buffer.append(",lastModifiedByClient=").append(m_lastModifiedByClient);
+    buffer.append(",memberOfTeamId=").append(m_memberOfTeamId);
     buffer.append(",order=").append(m_order);
     buffer.append(")");
 

@@ -2,15 +2,13 @@ package de.objectcode.time4u.client.ui.dialogs;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TableLayout;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -22,7 +20,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
 import de.objectcode.time4u.client.store.api.IProjectRepository;
@@ -37,10 +34,10 @@ import de.objectcode.time4u.client.ui.provider.ProjectContentProvider;
 import de.objectcode.time4u.client.ui.provider.ProjectLabelProvider;
 import de.objectcode.time4u.client.ui.provider.TaskContentProvider;
 import de.objectcode.time4u.client.ui.provider.TaskLabelProvider;
+import de.objectcode.time4u.client.ui.provider.TeamContentProvider;
+import de.objectcode.time4u.client.ui.provider.TeamPersonLabelProvider;
 import de.objectcode.time4u.client.ui.provider.TodoGroupContentProvider;
 import de.objectcode.time4u.client.ui.provider.TodoLabelProvider;
-import de.objectcode.time4u.client.ui.provider.TodoVisibilityTableContentProvider;
-import de.objectcode.time4u.client.ui.provider.TodoVisibilityTableLabelProvider;
 import de.objectcode.time4u.server.api.data.PersonSummary;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.data.TeamSummary;
@@ -57,7 +54,7 @@ public class TodoDialog extends Dialog
   private ComboTreeViewer m_projectTreeViewer;
   private ComboViewer m_taskViewer;
   private ComboViewer m_reporterViewer;
-  private TableViewer m_visibilityViewer;
+  private TreeViewer m_visibilityViewer;
 
   IProjectRepository m_projectRepository;
   ITaskRepository m_taskRepository;
@@ -246,30 +243,18 @@ public class TodoDialog extends Dialog
     visibilityItem.setControl(visibilityTop);
     visibilityTop.setLayout(new GridLayout(2, false));
 
-    m_visibilityViewer = new TableViewer(visibilityTop, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.SINGLE
-        | SWT.FULL_SELECTION);
-    final TableLayout layout = new TableLayout();
-    layout.addColumnData(new ColumnWeightData(10, 50, true));
-    layout.addColumnData(new ColumnWeightData(90, 100, true));
-    m_visibilityViewer.getTable().setHeaderVisible(true);
-    m_visibilityViewer.getTable().setLinesVisible(true);
-    m_visibilityViewer.getTable().setLayout(layout);
-    final TableColumn typeColumn = new TableColumn(m_visibilityViewer.getTable(), SWT.LEFT);
-    typeColumn.setText("Type");
-    typeColumn.setMoveable(true);
-    final TableColumn nameColumn = new TableColumn(m_visibilityViewer.getTable(), SWT.LEFT);
-    nameColumn.setText("Name");
-    nameColumn.setMoveable(true);
+    m_visibilityViewer = new TreeViewer(visibilityTop, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.SINGLE
+        | SWT.FULL_SELECTION | SWT.CHECK);
     gridData = new GridData(GridData.FILL_BOTH);
     gridData.grabExcessHorizontalSpace = true;
     gridData.grabExcessVerticalSpace = true;
     gridData.widthHint = convertWidthInCharsToPixels(90);
     gridData.heightHint = convertHeightInCharsToPixels(8);
-    m_visibilityViewer.getTable().setLayoutData(gridData);
-    m_visibilityViewer.setContentProvider(new TodoVisibilityTableContentProvider(RepositoryFactory.getRepository()
+    m_visibilityViewer.getTree().setLayoutData(gridData);
+    m_visibilityViewer.setContentProvider(new TeamContentProvider(RepositoryFactory.getRepository()
         .getPersonRepository(), RepositoryFactory.getRepository().getTeamRepository()));
-    m_visibilityViewer.setLabelProvider(new TodoVisibilityTableLabelProvider());
-    m_visibilityViewer.setInput(m_todo);
+    m_visibilityViewer.setLabelProvider(new TeamPersonLabelProvider());
+    m_visibilityViewer.setInput(new Object());
     m_visibilityViewer.addSelectionChangedListener(new ISelectionChangedListener() {
       public void selectionChanged(final SelectionChangedEvent event)
       {

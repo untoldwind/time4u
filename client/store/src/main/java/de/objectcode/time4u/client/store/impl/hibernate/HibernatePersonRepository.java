@@ -39,6 +39,27 @@ public class HibernatePersonRepository implements IPersonRepository
   /**
    * {@inheritDoc}
    */
+  public Person getPerson(final String personId) throws RepositoryException
+  {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<Person>() {
+      public Person perform(final Session session)
+      {
+        final PersonEntity personEntity = (PersonEntity) session.get(PersonEntity.class, personId);
+
+        if (personEntity != null) {
+          final Person person = new Person();
+          personEntity.toDTO(person);
+
+          return person;
+        }
+        return null;
+      }
+    });
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   public PersonSummary getPersonSummary(final String personId) throws RepositoryException
   {
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<PersonSummary>() {
@@ -78,6 +99,9 @@ public class HibernatePersonRepository implements IPersonRepository
         }
         if (filter.getLastModifiedByClient() != null) {
           criteria.add(Restrictions.eq("lastModifiedByClient", filter.getLastModifiedByClient()));
+        }
+        if (filter.getMemberOfTeamId() != null) {
+          criteria.createCriteria("memberOf").add(Restrictions.eq("id", filter.getMemberOfTeamId()));
         }
         switch (filter.getOrder()) {
           case ID:
@@ -126,6 +150,9 @@ public class HibernatePersonRepository implements IPersonRepository
         }
         if (filter.getLastModifiedByClient() != null) {
           criteria.add(Restrictions.eq("lastModifiedByClient", filter.getLastModifiedByClient()));
+        }
+        if (filter.getMemberOfTeamId() != null) {
+          criteria.createCriteria("memberOf").add(Restrictions.eq("id", filter.getMemberOfTeamId()));
         }
         switch (filter.getOrder()) {
           case ID:

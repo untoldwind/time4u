@@ -132,6 +132,11 @@ public class PersonServiceImpl implements IPersonService
       queryStr.append("p.lastModifiedByClient = :lastModifiedByClient");
       combineStr = " and ";
     }
+    if (filter.getMemberOfTeamId() != null) {
+      queryStr.append(combineStr);
+      queryStr.append("some(p.memberOf.id) = :memberOfTeamId");
+      combineStr = " and ";
+    }
 
     switch (filter.getOrder()) {
       case ID:
@@ -155,6 +160,9 @@ public class PersonServiceImpl implements IPersonService
     }
     if (filter.getLastModifiedByClient() != null) {
       query.setParameter("lastModifiedByClient", filter.getLastModifiedByClient());
+    }
+    if (filter.getMemberOfTeamId() != null) {
+      query.setParameter("memberOfTeamId", filter.getMemberOfTeamId());
     }
 
     return query;
