@@ -87,4 +87,35 @@ public class TeamSummary implements ISynchronizableData
     m_deleted = deleted;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public int hashCode()
+  {
+    return m_id != null ? m_id.hashCode() : 0;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean equals(final Object obj)
+  {
+    if (obj == this) {
+      return true;
+    }
+
+    if (obj == null || !(obj instanceof TeamSummary)) {
+      return false;
+    }
+
+    final TeamSummary castObj = (TeamSummary) obj;
+
+    if (m_id == null) {
+      return false;
+    }
+
+    return m_id.equals(castObj.m_id);
+  }
 }

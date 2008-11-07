@@ -2,6 +2,7 @@ package de.objectcode.time4u.server.entities;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -236,6 +237,13 @@ public class PersonEntity
   {
     toSummaryDTO(person);
 
+    final Set<String> memberOfTeamIds = new HashSet<String>();
+    if (m_memberOf != null) {
+      for (final TeamEntity team : m_memberOf) {
+        memberOfTeamIds.add(team.getId());
+      }
+    }
+    person.setMemberOfTeamIds(memberOfTeamIds);
     if (m_metaProperties != null) {
       for (final PersonMetaPropertyEntity property : m_metaProperties.values()) {
         person.setMetaProperty(property.toDTO());

@@ -1,6 +1,8 @@
 package de.objectcode.time4u.client.ui.provider;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -25,15 +27,23 @@ public class TeamContentProvider implements IStructuredContentProvider, ITreeCon
     m_teamRepository = teamRepository;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public Object[] getChildren(final Object parentElement)
   {
     if (parentElement != null && parentElement instanceof TeamSummary) {
       try {
-        final Collection<PersonSummary> teams = m_personRepository.getPersonSummaries(PersonFilter
+        final Collection<PersonSummary> persons = m_personRepository.getPersonSummaries(PersonFilter
             .filterMemberOf(((TeamSummary) parentElement).getId()));
 
-        if (teams != null) {
-          return teams.toArray();
+        if (persons != null) {
+          final List<TeamPerson> result = new ArrayList<TeamPerson>();
+
+          for (final PersonSummary person : persons) {
+            result.add(new TeamPerson((TeamSummary) parentElement, person));
+          }
+          return result.toArray();
         }
       } catch (final Exception e) {
         UIPlugin.getDefault().log(e);
@@ -49,7 +59,8 @@ public class TeamContentProvider implements IStructuredContentProvider, ITreeCon
    */
   public Object getParent(final Object element)
   {
-    if (element != null && element instanceof PersonSummary) {
+    if (element != null && element instanceof TeamPerson) {
+      return ((TeamPerson) element).getTeam();
     }
     return null;
   }
@@ -94,4 +105,48 @@ public class TeamContentProvider implements IStructuredContentProvider, ITreeCon
   {
   }
 
+  public static class TeamPerson
+  {
+    private final TeamSummary m_team;
+    private final PersonSummary m_person;
+
+    public TeamPerson(final TeamSummary team, final PersonSummary person)
+    {
+      m_team = team;
+      m_person = person;
+    }
+
+    public TeamSummary getTeam()
+    {
+      return m_team;
+    }
+
+    public PersonSummary getPerson()
+    {
+      return m_person;
+    }
+
+    @Override
+    public boolean equals(final Object obj)
+    {
+      if (obj == this) {
+        return true;
+      }
+
+      if (obj == null || !(obj instanceof TeamPerson)) {
+        return false;
+      }
+
+      final TeamPerson castObj = (TeamPerson) obj;
+
+      return m_person.equals(castObj.m_person) && m_team.equals(castObj.m_team);
+    }
+
+    @Override
+    public int hashCode()
+    {
+      return m_person.hashCode() * 13 + m_team.hashCode();
+    }
+
+  }
 }

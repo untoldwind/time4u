@@ -8,7 +8,6 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -28,19 +27,17 @@ import de.objectcode.time4u.client.store.api.ITodoRepository;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.controls.ComboTreeViewer;
+import de.objectcode.time4u.client.ui.controls.TodoVisibilityControl;
 import de.objectcode.time4u.client.ui.provider.PersonContentProvider;
 import de.objectcode.time4u.client.ui.provider.PersonTableLabelProvider;
 import de.objectcode.time4u.client.ui.provider.ProjectContentProvider;
 import de.objectcode.time4u.client.ui.provider.ProjectLabelProvider;
 import de.objectcode.time4u.client.ui.provider.TaskContentProvider;
 import de.objectcode.time4u.client.ui.provider.TaskLabelProvider;
-import de.objectcode.time4u.client.ui.provider.TeamContentProvider;
-import de.objectcode.time4u.client.ui.provider.TeamPersonLabelProvider;
 import de.objectcode.time4u.client.ui.provider.TodoGroupContentProvider;
 import de.objectcode.time4u.client.ui.provider.TodoLabelProvider;
 import de.objectcode.time4u.server.api.data.PersonSummary;
 import de.objectcode.time4u.server.api.data.TaskSummary;
-import de.objectcode.time4u.server.api.data.TeamSummary;
 import de.objectcode.time4u.server.api.data.Todo;
 import de.objectcode.time4u.server.api.data.TodoState;
 import de.objectcode.time4u.server.api.data.TodoSummary;
@@ -54,7 +51,7 @@ public class TodoDialog extends Dialog
   private ComboTreeViewer m_projectTreeViewer;
   private ComboViewer m_taskViewer;
   private ComboViewer m_reporterViewer;
-  private TreeViewer m_visibilityViewer;
+  private TodoVisibilityControl m_todoVisibility;
 
   IProjectRepository m_projectRepository;
   ITaskRepository m_taskRepository;
@@ -243,32 +240,14 @@ public class TodoDialog extends Dialog
     visibilityItem.setControl(visibilityTop);
     visibilityTop.setLayout(new GridLayout(2, false));
 
-    m_visibilityViewer = new TreeViewer(visibilityTop, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.SINGLE
-        | SWT.FULL_SELECTION | SWT.CHECK);
+    m_todoVisibility = new TodoVisibilityControl(visibilityTop, SWT.NONE);
     gridData = new GridData(GridData.FILL_BOTH);
     gridData.grabExcessHorizontalSpace = true;
     gridData.grabExcessVerticalSpace = true;
     gridData.widthHint = convertWidthInCharsToPixels(90);
     gridData.heightHint = convertHeightInCharsToPixels(8);
-    m_visibilityViewer.getTree().setLayoutData(gridData);
-    m_visibilityViewer.setContentProvider(new TeamContentProvider(RepositoryFactory.getRepository()
-        .getPersonRepository(), RepositoryFactory.getRepository().getTeamRepository()));
-    m_visibilityViewer.setLabelProvider(new TeamPersonLabelProvider());
-    m_visibilityViewer.setInput(new Object());
-    m_visibilityViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-      public void selectionChanged(final SelectionChangedEvent event)
-      {
-        final ISelection selection = event.getSelection();
-
-        if (selection != null && selection instanceof IStructuredSelection) {
-          final Object sel = ((IStructuredSelection) selection).getFirstElement();
-
-          if (sel instanceof PersonSummary) {
-          } else if (sel instanceof TeamSummary) {
-          }
-        }
-      }
-    });
+    m_todoVisibility.setLayoutData(gridData);
+    m_todoVisibility.setTodo(m_todo);
 
     final TabItem assignmentsItem = new TabItem(tabFolder, SWT.NONE);
     assignmentsItem.setText(UIPlugin.getDefault().getString("todo.assignments.label"));
@@ -319,6 +298,7 @@ public class TodoDialog extends Dialog
         m_todo.setTaskId(((TaskSummary) obj).getId());
       }
     }
+    m_todoVisibility.updateData(m_todo);
 
     super.okPressed();
   }

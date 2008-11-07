@@ -16,6 +16,10 @@ public class TeamPersonLabelProvider extends LabelProvider
         return ((PersonSummary) element).getGivenName() + " " + ((PersonSummary) element).getSurname();
       } else if (element instanceof TeamSummary) {
         return ((TeamSummary) element).getName();
+      } else if (element instanceof TeamContentProvider.TeamPerson) {
+        final PersonSummary person = ((TeamContentProvider.TeamPerson) element).getPerson();
+
+        return person.getGivenName() + " " + person.getSurname();
       }
     }
     return super.getText(element);

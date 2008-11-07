@@ -22,6 +22,7 @@ import de.objectcode.time4u.client.store.api.ITodoRepository;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.controls.ComboTreeViewer;
+import de.objectcode.time4u.client.ui.controls.TodoVisibilityControl;
 import de.objectcode.time4u.client.ui.provider.TodoGroupContentProvider;
 import de.objectcode.time4u.client.ui.provider.TodoLabelProvider;
 import de.objectcode.time4u.server.api.data.TodoGroup;
@@ -33,6 +34,7 @@ public class TodoGroupDialog extends Dialog
   private Text m_headerText;
   private Text m_descriptionText;
   private ComboTreeViewer m_groupTreeViewer;
+  private TodoVisibilityControl m_todoVisibility;
 
   IProjectRepository m_projectRepository;
   ITaskRepository m_taskRepository;
@@ -132,6 +134,15 @@ public class TodoGroupDialog extends Dialog
       UIPlugin.getDefault().log(e);
     }
 
+    final Label visibilityLabel = new Label(root, SWT.LEFT);
+    visibilityLabel.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+    visibilityLabel.setText(UIPlugin.getDefault().getString("todo.visibility.label"));
+
+    m_todoVisibility = new TodoVisibilityControl(root, SWT.NONE);
+    gridData = new GridData(GridData.FILL_BOTH);
+    m_todoVisibility.setLayoutData(gridData);
+    m_todoVisibility.setTodoGroup(m_todoGroup);
+
     return composite;
   }
 
@@ -159,6 +170,7 @@ public class TodoGroupDialog extends Dialog
         m_todoGroup.setGroupdId(((TodoSummary) obj).getId());
       }
     }
+    m_todoVisibility.updateData(m_todoGroup);
 
     super.okPressed();
   }

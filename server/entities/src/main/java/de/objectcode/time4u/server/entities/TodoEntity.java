@@ -213,6 +213,7 @@ public class TodoEntity extends TodoBaseEntity
       }
     }
     todo.setVisibleToPersonIds(visibleToPersonIds);
+
     final List<String> visibleToTeamIds = new ArrayList<String>();
     if (m_visibleToTeams != null) {
       for (final TeamEntity team : m_visibleToTeams) {
