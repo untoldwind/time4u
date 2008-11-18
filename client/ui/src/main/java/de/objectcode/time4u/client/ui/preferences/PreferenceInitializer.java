@@ -33,5 +33,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
         .getDisplay().getSystemColor(SWT.COLOR_RED).getRGB());
     PreferenceConverter.setDefault(store, PreferenceConstants.UI_CALENDAR_FREE_COLOR, PlatformUI.getWorkbench()
         .getDisplay().getSystemColor(SWT.COLOR_DARK_RED).getRGB());
+
+    store.setDefault(PreferenceConstants.UI_TASK_HISTORY_SIZE, 10);
+    store.setDefault(PreferenceConstants.UI_TASK_HISTORY, "");
   }
 }

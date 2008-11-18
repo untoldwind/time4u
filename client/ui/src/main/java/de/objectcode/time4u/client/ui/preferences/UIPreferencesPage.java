@@ -2,6 +2,7 @@ package de.objectcode.time4u.client.ui.preferences;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -18,6 +19,21 @@ public class UIPreferencesPage extends FieldEditorPreferencePage implements IWor
   protected void createFieldEditors()
   {
     addField(new BooleanFieldEditor(PreferenceConstants.UI_SHOW_TRAY_ICON, "Show &Tray icon", getFieldEditorParent()));
+
+    final IntegerFieldEditor taskHistory = new IntegerFieldEditor(PreferenceConstants.UI_TASK_HISTORY_SIZE,
+        "&Task histroy size", getFieldEditorParent());
+    taskHistory.setValidRange(0, 30);
+    addField(taskHistory);
+
+    addField(new BooleanFieldEditor(PreferenceConstants.UI_CONFIRM_PROJECT_DELETE, "Confirm &Project delete",
+        getFieldEditorParent()));
+
+    addField(new BooleanFieldEditor(PreferenceConstants.UI_CONFIRM_TASK_DELETE, "Confirm &Task delete",
+        getFieldEditorParent()));
+
+    addField(new BooleanFieldEditor(PreferenceConstants.UI_CONFIRM_WORKITEM_DELETE, "Confirm &WorkItem delete",
+        getFieldEditorParent()));
+
   }
 
 }

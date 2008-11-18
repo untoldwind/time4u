@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -19,6 +20,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import de.objectcode.time4u.client.store.api.IProjectRepository;
+import de.objectcode.time4u.client.store.api.ITaskRepository;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.client.ui.actions.PunchInAction;
 import de.objectcode.time4u.client.ui.dialogs.ExceptionDialog;
@@ -43,6 +46,7 @@ public class UIPlugin extends AbstractUIPlugin
   private ResourceBundle m_resourceBundle;
   private final Map<String, Image> m_images = new HashMap<String, Image>();
   private final LinkedList<PunchInAction> m_taskHistory = new LinkedList<PunchInAction>();
+  private boolean m_taskHistoryInitialized = false;
 
   private ActiveWorkItemJob m_activeWorkItemJob;
 
@@ -72,6 +76,24 @@ public class UIPlugin extends AbstractUIPlugin
   @Override
   public void stop(final BundleContext context) throws Exception
   {
+    if (m_taskHistoryInitialized) {
+      final StringBuffer buffer = new StringBuffer();
+
+      boolean first = true;
+
+      for (final PunchInAction action : m_taskHistory) {
+        if (!first) {
+          buffer.append(':');
+        }
+
+        buffer.append(action.getProjectId());
+        buffer.append(",");
+        buffer.append(action.getTaskId());
+        first = false;
+      }
+      getPreferenceStore().putValue(PreferenceConstants.UI_TASK_HISTORY, buffer.toString());
+    }
+
     plugin = null;
     super.stop(context);
   }
@@ -161,6 +183,10 @@ public class UIPlugin extends AbstractUIPlugin
   public void pushTask(final ProjectSummary project, final TaskSummary task)
   {
     synchronized (m_taskHistory) {
+      if (!m_taskHistoryInitialized) {
+        initializeTaskHistory();
+      }
+
       int count = 0;
       final int max = getPreferenceStore().getInt(PreferenceConstants.UI_TASK_HISTORY_SIZE);
 
@@ -181,7 +207,46 @@ public class UIPlugin extends AbstractUIPlugin
   public Collection<PunchInAction> getTaskHistory()
   {
     synchronized (m_taskHistory) {
+      if (!m_taskHistoryInitialized) {
+        initializeTaskHistory();
+      }
       return new ArrayList<PunchInAction>(m_taskHistory);
+    }
+  }
+
+  public void initializeTaskHistory()
+  {
+    m_taskHistoryInitialized = true;
+
+    final StringTokenizer t = new StringTokenizer(getPreferenceStore().getString(PreferenceConstants.UI_TASK_HISTORY),
+        ":");
+    final IProjectRepository projectRepository = RepositoryFactory.getRepository().getProjectRepository();
+    final ITaskRepository taskRerRepository = RepositoryFactory.getRepository().getTaskRepository();
+
+    while (t.hasMoreTokens()) {
+      try {
+        String idStr = t.nextToken();
+        final int idx = idStr.indexOf(",");
+        ProjectSummary project = null;
+        if (idx >= 0) {
+          final String projectId = idStr.substring(0, idx);
+          project = projectRepository.getProjectSummary(projectId);
+
+          idStr = idStr.substring(idx + 1);
+        }
+
+        final TaskSummary task = taskRerRepository.getTaskSummary(idStr);
+
+        if (project == null && task != null && task.getProjectId() != null) {
+          project = projectRepository.getProjectSummary(task.getProjectId());
+        }
+
+        if (project != null && task != null) {
+          m_taskHistory.add(new PunchInAction(RepositoryFactory.getRepository(), project.getId(), task.getId()));
+        }
+      } catch (final Throwable e) {
+        UIPlugin.getDefault().log(e);
+      }
     }
   }
 
