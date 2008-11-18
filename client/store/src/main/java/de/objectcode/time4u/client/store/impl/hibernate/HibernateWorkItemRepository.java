@@ -291,6 +291,13 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
             if (workItem.getId() != null) {
               final WorkItemEntity workItemEntity = (WorkItemEntity) session
                   .get(WorkItemEntity.class, workItem.getId());
+
+              if (workItemEntity == null) {
+                // For some reason the workitem is no longer there
+                // This is kind of a workaround for bug #2305950 which might require further investigation
+                return null;
+              }
+
               final DayInfoEntity dayInfoEntity = workItemEntity.getDayInfo();
 
               dayInfoEntity.setRevision(revisionLock.getLatestRevision());
