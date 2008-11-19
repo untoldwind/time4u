@@ -24,6 +24,7 @@ import de.objectcode.time4u.client.ui.dialogs.TodoDialog;
 import de.objectcode.time4u.client.ui.dialogs.TodoGroupDialog;
 import de.objectcode.time4u.client.ui.preferences.PreferenceConstants;
 import de.objectcode.time4u.client.ui.views.TodoTreeView;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.data.Todo;
 import de.objectcode.time4u.server.api.data.TodoAssignment;
@@ -156,6 +157,58 @@ public class TodoActionDelegate implements IWorkbenchWindowActionDelegate, IView
           } catch (final Exception e) {
             UIPlugin.getDefault().log(e);
           }
+        }
+      }
+    } else if ("de.objectcode.time4u.client.ui.todo.work".equals(id)) {
+      final Todo selection = (Todo) m_selection.getAdapter(Todo.class);
+
+      if (selection != null && selection.getTaskId() != null && selection.getAssignments() != null) {
+        try {
+          final TaskSummary task = RepositoryFactory.getRepository().getTaskRepository().getTaskSummary(
+              selection.getTaskId());
+          final ProjectSummary project = RepositoryFactory.getRepository().getProjectRepository().getProjectSummary(
+              task.getProjectId());
+
+          final String selfId = RepositoryFactory.getRepository().getOwner().getId();
+          boolean assigned = false;
+          for (final TodoAssignment assignment : selection.getAssignments()) {
+            if (selfId.equals(assignment.getPersonId())) {
+              assigned = true;
+              break;
+            }
+          }
+          if (!assigned) {
+            final TodoAssignmentDialog dialog = new TodoAssignmentDialog(m_shellProvider, selection);
+
+            if (dialog.open() == TodoAssignmentDialog.OK) {
+              selection.getAssignments().add(dialog.getTodoAssignment());
+              if (selection.getState() == TodoState.UNASSIGNED || selection.getState() == TodoState.ASSIGNED_OPEN) {
+                selection.setState(TodoState.ASSIGNED_INPROGRESS);
+              }
+
+              try {
+                RepositoryFactory.getRepository().getTodoRepository().storeTodo(selection, true);
+              } catch (final Exception e) {
+                UIPlugin.getDefault().log(e);
+              }
+
+              UIPlugin.getDefault().punchIn(project, task, selection);
+            }
+          } else {
+            if (selection.getState() == TodoState.UNASSIGNED || selection.getState() == TodoState.ASSIGNED_OPEN) {
+              try {
+                selection.setState(TodoState.ASSIGNED_INPROGRESS);
+
+                RepositoryFactory.getRepository().getTodoRepository().storeTodo(selection, true);
+              } catch (final Exception e) {
+                UIPlugin.getDefault().log(e);
+              }
+            }
+
+            UIPlugin.getDefault().punchIn(project, task, selection);
+          }
+        } catch (final Exception e) {
+          UIPlugin.getDefault().log(e);
         }
       }
     } else if ("de.objectcode.time4u.client.ui.todo.person".equals(id)) {

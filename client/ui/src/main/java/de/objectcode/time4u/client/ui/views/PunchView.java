@@ -245,7 +245,7 @@ public class PunchView extends ViewPart implements ISelectionListener, IReposito
         m_punchButton.setEnabled(m_selectedTask != null && m_selectedTask.isActive() && m_selectedProject != null
             && m_selectedProject.isActive());
       } else {
-        final WorkItem workItem = UIPlugin.getDefault().punchIn(m_selectedProject, m_selectedTask);
+        final WorkItem workItem = UIPlugin.getDefault().punchIn(m_selectedProject, m_selectedTask, null);
 
         m_activeWorkItem = workItem;
         m_activeTask = m_selectedTask;

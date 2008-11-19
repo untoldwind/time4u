@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -86,7 +87,7 @@ public class TodoEntity extends TodoBaseEntity
     m_estimatedTime = estimatedTime;
   }
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "todo")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "todo", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
   @MapKey(name = "personId")
   public Map<String, TodoAssignmentEntity> getAssignments()
   {
@@ -136,7 +137,7 @@ public class TodoEntity extends TodoBaseEntity
         if (assignmentEntity == null) {
           assignmentEntity = new TodoAssignmentEntity(this, person);
 
-          context.persist(assignmentEntity);
+          m_assignments.put(assignmentEntity.getPersonId(), assignmentEntity);
         }
         assignmentEntity.fromDTO(assignment);
       }
@@ -203,6 +204,8 @@ public class TodoEntity extends TodoBaseEntity
         final TodoAssignment assignment = new TodoAssignment();
 
         assignementEntity.toDTO(assignment);
+
+        assignments.add(assignment);
       }
     }
     todo.setAssignments(assignments);

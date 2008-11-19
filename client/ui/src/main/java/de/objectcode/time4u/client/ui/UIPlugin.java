@@ -31,6 +31,7 @@ import de.objectcode.time4u.client.ui.preferences.PreferenceConstants;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.data.TaskSummary;
+import de.objectcode.time4u.server.api.data.TodoSummary;
 import de.objectcode.time4u.server.api.data.WorkItem;
 
 /**
@@ -211,7 +212,7 @@ public class UIPlugin extends AbstractUIPlugin
         }
       }
 
-      m_taskHistory.addFirst(new PunchInAction(RepositoryFactory.getRepository(), project.getId(), task.getId()));
+      m_taskHistory.addFirst(new PunchInAction(RepositoryFactory.getRepository(), project.getId(), task.getId(), null));
     }
   }
 
@@ -253,7 +254,7 @@ public class UIPlugin extends AbstractUIPlugin
         }
 
         if (project != null && task != null) {
-          m_taskHistory.add(new PunchInAction(RepositoryFactory.getRepository(), project.getId(), task.getId()));
+          m_taskHistory.add(new PunchInAction(RepositoryFactory.getRepository(), project.getId(), task.getId(), null));
         }
       } catch (final Throwable e) {
         UIPlugin.getDefault().log(e);
@@ -289,12 +290,13 @@ public class UIPlugin extends AbstractUIPlugin
     return null;
   }
 
-  public WorkItem punchIn(final ProjectSummary project, final TaskSummary task)
+  public WorkItem punchIn(final ProjectSummary project, final TaskSummary task, final TodoSummary todo)
   {
-    return punchIn(project, task, null);
+    return punchIn(project, task, todo, todo != null ? todo.getHeader() : null);
   }
 
-  public WorkItem punchIn(final ProjectSummary project, final TaskSummary task, final String comment)
+  public WorkItem punchIn(final ProjectSummary project, final TaskSummary task, final TodoSummary todo,
+      final String comment)
   {
     pushTask(project, task);
 
@@ -307,6 +309,9 @@ public class UIPlugin extends AbstractUIPlugin
     workItem.setEnd(3600 * hour + 60 * minute);
     workItem.setProjectId(project.getId());
     workItem.setTaskId(task.getId());
+    if (todo != null) {
+      workItem.setTodoId(todo.getId());
+    }
     workItem.setDay(new CalendarDay(calendar));
 
     workItem.setComment(comment != null ? comment : "");

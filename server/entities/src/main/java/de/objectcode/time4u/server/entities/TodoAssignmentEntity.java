@@ -39,7 +39,7 @@ public class TodoAssignmentEntity
   }
 
   @Id
-  @Column(name = "person_id", length = 36)
+  @Column(name = "personId", length = 36)
   public String getPersonId()
   {
     return m_personId;
@@ -51,7 +51,7 @@ public class TodoAssignmentEntity
   }
 
   @Id
-  @Column(name = "todo_id", length = 36)
+  @Column(name = "todoId", length = 36)
   public String getTodoId()
   {
     return m_todoId;
@@ -63,7 +63,7 @@ public class TodoAssignmentEntity
   }
 
   @ManyToOne(optional = true, fetch = FetchType.LAZY)
-  @JoinColumn(name = "person_id", insertable = false, updatable = false)
+  @JoinColumn(name = "personId", insertable = false, updatable = false)
   public PersonEntity getPerson()
   {
     return m_person;
@@ -75,7 +75,7 @@ public class TodoAssignmentEntity
   }
 
   @ManyToOne(optional = true, fetch = FetchType.LAZY)
-  @JoinColumn(name = "todo_id", insertable = false, updatable = false)
+  @JoinColumn(name = "todoId", insertable = false, updatable = false)
   public TodoEntity getTodo()
   {
     return m_todo;
@@ -106,14 +106,14 @@ public class TodoAssignmentEntity
     m_deleted = deleted;
   }
 
-  public void fromDTO(final TodoAssignment assignment)
+  public void toDTO(final TodoAssignment assignment)
   {
     assignment.setPersonId(m_personId);
     assignment.setEstimatedTime(m_estimatedTime);
     assignment.setDeleted(m_deleted);
   }
 
-  public void toDTO(final TodoAssignment assignment)
+  public void fromDTO(final TodoAssignment assignment)
   {
     m_estimatedTime = assignment.getEstimatedTime();
     m_deleted = assignment.isDeleted();

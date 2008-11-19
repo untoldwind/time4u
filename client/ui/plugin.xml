@@ -483,6 +483,10 @@
                         name="TODO.group"
                         value="false">
                   </objectState>
+                  <objectState
+                        name="TODO.hasTask"
+                        value="true">
+                  </objectState>
                </and>
             </enablement>
          </action>

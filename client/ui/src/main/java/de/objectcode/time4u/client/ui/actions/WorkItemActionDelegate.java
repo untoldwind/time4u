@@ -23,6 +23,7 @@ import de.objectcode.time4u.client.ui.views.WorkItemView;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.data.TaskSummary;
+import de.objectcode.time4u.server.api.data.TodoSummary;
 import de.objectcode.time4u.server.api.data.WorkItem;
 
 public class WorkItemActionDelegate implements IWorkbenchWindowActionDelegate, IViewActionDelegate
@@ -129,7 +130,11 @@ public class WorkItemActionDelegate implements IWorkbenchWindowActionDelegate, I
               selectedWorkItem.getProjectId());
           final TaskSummary task = RepositoryFactory.getRepository().getTaskRepository().getTaskSummary(
               selectedWorkItem.getTaskId());
-          UIPlugin.getDefault().punchIn(project, task, selectedWorkItem.getComment());
+          TodoSummary todo = null;
+          if (selectedWorkItem.getTodoId() != null) {
+            todo = RepositoryFactory.getRepository().getTodoRepository().getTodoSummary(selectedWorkItem.getTodoId());
+          }
+          UIPlugin.getDefault().punchIn(project, task, todo, selectedWorkItem.getComment());
         } catch (final Exception e) {
           UIPlugin.getDefault().log(e);
         }
