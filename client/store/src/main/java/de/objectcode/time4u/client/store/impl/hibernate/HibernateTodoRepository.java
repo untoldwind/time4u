@@ -103,12 +103,12 @@ public class HibernateTodoRepository implements ITodoRepository
   /**
    * {@inheritDoc}
    */
-  public List<Todo> getTodos(final TodoFilter filter) throws RepositoryException
+  public List<TodoSummary> getTodos(final TodoFilter filter) throws RepositoryException
   {
-    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<List<Todo>>() {
-      public List<Todo> perform(final Session session)
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<List<TodoSummary>>() {
+      public List<TodoSummary> perform(final Session session)
       {
-        final Criteria criteria = session.createCriteria(TodoEntity.class);
+        final Criteria criteria = session.createCriteria(TodoBaseEntity.class);
 
         if (filter.getDeleted() != null) {
           criteria.add(Restrictions.eq("deleted", filter.getDeleted()));
@@ -139,14 +139,22 @@ public class HibernateTodoRepository implements ITodoRepository
             break;
         }
 
-        final List<Todo> result = new ArrayList<Todo>();
+        final List<TodoSummary> result = new ArrayList<TodoSummary>();
 
         for (final Object row : criteria.list()) {
-          final Todo todo = new Todo();
+          if (row instanceof TodoEntity) {
+            final Todo todo = new Todo();
 
-          ((TodoEntity) row).toDTO(todo);
+            ((TodoEntity) row).toDTO(todo);
 
-          result.add(todo);
+            result.add(todo);
+          } else if (row instanceof TodoGroupEntity) {
+            final TodoGroup todoGroup = new TodoGroup();
+
+            ((TodoGroupEntity) row).toDTO(todoGroup);
+
+            result.add(todoGroup);
+          }
         }
 
         return result;

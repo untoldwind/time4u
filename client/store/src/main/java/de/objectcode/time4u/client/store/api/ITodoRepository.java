@@ -56,7 +56,7 @@ public interface ITodoRepository
    * @throws RepositoryException
    *           on error
    */
-  List<Todo> getTodos(TodoFilter filter) throws RepositoryException;
+  List<TodoSummary> getTodos(TodoFilter filter) throws RepositoryException;
 
   /**
    * Get all todos matching a filter condition.

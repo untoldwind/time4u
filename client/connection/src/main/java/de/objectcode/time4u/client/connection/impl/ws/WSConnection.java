@@ -24,10 +24,12 @@ import de.objectcode.time4u.client.connection.impl.common.down.ReceiveProjectCha
 import de.objectcode.time4u.client.connection.impl.common.down.ReceiveTaskChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.down.ReceiveTeamChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.down.ReceiveTimePolicyChangesCommand;
+import de.objectcode.time4u.client.connection.impl.common.down.ReceiveTodoChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.up.SendDayInfoChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.up.SendProjectChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.up.SendTaskChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.up.SendTimePolicyChangesCommand;
+import de.objectcode.time4u.client.connection.impl.common.up.SendTodoChangesCommand;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.server.api.IConstants;
 import de.objectcode.time4u.server.api.ILoginService;
@@ -37,6 +39,7 @@ import de.objectcode.time4u.server.api.IProjectService;
 import de.objectcode.time4u.server.api.IRevisionService;
 import de.objectcode.time4u.server.api.ITaskService;
 import de.objectcode.time4u.server.api.ITeamService;
+import de.objectcode.time4u.server.api.ITodoService;
 import de.objectcode.time4u.server.api.IWorkItemService;
 import de.objectcode.time4u.server.api.data.Person;
 import de.objectcode.time4u.server.api.data.PingResult;
@@ -58,6 +61,7 @@ public class WSConnection implements IConnection
   private final ITeamService m_teamService;
   private final IProjectService m_projectService;
   private final ITaskService m_taskService;
+  private final ITodoService m_todoService;
   private final IWorkItemService m_workItemService;
 
   public WSConnection(final ServerConnection serverConnection) throws ConnectionException
@@ -68,6 +72,7 @@ public class WSConnection implements IConnection
     m_synchronizationCommands.add(new SendTaskChangesCommand());
     m_synchronizationCommands.add(new SendDayInfoChangesCommand());
     m_synchronizationCommands.add(new SendTimePolicyChangesCommand());
+    m_synchronizationCommands.add(new SendTodoChangesCommand());
     m_synchronizationCommands.add(new ReceivePersonChangesCommand());
     m_synchronizationCommands.add(new ReceiveTeamChangesCommand());
     m_synchronizationCommands.add(new ReceiveDayTagsCommand());
@@ -75,6 +80,7 @@ public class WSConnection implements IConnection
     m_synchronizationCommands.add(new ReceiveTaskChangesCommand());
     m_synchronizationCommands.add(new ReceiveDayInfoChangesCommand());
     m_synchronizationCommands.add(new ReceiveTimePolicyChangesCommand());
+    m_synchronizationCommands.add(new ReceiveTodoChangesCommand());
 
     m_serverConnection = serverConnection;
 
@@ -85,6 +91,7 @@ public class WSConnection implements IConnection
     m_teamService = getServicePort("TeamService", ITeamService.class, true);
     m_projectService = getServicePort("ProjectService", IProjectService.class, true);
     m_taskService = getServicePort("TaskService", ITaskService.class, true);
+    m_todoService = getServicePort("TodoService", ITodoService.class, true);
     m_workItemService = getServicePort("WorkItemService", IWorkItemService.class, true);
   }
 
@@ -181,7 +188,7 @@ public class WSConnection implements IConnection
     try {
       final SynchronizationContext context = new SynchronizationContext(RepositoryFactory.getRepository(),
           m_serverConnection.getId(), m_revisionService, m_projectService, m_taskService, m_workItemService,
-          m_personService, m_teamService);
+          m_personService, m_teamService, m_todoService);
 
       for (final ISynchronizationCommand command : m_synchronizationCommands) {
         if (monitor.isCanceled()) {

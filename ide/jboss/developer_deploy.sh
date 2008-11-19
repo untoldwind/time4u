@@ -47,4 +47,11 @@ JAAS=`ls time4u-server-jaas-*.sar`
 rm -rf $JAAS
 ln -s $CURRENT/../../server/jaas/target/$JAAS $JAAS
 
+cd lib
+
+API=`ls time4u-server-api-*.jar`
+
+rm -rf $API
+ln -s $CURRENT/../../server/api/target/$API $API
+
 cd $CURRENT
