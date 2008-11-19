@@ -63,6 +63,7 @@ public class TodoGroupDialog extends Dialog
       m_todoGroup.setHeader("");
       m_todoGroup.setDescription("");
       m_todoGroup.setState(TodoState.UNASSIGNED);
+      m_todoGroup.setReporterId(RepositoryFactory.getRepository().getOwner().getId());
       m_create = true;
     } else {
       m_todoGroup = todoGroup;

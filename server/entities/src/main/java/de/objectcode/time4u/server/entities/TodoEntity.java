@@ -108,6 +108,7 @@ public class TodoEntity extends TodoBaseEntity
     m_priority = todo.getPriority();
     m_estimatedTime = todo.getEstimatedTime();
     m_state = todo.getState();
+    m_deleted = todo.isDeleted();
 
     if (todo.getReporterId() != null) {
       m_reporter = context.findPerson(todo.getReporterId(), todo.getLastModifiedByClient());

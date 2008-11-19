@@ -457,6 +457,13 @@
                menubarPath="objectGroup"
                tooltip="%action.todo.edit.tooltip">
          </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               id="de.objectcode.time4u.client.ui.todo.delete"
+               label="%action.todo.delete.label"
+               menubarPath="deleteGroup"
+               tooltip="%action.todo.delete.tooltip">
+         </action>
       </viewerContribution>
    </extension>
    <extension
@@ -943,6 +950,25 @@
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               id="de.objectcode.time4u.client.ui.todo.delete"
+               label="%action.todo.delete.label"
+               menubarPath="todoMenu/todoGroup"
+               style="push"
+               tooltip="%action.todo.delete.tooltip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+                  </objectClass>
+                  <objectState
+                        name="has"
+                        value="TODO">
+                  </objectState>
+               </and>
+            </enablement>
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
                id="de.objectcode.time4u.client.ui.todo.edit"
                label="%action.todo.edit.label"
                menubarPath="todoMenu/todoGroup"
@@ -1041,6 +1067,12 @@
             class="de.objectcode.time4u.client.ui.preferences.StatisticViewPreferencesPage"
             id="de.objectcode.time4u.client.ui.preferences.StatisticViewPreferencesPage"
             name="Statistics">
+      </page>
+      <page
+            category="de.objectcode.time4u.client.ui.preferences.UIPreferencesPage"
+            class="de.objectcode.time4u.client.ui.preferences.TodoViewPreferencesPage"
+            id="de.objectcode.time4u.client.ui.preferences.TodoViewPreferencesPage"
+            name="Todo">
       </page>
    </extension>
    <extension

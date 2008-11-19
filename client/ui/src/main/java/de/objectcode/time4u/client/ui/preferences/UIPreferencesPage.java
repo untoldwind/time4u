@@ -24,16 +24,6 @@ public class UIPreferencesPage extends FieldEditorPreferencePage implements IWor
         "&Task histroy size", getFieldEditorParent());
     taskHistory.setValidRange(0, 30);
     addField(taskHistory);
-
-    addField(new BooleanFieldEditor(PreferenceConstants.UI_CONFIRM_PROJECT_DELETE, "Confirm &Project delete",
-        getFieldEditorParent()));
-
-    addField(new BooleanFieldEditor(PreferenceConstants.UI_CONFIRM_TASK_DELETE, "Confirm &Task delete",
-        getFieldEditorParent()));
-
-    addField(new BooleanFieldEditor(PreferenceConstants.UI_CONFIRM_WORKITEM_DELETE, "Confirm &WorkItem delete",
-        getFieldEditorParent()));
-
   }
 
 }

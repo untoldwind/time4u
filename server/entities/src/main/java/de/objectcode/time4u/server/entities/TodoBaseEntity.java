@@ -278,6 +278,7 @@ public abstract class TodoBaseEntity
     todo.setId(m_id);
     todo.setRevision(m_revision);
     todo.setLastModifiedByClient(m_lastModifiedByClient);
+    todo.setState(m_state);
     todo.setDeleted(m_deleted);
     todo.setHeader(m_header);
     todo.setDescription(m_description);

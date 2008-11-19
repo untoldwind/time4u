@@ -3,6 +3,7 @@ package de.objectcode.time4u.client.ui.actions;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.IShellProvider;
@@ -20,6 +21,7 @@ import de.objectcode.time4u.client.ui.dialogs.PersonListDialog;
 import de.objectcode.time4u.client.ui.dialogs.TeamListDialog;
 import de.objectcode.time4u.client.ui.dialogs.TodoDialog;
 import de.objectcode.time4u.client.ui.dialogs.TodoGroupDialog;
+import de.objectcode.time4u.client.ui.preferences.PreferenceConstants;
 import de.objectcode.time4u.client.ui.views.TodoTreeView;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.data.Todo;
@@ -106,6 +108,25 @@ public class TodoActionDelegate implements IWorkbenchWindowActionDelegate, IView
           } catch (final Exception e) {
             UIPlugin.getDefault().log(e);
           }
+        }
+      }
+    } else if ("de.objectcode.time4u.client.ui.todo.delete".equals(id)) {
+      final TodoSummary selection = (TodoSummary) m_selection.getAdapter(TodoSummary.class);
+
+      if (selection != null) {
+        final IPreferenceStore store = UIPlugin.getDefault().getPreferenceStore();
+
+        if (store.getBoolean(PreferenceConstants.UI_CONFIRM_TODO_DELETE)) {
+          if (!MessageDialog.openQuestion(m_shellProvider.getShell(), "Todo delete", "Delete Todo '"
+              + selection.getHeader() + "'")) {
+            return;
+          }
+        }
+
+        try {
+          RepositoryFactory.getRepository().getTodoRepository().deleteTodo(selection);
+        } catch (final Exception e) {
+          UIPlugin.getDefault().log(e);
         }
       }
     } else if ("de.objectcode.time4u.client.ui.todo.person".equals(id)) {

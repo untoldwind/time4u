@@ -94,4 +94,14 @@ public interface ITodoRepository
    *           on error
    */
   void storeTodoGroup(TodoGroup todoGroup, boolean modifiedByOwner) throws RepositoryException;
+
+  /**
+   * Delete a todo or todo group. Only the deleted flag is set by this method.
+   * 
+   * @param todo
+   *          The todo or todo group to be deleted
+   * @throws RepositoryException
+   *           on error
+   */
+  void deleteTodo(TodoSummary todo) throws RepositoryException;
 }

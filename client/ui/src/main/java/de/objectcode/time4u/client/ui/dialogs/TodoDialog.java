@@ -74,6 +74,7 @@ public class TodoDialog extends Dialog
     m_todo.setHeader("");
     m_todo.setDescription("");
     m_todo.setState(TodoState.UNASSIGNED);
+    m_todo.setReporterId(RepositoryFactory.getRepository().getOwner().getId());
     if (task != null) {
       m_todo.setTaskId(task.getId());
     }

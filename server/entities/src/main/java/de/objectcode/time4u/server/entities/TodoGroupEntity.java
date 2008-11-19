@@ -93,6 +93,7 @@ public class TodoGroupEntity extends TodoBaseEntity
     m_header = todoGroup.getHeader();
     m_description = todoGroup.getDescription();
     m_state = todoGroup.getState();
+    m_deleted = todoGroup.isDeleted();
 
     if (todoGroup.getReporterId() != null) {
       m_reporter = context.findPerson(todoGroup.getReporterId(), todoGroup.getLastModifiedByClient());

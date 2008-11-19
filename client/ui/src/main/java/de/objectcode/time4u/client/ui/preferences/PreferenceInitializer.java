@@ -20,6 +20,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
     store.setDefault(PreferenceConstants.UI_CONFIRM_PROJECT_DELETE, true);
     store.setDefault(PreferenceConstants.UI_CONFIRM_TASK_DELETE, true);
     store.setDefault(PreferenceConstants.UI_CONFIRM_WORKITEM_DELETE, false);
+    store.setDefault(PreferenceConstants.UI_CONFIRM_TODO_DELETE, true);
     store.setDefault(PreferenceConstants.UI_STOPWATCH_PUNCH, false);
 
     store.setDefault(PreferenceConstants.UI_OVERTIME_CALCULATE, false);

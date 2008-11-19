@@ -293,4 +293,40 @@ public class HibernateTodoRepository implements ITodoRepository
     m_repository.fireRepositoryEvent(new TodoRepositoryEvent(todoGroup));
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  public void deleteTodo(final TodoSummary todo) throws RepositoryException
+  {
+    final TodoSummary result = m_hibernateTemplate
+        .executeInTransaction(new HibernateTemplate.OperationWithResult<TodoSummary>() {
+          public TodoSummary perform(final Session session)
+          {
+            final TodoBaseEntity todoEntity = (TodoBaseEntity) session.get(TodoBaseEntity.class, todo.getId());
+
+            if (todoEntity == null) {
+              return null;
+            }
+
+            final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(session);
+            final IRevisionLock revisionLock = revisionGenerator.getNextRevision(EntityType.TODO, null);
+
+            todoEntity.setDeleted(true);
+            todoEntity.setRevision(revisionLock.getLatestRevision());
+            todoEntity.setLastModifiedByClient(m_repository.getClientId());
+
+            session.flush();
+
+            final TodoSummary result = new TodoSummary();
+
+            todoEntity.toSummaryDTO(result);
+
+            return result;
+          }
+        });
+
+    if (result != null) {
+      m_repository.fireRepositoryEvent(new TodoRepositoryEvent(result));
+    }
+  }
 }

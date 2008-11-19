@@ -23,6 +23,8 @@ public interface PreferenceConstants
 
   String UI_CONFIRM_WORKITEM_DELETE = "ui.confirm.workItem.delete";
 
+  String UI_CONFIRM_TODO_DELETE = "ui.confirm.todo.delete";
+
   String UI_OVERTIME_CALCULATE = "ui.overtime.calculate";
 
   String UI_OVERTIME_REGULARTIME = "ui.overtime.regulartime";
