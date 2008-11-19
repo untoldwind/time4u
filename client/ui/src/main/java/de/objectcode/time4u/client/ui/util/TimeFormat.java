@@ -9,7 +9,7 @@ public class TimeFormat
     if (idx < 0) {
       final int hour = Integer.parseInt(str);
 
-      return hour * 60;
+      return hour * 3600;
     }
 
     final int hour = Integer.parseInt(str.substring(0, idx));

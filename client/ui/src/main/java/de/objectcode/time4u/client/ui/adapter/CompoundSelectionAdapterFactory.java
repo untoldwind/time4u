@@ -11,6 +11,7 @@ import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.data.TaskSummary;
+import de.objectcode.time4u.server.api.data.TodoSummary;
 import de.objectcode.time4u.server.api.data.WorkItem;
 
 public class CompoundSelectionAdapterFactory implements IAdapterFactory
@@ -68,6 +69,12 @@ public class CompoundSelectionAdapterFactory implements IAdapterFactory
           } catch (final Exception e) {
             UIPlugin.getDefault().log(e);
           }
+        }
+      } else if ("TODO.group".equals(name)) {
+        final TodoSummary todo = (TodoSummary) selection.getSelection(CompoundSelectionEntityType.TODO);
+
+        if (todo != null) {
+          return Boolean.parseBoolean(value) == todo.isGroup();
         }
       }
 

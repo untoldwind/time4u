@@ -1,5 +1,6 @@
 package de.objectcode.time4u.client.ui;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -133,6 +134,16 @@ public class UIPlugin extends AbstractUIPlugin
     }
 
     return m_resourceBundle.getString(key);
+  }
+
+  public String getMessage(final String key, final Object... arguments)
+  {
+    if (m_resourceBundle == null) {
+      m_resourceBundle = Platform.getResourceBundle(getBundle());
+    }
+    final MessageFormat temp = new MessageFormat(m_resourceBundle.getString(key));
+
+    return temp.format(arguments);
   }
 
   /**

@@ -144,6 +144,8 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
 
     final MenuManager menuMgr = new MenuManager();
 
+    menuMgr.add(new GroupMarker("operationGroup"));
+    menuMgr.add(new Separator());
     menuMgr.add(new GroupMarker("newGroup"));
     menuMgr.add(new Separator());
     menuMgr.add(new GroupMarker("objectGroup"));

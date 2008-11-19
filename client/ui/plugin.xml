@@ -464,6 +464,50 @@
                menubarPath="deleteGroup"
                tooltip="%action.todo.delete.tooltip">
          </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               id="de.objectcode.time4u.client.ui.todo.work"
+               label="%action.todo.work.label"
+               menubarPath="operationGroup"
+               tooltip="%action.todo.work.tooltip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+                  </objectClass>
+                  <objectState
+                        name="has"
+                        value="TODO">
+                  </objectState>
+                  <objectState
+                        name="TODO.group"
+                        value="false">
+                  </objectState>
+               </and>
+            </enablement>
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               id="de.objectcode.time4u.client.ui.todo.assign"
+               label="%action.todo.assign.label"
+               menubarPath="operationGroup"
+               tooltip="%action.todo.assign.tolotip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+                  </objectClass>
+                  <objectState
+                        name="has"
+                        value="TODO">
+                  </objectState>
+                  <objectState
+                        name="TODO.group"
+                        value="false">
+                  </objectState>
+               </and>
+            </enablement>
+         </action>
       </viewerContribution>
    </extension>
    <extension
