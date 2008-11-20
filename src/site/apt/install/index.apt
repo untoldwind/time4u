@@ -8,29 +8,25 @@ Time4U Downloads
 
 * Client
 
- Current client version is 0.9.4:
+ Current client version is 0.9.5:
 
- Please note: This is a preview release intended for internal beta-testing.
- 
-  * {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-client-win32-0.9.4.zip}Windows client (i386)}}
+  * {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-client-win32-0.9.5.zip}Windows client (i386)}}
   
-  * {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-client-mac-0.9.4.zip}Mac client}}
+  * {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-client-mac-0.9.5.zip}Mac client}}
   
-  * {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-client-linux-x86-0.9.4.tar.bz2}Linux client (x86)}}
+  * {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-client-linux-x86-0.9.5.tar.bz2}Linux client (x86)}}
   
-  * {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-client-linux-x86_64-0.9.4.tar.bz2}Linux client (x86_64)}}
+  * {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-client-linux-x86_64-0.9.5.tar.bz2}Linux client (x86_64)}}
 
  Also take note of the more detailed installation instructions: {{{/install/client.html}Client installation}}
   
 * Server
 
- Current server version is 0.9.4:
+ Current server version is 0.9.5:
 
- Please note: This is a preview release intended for internal beta-testing.
+  * {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-deploy-0.9.5.tar.bz2}Server distribution package}}
 
-  * {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-deploy-0.9.4.tar.bz2}Server distribution package}}
-
-  * {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-ear-0.9.4.ear}Server EAR package}}
+  * {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-ear-0.9.5.ear}Server EAR package}}
 
  Also take note of the more detailed installation instructions: {{{/install/server.html}Server installation}}
  
