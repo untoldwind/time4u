@@ -1,5 +1,7 @@
 package de.objectcode.time4u.client.ui.actions;
 
+import java.util.Date;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -20,6 +22,7 @@ import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.dialogs.PersonListDialog;
 import de.objectcode.time4u.client.ui.dialogs.TeamListDialog;
 import de.objectcode.time4u.client.ui.dialogs.TodoAssignmentDialog;
+import de.objectcode.time4u.client.ui.dialogs.TodoCompleteDialog;
 import de.objectcode.time4u.client.ui.dialogs.TodoDialog;
 import de.objectcode.time4u.client.ui.dialogs.TodoGroupDialog;
 import de.objectcode.time4u.client.ui.preferences.PreferenceConstants;
@@ -209,6 +212,33 @@ public class TodoActionDelegate implements IWorkbenchWindowActionDelegate, IView
           }
         } catch (final Exception e) {
           UIPlugin.getDefault().log(e);
+        }
+      }
+    } else if ("de.objectcode.time4u.client.ui.todo.complete".equals(id)) {
+      final TodoSummary selection = (TodoSummary) m_selection.getAdapter(TodoSummary.class);
+
+      if (selection != null && !selection.isCompleted()) {
+        final TodoCompleteDialog dialog = new TodoCompleteDialog(m_shellProvider, selection);
+        final int result = dialog.open();
+
+        if (result == TodoCompleteDialog.COMPLETE || result == TodoCompleteDialog.REJECT) {
+          try {
+            final Todo todo = RepositoryFactory.getRepository().getTodoRepository().getTodo(selection.getId());
+
+            if (todo != null) {
+              if (result == TodoCompleteDialog.COMPLETE) {
+                todo.setState(TodoState.COMPLETED);
+              } else {
+                todo.setState(TodoState.REJECTED);
+              }
+              todo.setCompleted(true);
+              todo.setCompletedAt(new Date());
+
+              RepositoryFactory.getRepository().getTodoRepository().storeTodo(todo, true);
+            }
+          } catch (final Exception e) {
+            UIPlugin.getDefault().log(e);
+          }
         }
       }
     } else if ("de.objectcode.time4u.client.ui.todo.person".equals(id)) {

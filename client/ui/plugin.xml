@@ -466,6 +466,28 @@
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               id="de.objectcode.time4u.client.ui.todo.complete"
+               label="%action.todo.complete.label"
+               menubarPath="operationGroup"
+               tooltip="%action.todo.complete.tooltip">
+            <enablement>
+               <and>
+                  <objectClass
+                        name="de.objectcode.time4u.client.ui.util.CompoundSelection">
+                  </objectClass>
+                  <objectState
+                        name="has"
+                        value="TODO">
+                  </objectState>
+                  <objectState
+                        name="TODO.completed"
+                        value="false">
+                  </objectState>
+               </and>
+            </enablement>
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
                id="de.objectcode.time4u.client.ui.todo.work"
                label="%action.todo.work.label"
                menubarPath="operationGroup"

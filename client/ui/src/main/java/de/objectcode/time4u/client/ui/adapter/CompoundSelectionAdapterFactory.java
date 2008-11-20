@@ -89,6 +89,12 @@ public class CompoundSelectionAdapterFactory implements IAdapterFactory
         if (todo != null) {
           return Boolean.parseBoolean(value) == todo.isGroup();
         }
+      } else if ("TODO.completed".equals(name)) {
+        final TodoSummary todo = (TodoSummary) selection.getSelection(CompoundSelectionEntityType.TODO);
+
+        if (todo != null) {
+          return Boolean.parseBoolean(value) == todo.isCompleted();
+        }
       }
 
       return false;

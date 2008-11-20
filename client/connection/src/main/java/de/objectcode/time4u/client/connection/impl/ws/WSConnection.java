@@ -220,10 +220,6 @@ public class WSConnection implements IConnection
       serverConnection.setCredentials(cred);
       serverConnection.setUrl("http://localhost:8080");
       final WSConnection con = new WSConnection(serverConnection);
-
-      System.out.println(">>" + con.testConnection());
-
-      System.out.println(">" + con.getRevisionStatus());
     } catch (final Exception e) {
       e.printStackTrace();
     }
