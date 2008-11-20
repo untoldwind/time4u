@@ -2,12 +2,16 @@ package de.objectcode.time4u.client.ui.dialogs;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableLayout;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -19,6 +23,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
 import de.objectcode.time4u.client.store.api.IProjectRepository;
@@ -34,8 +39,10 @@ import de.objectcode.time4u.client.ui.provider.ProjectContentProvider;
 import de.objectcode.time4u.client.ui.provider.ProjectLabelProvider;
 import de.objectcode.time4u.client.ui.provider.TaskContentProvider;
 import de.objectcode.time4u.client.ui.provider.TaskLabelProvider;
+import de.objectcode.time4u.client.ui.provider.TodoAssginmentTableLabelProvider;
 import de.objectcode.time4u.client.ui.provider.TodoGroupContentProvider;
 import de.objectcode.time4u.client.ui.provider.TodoLabelProvider;
+import de.objectcode.time4u.client.ui.provider.TodoStateLabelProvider;
 import de.objectcode.time4u.server.api.data.PersonSummary;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.data.Todo;
@@ -45,13 +52,14 @@ import de.objectcode.time4u.server.api.data.TodoSummary;
 public class TodoDialog extends Dialog
 {
   private Text m_headerText;
-  private Label m_stateLabel;
+  private ComboViewer m_stateCombo;
   private Text m_descriptionText;
   private ComboTreeViewer m_groupTreeViewer;
   private ComboTreeViewer m_projectTreeViewer;
   private ComboViewer m_taskViewer;
   private ComboViewer m_reporterViewer;
   private TodoVisibilityControl m_todoVisibility;
+  private TableViewer m_todoAssignmentViewer;
 
   IProjectRepository m_projectRepository;
   ITaskRepository m_taskRepository;
@@ -136,10 +144,13 @@ public class TodoDialog extends Dialog
     final Label stateLabel = new Label(root, SWT.LEFT);
     stateLabel.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
     stateLabel.setText(UIPlugin.getDefault().getString("todo.state.label"));
-    m_stateLabel = new Label(root, SWT.LEFT);
     gridData = new GridData(GridData.FILL_BOTH);
-    m_stateLabel.setLayoutData(gridData);
-    m_stateLabel.setText(UIPlugin.getDefault().getString("todo.state." + m_todo.getState() + ".label"));
+    m_stateCombo = new ComboViewer(root, SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
+    m_stateCombo.getCombo().setLayoutData(gridData);
+    m_stateCombo.setContentProvider(new ArrayContentProvider());
+    m_stateCombo.setLabelProvider(new TodoStateLabelProvider());
+    m_stateCombo.setInput(TodoState.values());
+    m_stateCombo.setSelection(new StructuredSelection(m_todo.getState()));
 
     final Label groupTreeLabel = new Label(root, SWT.LEFT);
     groupTreeLabel.setText(UIPlugin.getDefault().getString("todo.group.label"));
@@ -254,7 +265,32 @@ public class TodoDialog extends Dialog
     assignmentsItem.setText(UIPlugin.getDefault().getString("todo.assignments.label"));
     final Composite assignmentsTop = new Composite(tabFolder, SWT.NONE);
     assignmentsItem.setControl(assignmentsTop);
-    visibilityTop.setLayout(new GridLayout(2, false));
+    assignmentsTop.setLayout(new GridLayout(2, false));
+
+    m_todoAssignmentViewer = new TableViewer(assignmentsTop, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.SINGLE
+        | SWT.FULL_SELECTION);
+    final TableLayout layout = new TableLayout();
+    layout.addColumnData(new ColumnWeightData(50, 50, true));
+    layout.addColumnData(new ColumnWeightData(20, 50, true));
+    m_todoAssignmentViewer.getTable().setHeaderVisible(true);
+    m_todoAssignmentViewer.getTable().setLinesVisible(true);
+    m_todoAssignmentViewer.getTable().setLayout(layout);
+    final TableColumn personColumn = new TableColumn(m_todoAssignmentViewer.getTable(), SWT.LEFT);
+    personColumn.setText("Person");
+    personColumn.setMoveable(true);
+    final TableColumn estimatedTimeColumn = new TableColumn(m_todoAssignmentViewer.getTable(), SWT.LEFT);
+    estimatedTimeColumn.setText("Estimated time");
+    estimatedTimeColumn.setMoveable(true);
+    gridData = new GridData(GridData.FILL_BOTH);
+    gridData.verticalSpan = 3;
+    gridData.grabExcessHorizontalSpace = true;
+    gridData.grabExcessVerticalSpace = true;
+    gridData.widthHint = convertWidthInCharsToPixels(70);
+    gridData.heightHint = convertHeightInCharsToPixels(5);
+    m_todoAssignmentViewer.getTable().setLayoutData(gridData);
+    m_todoAssignmentViewer.setContentProvider(new ArrayContentProvider());
+    m_todoAssignmentViewer.setLabelProvider(new TodoAssginmentTableLabelProvider());
+    m_todoAssignmentViewer.setInput(m_todo.getAssignments());
 
     return composite;
   }
@@ -275,6 +311,15 @@ public class TodoDialog extends Dialog
     m_todo.setHeader(m_headerText.getText());
     m_todo.setDescription(m_descriptionText.getText());
     m_todo.setGroupdId(null);
+    final ISelection stateSelection = m_stateCombo.getSelection();
+    if (stateSelection instanceof IStructuredSelection) {
+      final Object obj = ((IStructuredSelection) stateSelection).getFirstElement();
+
+      if (obj != null && obj instanceof TodoState) {
+        m_todo.setState((TodoState) obj);
+        m_todo.setCompleted(m_todo.getState() == TodoState.COMPLETED || m_todo.getState() == TodoState.REJECTED);
+      }
+    }
     final ISelection groupSelection = m_groupTreeViewer.getSelection();
     if (groupSelection instanceof IStructuredSelection) {
       final Object obj = ((IStructuredSelection) groupSelection).getFirstElement();
