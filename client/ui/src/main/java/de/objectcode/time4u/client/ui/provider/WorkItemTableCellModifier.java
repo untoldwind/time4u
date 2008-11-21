@@ -76,7 +76,7 @@ public class WorkItemTableCellModifier implements ICellModifier
           if (begin >= 0 && begin <= 24 * 3600 && workItem.getBegin() != begin) {
             workItem.setBegin(begin);
             try {
-              RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem);
+              RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem, true);
             } catch (final Exception e) {
               UIPlugin.getDefault().log(e);
             }
@@ -91,7 +91,7 @@ public class WorkItemTableCellModifier implements ICellModifier
             workItem.setEnd(end);
 
             try {
-              RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem);
+              RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem, true);
             } catch (final Exception e) {
               UIPlugin.getDefault().log(e);
             }
@@ -110,7 +110,7 @@ public class WorkItemTableCellModifier implements ICellModifier
               workItem.setTaskId(((TaskSummary) value).getId());
 
               try {
-                RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem);
+                RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem, true);
               } catch (final Exception e) {
                 UIPlugin.getDefault().log(e);
               }
@@ -121,7 +121,7 @@ public class WorkItemTableCellModifier implements ICellModifier
             workItem.setComment(value.toString());
 
             try {
-              RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem);
+              RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem, true);
             } catch (final Exception e) {
               UIPlugin.getDefault().log(e);
             }

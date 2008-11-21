@@ -90,4 +90,10 @@ cd <path to JBoss>/bin
   
   [[1]] Check installation by invoking the web-interface: http://server:8080/time4u
   
+   * There is a predefined administrator account:
+   
+---
+Username: admin
+Password: admin
+---
    

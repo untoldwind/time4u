@@ -77,7 +77,7 @@ public interface IWorkItemRepository
    * @throws RepositoryException
    *           on error
    */
-  void storeWorkItem(WorkItem workItem) throws RepositoryException;
+  void storeWorkItem(WorkItem workItem, final boolean modifiedByOwner) throws RepositoryException;
 
   /**
    * Delete a single workitem.
@@ -87,7 +87,7 @@ public interface IWorkItemRepository
    * @throws RepositoryException
    *           on error
    */
-  void deleteWorkItem(WorkItem workItem) throws RepositoryException;
+  void deleteWorkItem(WorkItem workItem, final boolean modifiedByOwner) throws RepositoryException;
 
   /**
    * Get the currently active workitem.

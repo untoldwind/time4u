@@ -26,6 +26,8 @@ public class TodoFilter implements Serializable
   String m_groupId;
   /** Filter todo groups */
   Boolean m_group;
+  /** Filter todos associated with a certain task */
+  String m_taskId;
   /** Desired order */
   Order m_order;
 
@@ -104,6 +106,16 @@ public class TodoFilter implements Serializable
     m_group = group;
   }
 
+  public String getTaskId()
+  {
+    return m_taskId;
+  }
+
+  public void setTaskId(final String taskId)
+  {
+    m_taskId = taskId;
+  }
+
   public Order getOrder()
   {
     return m_order;
@@ -142,6 +154,16 @@ public class TodoFilter implements Serializable
     return filter;
   }
 
+  public static TodoFilter filterTodoForTask(final String taskId)
+  {
+    final TodoFilter filter = new TodoFilter(false, null, null, null, Order.HEADER);
+
+    filter.setTaskId(taskId);
+    filter.setGroup(false);
+
+    return filter;
+  }
+
   @Override
   public String toString()
   {
@@ -151,6 +173,8 @@ public class TodoFilter implements Serializable
     buffer.append(",maxRevision=").append(m_maxRevision);
     buffer.append(",lastModifiedByClient=").append(m_lastModifiedByClient);
     buffer.append(",groupId=").append(m_groupId);
+    buffer.append(",group=").append(m_group);
+    buffer.append(",taskId=").append(m_taskId);
     buffer.append(",order=").append(m_order);
     buffer.append(")");
 

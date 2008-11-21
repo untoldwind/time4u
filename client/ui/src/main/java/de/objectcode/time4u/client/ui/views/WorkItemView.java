@@ -401,7 +401,7 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
       workItem.setDay(m_currentDay);
       workItem.setComment("");
 
-      RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem);
+      RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem, true);
     } catch (final Exception e) {
       UIPlugin.getDefault().log(e);
     }

@@ -129,6 +129,13 @@ public class HibernateTodoRepository implements ITodoRepository
             criteria.add(Restrictions.eq("group.id", filter.getGroupId()));
           }
         }
+        if (filter.getTaskId() != null) {
+          if (filter.getTaskId().equals("")) {
+            criteria.add(Restrictions.isNull("task"));
+          } else {
+            criteria.add(Restrictions.eq("task.id", filter.getTaskId()));
+          }
+        }
         switch (filter.getOrder()) {
           case ID:
             criteria.addOrder(Order.asc("id"));
@@ -198,6 +205,13 @@ public class HibernateTodoRepository implements ITodoRepository
             criteria.add(Restrictions.isNull("group"));
           } else {
             criteria.add(Restrictions.eq("group.id", filter.getGroupId()));
+          }
+        }
+        if (filter.getTaskId() != null) {
+          if (filter.getTaskId().equals("")) {
+            criteria.add(Restrictions.isNull("task"));
+          } else {
+            criteria.add(Restrictions.eq("task.id", filter.getTaskId()));
           }
         }
         switch (filter.getOrder()) {

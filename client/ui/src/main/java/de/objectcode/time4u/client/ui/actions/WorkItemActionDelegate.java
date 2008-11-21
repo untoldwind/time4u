@@ -83,7 +83,7 @@ public class WorkItemActionDelegate implements IWorkbenchWindowActionDelegate, I
 
         if (dialog.open() == WorkItemDialog.OK) {
           try {
-            RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(dialog.getWorkItem());
+            RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(dialog.getWorkItem(), true);
           } catch (final Exception e) {
             UIPlugin.getDefault().log(e);
           }
@@ -96,7 +96,7 @@ public class WorkItemActionDelegate implements IWorkbenchWindowActionDelegate, I
 
         if (dialog.open() == WorkItemDialog.OK) {
           try {
-            RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(dialog.getWorkItem());
+            RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(dialog.getWorkItem(), true);
           } catch (final Exception e) {
             UIPlugin.getDefault().log(e);
           }
@@ -114,7 +114,7 @@ public class WorkItemActionDelegate implements IWorkbenchWindowActionDelegate, I
           }
         }
         try {
-          RepositoryFactory.getRepository().getWorkItemRepository().deleteWorkItem(selectedWorkItem);
+          RepositoryFactory.getRepository().getWorkItemRepository().deleteWorkItem(selectedWorkItem, true);
         } catch (final Exception e) {
           UIPlugin.getDefault().log(e);
         }

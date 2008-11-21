@@ -71,12 +71,12 @@ public class ActiveWorkItemJob extends Job
           if (workItem.getDay().equals(day)) {
             if (workItem.getEnd() != end) {
               workItem.setEnd(end);
-              repository.getWorkItemRepository().storeWorkItem(workItem);
+              repository.getWorkItemRepository().storeWorkItem(workItem, true);
             }
           } else {
             workItem.setEnd(24 * 3600);
 
-            repository.getWorkItemRepository().storeWorkItem(workItem);
+            repository.getWorkItemRepository().storeWorkItem(workItem, true);
 
             final WorkItem nextActive = new WorkItem();
 
@@ -87,7 +87,7 @@ public class ActiveWorkItemJob extends Job
             nextActive.setBegin(0);
             nextActive.setEnd(end);
 
-            repository.getWorkItemRepository().storeWorkItem(nextActive);
+            repository.getWorkItemRepository().storeWorkItem(nextActive, true);
             repository.getWorkItemRepository().setActiveWorkItem(nextActive);
           }
         }

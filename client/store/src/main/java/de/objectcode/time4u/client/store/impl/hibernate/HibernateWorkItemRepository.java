@@ -211,7 +211,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
   /**
    * {@inheritDoc}
    */
-  public void storeWorkItem(final WorkItem workItem) throws RepositoryException
+  public void storeWorkItem(final WorkItem workItem, final boolean modifiedByOwner) throws RepositoryException
   {
     final DayInfo dayInfo = m_hibernateTemplate
         .executeInTransaction(new HibernateTemplate.OperationWithResult<DayInfo>() {
@@ -230,6 +230,9 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
 
               workItemEntity.fromDTO(new SessionPersistenceContext(session), workItem, m_repository.getClientId());
               workItemEntity.getDayInfo().validate();
+              if (modifiedByOwner) {
+                workItemEntity.getDayInfo().setLastModifiedByClient(m_repository.getClientId());
+              }
               session.flush();
             } else {
               final Criteria criteria = session.createCriteria(DayInfoEntity.class);
@@ -247,6 +250,8 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
                     workItem.getDay().getDate());
 
                 session.persist(dayInfoEntity);
+              } else {
+                dayInfoEntity.setRevision(revisionLock.getLatestRevision());
               }
               final String workItemId = m_repository.generateLocalId(EntityType.WORKITEM);
               workItemEntity = new WorkItemEntity(workItemId, dayInfoEntity);
@@ -256,6 +261,9 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
               session.persist(workItemEntity);
               dayInfoEntity.getWorkItems().put(workItemEntity.getId(), workItemEntity);
               dayInfoEntity.validate();
+              if (modifiedByOwner) {
+                dayInfoEntity.setLastModifiedByClient(m_repository.getClientId());
+              }
               session.flush();
             }
 
@@ -275,7 +283,7 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
   /**
    * {@inheritDoc}
    */
-  public void deleteWorkItem(final WorkItem workItem) throws RepositoryException
+  public void deleteWorkItem(final WorkItem workItem, final boolean modifiedByOwner) throws RepositoryException
   {
     if (workItem.getId() == null) {
       return;
@@ -308,6 +316,9 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
               session.delete(workItemEntity);
 
               workItemEntity.getDayInfo().validate();
+              if (modifiedByOwner) {
+                dayInfoEntity.setLastModifiedByClient(m_repository.getClientId());
+              }
               session.flush();
 
               final DayInfo dayInfo = new DayInfo();

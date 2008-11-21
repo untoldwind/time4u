@@ -317,7 +317,7 @@ public class UIPlugin extends AbstractUIPlugin
     workItem.setComment(comment != null ? comment : "");
 
     try {
-      RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem);
+      RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem, true);
       RepositoryFactory.getRepository().getWorkItemRepository().setActiveWorkItem(workItem);
     } catch (final Exception e) {
       log(e);
@@ -339,7 +339,7 @@ public class UIPlugin extends AbstractUIPlugin
 
         workItem.setEnd(3600 * hour + 60 * minute);
         RepositoryFactory.getRepository().getWorkItemRepository().setActiveWorkItem(null);
-        RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem);
+        RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem, true);
       }
     } catch (final Exception e) {
       log(e);

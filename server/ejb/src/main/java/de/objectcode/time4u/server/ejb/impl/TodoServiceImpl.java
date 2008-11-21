@@ -172,10 +172,18 @@ public class TodoServiceImpl implements ITodoService
       queryStr.append("t.group.id = :groupId");
       combineStr = " and ";
     }
+    if (filter.getTaskId() != null) {
+      queryStr.append(combineStr);
+      queryStr.append("t.task.id = :taskId");
+      combineStr = " and ";
+    }
 
     switch (filter.getOrder()) {
       case ID:
         queryStr.append(" order by t.id asc");
+        break;
+      case HEADER:
+        queryStr.append(" order by t.header asc, t.id asc");
         break;
     }
 
@@ -195,6 +203,9 @@ public class TodoServiceImpl implements ITodoService
     }
     if (filter.getGroupId() != null) {
       query.setParameter("groupId", filter.getGroupId());
+    }
+    if (filter.getTaskId() != null) {
+      query.setParameter("taskid", filter.getTaskId());
     }
 
     return query;

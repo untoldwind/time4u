@@ -37,7 +37,7 @@ public class HibernateWorkItemRepositoryTest
   {
     assertNull(workItem.getId());
 
-    repository.getWorkItemRepository().storeWorkItem(workItem);
+    repository.getWorkItemRepository().storeWorkItem(workItem, true);
 
     assertNotNull(workItem.getId());
 

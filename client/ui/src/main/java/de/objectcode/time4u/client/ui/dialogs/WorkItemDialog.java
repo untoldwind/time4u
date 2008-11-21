@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Text;
 import de.objectcode.time4u.client.store.api.IProjectRepository;
 import de.objectcode.time4u.client.store.api.IRepository;
 import de.objectcode.time4u.client.store.api.ITaskRepository;
+import de.objectcode.time4u.client.store.api.ITodoRepository;
 import de.objectcode.time4u.client.store.api.IWorkItemRepository;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.controls.ComboTreeViewer;
@@ -33,10 +34,13 @@ import de.objectcode.time4u.client.ui.provider.ProjectContentProvider;
 import de.objectcode.time4u.client.ui.provider.ProjectLabelProvider;
 import de.objectcode.time4u.client.ui.provider.TaskContentProvider;
 import de.objectcode.time4u.client.ui.provider.TaskLabelProvider;
+import de.objectcode.time4u.client.ui.provider.TodoLabelProvider;
+import de.objectcode.time4u.client.ui.provider.TodoListContentProvider;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.data.TaskSummary;
+import de.objectcode.time4u.server.api.data.TodoSummary;
 import de.objectcode.time4u.server.api.data.WorkItem;
 
 public class WorkItemDialog extends Dialog
@@ -44,6 +48,8 @@ public class WorkItemDialog extends Dialog
   private final IProjectRepository m_projectRepository;
   private final ITaskRepository m_taskRepository;
   private final IWorkItemRepository m_workItemRepository;
+  private final ITodoRepository m_todoRepository;
+
   private DateCombo m_dateText;
   private TimeCombo m_beginText;
   private TimeCombo m_endText;
@@ -51,6 +57,7 @@ public class WorkItemDialog extends Dialog
   private final WorkItem m_workItem;
   private ComboTreeViewer m_projectTreeViewer;
   private ComboViewer m_taskViewer;
+  private ComboViewer m_todoViewer;
   private final boolean m_create;
 
   public WorkItemDialog(final IShellProvider shellProvider, final IRepository repository, final ProjectSummary project,
@@ -63,6 +70,7 @@ public class WorkItemDialog extends Dialog
     m_projectRepository = repository.getProjectRepository();
     m_taskRepository = repository.getTaskRepository();
     m_workItemRepository = repository.getWorkItemRepository();
+    m_todoRepository = repository.getTodoRepository();
 
     m_workItem = new WorkItem();
     m_workItem.setDay(calendarDay);
@@ -97,6 +105,7 @@ public class WorkItemDialog extends Dialog
     m_projectRepository = repository.getProjectRepository();
     m_taskRepository = repository.getTaskRepository();
     m_workItemRepository = repository.getWorkItemRepository();
+    m_todoRepository = repository.getTodoRepository();
 
     m_workItem = workItem;
     if (m_workItem.getComment() == null) {
@@ -192,6 +201,27 @@ public class WorkItemDialog extends Dialog
       }
     });
 
+    final Label commentLabel = new Label(root, SWT.LEFT);
+    commentLabel.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+    commentLabel.setText(UIPlugin.getDefault().getString("workItem.comment.label"));
+    m_commentText = new Text(root, SWT.BORDER | SWT.MULTI);
+    gridData = new GridData(GridData.FILL_BOTH);
+    gridData.horizontalSpan = 3;
+    gridData.widthHint = convertWidthInCharsToPixels(60);
+    gridData.heightHint = convertHeightInCharsToPixels(4);
+    m_commentText.setLayoutData(gridData);
+    m_commentText.setText(m_workItem.getComment());
+    m_commentText.setTextLimit(1000);
+
+    final Label todoLabel = new Label(root, SWT.LEFT);
+    todoLabel.setText(UIPlugin.getDefault().getString("workItem.todo.label"));
+    m_todoViewer = new ComboViewer(root, SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
+    gridData = new GridData(GridData.FILL_HORIZONTAL);
+    gridData.horizontalSpan = 3;
+    m_todoViewer.getCombo().setLayoutData(gridData);
+    m_todoViewer.setContentProvider(new TodoListContentProvider(m_todoRepository));
+    m_todoViewer.setLabelProvider(new TodoLabelProvider());
+
     m_projectTreeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
       public void selectionChanged(final SelectionChangedEvent event)
       {
@@ -205,6 +235,19 @@ public class WorkItemDialog extends Dialog
         }
       }
     });
+    m_taskViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+      public void selectionChanged(final SelectionChangedEvent event)
+      {
+        final ISelection selection = event.getSelection();
+
+        if (selection != null && selection instanceof IStructuredSelection) {
+          final Object sel = ((IStructuredSelection) selection).getFirstElement();
+
+          m_todoViewer.setInput(sel);
+          enableOkButton();
+        }
+      }
+    });
     try {
       if (m_workItem.getProjectId() != null) {
         m_projectTreeViewer.setSelection(new StructuredSelection(m_projectRepository.getProjectSummary(m_workItem
@@ -213,21 +256,14 @@ public class WorkItemDialog extends Dialog
       if (m_workItem.getTaskId() != null) {
         m_taskViewer.setSelection(new StructuredSelection(m_taskRepository.getTaskSummary(m_workItem.getTaskId())));
       }
+      if (m_workItem.getTodoId() != null) {
+        m_todoViewer.setSelection(new StructuredSelection(m_todoRepository.getTodoSummary(m_workItem.getTodoId())));
+      } else {
+        m_todoViewer.setSelection(new StructuredSelection(TodoListContentProvider.EMPTY));
+      }
     } catch (final Exception e) {
       UIPlugin.getDefault().log(e);
     }
-
-    final Label commentLabel = new Label(root, SWT.LEFT);
-    commentLabel.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
-    commentLabel.setText(UIPlugin.getDefault().getString("workItem.comment.label"));
-    m_commentText = new Text(root, SWT.BORDER | SWT.MULTI);
-    gridData = new GridData(GridData.FILL_BOTH);
-    gridData.horizontalSpan = 3;
-    gridData.widthHint = convertWidthInCharsToPixels(60);
-    gridData.heightHint = convertHeightInCharsToPixels(4);
-    m_commentText.setLayoutData(gridData);
-    m_commentText.setText(m_workItem.getComment());
-    m_commentText.setTextLimit(1000);
 
     return composite;
   }
@@ -265,6 +301,16 @@ public class WorkItemDialog extends Dialog
 
       if (obj != null && obj instanceof TaskSummary) {
         m_workItem.setTaskId(((TaskSummary) obj).getId());
+      }
+    }
+    final ISelection todoSelection = m_todoViewer.getSelection();
+    if (todoSelection instanceof IStructuredSelection) {
+      final Object obj = ((IStructuredSelection) todoSelection).getFirstElement();
+
+      if (obj != null && obj instanceof TodoSummary) {
+        m_workItem.setTodoId(((TodoSummary) obj).getId());
+      } else {
+        m_workItem.setTodoId(null);
       }
     }
 
