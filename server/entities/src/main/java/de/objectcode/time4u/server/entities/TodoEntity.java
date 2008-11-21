@@ -1,6 +1,7 @@
 package de.objectcode.time4u.server.entities;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +20,7 @@ import javax.persistence.Table;
 import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.Todo;
 import de.objectcode.time4u.server.api.data.TodoAssignment;
+import de.objectcode.time4u.server.api.data.TodoState;
 import de.objectcode.time4u.server.api.data.TodoSummary;
 import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 
@@ -47,11 +49,14 @@ public class TodoEntity extends TodoBaseEntity
   {
   }
 
-  public TodoEntity(final String id, final long revision, final long lastModifiedByClient)
+  public TodoEntity(final String id, final long revision, final long lastModifiedByClient, final String header)
   {
     m_id = id;
     m_revision = revision;
     m_lastModifiedByClient = lastModifiedByClient;
+    m_state = TodoState.UNASSIGNED;
+    m_header = header;
+    m_createdAt = new Date();
   }
 
   @Column(name = "priority", nullable = false)
@@ -108,7 +113,7 @@ public class TodoEntity extends TodoBaseEntity
     m_description = todo.getDescription();
     m_priority = todo.getPriority();
     m_estimatedTime = todo.getEstimatedTime();
-    m_state = todo.getState();
+    m_state = todo.getState() != null ? todo.getState() : TodoState.UNASSIGNED;
     m_deleted = todo.isDeleted();
 
     if (todo.getReporterId() != null) {

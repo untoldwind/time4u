@@ -1,6 +1,7 @@
 package de.objectcode.time4u.server.entities;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +14,7 @@ import javax.persistence.Table;
 
 import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.TodoGroup;
+import de.objectcode.time4u.server.api.data.TodoState;
 import de.objectcode.time4u.server.api.data.TodoSummary;
 import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 
@@ -30,11 +32,14 @@ public class TodoGroupEntity extends TodoBaseEntity
   {
   }
 
-  public TodoGroupEntity(final String id, final long revision, final long lastModifiedByClient)
+  public TodoGroupEntity(final String id, final long revision, final long lastModifiedByClient, final String header)
   {
     m_id = id;
     m_revision = revision;
     m_lastModifiedByClient = lastModifiedByClient;
+    m_state = TodoState.UNASSIGNED;
+    m_header = header;
+    m_createdAt = new Date();
   }
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
@@ -92,7 +97,7 @@ public class TodoGroupEntity extends TodoBaseEntity
     m_createdAt = todoGroup.getCreatedAt();
     m_header = todoGroup.getHeader();
     m_description = todoGroup.getDescription();
-    m_state = todoGroup.getState();
+    m_state = todoGroup.getState() != null ? todoGroup.getState() : TodoState.UNASSIGNED;
     m_deleted = todoGroup.isDeleted();
 
     if (todoGroup.getReporterId() != null) {

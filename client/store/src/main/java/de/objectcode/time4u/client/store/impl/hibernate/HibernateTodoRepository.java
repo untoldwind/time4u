@@ -256,7 +256,7 @@ public class HibernateTodoRepository implements ITodoRepository
         }
 
         final TodoEntity todoEntity = new TodoEntity(todo.getId(), revisionLock.getLatestRevision(), m_repository
-            .getClientId());
+            .getClientId(), todo.getHeader());
 
         todoEntity.fromDTO(new SessionPersistenceContext(session), todo);
         if (modifiedByOwner) {
@@ -290,7 +290,7 @@ public class HibernateTodoRepository implements ITodoRepository
         }
 
         final TodoGroupEntity todoGroupEntity = new TodoGroupEntity(todoGroup.getId(),
-            revisionLock.getLatestRevision(), m_repository.getClientId());
+            revisionLock.getLatestRevision(), m_repository.getClientId(), todoGroup.getHeader());
 
         todoGroupEntity.fromDTO(new SessionPersistenceContext(session), todoGroup);
         if (modifiedByOwner) {

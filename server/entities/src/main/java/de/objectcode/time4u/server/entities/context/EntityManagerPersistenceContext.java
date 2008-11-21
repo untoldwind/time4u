@@ -76,7 +76,7 @@ public class EntityManagerPersistenceContext implements IPersistenceContext
     TodoEntity todo = m_manager.find(TodoEntity.class, todoId);
 
     if (todo == null) {
-      todo = new TodoEntity(todoId, -1L, clientId);
+      todo = new TodoEntity(todoId, -1L, clientId, todoId);
 
       m_manager.persist(todo);
     }
@@ -89,7 +89,7 @@ public class EntityManagerPersistenceContext implements IPersistenceContext
     TodoGroupEntity todoGroup = m_manager.find(TodoGroupEntity.class, todoGroupId);
 
     if (todoGroup == null) {
-      todoGroup = new TodoGroupEntity(todoGroupId, -1L, clientId);
+      todoGroup = new TodoGroupEntity(todoGroupId, -1L, clientId, todoGroupId);
 
       m_manager.persist(todoGroup);
     }

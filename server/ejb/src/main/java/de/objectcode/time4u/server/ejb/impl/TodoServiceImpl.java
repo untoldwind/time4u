@@ -94,7 +94,8 @@ public class TodoServiceImpl implements ITodoService
       todoEntity.fromDTO(new EntityManagerPersistenceContext(m_manager), todo);
       todoEntity.setRevision(revisionLock.getLatestRevision());
     } else {
-      todoEntity = new TodoEntity(todo.getId(), revisionLock.getLatestRevision(), todo.getLastModifiedByClient());
+      todoEntity = new TodoEntity(todo.getId(), revisionLock.getLatestRevision(), todo.getLastModifiedByClient(), todo
+          .getHeader());
 
       todoEntity.fromDTO(new EntityManagerPersistenceContext(m_manager), todo);
 
@@ -128,7 +129,7 @@ public class TodoServiceImpl implements ITodoService
       todoEntity.setRevision(revisionLock.getLatestRevision());
     } else {
       todoEntity = new TodoGroupEntity(todoGroup.getId(), revisionLock.getLatestRevision(), todoGroup
-          .getLastModifiedByClient());
+          .getLastModifiedByClient(), todoGroup.getHeader());
 
       todoEntity.fromDTO(new EntityManagerPersistenceContext(m_manager), todoGroup);
 

@@ -38,6 +38,9 @@ public class DayTagEntity
   public String getLabel()
   {
     // TODO: Make this not-null
+    if (m_label == null) {
+      return m_name;
+    }
     return m_label;
   }
 

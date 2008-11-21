@@ -76,7 +76,7 @@ public class SessionPersistenceContext implements IPersistenceContext
     TodoEntity todo = (TodoEntity) m_session.get(TodoEntity.class, todoId);
 
     if (todo == null) {
-      todo = new TodoEntity(todoId, -1L, clientId);
+      todo = new TodoEntity(todoId, -1L, clientId, todoId);
 
       m_session.persist(todo);
     }
@@ -89,7 +89,7 @@ public class SessionPersistenceContext implements IPersistenceContext
     TodoGroupEntity todoGroup = (TodoGroupEntity) m_session.get(TodoGroupEntity.class, todoGroupId);
 
     if (todoGroup == null) {
-      todoGroup = new TodoGroupEntity(todoGroupId, -1L, clientId);
+      todoGroup = new TodoGroupEntity(todoGroupId, -1L, clientId, todoGroupId);
 
       m_session.persist(todoGroup);
     }

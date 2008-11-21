@@ -99,7 +99,7 @@ public abstract class TodoBaseEntity
     m_lastModifiedByClient = lastModifiedByClient;
   }
 
-  @Column(name = "description", length = 1000, nullable = false)
+  @Column(name = "description", length = 1000, nullable = true)
   public String getDescription()
   {
     return m_description;
