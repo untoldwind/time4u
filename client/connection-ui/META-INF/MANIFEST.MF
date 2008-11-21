@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Time4U client connection ui
 Bundle-SymbolicName: de.objectcode.time4u.client.connection.ui;singleton:=true
-Bundle-Version: 0.9.5
+Bundle-Version: 0.9.6
 Bundle-Activator: de.objectcode.time4u.client.connection.ui.ConnectionUIPlugin
 Bundle-Vendor: objectcode.de
 Require-Bundle: org.eclipse.ui,
