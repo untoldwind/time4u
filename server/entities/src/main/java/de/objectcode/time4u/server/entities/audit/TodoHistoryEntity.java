@@ -17,6 +17,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import de.objectcode.time4u.server.entities.PersonEntity;
+import de.objectcode.time4u.server.entities.TodoBaseEntity;
 import de.objectcode.time4u.server.entities.TodoEntity;
 
 /**
@@ -25,13 +26,13 @@ import de.objectcode.time4u.server.entities.TodoEntity;
  * @author junglas
  */
 @Entity
-@Table(name = "T4U_TODOS_HISTORY")
+@Table(name = "T4U_TODOSBASE_HISTORY")
 public class TodoHistoryEntity
 {
   /** Primary key. */
   private long m_id;
   /** The todo the history entry belongs to. */
-  private TodoEntity m_todo;
+  private TodoBaseEntity m_todo;
   /** Person who performed the change. */
   private PersonEntity m_performedBy;
   /** Timestamp of the change. */
@@ -76,13 +77,13 @@ public class TodoHistoryEntity
   }
 
   @ManyToOne(optional = false)
-  @JoinColumn(name = "todo_id")
-  public TodoEntity getTodo()
+  @JoinColumn(name = "todobase_id")
+  public TodoBaseEntity getTodo()
   {
     return m_todo;
   }
 
-  public void setTodo(final TodoEntity todo)
+  public void setTodo(final TodoBaseEntity todo)
   {
     m_todo = todo;
   }

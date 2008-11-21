@@ -8,6 +8,7 @@ import de.objectcode.time4u.client.ui.views.ProjectTreeView;
 import de.objectcode.time4u.client.ui.views.PunchView;
 import de.objectcode.time4u.client.ui.views.StatisticsView;
 import de.objectcode.time4u.client.ui.views.TaskListView;
+import de.objectcode.time4u.client.ui.views.TodoTreeView;
 import de.objectcode.time4u.client.ui.views.WorkItemView;
 
 public class Perspective implements IPerspectiveFactory
@@ -20,6 +21,7 @@ public class Perspective implements IPerspectiveFactory
     layout.setEditorAreaVisible(false);
 
     layout.addStandaloneView(CalendarView.ID, true, IPageLayout.LEFT, 0.25f, editorArea);
+    layout.addStandaloneViewPlaceholder(TodoTreeView.ID, IPageLayout.RIGHT, 0.1f, editorArea, true);
     layout.addStandaloneView(TaskListView.ID, true, IPageLayout.TOP, 0.7f, CalendarView.ID);
     layout.addStandaloneView(ProjectTreeView.ID, true, IPageLayout.TOP, 0.6f, TaskListView.ID);
     layout.addStandaloneView(WorkItemView.ID, true, IPageLayout.TOP, 0.7f, editorArea);

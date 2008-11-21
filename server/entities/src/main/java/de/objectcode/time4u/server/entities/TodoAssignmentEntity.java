@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import de.objectcode.time4u.server.api.data.TodoAssignment;
 
 @Entity
-@Table(name = "T4U_TODOS_ASSIGNMENTS")
+@Table(name = "T4U_TODOSDATA_ASSIGNMENTS")
 @IdClass(TodoAssignmentEntityKey.class)
 public class TodoAssignmentEntity
 {

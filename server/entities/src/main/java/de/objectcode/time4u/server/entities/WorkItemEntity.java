@@ -152,7 +152,7 @@ public class WorkItemEntity
   }
 
   @ManyToOne(optional = true, fetch = FetchType.LAZY)
-  @JoinColumn(name = "todo_id")
+  @JoinColumn(name = "tododata_id")
   public TodoEntity getTodo()
   {
     return m_todo;

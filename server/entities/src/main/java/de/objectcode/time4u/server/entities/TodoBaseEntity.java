@@ -203,7 +203,7 @@ public abstract class TodoBaseEntity
   }
 
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "T4U_TODOS_DEPENDS", joinColumns = { @JoinColumn(name = "dependent_id") }, inverseJoinColumns = { @JoinColumn(name = "dependsOn_id") })
+  @JoinTable(name = "T4U_TODOSBASE_DEPENDS", joinColumns = { @JoinColumn(name = "dependent_id") }, inverseJoinColumns = { @JoinColumn(name = "dependsOn_id") })
   public Set<TodoBaseEntity> getDependsOn()
   {
     return m_dependsOn;
@@ -238,7 +238,7 @@ public abstract class TodoBaseEntity
   }
 
   @ManyToMany
-  @JoinTable(name = "T4U_TODOS_TO_TEAMS", joinColumns = { @JoinColumn(name = "todo_id") }, inverseJoinColumns = { @JoinColumn(name = "team_id") })
+  @JoinTable(name = "T4U_TODOSBASE_TO_TEAMS", joinColumns = { @JoinColumn(name = "todo_id") }, inverseJoinColumns = { @JoinColumn(name = "team_id") })
   public Set<TeamEntity> getVisibleToTeams()
   {
     return m_visibleToTeams;
@@ -250,7 +250,7 @@ public abstract class TodoBaseEntity
   }
 
   @ManyToMany
-  @JoinTable(name = "T4U_TODOS_TO_PERSONS", joinColumns = { @JoinColumn(name = "todo_id") }, inverseJoinColumns = { @JoinColumn(name = "person_id") })
+  @JoinTable(name = "T4U_TODOSBASE_TO_PERSONS", joinColumns = { @JoinColumn(name = "todo_id") }, inverseJoinColumns = { @JoinColumn(name = "person_id") })
   public Set<PersonEntity> getVisibleToPersons()
   {
     return m_visibleToPersons;

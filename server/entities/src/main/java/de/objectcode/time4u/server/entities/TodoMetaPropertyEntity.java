@@ -9,7 +9,7 @@ import javax.persistence.Table;
  * @author junglas
  */
 @Entity
-@Table(name = "T4U_TODOS_PROPERTIES")
+@Table(name = "T4U_TODOSBASE_PROPERTIES")
 public class TodoMetaPropertyEntity extends BaseMetaPropertyEntity
 {
 }
