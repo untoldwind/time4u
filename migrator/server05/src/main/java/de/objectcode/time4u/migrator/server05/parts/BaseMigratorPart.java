@@ -44,6 +44,7 @@ public abstract class BaseMigratorPart<T> implements IMigratorPart
       IRevisionLock revisionLock = revisionGenerator.getNextRevision(m_type, null);
 
       final Criteria criteria = oldSession.createCriteria(m_oldClass);
+      addRestrictions(criteria);
       criteria.addOrder(Order.asc("id"));
 
       final ScrollableResults results = criteria.scroll(ScrollMode.FORWARD_ONLY);
@@ -108,6 +109,11 @@ public abstract class BaseMigratorPart<T> implements IMigratorPart
   {
     final long hi = 1L << digits * 4;
     return Long.toHexString(hi | val & hi - 1).substring(1);
+  }
+
+  protected void addRestrictions(final Criteria criteria)
+  {
+    // No restrictions by default
   }
 
   protected abstract void migrateEntity(Session oldSession, Session newSession, T oldEntity, IRevisionLock revisionLock);

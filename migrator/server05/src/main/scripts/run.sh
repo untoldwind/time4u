@@ -7,4 +7,4 @@ do
 CP=$CP:$i
 done
 
-java -cp $CP de.objectcode.time4u.migrator.server05.Migrator
+java -cp $CP de.objectcode.time4u.migrator.server05.Migrator $*

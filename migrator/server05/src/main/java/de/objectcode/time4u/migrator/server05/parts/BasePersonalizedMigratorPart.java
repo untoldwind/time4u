@@ -25,8 +25,7 @@ public abstract class BasePersonalizedMigratorPart<T> extends BaseMigratorPart<T
   protected PersonEntity m_newPerson;
   protected String m_personIdProperty;
 
-  protected BasePersonalizedMigratorPart(final EntityType type, final Class<T> oldClass,
-      final String personIdProperty)
+  protected BasePersonalizedMigratorPart(final EntityType type, final Class<T> oldClass, final String personIdProperty)
   {
     super(type, oldClass);
 
@@ -44,6 +43,7 @@ public abstract class BasePersonalizedMigratorPart<T> extends BaseMigratorPart<T
 
     try {
       final Criteria personCriteria = oldSession.createCriteria(OldPersons.class);
+      addRestrictions(personCriteria);
       personCriteria.add(Restrictions.ne("userId", "admin"));
 
       final List<OldPersons> persons = personCriteria.list();
@@ -73,8 +73,8 @@ public abstract class BasePersonalizedMigratorPart<T> extends BaseMigratorPart<T
     try {
       trx = newSession.beginTransaction();
 
-      m_newPerson = (PersonEntity) newSession.get(PersonEntity.class, migrateId(EntityType.PERSON, m_oldPerson
-          .getId()));
+      m_newPerson = (PersonEntity) newSession
+          .get(PersonEntity.class, migrateId(EntityType.PERSON, m_oldPerson.getId()));
 
       final IRevisionGenerator revisionGenerator = new SessionRevisionGenerator(newSession);
       IRevisionLock revisionLock = revisionGenerator.getNextRevision(m_type, m_newPerson.getId());

@@ -17,9 +17,20 @@ import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 
 public class WorkItemMigrator extends BasePersonalizedMigratorPart<OldWorkitems>
 {
+  String[] userIds;
+
   public WorkItemMigrator()
   {
     super(EntityType.DAYINFO, OldWorkitems.class, "personId");
+
+    userIds = null;
+  }
+
+  public WorkItemMigrator(final String[] userIds)
+  {
+    this();
+
+    this.userIds = userIds;
   }
 
   @Override
@@ -64,5 +75,13 @@ public class WorkItemMigrator extends BasePersonalizedMigratorPart<OldWorkitems>
     dayInfoEntity.validate();
 
     newSession.merge(dayInfoEntity);
+  }
+
+  @Override
+  protected void addRestrictions(final Criteria criteria)
+  {
+    if (userIds != null) {
+      criteria.add(Restrictions.in("userId", userIds));
+    }
   }
 }

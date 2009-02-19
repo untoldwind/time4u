@@ -1,6 +1,8 @@
 package de.objectcode.time4u.migrator.server05.parts;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import de.objectcode.time4u.migrator.server05.old.entities.OldPersons;
 import de.objectcode.time4u.server.api.data.EntityType;
@@ -14,12 +16,21 @@ import de.objectcode.time4u.server.utils.IPasswordEncoder;
 public class PersonMigratorPart extends BaseMigratorPart<OldPersons>
 {
   IPasswordEncoder m_passwordEncoder;
+  String[] userIds;
 
   public PersonMigratorPart()
   {
     super(EntityType.PERSON, OldPersons.class);
 
     m_passwordEncoder = new DefaultPasswordEncoder();
+    userIds = null;
+  }
+
+  public PersonMigratorPart(final String[] userIds)
+  {
+    this();
+
+    this.userIds = userIds;
   }
 
   @Override
@@ -41,8 +52,8 @@ public class PersonMigratorPart extends BaseMigratorPart<OldPersons>
       givenName += names[i];
     }
 
-    final PersonEntity newPerson = new PersonEntity(migrateId(EntityType.PERSON, oldEntity.getId()),
-        revisionLock.getLatestRevision(), m_idGenerator.getClientId());
+    final PersonEntity newPerson = new PersonEntity(migrateId(EntityType.PERSON, oldEntity.getId()), revisionLock
+        .getLatestRevision(), m_idGenerator.getClientId());
     newPerson.setGivenName(givenName);
     newPerson.setSurname(surname);
     newPerson.setEmail(oldEntity.getEmail());
@@ -56,4 +67,13 @@ public class PersonMigratorPart extends BaseMigratorPart<OldPersons>
     userAccountEntity.getRoles().add((UserRoleEntity) newSession.get(UserRoleEntity.class, "user"));
     newSession.merge(userAccountEntity);
   }
+
+  @Override
+  protected void addRestrictions(final Criteria criteria)
+  {
+    if (userIds != null) {
+      criteria.add(Restrictions.in("userId", userIds));
+    }
+  }
+
 }

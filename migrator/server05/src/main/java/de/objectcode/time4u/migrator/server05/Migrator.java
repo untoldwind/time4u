@@ -60,7 +60,7 @@ public class Migrator
   SessionFactory m_newSessionFactory;
   List<IMigratorPart> m_migratorParts;
 
-  Migrator() throws Exception
+  Migrator(final String[] args) throws Exception
   {
     m_oldSessionFactory = buildOldSessionFactory();
     m_newSessionFactory = buildNewSessionFactory();
@@ -68,9 +68,17 @@ public class Migrator
     m_migratorParts = new ArrayList<IMigratorPart>();
     m_migratorParts.add(new ProjectMigratorPart());
     m_migratorParts.add(new TaskMigratorPart());
-    m_migratorParts.add(new PersonMigratorPart());
+    if (args.length > 0) {
+      m_migratorParts.add(new PersonMigratorPart(args));
+    } else {
+      m_migratorParts.add(new PersonMigratorPart());
+    }
     m_migratorParts.add(new TeamMigratorPart());
-    m_migratorParts.add(new WorkItemMigrator());
+    if (args.length > 0) {
+      m_migratorParts.add(new WorkItemMigrator(args));
+    } else {
+      m_migratorParts.add(new WorkItemMigrator());
+    }
   }
 
   private SessionFactory buildNewSessionFactory() throws Exception
@@ -166,7 +174,7 @@ public class Migrator
   public static void main(final String args[])
   {
     try {
-      final Migrator migrator = new Migrator();
+      final Migrator migrator = new Migrator(args);
 
       migrator.run();
     } catch (final Exception e) {
