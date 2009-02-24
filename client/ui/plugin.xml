@@ -84,23 +84,97 @@
             name="Time4U"
             id="de.objectcode.time4u.client.ui.category">
       </category>
+      <command
+            categoryId="de.objectcode.time4u.client.ui.category"
+            description="Create a new project"
+            id="de.objectcode.time4u.client.ui.project.new"
+            name="Project New">
+      </command>
 
       <command
             categoryId="de.objectcode.time4u.client.ui.category"
-            description="Project Edit"
+            description="Edit a project"
             id="de.objectcode.time4u.client.ui.project.edit"
             name="Project Edit"/>
       <command
             categoryId="de.objectcode.time4u.client.ui.category"
-            description="Task Edit"
+            description="Create a new Task"
+            id="de.objectcode.time4u.client.ui.task.new"
+            name="Task New">
+      </command>
+      <command
+            categoryId="de.objectcode.time4u.client.ui.category"
+            description="Edit a task"
             id="de.objectcode.time4u.client.ui.task.edit"
             name="Task Edit">
       </command>
       <command
             categoryId="de.objectcode.time4u.client.ui.category"
-            description="WorkItem Edit"
+            description="Create a new workitem"
+            id="de.objectcode.time4u.client.ui.workitem.new"
+            name="WorkItem New">
+      </command>
+      <command
+            categoryId="de.objectcode.time4u.client.ui.category"
+            description="Edit a workitem"
             id="de.objectcode.time4u.client.ui.workitem.edit"
             name="WorkItem Edit">
+      </command>
+      <command
+            categoryId="de.objectcode.time4u.client.ui.category"
+            description="Continue a workitem"
+            id="de.objectcode.time4u.client.ui.workitem.continue"
+            name="WorkItem Continue">
+      </command>
+      <command
+            categoryId="de.objectcode.time4u.client.ui.category"
+            defaultHandler="de.objectcode.time4u.client.ui.actions.PunchInOutHandler"
+            description="Punch in or out"
+            id="time4u-client-ui.command7"
+            name="Punch In/Out">
+      </command>
+      <command
+            categoryId="de.objectcode.time4u.client.ui.category"
+            description="Create a new todo"
+            id="de.objectcode.time4u.client.ui.todo.new"
+            name="Todo New">
+      </command>
+      <command
+            categoryId="de.objectcode.time4u.client.ui.category"
+            description="Create a new todo group"
+            id="de.objectcode.time4u.client.ui.todoGroup.new"
+            name="TodoGroup New">
+      </command>
+      <command
+            categoryId="de.objectcode.time4u.client.ui.category"
+            description="Edit a todo"
+            id="de.objectcode.time4u.client.ui.todo.edit"
+            name="Todo Edit">
+      </command>
+      <command
+            categoryId="de.objectcode.time4u.client.ui.category"
+            description="Work on this todo"
+            id="de.objectcode.time4u.client.ui.todo.work"
+            name="Todo Work on this">
+      </command>
+      <command
+            categoryId="de.objectcode.time4u.client.ui.category"
+            defaultHandler="de.objectcode.time4u.client.ui.actions.DayTagHandler"
+            description="Tag a day"
+            id="time4u-client-ui.command10"
+            name="Day Tag">
+         <commandParameter
+               id="dayTag"
+               name="dayTag"
+               optional="false"
+               values="de.objectcode.time4u.client.ui.actions.DayTagParameterValues">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="de.objectcode.time4u.client.ui.category"
+            description="Assign todo to me"
+            id="de.objectcode.time4u.client.ui.todo.assign"
+            name="Todo Assign to me">
       </command>
 
    </extension>
@@ -192,6 +266,7 @@
             targetID="de.objectcode.time4u.client.ui.view.projectTree">
          <action
                class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"
+               definitionId="de.objectcode.time4u.client.ui.project.new"
                icon="icons/NewProject.gif"
                id="de.objectcode.time4u.client.ui.project.new"
                label="%action.project.new.label"
@@ -255,6 +330,7 @@
          </visibility>
          <action
                class="de.objectcode.time4u.client.ui.actions.TaskActionDelegate"
+               definitionId="de.objectcode.time4u.client.ui.task.new"
                icon="icons/NewTask.gif"
                id="de.objectcode.time4u.client.ui.task.new"
                label="%action.task.new.label"
@@ -310,6 +386,7 @@
          </visibility>
          <action
                class="de.objectcode.time4u.client.ui.actions.WorkItemActionDelegate"
+               definitionId="de.objectcode.time4u.client.ui.workitem.new"
                icon="icons/NewWorkItem.gif"
                id="de.objectcode.time4u.client.ui.workitem.new"
                label="%action.workItem.new.label"
@@ -367,6 +444,7 @@
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.WorkItemActionDelegate"
+               definitionId="de.objectcode.time4u.client.ui.workitem.continue"
                icon="icons/ContinueWorkItem.gif"
                id="de.objectcode.time4u.client.ui.workitem.continue"
                label="%action.workItem.continue.label"
@@ -423,6 +501,7 @@
             targetID="de.objectcode.time4u.client.ui.view.todoTree">
          <action
                class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               definitionId="de.objectcode.time4u.client.ui.todoGroup.new"
                id="de.objectcode.time4u.client.ui.todoGroup.new"
                label="%action.todoGroup.new.label"
                menubarPath="newGroup"
@@ -430,6 +509,7 @@
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               definitionId="de.objectcode.time4u.client.ui.todo.new"
                id="de.objectcode.time4u.client.ui.todo.new"
                label="%action.todo.new.label"
                menubarPath="newGroup"
@@ -452,6 +532,7 @@
          </visibility>
          <action
                class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               definitionId="de.objectcode.time4u.client.ui.todo.edit"
                id="de.objectcode.time4u.client.ui.todo.edit"
                label="%action.todo.edit.label"
                menubarPath="objectGroup"
@@ -488,6 +569,7 @@
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               definitionId="de.objectcode.time4u.client.ui.todo.work"
                id="de.objectcode.time4u.client.ui.todo.work"
                label="%action.todo.work.label"
                menubarPath="operationGroup"
@@ -514,6 +596,7 @@
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               definitionId="de.objectcode.time4u.client.ui.todo.assign"
                id="de.objectcode.time4u.client.ui.todo.assign"
                label="%action.todo.assign.label"
                menubarPath="operationGroup"
@@ -667,6 +750,7 @@
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.ProjectActionDelegate"
+               definitionId="de.objectcode.time4u.client.ui.project.new"
                icon="icons/NewProject.gif"
                id="de.objectcode.time4u.client.ui.project.new"
                label="%action.project.new.label"
@@ -728,6 +812,7 @@
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.TaskActionDelegate"
+               definitionId="de.objectcode.time4u.client.ui.task.new"
                icon="icons/NewTask.gif"
                id="de.objectcode.time4u.client.ui.task.new"
                label="%action.task.new.label"
@@ -804,6 +889,7 @@
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.WorkItemActionDelegate"
+               definitionId="de.objectcode.time4u.client.ui.workitem.continue"
                icon="icons/ContinueWorkItem.gif"
                id="de.objectcode.time4u.client.ui.workitem.continue"
                label="%action.workItem.continue.label"
@@ -847,6 +933,7 @@
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.WorkItemActionDelegate"
+               definitionId="de.objectcode.time4u.client.ui.workitem.new"
                icon="icons/NewWorkItem.gif"
                id="de.objectcode.time4u.client.ui.workitem.new"
                label="%action.workItem.new.label"
@@ -1039,6 +1126,7 @@
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               definitionId="de.objectcode.time4u.client.ui.todo.edit"
                id="de.objectcode.time4u.client.ui.todo.edit"
                label="%action.todo.edit.label"
                menubarPath="todoMenu/todoGroup"
@@ -1058,6 +1146,7 @@
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               definitionId="de.objectcode.time4u.client.ui.todoGroup.new"
                id="de.objectcode.time4u.client.ui.todoGroup.new"
                label="%action.todoGroup.new.label"
                menubarPath="todoMenu/todoGroup"
@@ -1066,6 +1155,7 @@
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.TodoActionDelegate"
+               definitionId="de.objectcode.time4u.client.ui.todo.new"
                id="de.objectcode.time4u.client.ui.todo.new"
                label="%action.todo.new.label"
                menubarPath="todoMenu/todoGroup"
@@ -1143,6 +1233,28 @@
             class="de.objectcode.time4u.client.ui.preferences.TodoViewPreferencesPage"
             id="de.objectcode.time4u.client.ui.preferences.TodoViewPreferencesPage"
             name="Todo">
+      </page>
+      <page
+            class="org.eclipse.ui.ExtensionFactory:newKeysPreferencePage"
+            id="de.objectcode.time4u.client.ui.preferences.KeyBindings"
+            name="Keys">
+      </page>
+      <page
+            category="de.objectcode.time4u.client.ui.preferences.AppearancePreference"
+            class="org.eclipse.ui.ExtensionFactory:perspectivesPreferencePage"
+            id="de.objectcode.time4u.client.ui.preferences.Perspectives"
+            name="Perspectives">
+      </page>
+      <page
+            category="de.objectcode.time4u.client.ui.preferences.AppearancePreference"
+            class="org.eclipse.ui.ExtensionFactory:colorsAndFontsPreferencePage"
+            id="de.objectcode.time4u.client.ui.preferences.ColorsAndFonts"
+            name="Colors and Fonts">
+      </page>
+      <page
+            class="org.eclipse.ui.ExtensionFactory:appearancePreferencePage"
+            id="de.objectcode.time4u.client.ui.preferences.AppearancePreference"
+            name="Appearance">
       </page>
    </extension>
    <extension

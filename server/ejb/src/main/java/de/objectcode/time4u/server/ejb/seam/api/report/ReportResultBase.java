@@ -16,10 +16,15 @@ import java.util.TreeMap;
  */
 public class ReportResultBase
 {
+  /** List of all column definitions. */
   protected List<ColumnDefinition> m_columns;
+  /** List of all column definitions that have been used for group by. */
   protected List<ColumnDefinition> m_groupByColumns;
+  /** List of report rows if there are no group-by. */
   protected List<ReportRow> m_rows;
+  /** Aggregated values to be displayed in the footer. */
   protected Object[] m_aggregates;
+  /** Map of group-by sub-reports. */
   protected Map<Object, ReportResultGroup> m_groups;
 
   protected ReportResultBase(final List<ColumnDefinition> columns, final List<ColumnDefinition> groupByColumns)
