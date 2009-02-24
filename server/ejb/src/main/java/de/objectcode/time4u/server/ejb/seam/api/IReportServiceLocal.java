@@ -6,7 +6,23 @@ import de.objectcode.time4u.server.ejb.seam.api.report.BaseReportDefinition;
 import de.objectcode.time4u.server.ejb.seam.api.report.ReportResult;
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.BaseParameterValue;
 
+/**
+ * Local report service interface.
+ * 
+ * The report service is an abstract reporting engine to generate reports based on workitems, dayinfos and todos.
+ * 
+ * @author junglas
+ */
 public interface IReportServiceLocal
 {
+  /**
+   * Generate a report.
+   * 
+   * @param reportDefinition
+   *          The definition of the report
+   * @param parameters
+   *          The parameter values (depending on parameters definied in the report definition)
+   * @return The result of the report
+   */
   ReportResult generateReport(BaseReportDefinition reportDefinition, Map<String, BaseParameterValue> parameters);
 }

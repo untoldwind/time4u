@@ -2,6 +2,13 @@ package de.objectcode.time4u.server.ejb.seam.api.report;
 
 import java.util.List;
 
+/**
+ * A sub-report result based on a group-by.
+ * 
+ * Note that a ReportResultGroup may not contain any rows but a map of sub-ReportResultGroup instead.
+ * 
+ * @author junglas
+ */
 public class ReportResultGroup extends ReportResultBase
 {
   Object m_value;

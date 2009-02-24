@@ -36,7 +36,7 @@ public abstract class BaseReportDefinition implements Serializable
   protected String m_description;
   /** Filter criteria on the data. */
   protected IFilter m_filter;
-  /** Report parameters to be queried from the user. */
+  /** Report parameters to be entered by the user. */
   protected List<ReportParameterDefinition> m_parameters;
 
   protected BaseReportDefinition()
@@ -96,8 +96,20 @@ public abstract class BaseReportDefinition implements Serializable
     m_parameters.add(parameter);
   }
 
+  /**
+   * Get the entity type the report is based on.
+   * 
+   * E.g. WORKITEM will create a workitem report, DAYINFO a dayinfo report, ...
+   * 
+   * @return The entity type of the report.
+   */
   @XmlTransient
   public abstract EntityType getEntityType();
 
+  /**
+   * Get the data collector.
+   * 
+   * @return The data collector.
+   */
   public abstract IReportDataCollector createDataCollector();
 }

@@ -6,6 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * Base class of a report result.
+ * 
+ * Note that report may contain hierarchic group-by results. I.e. the ReportResult may not contain any rows but a map of
+ * ReportResultGroup instead. Each of these ReportResultGroup may contain rows or a map of sub-groups.
+ * 
+ * @author junglas
+ */
 public class ReportResultBase
 {
   protected List<ColumnDefinition> m_columns;

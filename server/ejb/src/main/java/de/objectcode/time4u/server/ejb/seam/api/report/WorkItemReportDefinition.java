@@ -13,13 +13,23 @@ import javax.xml.bind.annotation.XmlType;
 
 import de.objectcode.time4u.server.api.data.EntityType;
 
+/**
+ * Definition of a workitem report.
+ * 
+ * A workitem report will iterate over all workitem matching the filter criteria aggregating the times according to the
+ * projections.
+ * 
+ * @author junglas
+ */
 @XmlType(name = "workitem-report")
 @XmlRootElement(name = "workitem-report")
 public class WorkItemReportDefinition extends BaseReportDefinition
 {
   private static final long serialVersionUID = 4683950609367326486L;
 
+  /** List of projections to project the workitem data to report columns. */
   List<IProjection> m_projections;
+  /** Group-by definitions. */
   List<GroupByDefinition> m_groupByDefinitions;
   boolean m_aggregate;
 
@@ -79,12 +89,18 @@ public class WorkItemReportDefinition extends BaseReportDefinition
     m_aggregate = aggregate;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public EntityType getEntityType()
   {
     return EntityType.WORKITEM;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public IReportDataCollector createDataCollector()
   {

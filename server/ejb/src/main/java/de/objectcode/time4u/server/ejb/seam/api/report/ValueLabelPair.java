@@ -1,5 +1,10 @@
 package de.objectcode.time4u.server.ejb.seam.api.report;
 
+/**
+ * Helper class to transfer a generic value with label.
+ * 
+ * @author junglas
+ */
 public class ValueLabelPair
 {
   Object m_value;

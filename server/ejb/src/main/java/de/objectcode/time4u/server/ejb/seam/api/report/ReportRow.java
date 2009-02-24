@@ -1,8 +1,15 @@
 package de.objectcode.time4u.server.ejb.seam.api.report;
 
+/**
+ * A row in a report.
+ * 
+ * @author junglas
+ */
 public class ReportRow
 {
+  /** The row index. */
   int index;
+  /** The values of each column. */
   Object[] data;
 
   public ReportRow(final int index, final Object[] data)
