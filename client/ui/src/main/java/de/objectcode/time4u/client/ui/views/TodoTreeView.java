@@ -5,6 +5,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
@@ -16,7 +17,11 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.ViewPart;
 
 import de.objectcode.time4u.client.store.api.RepositoryException;
@@ -26,8 +31,9 @@ import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.dnd.TodoTransfer;
-import de.objectcode.time4u.client.ui.provider.TodoContentProvider;
 import de.objectcode.time4u.client.ui.provider.TodoLabelProvider;
+import de.objectcode.time4u.client.ui.provider.TodoTableContentProvider;
+import de.objectcode.time4u.client.ui.provider.TodoTreeContentProvider;
 import de.objectcode.time4u.client.ui.util.CompoundSelectionEntityType;
 import de.objectcode.time4u.client.ui.util.CompoundSelectionProvider;
 import de.objectcode.time4u.client.ui.util.SelectionServiceAdapter;
@@ -39,10 +45,14 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
 {
   public static final String ID = "de.objectcode.time4u.client.ui.view.todoTree";
 
-  private TreeViewer m_viewer;
+  private TreeViewer m_treeViewer;
+  private TableViewer m_flatViewer;
+  private PageBook m_pageBook;
 
   int m_refreshCounter = 0;
   private CompoundSelectionProvider m_selectionProvider;
+
+  private ViewType m_viewType = ViewType.TREE;
 
   /**
    * {@inheritDoc}
@@ -50,20 +60,22 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
   @Override
   public void createPartControl(final Composite parent)
   {
-    m_viewer = new TreeViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-    m_viewer.setContentProvider(new TodoContentProvider(RepositoryFactory.getRepository().getTodoRepository()));
-    m_viewer.setLabelProvider(new TodoLabelProvider());
-    m_viewer.setInput(new Object());
-    m_viewer.addDragSupport(DND.DROP_MOVE | DND.DROP_DEFAULT, new Transfer[] { TodoTransfer.getInstance() },
+    m_pageBook = new PageBook(parent, SWT.NONE);
+
+    m_treeViewer = new TreeViewer(m_pageBook, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+    m_treeViewer.setContentProvider(new TodoTreeContentProvider(RepositoryFactory.getRepository().getTodoRepository()));
+    m_treeViewer.setLabelProvider(new TodoLabelProvider());
+    m_treeViewer.setInput(new Object());
+    m_treeViewer.addDragSupport(DND.DROP_MOVE | DND.DROP_DEFAULT, new Transfer[] { TodoTransfer.getInstance() },
         new DragSourceAdapter() {
           @Override
           public void dragSetData(final DragSourceEvent event)
           {
-            final IStructuredSelection selection = (IStructuredSelection) m_viewer.getSelection();
+            final IStructuredSelection selection = (IStructuredSelection) m_treeViewer.getSelection();
             event.data = selection.getFirstElement();
           }
         });
-    m_viewer.addDropSupport(DND.DROP_MOVE | DND.DROP_DEFAULT, new Transfer[] { TodoTransfer.getInstance() },
+    m_treeViewer.addDropSupport(DND.DROP_MOVE | DND.DROP_DEFAULT, new Transfer[] { TodoTransfer.getInstance() },
         new DropTargetAdapter() {
           @Override
           public void drop(final DropTargetEvent event)
@@ -137,8 +149,16 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
           }
         });
 
+    m_flatViewer = new TableViewer(m_pageBook, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+    m_flatViewer
+        .setContentProvider(new TodoTableContentProvider(RepositoryFactory.getRepository().getTodoRepository()));
+    m_flatViewer.setLabelProvider(new TodoLabelProvider());
+    m_flatViewer.setInput(new Object());
+    m_flatViewer.getTable().setLinesVisible(true);
+
     m_selectionProvider = new CompoundSelectionProvider();
-    m_selectionProvider.addPostSelectionProvider(CompoundSelectionEntityType.TODO, m_viewer);
+    m_selectionProvider.addPostSelectionProvider(CompoundSelectionEntityType.TODO, m_treeViewer);
+    m_selectionProvider.addPostSelectionProvider(CompoundSelectionEntityType.TODO, m_flatViewer);
     getSite().setSelectionProvider(m_selectionProvider);
     getSite().getPage().addSelectionListener(m_selectionProvider);
 
@@ -154,12 +174,42 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
     menuMgr.add(new Separator());
     menuMgr.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
 
-    final Menu menu = menuMgr.createContextMenu(m_viewer.getControl());
+    final Menu menu = menuMgr.createContextMenu(m_treeViewer.getControl());
 
-    m_viewer.getControl().setMenu(menu);
+    m_treeViewer.getControl().setMenu(menu);
+    m_flatViewer.getControl().setMenu(menu);
     getSite().registerContextMenu(menuMgr, new SelectionServiceAdapter(getSite().getPage()));
 
     RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.TODO, this);
+
+    switch (m_viewType) {
+      case FLAT:
+        m_pageBook.showPage(m_flatViewer.getTable());
+        break;
+      case TREE:
+        m_pageBook.showPage(m_treeViewer.getTree());
+        break;
+    }
+
+  }
+
+  public ViewType getViewType()
+  {
+    return m_viewType;
+  }
+
+  public void setViewType(final ViewType viewType)
+  {
+    m_viewType = viewType;
+
+    switch (m_viewType) {
+      case FLAT:
+        m_pageBook.showPage(m_flatViewer.getTable());
+        break;
+      case TREE:
+        m_pageBook.showPage(m_treeViewer.getTree());
+        break;
+    }
   }
 
   /**
@@ -179,7 +229,35 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
   @Override
   public void setFocus()
   {
-    m_viewer.getControl().setFocus();
+    m_treeViewer.getControl().setFocus();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void init(final IViewSite site, final IMemento memento) throws PartInitException
+  {
+    super.init(site, memento);
+
+    if (memento != null) {
+      final String viewType = memento.getString("viewType");
+
+      if (viewType != null) {
+        m_viewType = ViewType.valueOf(viewType);
+      }
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void saveState(final IMemento memento)
+  {
+    super.saveState(memento);
+
+    memento.putString("viewType", m_viewType.toString());
   }
 
   /**
@@ -198,17 +276,17 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
           m_refreshCounter++;
         }
 
-        m_viewer.getControl().getDisplay().asyncExec(new Runnable() {
+        m_treeViewer.getControl().getDisplay().asyncExec(new Runnable() {
           public void run()
           {
             try {
-              final ISelection selection = m_viewer.getSelection();
-              final Object[] expanded = m_viewer.getExpandedElements();
+              final ISelection selection = m_treeViewer.getSelection();
+              final Object[] expanded = m_treeViewer.getExpandedElements();
 
-              m_viewer.setInput(new Object());
+              m_treeViewer.setInput(new Object());
 
-              m_viewer.setExpandedElements(expanded);
-              m_viewer.setSelection(selection);
+              m_treeViewer.setExpandedElements(expanded);
+              m_treeViewer.setSelection(selection);
             } finally {
               synchronized (TodoTreeView.this) {
                 m_refreshCounter--;
@@ -219,5 +297,11 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
 
         break;
     }
+  }
+
+  public enum ViewType
+  {
+    TREE,
+    FLAT;
   }
 }

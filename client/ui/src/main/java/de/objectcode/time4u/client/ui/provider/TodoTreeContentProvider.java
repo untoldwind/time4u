@@ -9,11 +9,11 @@ import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.server.api.data.TodoSummary;
 import de.objectcode.time4u.server.api.filter.TodoFilter;
 
-public class TodoContentProvider implements IStructuredContentProvider, ITreeContentProvider
+public class TodoTreeContentProvider implements IStructuredContentProvider, ITreeContentProvider
 {
   private final ITodoRepository m_todoRepository;
 
-  public TodoContentProvider(final ITodoRepository todoRepository)
+  public TodoTreeContentProvider(final ITodoRepository todoRepository)
   {
     m_todoRepository = todoRepository;
   }

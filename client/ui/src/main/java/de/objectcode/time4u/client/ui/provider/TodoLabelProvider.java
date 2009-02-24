@@ -1,12 +1,13 @@
 package de.objectcode.time4u.client.ui.provider;
 
+import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.server.api.data.TodoSummary;
 
-public class TodoLabelProvider extends LabelProvider
+public class TodoLabelProvider extends LabelProvider implements ITableLabelProvider
 {
   /**
    * {@inheritDoc}
@@ -48,6 +49,19 @@ public class TodoLabelProvider extends LabelProvider
       }
     }
     return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Image getColumnImage(final Object element, final int columnIndex)
+  {
+    return getImage(element);
+  }
+
+  public String getColumnText(final Object element, final int columnIndex)
+  {
+    return getText(element);
   }
 
 }

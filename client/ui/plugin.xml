@@ -79,6 +79,31 @@
       </view>
    </extension>
    <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="de.objectcode.time4u.client.ui.view.todoTree.contribution"
+            targetID="de.objectcode.time4u.client.ui.view.todoTree">
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoViewActionDelegate"
+               icon="icons/FlatView.gif"
+               id="de.objectcode.time4u.client.ui.todo.view.flat"
+               label="Flat"
+               menubarPath="view"
+               style="radio"
+               toolbarPath="view">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoViewActionDelegate"
+               icon="icons/TreeView.gif"
+               id="de.objectcode.time4u.client.ui.todo.view.tree"
+               label="Tree"
+               menubarPath="view"
+               style="radio"
+               toolbarPath="view">
+         </action>
+      </viewContribution>
+   </extension>
+   <extension
          point="org.eclipse.ui.commands">
       <category
             name="Time4U"
