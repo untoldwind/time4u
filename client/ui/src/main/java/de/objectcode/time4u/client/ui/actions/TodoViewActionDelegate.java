@@ -31,6 +31,18 @@ public class TodoViewActionDelegate implements IViewActionDelegate
       m_view.setViewType(ViewType.TREE);
     } else if ("de.objectcode.time4u.client.ui.todo.view.flat".equals(id)) {
       m_view.setViewType(ViewType.FLAT);
+    } else if ("de.objectcode.time4u.client.ui.todo.filter.unassigned".equals(id)) {
+      m_view.getFilterSettings().setUnassigned(!m_view.getFilterSettings().isUnassigned());
+      action.setChecked(m_view.getFilterSettings().isUnassigned());
+      m_view.refresh();
+    } else if ("de.objectcode.time4u.client.ui.todo.filter.assignedtome".equals(id)) {
+      m_view.getFilterSettings().setAssignedToMe(!m_view.getFilterSettings().isAssignedToMe());
+      action.setChecked(m_view.getFilterSettings().isAssignedToMe());
+      m_view.refresh();
+    } else if ("de.objectcode.time4u.client.ui.todo.filter.assignedtoother".equals(id)) {
+      m_view.getFilterSettings().setAssignedToOther(!m_view.getFilterSettings().isAssignedToOther());
+      action.setChecked(m_view.getFilterSettings().isAssignedToOther());
+      m_view.refresh();
     }
   }
 
@@ -45,7 +57,12 @@ public class TodoViewActionDelegate implements IViewActionDelegate
       action.setChecked(m_view.getViewType() == ViewType.TREE);
     } else if ("de.objectcode.time4u.client.ui.todo.view.flat".equals(id)) {
       action.setChecked(m_view.getViewType() == ViewType.FLAT);
+    } else if ("de.objectcode.time4u.client.ui.todo.filter.unassigned".equals(id)) {
+      action.setChecked(m_view.getFilterSettings().isUnassigned());
+    } else if ("de.objectcode.time4u.client.ui.todo.filter.assignedtome".equals(id)) {
+      action.setChecked(m_view.getFilterSettings().isAssignedToMe());
+    } else if ("de.objectcode.time4u.client.ui.todo.filter.assignedtoother".equals(id)) {
+      action.setChecked(m_view.getFilterSettings().isAssignedToOther());
     }
   }
-
 }

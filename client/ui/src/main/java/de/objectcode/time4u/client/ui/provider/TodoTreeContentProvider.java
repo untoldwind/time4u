@@ -12,10 +12,12 @@ import de.objectcode.time4u.server.api.filter.TodoFilter;
 public class TodoTreeContentProvider implements IStructuredContentProvider, ITreeContentProvider
 {
   private final ITodoRepository m_todoRepository;
+  private final TodoFilterSettings m_filterSettings;
 
-  public TodoTreeContentProvider(final ITodoRepository todoRepository)
+  public TodoTreeContentProvider(final ITodoRepository todoRepository, final TodoFilterSettings filterSettings)
   {
     m_todoRepository = todoRepository;
+    m_filterSettings = filterSettings;
   }
 
   /**
@@ -25,10 +27,17 @@ public class TodoTreeContentProvider implements IStructuredContentProvider, ITre
   {
     try {
       if (parentElement instanceof TodoSummary) {
-        return m_todoRepository.getTodoSummaries(TodoFilter.filterTodos(((TodoSummary) parentElement).getId()))
-            .toArray();
+        final TodoFilter filter = TodoFilter.filterTodos(((TodoSummary) parentElement).getId());
+
+        m_filterSettings.apply(filter);
+
+        return m_todoRepository.getTodoSummaries(filter).toArray();
       } else {
-        return m_todoRepository.getTodoSummaries(TodoFilter.filterRootTodos()).toArray();
+        final TodoFilter filter = TodoFilter.filterRootTodos();
+
+        m_filterSettings.apply(filter);
+
+        return m_todoRepository.getTodoSummaries(filter).toArray();
       }
     } catch (final Exception e) {
       UIPlugin.getDefault().log(e);

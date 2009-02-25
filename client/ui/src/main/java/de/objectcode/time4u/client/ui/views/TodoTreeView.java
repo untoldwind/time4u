@@ -31,6 +31,7 @@ import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.dnd.TodoTransfer;
+import de.objectcode.time4u.client.ui.provider.TodoFilterSettings;
 import de.objectcode.time4u.client.ui.provider.TodoLabelProvider;
 import de.objectcode.time4u.client.ui.provider.TodoTableContentProvider;
 import de.objectcode.time4u.client.ui.provider.TodoTreeContentProvider;
@@ -53,6 +54,7 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
   private CompoundSelectionProvider m_selectionProvider;
 
   private ViewType m_viewType = ViewType.TREE;
+  private final TodoFilterSettings m_filterSettings = new TodoFilterSettings();
 
   /**
    * {@inheritDoc}
@@ -63,7 +65,8 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
     m_pageBook = new PageBook(parent, SWT.NONE);
 
     m_treeViewer = new TreeViewer(m_pageBook, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-    m_treeViewer.setContentProvider(new TodoTreeContentProvider(RepositoryFactory.getRepository().getTodoRepository()));
+    m_treeViewer.setContentProvider(new TodoTreeContentProvider(RepositoryFactory.getRepository().getTodoRepository(),
+        m_filterSettings));
     m_treeViewer.setLabelProvider(new TodoLabelProvider());
     m_treeViewer.setInput(new Object());
     m_treeViewer.addDragSupport(DND.DROP_MOVE | DND.DROP_DEFAULT, new Transfer[] { TodoTransfer.getInstance() },
@@ -150,8 +153,8 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
         });
 
     m_flatViewer = new TableViewer(m_pageBook, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-    m_flatViewer
-        .setContentProvider(new TodoTableContentProvider(RepositoryFactory.getRepository().getTodoRepository()));
+    m_flatViewer.setContentProvider(new TodoTableContentProvider(RepositoryFactory.getRepository().getTodoRepository(),
+        m_filterSettings));
     m_flatViewer.setLabelProvider(new TodoLabelProvider());
     m_flatViewer.setInput(new Object());
     m_flatViewer.getTable().setLinesVisible(true);
@@ -216,6 +219,35 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
     }
   }
 
+  public TodoFilterSettings getFilterSettings()
+  {
+    return m_filterSettings;
+  }
+
+  public void refresh()
+  {
+    switch (m_viewType) {
+      case TREE: {
+        final ISelection selection = m_treeViewer.getSelection();
+        final Object[] expanded = m_treeViewer.getExpandedElements();
+
+        m_treeViewer.setInput(new Object());
+
+        m_treeViewer.setExpandedElements(expanded);
+        m_treeViewer.setSelection(selection);
+        break;
+      }
+      case FLAT: {
+        final ISelection selection = m_flatViewer.getSelection();
+
+        m_flatViewer.setInput(new Object());
+
+        m_flatViewer.setSelection(selection);
+        break;
+      }
+    }
+  }
+
   /**
    * {@inheritDoc}
    */
@@ -250,6 +282,13 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
       if (viewType != null) {
         m_viewType = ViewType.valueOf(viewType);
       }
+
+      m_filterSettings.setUnassigned(memento.getBoolean("filter.unassigned") != null ? memento
+          .getBoolean("filter.unassigned") : true);
+      m_filterSettings.setAssignedToMe(memento.getBoolean("filter.assignedToMe") != null ? memento
+          .getBoolean("filter.assignedToMe") : true);
+      m_filterSettings.setAssignedToOther(memento.getBoolean("filter.assignedToOther") != null ? memento
+          .getBoolean("filter.assignedToOther") : true);
     }
   }
 
@@ -262,6 +301,9 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
     super.saveState(memento);
 
     memento.putString("viewType", m_viewType.toString());
+    memento.putBoolean("filter.unassigned", m_filterSettings.isUnassigned());
+    memento.putBoolean("filter.assignedToMe", m_filterSettings.isAssignedToMe());
+    memento.putBoolean("filter.assignedToOther", m_filterSettings.isAssignedToOther());
   }
 
   /**

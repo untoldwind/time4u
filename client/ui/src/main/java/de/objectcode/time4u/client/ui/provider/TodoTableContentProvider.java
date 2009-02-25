@@ -10,10 +10,12 @@ import de.objectcode.time4u.server.api.filter.TodoFilter;
 public class TodoTableContentProvider implements IStructuredContentProvider
 {
   private final ITodoRepository m_todoRepository;
+  private final TodoFilterSettings m_filterSettings;
 
-  public TodoTableContentProvider(final ITodoRepository todoRepository)
+  public TodoTableContentProvider(final ITodoRepository todoRepository, final TodoFilterSettings filterSettings)
   {
     m_todoRepository = todoRepository;
+    m_filterSettings = filterSettings;
   }
 
   public Object[] getElements(final Object inputElement)
@@ -21,6 +23,8 @@ public class TodoTableContentProvider implements IStructuredContentProvider
     try {
       final TodoFilter filter = new TodoFilter(false, null, null, null, TodoFilter.Order.HEADER);
       filter.setGroup(false);
+
+      m_filterSettings.apply(filter);
 
       return m_todoRepository.getTodoSummaries(filter).toArray();
     } catch (final Exception e) {

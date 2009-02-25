@@ -105,19 +105,19 @@
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.TodoViewActionDelegate"
-               id="de.objectcode.time4u.client.ui.todo.filter.assignedtome"
-               label="%action.todo.view.filter.assignedtome.label"
-               menubarPath="assignmentFilter"
-               style="toggle"
-               tooltip="%action.todo.view.filter.assignedtome.tooltip">
-         </action>
-         <action
-               class="de.objectcode.time4u.client.ui.actions.TodoViewActionDelegate"
                id="de.objectcode.time4u.client.ui.todo.filter.assignedtoother"
                label="%action.todo.view.filter.assignedtoother.label"
                menubarPath="assignmentFilter"
                style="toggle"
                tooltip="%action.todo.view.filter.assignedtoother.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoViewActionDelegate"
+               id="de.objectcode.time4u.client.ui.todo.filter.assignedtome"
+               label="%action.todo.view.filter.assignedtome.label"
+               menubarPath="assignmentFilter"
+               style="toggle"
+               tooltip="%action.todo.view.filter.assignedtome.tooltip">
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.TodoViewActionDelegate"

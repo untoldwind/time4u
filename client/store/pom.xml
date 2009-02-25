@@ -103,7 +103,7 @@
 						</goals>
 						<configuration>
 							<stripVersion>true</stripVersion>
-							<includeGroupIds>javax.activation,javax.jws,commons-logging,commons-collections,org.apache.derby,javax.transaction,javax.persistence,javax.xml.bind,org.hibernate,dom4j,cglib,asm,com.sun.xml.bind,de.objectcode.time4u.server,org.testng,javax.xml.soap,javax.xml.ws,javax.xml.stream,org.jvnet.staxex,com.sun.org.apache.xml.internal,com.sun.xml.ws,com.sun.xml.stream,com.sun.xml.stream.buffer,com.sun.xml.messaging.saaj</includeGroupIds>
+							<includeGroupIds>javax.activation,javax.jws,commons-logging,commons-collections,org.apache.derby,javax.transaction,javax.persistence,javax.xml.bind,org.hibernate,antlr,dom4j,cglib,asm,com.sun.xml.bind,de.objectcode.time4u.server,org.testng,javax.xml.soap,javax.xml.ws,javax.xml.stream,org.jvnet.staxex,com.sun.org.apache.xml.internal,com.sun.xml.ws,com.sun.xml.stream,com.sun.xml.stream.buffer,com.sun.xml.messaging.saaj</includeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="target/dependency/antlr.jar"/>
 	<classpathentry exported="true" kind="lib" path="target/dependency/streambuffer.jar"/>
 	<classpathentry exported="true" kind="lib" path="target/dependency/stax-ex.jar"/>
 	<classpathentry exported="true" kind="lib" path="target/dependency/stax-api.jar"/>

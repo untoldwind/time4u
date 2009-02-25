@@ -34,7 +34,8 @@ Bundle-ClassPath: .,
  target/dependency/sjsxp.jar,
  target/dependency/stax-api.jar,
  target/dependency/stax-ex.jar,
- target/dependency/streambuffer.jar
+ target/dependency/streambuffer.jar,
+ target/dependency/antlr.jar
 Export-Package: de.objectcode.time4u.client.store.api,
  de.objectcode.time4u.client.store.api.event,
  de.objectcode.time4u.client.store.api.meta,
