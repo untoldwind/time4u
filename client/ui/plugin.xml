@@ -230,6 +230,33 @@
 
    </extension>
    <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            description="%context.project"
+            id="de.objectcode.time4u.ui.context.project"
+            name="%context.project"
+            parentId="org.eclipse.ui.contexts.window">
+      </context>
+      <context
+            description="%context.task"
+            id="de.objectcode.time4u.ui.context.task"
+            name="%context.task"
+            parentId="org.eclipse.ui.contexts.window">
+      </context>
+      <context
+            description="%context.workitem"
+            id="de.objectcode.time4u.ui.context.workitem"
+            name="%context.workitem"
+            parentId="org.eclipse.ui.contexts.window">
+      </context>
+      <context
+            description="%context.todo"
+            id="de.objectcode.time4u.ui.context.todo"
+            name="%context.todo"
+            parentId="org.eclipse.ui.contexts.window">
+      </context>
+   </extension>
+   <extension
          point="org.eclipse.ui.bindings">
    </extension>
    <extension

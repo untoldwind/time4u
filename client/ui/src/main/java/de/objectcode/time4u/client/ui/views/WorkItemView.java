@@ -39,6 +39,8 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.commands.ICommandService;
+import org.eclipse.ui.contexts.IContextActivation;
+import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.ViewPart;
 
@@ -71,6 +73,7 @@ import de.objectcode.time4u.server.api.data.WorkItem;
 public class WorkItemView extends ViewPart implements IRepositoryListener, ISelectionListener
 {
   public static final String ID = "de.objectcode.time4u.client.ui.view.workItemListView";
+  public static final String CONTEXT_ID = "de.objectcode.time4u.ui.context.workitem";
 
   public enum ViewType
   {
@@ -86,6 +89,7 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
   int m_refreshCounter = 0;
 
   private CompoundSelectionProvider m_selectionProvider;
+  private IContextActivation m_contextActivation;
 
   /**
    * {@inheritDoc}
@@ -245,6 +249,9 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
         doCopy();
       }
     });
+
+    final IContextService contextService = (IContextService) getSite().getService(IContextService.class);
+    m_contextActivation = contextService.activateContext(CONTEXT_ID);
   }
 
   /**
@@ -262,6 +269,9 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
   @Override
   public void dispose()
   {
+    final IContextService contextService = (IContextService) getSite().getService(IContextService.class);
+    contextService.deactivateContext(m_contextActivation);
+
     RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.PROJECT, this);
     RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.TASK, this);
     RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.WORKITEM, this);

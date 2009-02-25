@@ -17,6 +17,8 @@ import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.commands.ICommandService;
+import org.eclipse.ui.contexts.IContextActivation;
+import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
 
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
@@ -34,12 +36,14 @@ import de.objectcode.time4u.client.ui.util.SelectionServiceAdapter;
 public class ProjectTreeView extends ViewPart implements IRepositoryListener
 {
   public static final String ID = "de.objectcode.time4u.client.ui.view.projectTree";
+  public static final String CONTEXT_ID = "de.objectcode.time4u.ui.context.project";
 
   private TreeViewer m_viewer;
   private boolean m_showOnlyActive;
 
   int m_refreshCounter = 0;
   private CompoundSelectionProvider m_selectionProvider;
+  private IContextActivation m_contextActivation;
 
   /**
    * {@inheritDoc}
@@ -90,6 +94,9 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
     });
 
     RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.PROJECT, this);
+
+    final IContextService contextService = (IContextService) getSite().getService(IContextService.class);
+    m_contextActivation = contextService.activateContext(CONTEXT_ID);
   }
 
   public boolean isShowOnlyActive()
@@ -118,6 +125,9 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
   @Override
   public void dispose()
   {
+    final IContextService contextService = (IContextService) getSite().getService(IContextService.class);
+    contextService.deactivateContext(m_contextActivation);
+
     RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.PROJECT, this);
 
     super.dispose();

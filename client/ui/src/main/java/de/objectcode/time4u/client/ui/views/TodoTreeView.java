@@ -21,6 +21,8 @@ import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.contexts.IContextActivation;
+import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.ViewPart;
 
@@ -45,6 +47,7 @@ import de.objectcode.time4u.server.api.data.TodoSummary;
 public class TodoTreeView extends ViewPart implements IRepositoryListener
 {
   public static final String ID = "de.objectcode.time4u.client.ui.view.todoTree";
+  public static final String CONTEXT_ID = "de.objectcode.time4u.ui.context.todo";
 
   private TreeViewer m_treeViewer;
   private TableViewer m_flatViewer;
@@ -55,6 +58,7 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
 
   private ViewType m_viewType = ViewType.TREE;
   private final TodoFilterSettings m_filterSettings = new TodoFilterSettings();
+  private IContextActivation m_contextActivation;
 
   /**
    * {@inheritDoc}
@@ -194,6 +198,8 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
         break;
     }
 
+    final IContextService contextService = (IContextService) getSite().getService(IContextService.class);
+    m_contextActivation = contextService.activateContext(CONTEXT_ID);
   }
 
   public ViewType getViewType()
@@ -254,6 +260,9 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
   @Override
   public void dispose()
   {
+    final IContextService contextService = (IContextService) getSite().getService(IContextService.class);
+    contextService.deactivateContext(m_contextActivation);
+
     RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.TODO, this);
 
     super.dispose();
