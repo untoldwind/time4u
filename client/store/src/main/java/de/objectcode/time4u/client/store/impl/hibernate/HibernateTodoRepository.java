@@ -136,6 +136,9 @@ public class HibernateTodoRepository implements ITodoRepository
             criteria.add(Restrictions.eq("task.id", filter.getTaskId()));
           }
         }
+        if (filter.getTodoStates() != null && filter.getTodoStates().length > 0) {
+          criteria.add(Restrictions.in("state", filter.getTodoStates()));
+        }
         switch (filter.getOrder()) {
           case ID:
             criteria.addOrder(Order.asc("id"));
@@ -214,6 +217,10 @@ public class HibernateTodoRepository implements ITodoRepository
             criteria.add(Restrictions.eq("task.id", filter.getTaskId()));
           }
         }
+        if (filter.getTodoStates() != null && filter.getTodoStates().length > 0) {
+          criteria.add(Restrictions.in("state", filter.getTodoStates()));
+        }
+
         switch (filter.getOrder()) {
           case ID:
             criteria.addOrder(Order.asc("id"));

@@ -178,6 +178,11 @@ public class TodoServiceImpl implements ITodoService
       queryStr.append("t.task.id = :taskId");
       combineStr = " and ";
     }
+    if (filter.getTodoStates() != null && filter.getTodoStates().length > 0) {
+      queryStr.append(combineStr);
+      queryStr.append("t.state in :todoStates");
+      combineStr = " and ";
+    }
 
     switch (filter.getOrder()) {
       case ID:
@@ -207,6 +212,9 @@ public class TodoServiceImpl implements ITodoService
     }
     if (filter.getTaskId() != null) {
       query.setParameter("taskid", filter.getTaskId());
+    }
+    if (filter.getTodoStates() != null && filter.getTodoStates().length > 0) {
+      query.setParameter("todoStates", filter.getTodoStates());
     }
 
     return query;

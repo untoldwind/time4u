@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlType;
 
+import de.objectcode.time4u.server.api.data.TodoState;
+
 /**
  * Filter condition for todo queries.
  * 
@@ -28,6 +30,8 @@ public class TodoFilter implements Serializable
   Boolean m_group;
   /** Filter todos associated with a certain task */
   String m_taskId;
+  /** An array of desired todo states */
+  TodoState[] todoStates;
   /** Desired order */
   Order m_order;
 
@@ -114,6 +118,16 @@ public class TodoFilter implements Serializable
   public void setTaskId(final String taskId)
   {
     m_taskId = taskId;
+  }
+
+  public TodoState[] getTodoStates()
+  {
+    return todoStates;
+  }
+
+  public void setTodoStates(final TodoState[] todoStates)
+  {
+    this.todoStates = todoStates;
   }
 
   public Order getOrder()

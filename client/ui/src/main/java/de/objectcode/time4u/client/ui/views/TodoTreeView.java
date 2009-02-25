@@ -205,9 +205,13 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
     switch (m_viewType) {
       case FLAT:
         m_pageBook.showPage(m_flatViewer.getTable());
+        m_flatViewer.setInput(new Object());
         break;
       case TREE:
         m_pageBook.showPage(m_treeViewer.getTree());
+        final Object[] expanded = m_treeViewer.getExpandedElements();
+        m_treeViewer.setInput(new Object());
+        m_treeViewer.setExpandedElements(expanded);
         break;
     }
   }
@@ -276,24 +280,46 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
           m_refreshCounter++;
         }
 
-        m_treeViewer.getControl().getDisplay().asyncExec(new Runnable() {
-          public void run()
-          {
-            try {
-              final ISelection selection = m_treeViewer.getSelection();
-              final Object[] expanded = m_treeViewer.getExpandedElements();
+        switch (m_viewType) {
+          case TREE:
+            m_treeViewer.getControl().getDisplay().asyncExec(new Runnable() {
+              public void run()
+              {
+                try {
+                  final ISelection selection = m_treeViewer.getSelection();
+                  final Object[] expanded = m_treeViewer.getExpandedElements();
 
-              m_treeViewer.setInput(new Object());
+                  m_treeViewer.setInput(new Object());
 
-              m_treeViewer.setExpandedElements(expanded);
-              m_treeViewer.setSelection(selection);
-            } finally {
-              synchronized (TodoTreeView.this) {
-                m_refreshCounter--;
+                  m_treeViewer.setExpandedElements(expanded);
+                  m_treeViewer.setSelection(selection);
+                } finally {
+                  synchronized (TodoTreeView.this) {
+                    m_refreshCounter--;
+                  }
+                }
               }
-            }
-          }
-        });
+            });
+            break;
+          case FLAT:
+            m_flatViewer.getControl().getDisplay().asyncExec(new Runnable() {
+              public void run()
+              {
+                try {
+                  final ISelection selection = m_flatViewer.getSelection();
+
+                  m_flatViewer.setInput(new Object());
+
+                  m_flatViewer.setSelection(selection);
+                } finally {
+                  synchronized (TodoTreeView.this) {
+                    m_refreshCounter--;
+                  }
+                }
+              }
+            });
+            break;
+        }
 
         break;
     }
