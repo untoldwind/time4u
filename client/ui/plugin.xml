@@ -87,19 +87,45 @@
                class="de.objectcode.time4u.client.ui.actions.TodoViewActionDelegate"
                icon="icons/FlatView.gif"
                id="de.objectcode.time4u.client.ui.todo.view.flat"
-               label="Flat"
+               label="%action.todo.view.flat.label"
                menubarPath="view"
                style="radio"
-               toolbarPath="view">
+               toolbarPath="view"
+               tooltip="%action.todo.view.flat.tooltip">
          </action>
          <action
                class="de.objectcode.time4u.client.ui.actions.TodoViewActionDelegate"
                icon="icons/TreeView.gif"
                id="de.objectcode.time4u.client.ui.todo.view.tree"
-               label="Tree"
+               label="%action.todo.view.tree.label"
                menubarPath="view"
                style="radio"
-               toolbarPath="view">
+               toolbarPath="view"
+               tooltip="%action.todo.view.tree.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoViewActionDelegate"
+               id="de.objectcode.time4u.client.ui.todo.filter.assignedtome"
+               label="%action.todo.view.filter.assignedtome.label"
+               menubarPath="assignmentFilter"
+               style="toggle"
+               tooltip="%action.todo.view.filter.assignedtome.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoViewActionDelegate"
+               id="de.objectcode.time4u.client.ui.todo.filter.assignedtoother"
+               label="%action.todo.view.filter.assignedtoother.label"
+               menubarPath="assignmentFilter"
+               style="toggle"
+               tooltip="%action.todo.view.filter.assignedtoother.tooltip">
+         </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoViewActionDelegate"
+               id="de.objectcode.time4u.client.ui.todo.filter.unassigned"
+               label="%action.todo.view.filter.unassigned.label"
+               menubarPath="assignmentFilter"
+               style="toggle"
+               tooltip="%action.todo.view.filter.unassigned.tooltip">
          </action>
       </viewContribution>
    </extension>

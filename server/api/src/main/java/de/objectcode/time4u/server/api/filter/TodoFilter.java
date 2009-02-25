@@ -32,6 +32,8 @@ public class TodoFilter implements Serializable
   String m_taskId;
   /** An array of desired todo states */
   TodoState[] todoStates;
+  /** Optional assignement filter */
+  AssignmentFilter assignmentFilter;
   /** Desired order */
   Order m_order;
 
@@ -130,6 +132,16 @@ public class TodoFilter implements Serializable
     this.todoStates = todoStates;
   }
 
+  public AssignmentFilter getAssignmentFilter()
+  {
+    return assignmentFilter;
+  }
+
+  public void setAssignmentFilter(final AssignmentFilter assignmentFilter)
+  {
+    this.assignmentFilter = assignmentFilter;
+  }
+
   public Order getOrder()
   {
     return m_order;
@@ -199,5 +211,62 @@ public class TodoFilter implements Serializable
   {
     ID,
     HEADER
+  }
+
+  public static class AssignmentFilter
+  {
+    boolean m_unassigned;
+    boolean m_assignedToPerson;
+    boolean m_assignedToOther;
+    String m_personId;
+
+    public AssignmentFilter(final boolean unassigned, final boolean assignedToPerson, final boolean assignedToOther,
+        final String personId)
+    {
+      m_unassigned = unassigned;
+      m_assignedToPerson = assignedToPerson;
+      m_assignedToOther = assignedToOther;
+      m_personId = personId;
+    }
+
+    public boolean isUnassigned()
+    {
+      return m_unassigned;
+    }
+
+    public boolean isAssignedToPerson()
+    {
+      return m_assignedToPerson;
+    }
+
+    public boolean isAssignedToOther()
+    {
+      return m_assignedToOther;
+    }
+
+    public String getPersonId()
+    {
+      return m_personId;
+    }
+
+    public void setUnassigned(final boolean unassigned)
+    {
+      m_unassigned = unassigned;
+    }
+
+    public void setAssignedToPerson(final boolean assignedToPerson)
+    {
+      m_assignedToPerson = assignedToPerson;
+    }
+
+    public void setAssignedToOther(final boolean assignedToOther)
+    {
+      m_assignedToOther = assignedToOther;
+    }
+
+    public void setPersonId(final String personId)
+    {
+      m_personId = personId;
+    }
   }
 }

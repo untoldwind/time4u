@@ -6,8 +6,12 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 
 import de.objectcode.time4u.client.store.api.ITodoRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
@@ -17,6 +21,7 @@ import de.objectcode.time4u.server.api.data.Todo;
 import de.objectcode.time4u.server.api.data.TodoGroup;
 import de.objectcode.time4u.server.api.data.TodoSummary;
 import de.objectcode.time4u.server.api.filter.TodoFilter;
+import de.objectcode.time4u.server.entities.TodoAssignmentEntity;
 import de.objectcode.time4u.server.entities.TodoBaseEntity;
 import de.objectcode.time4u.server.entities.TodoEntity;
 import de.objectcode.time4u.server.entities.TodoGroupEntity;
@@ -139,6 +144,36 @@ public class HibernateTodoRepository implements ITodoRepository
         if (filter.getTodoStates() != null && filter.getTodoStates().length > 0) {
           criteria.add(Restrictions.in("state", filter.getTodoStates()));
         }
+        if (filter.getAssignmentFilter() != null) {
+          final Disjunction disjunction = Restrictions.disjunction();
+
+          disjunction.add(Restrictions.eq("class", TodoGroupEntity.class));
+          if (filter.getAssignmentFilter().isUnassigned()) {
+            final DetachedCriteria assignments = DetachedCriteria.forClass(TodoAssignmentEntity.class, "a1");
+            assignments.setProjection(Projections.rowCount());
+            assignments.add(Restrictions.eqProperty("a1.todoId", "t.id"));
+
+            disjunction.add(Subqueries.eq(0, assignments));
+          }
+          if (filter.getAssignmentFilter().isAssignedToPerson()) {
+            final DetachedCriteria assignments = DetachedCriteria.forClass(TodoAssignmentEntity.class, "a2");
+            assignments.setProjection(Projections.rowCount());
+            assignments.add(Restrictions.eqProperty("a2.todoId", "t.id"));
+            assignments.add(Restrictions.eq("a2.personId", filter.getAssignmentFilter().getPersonId()));
+
+            disjunction.add(Subqueries.lt(0, assignments));
+          }
+          if (filter.getAssignmentFilter().isAssignedToOther()) {
+            final DetachedCriteria assignments = DetachedCriteria.forClass(TodoAssignmentEntity.class, "a3");
+            assignments.add(Restrictions.eqProperty("a3.todoId", "t.id"));
+            assignments.add(Restrictions.ne("a3.personId", filter.getAssignmentFilter().getPersonId()));
+            assignments.setProjection(Projections.rowCount());
+
+            disjunction.add(Subqueries.lt(0, assignments));
+          }
+          criteria.add(disjunction);
+        }
+
         switch (filter.getOrder()) {
           case ID:
             criteria.addOrder(Order.asc("id"));
@@ -183,12 +218,12 @@ public class HibernateTodoRepository implements ITodoRepository
         Criteria criteria;
         if (filter.getGroup() != null) {
           if (filter.getGroup()) {
-            criteria = session.createCriteria(TodoGroupEntity.class);
+            criteria = session.createCriteria(TodoGroupEntity.class, "t");
           } else {
-            criteria = session.createCriteria(TodoEntity.class);
+            criteria = session.createCriteria(TodoEntity.class, "t");
           }
         } else {
-          criteria = session.createCriteria(TodoBaseEntity.class);
+          criteria = session.createCriteria(TodoBaseEntity.class, "t");
         }
 
         if (filter.getDeleted() != null) {
@@ -219,6 +254,35 @@ public class HibernateTodoRepository implements ITodoRepository
         }
         if (filter.getTodoStates() != null && filter.getTodoStates().length > 0) {
           criteria.add(Restrictions.in("state", filter.getTodoStates()));
+        }
+        if (filter.getAssignmentFilter() != null) {
+          final Disjunction disjunction = Restrictions.disjunction();
+
+          disjunction.add(Restrictions.eq("class", TodoGroupEntity.class));
+          if (filter.getAssignmentFilter().isUnassigned()) {
+            final DetachedCriteria assignments = DetachedCriteria.forClass(TodoAssignmentEntity.class, "a1");
+            assignments.setProjection(Projections.rowCount());
+            assignments.add(Restrictions.eqProperty("a1.todoId", "t.id"));
+
+            disjunction.add(Subqueries.eq(0, assignments));
+          }
+          if (filter.getAssignmentFilter().isAssignedToPerson()) {
+            final DetachedCriteria assignments = DetachedCriteria.forClass(TodoAssignmentEntity.class, "a2");
+            assignments.setProjection(Projections.rowCount());
+            assignments.add(Restrictions.eqProperty("a2.todoId", "t.id"));
+            assignments.add(Restrictions.eq("a2.personId", filter.getAssignmentFilter().getPersonId()));
+
+            disjunction.add(Subqueries.lt(0, assignments));
+          }
+          if (filter.getAssignmentFilter().isAssignedToOther()) {
+            final DetachedCriteria assignments = DetachedCriteria.forClass(TodoAssignmentEntity.class, "a3");
+            assignments.add(Restrictions.eqProperty("a3.todoId", "t.id"));
+            assignments.add(Restrictions.ne("a3.personId", filter.getAssignmentFilter().getPersonId()));
+            assignments.setProjection(Projections.rowCount());
+
+            disjunction.add(Subqueries.lt(0, assignments));
+          }
+          criteria.add(disjunction);
         }
 
         switch (filter.getOrder()) {
