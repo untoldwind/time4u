@@ -21,7 +21,7 @@ public class UIPreferencesPage extends FieldEditorPreferencePage implements IWor
     addField(new BooleanFieldEditor(PreferenceConstants.UI_SHOW_TRAY_ICON, "Show &Tray icon", getFieldEditorParent()));
 
     final IntegerFieldEditor taskHistory = new IntegerFieldEditor(PreferenceConstants.UI_TASK_HISTORY_SIZE,
-        "&Task histroy size", getFieldEditorParent());
+        "&Task history size", getFieldEditorParent());
     taskHistory.setValidRange(0, 30);
     addField(taskHistory);
   }
