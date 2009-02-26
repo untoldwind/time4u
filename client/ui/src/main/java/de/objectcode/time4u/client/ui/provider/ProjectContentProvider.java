@@ -18,11 +18,23 @@ public class ProjectContentProvider implements IStructuredContentProvider, ITree
 {
   private final IProjectRepository m_projectRepository;
   private final boolean m_onlyActive;
+  private final boolean m_includeRoot;
+
+  public final static String ROOT = "[Root]";
 
   public ProjectContentProvider(final IProjectRepository projectRepository, final boolean onlyActive)
   {
     m_projectRepository = projectRepository;
     m_onlyActive = onlyActive;
+    m_includeRoot = false;
+  }
+
+  public ProjectContentProvider(final IProjectRepository projectRepository, final boolean onlyActive,
+      final boolean includeRoot)
+  {
+    m_projectRepository = projectRepository;
+    m_onlyActive = onlyActive;
+    m_includeRoot = includeRoot;
   }
 
   /**
@@ -60,6 +72,8 @@ public class ProjectContentProvider implements IStructuredContentProvider, ITree
       if (element instanceof ProjectSummary) {
         if (((ProjectSummary) element).getParentId() != null) {
           return m_projectRepository.getProject(((ProjectSummary) element).getParentId());
+        } else if (m_includeRoot) {
+          return ROOT;
         }
       }
     } catch (final Exception e) {
@@ -82,6 +96,9 @@ public class ProjectContentProvider implements IStructuredContentProvider, ITree
    */
   public Object[] getElements(final Object inputElement)
   {
+    if (m_includeRoot) {
+      return new Object[] { ROOT };
+    }
     return getChildren(inputElement);
   }
 

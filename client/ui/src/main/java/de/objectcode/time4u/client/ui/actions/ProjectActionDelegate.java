@@ -106,7 +106,7 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
         }
       }
     } else if ("de.objectcode.time4u.client.ui.project.copy".equals(id)) {
-      final ProjectCopyDialog dialog = new ProjectCopyDialog(m_shellProvider, selectedProject);
+      final ProjectCopyDialog dialog = new ProjectCopyDialog(m_shellProvider, selectedProject, null);
 
       if (dialog.open() == ProjectDialog.OK) {
         copyProject(selectedProject, dialog.getNewName(), dialog.getNewParent(), dialog.isCopyTasks(), dialog
@@ -195,7 +195,7 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
     }
   }
 
-  private void copyProject(final Project project, final String newName, final Project newParent,
+  public static void copyProject(final Project project, final String newName, final Project newParent,
       final boolean copyTasks, final boolean copySubProjects)
   {
     final Project newProject = new Project();

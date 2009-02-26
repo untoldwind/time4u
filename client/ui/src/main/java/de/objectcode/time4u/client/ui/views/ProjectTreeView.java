@@ -8,10 +8,18 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSourceAdapter;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.DropTargetAdapter;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -27,11 +35,16 @@ import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
 import de.objectcode.time4u.client.ui.ICommandIds;
 import de.objectcode.time4u.client.ui.UIPlugin;
+import de.objectcode.time4u.client.ui.dialogs.ProjectCopyDialog;
+import de.objectcode.time4u.client.ui.dialogs.ProjectMoveDialog;
+import de.objectcode.time4u.client.ui.dnd.ProjectTransfer;
 import de.objectcode.time4u.client.ui.provider.ProjectContentProvider;
 import de.objectcode.time4u.client.ui.provider.ProjectLabelProvider;
 import de.objectcode.time4u.client.ui.util.CompoundSelectionEntityType;
 import de.objectcode.time4u.client.ui.util.CompoundSelectionProvider;
 import de.objectcode.time4u.client.ui.util.SelectionServiceAdapter;
+import de.objectcode.time4u.server.api.data.Project;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
 
 public class ProjectTreeView extends ViewPart implements IRepositoryListener
 {
@@ -89,6 +102,62 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
           command.executeWithChecks(new ExecutionEvent());
         } catch (final Exception e) {
           UIPlugin.getDefault().log(e);
+        }
+      }
+    });
+    m_viewer.addDragSupport(DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_DEFAULT, new Transfer[] { ProjectTransfer
+        .getInstance() }, new DragSourceAdapter() {
+      @Override
+      public void dragSetData(final DragSourceEvent event)
+      {
+        final IStructuredSelection selection = (IStructuredSelection) m_viewer.getSelection();
+        event.data = selection.getFirstElement();
+      }
+    });
+    m_viewer.addDropSupport(DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_DEFAULT, new Transfer[] { ProjectTransfer
+        .getInstance() }, new DropTargetAdapter() {
+      @Override
+      public void drop(final DropTargetEvent event)
+      {
+        if (event.data == null || !(event.data instanceof ProjectSummary)) {
+          return;
+        }
+        ProjectSummary newParent = null;
+        if (event.item != null && event.item.getData() != null && event.item.getData() instanceof ProjectSummary) {
+          newParent = (ProjectSummary) event.item.getData();
+        }
+        try {
+          final Project project = RepositoryFactory.getRepository().getProjectRepository().getProject(
+              ((ProjectSummary) event.data).getId());
+
+          if ((event.detail & DND.DROP_MOVE) != 0) {
+            final ProjectMoveDialog dialog = new ProjectMoveDialog(getSite(), project, newParent);
+
+            dialog.open();
+          } else if ((event.detail & DND.DROP_COPY) != 0) {
+            final ProjectCopyDialog dialog = new ProjectCopyDialog(getSite(), project, newParent);
+
+            dialog.open();
+
+          }
+        } catch (final Exception e) {
+          UIPlugin.getDefault().log(e);
+        }
+      }
+
+      @Override
+      public void dragOver(final DropTargetEvent event)
+      {
+        event.feedback = DND.FEEDBACK_NONE;
+
+        if (event.item == null) {
+          event.feedback = DND.FEEDBACK_SELECT;
+        } else if (event.item instanceof TreeItem) {
+          final Object data = ((TreeItem) event.item).getData();
+
+          if (data != null && data instanceof ProjectSummary) {
+            event.feedback = DND.FEEDBACK_EXPAND | DND.FEEDBACK_SELECT;
+          }
         }
       }
     });

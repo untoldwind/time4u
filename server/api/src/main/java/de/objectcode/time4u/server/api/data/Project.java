@@ -62,4 +62,16 @@ public class Project extends ProjectSummary
     return null;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String toString()
+  {
+    final StringBuffer buffer = new StringBuffer("Project(");
+    buffer.append("super=").append(super.toString());
+    buffer.append(", description=").append(m_description);
+    buffer.append(")");
+    return buffer.toString();
+  }
 }

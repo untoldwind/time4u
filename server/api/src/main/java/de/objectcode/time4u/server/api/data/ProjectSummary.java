@@ -147,4 +147,19 @@ public class ProjectSummary implements ISynchronizableData
     return m_id.equals(castObj.m_id);
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String toString()
+  {
+    final StringBuffer buffer = new StringBuffer("ProjectSummary(");
+    buffer.append("id=").append(m_id);
+    buffer.append(", name=").append(m_name);
+    buffer.append(", parentId=").append(m_parentId);
+    buffer.append(", active=").append(m_active);
+    buffer.append(", deleted=").append(m_deleted);
+    buffer.append(")");
+    return buffer.toString();
+  }
 }
