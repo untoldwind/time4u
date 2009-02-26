@@ -32,7 +32,7 @@ public class ProjectCopyDialog extends Dialog
   private Button m_copyTasksCheckbox;
   private Button m_copySubProjectsCheckbox;
 
-  private Project m_newParent;
+  private ProjectSummary m_newParent;
   private String m_newName;
   private boolean m_copyTasks;
   private boolean m_copySubProjects;
@@ -44,6 +44,7 @@ public class ProjectCopyDialog extends Dialog
     setShellStyle(SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE | getDefaultOrientation());
 
     m_project = project;
+    m_newParent = newParent;
   }
 
   public String getNewName()
@@ -51,7 +52,7 @@ public class ProjectCopyDialog extends Dialog
     return m_newName;
   }
 
-  public Project getNewParent()
+  public ProjectSummary getNewParent()
   {
     return m_newParent;
   }
@@ -97,13 +98,8 @@ public class ProjectCopyDialog extends Dialog
         .getProjectRepository(), false, true));
     m_parentTreeViewer.setLabelProvider(new ProjectLabelProvider());
     m_parentTreeViewer.setInput(new Object());
-    if (m_project.getParentId() != null) {
-      try {
-        m_parentTreeViewer.setSelection(new StructuredSelection(RepositoryFactory.getRepository()
-            .getProjectRepository().getProject(m_project.getParentId())));
-      } catch (final Exception e) {
-        UIPlugin.getDefault().log(e);
-      }
+    if (m_newParent != null) {
+      m_parentTreeViewer.setSelection(new StructuredSelection(m_newParent));
     } else {
       m_parentTreeViewer.setSelection(new StructuredSelection(ProjectContentProvider.ROOT));
     }
@@ -138,7 +134,7 @@ public class ProjectCopyDialog extends Dialog
     if (selection instanceof IStructuredSelection) {
       final Object sel = ((IStructuredSelection) selection).getFirstElement();
 
-      if (sel != null && sel instanceof Project) {
+      if (sel != null && sel instanceof ProjectSummary) {
         m_newParent = (Project) sel;
       }
     }

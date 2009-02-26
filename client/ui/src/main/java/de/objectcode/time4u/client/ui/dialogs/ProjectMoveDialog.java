@@ -97,10 +97,11 @@ public class ProjectMoveDialog extends Dialog
     if (selection instanceof IStructuredSelection) {
       final Object sel = ((IStructuredSelection) selection).getFirstElement();
 
-      if (sel != null && sel instanceof Project) {
-        m_newParent = (Project) sel;
+      if (sel != null && sel instanceof ProjectSummary) {
+        m_newParent = (ProjectSummary) sel;
       }
     }
 
+    super.okPressed();
   }
 }

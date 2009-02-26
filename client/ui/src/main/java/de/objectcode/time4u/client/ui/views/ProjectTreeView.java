@@ -35,6 +35,7 @@ import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
 import de.objectcode.time4u.client.ui.ICommandIds;
 import de.objectcode.time4u.client.ui.UIPlugin;
+import de.objectcode.time4u.client.ui.actions.ProjectActionDelegate;
 import de.objectcode.time4u.client.ui.dialogs.ProjectCopyDialog;
 import de.objectcode.time4u.client.ui.dialogs.ProjectMoveDialog;
 import de.objectcode.time4u.client.ui.dnd.ProjectTransfer;
@@ -133,11 +134,19 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
           if ((event.detail & DND.DROP_MOVE) != 0) {
             final ProjectMoveDialog dialog = new ProjectMoveDialog(getSite(), project, newParent);
 
-            dialog.open();
+            if (dialog.open() == ProjectMoveDialog.OK) {
+              newParent = dialog.getNewParent();
+              project.setParentId(newParent != null ? newParent.getId() : null);
+
+              RepositoryFactory.getRepository().getProjectRepository().storeProject(project, true);
+            }
           } else if ((event.detail & DND.DROP_COPY) != 0) {
             final ProjectCopyDialog dialog = new ProjectCopyDialog(getSite(), project, newParent);
 
-            dialog.open();
+            if (dialog.open() == ProjectCopyDialog.OK) {
+              ProjectActionDelegate.copyProject(project, dialog.getNewName(), dialog.getNewParent(), dialog
+                  .isCopyTasks(), dialog.isCopySubProjects());
+            }
 
           }
         } catch (final Exception e) {

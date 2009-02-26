@@ -195,7 +195,7 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
     }
   }
 
-  public static void copyProject(final Project project, final String newName, final Project newParent,
+  public static void copyProject(final Project project, final String newName, final ProjectSummary newParent,
       final boolean copyTasks, final boolean copySubProjects)
   {
     final Project newProject = new Project();
