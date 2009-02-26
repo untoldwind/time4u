@@ -5,6 +5,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
+import de.objectcode.time4u.client.ui.dialogs.TodoFilterDialog;
 import de.objectcode.time4u.client.ui.views.TodoTreeView;
 import de.objectcode.time4u.client.ui.views.TodoTreeView.ViewType;
 
@@ -43,6 +44,12 @@ public class TodoViewActionDelegate implements IViewActionDelegate
       m_view.getFilterSettings().setAssignedToOther(!m_view.getFilterSettings().isAssignedToOther());
       action.setChecked(m_view.getFilterSettings().isAssignedToOther());
       m_view.refresh();
+    } else if ("de.objectcode.time4u.client.ui.todo.filter".equals(id)) {
+      final TodoFilterDialog dialog = new TodoFilterDialog(m_view.getSite(), m_view.getFilterSettings());
+
+      if (dialog.open() == TodoFilterDialog.OK) {
+        m_view.refresh();
+      }
     }
   }
 

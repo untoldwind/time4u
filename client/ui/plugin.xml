@@ -127,6 +127,16 @@
                style="toggle"
                tooltip="%action.todo.view.filter.unassigned.tooltip">
          </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoViewActionDelegate"
+               icon="icons/filter_ps.gif"
+               id="de.objectcode.time4u.client.ui.todo.filter"
+               label="%action.todo.view.filter.label"
+               menubarPath="filter"
+               style="push"
+               toolbarPath="filter"
+               tooltip="%action.todo.view.filter.tooltip">
+         </action>
       </viewContribution>
    </extension>
    <extension
