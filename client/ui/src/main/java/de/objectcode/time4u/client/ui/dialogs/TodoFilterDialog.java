@@ -25,8 +25,10 @@ public class TodoFilterDialog extends Dialog
   private Button m_assignedToMeButton;
   private Button m_assignedToOtherButton;
   private Button[] m_stateButtons;
-  private Button m_hideOlderThenButton;
-  private Spinner m_hideOlderThenSpinner;
+  private Button m_hideCreatedOlderThenButton;
+  private Spinner m_hideCreatedOlderThenSpinner;
+  private Button m_hideCompletedOlderThenButton;
+  private Spinner m_hideCompletedOlderThenSpinner;
 
   public TodoFilterDialog(final IShellProvider shellProvider, final TodoFilterSettings filterSettings)
   {
@@ -89,16 +91,31 @@ public class TodoFilterDialog extends Dialog
     dateGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     dateGroup.setText(UIPlugin.getDefault().getString("dialog.todo.filter.date.title"));
 
-    m_hideOlderThenButton = new Button(dateGroup, SWT.CHECK);
-    m_hideOlderThenButton.setText(UIPlugin.getDefault().getString("dialog.todo.filter.hideolderthan.label"));
-    m_hideOlderThenButton.setSelection(m_filterSettings.getHideOderThan() != null);
-    m_hideOlderThenSpinner = new Spinner(dateGroup, SWT.BORDER);
-    if (m_filterSettings.getHideOderThan() != null) {
-      m_hideOlderThenSpinner.setSelection(m_filterSettings.getHideOderThan());
+    m_hideCreatedOlderThenButton = new Button(dateGroup, SWT.CHECK);
+    m_hideCreatedOlderThenButton.setText(UIPlugin.getDefault().getString(
+        "dialog.todo.filter.hidecreateddolderthan.label"));
+    m_hideCreatedOlderThenButton.setSelection(m_filterSettings.getHideCreatedOlderThan() != null);
+    m_hideCreatedOlderThenSpinner = new Spinner(dateGroup, SWT.BORDER);
+    if (m_filterSettings.getHideCreatedOlderThan() != null) {
+      m_hideCreatedOlderThenSpinner.setSelection(m_filterSettings.getHideCreatedOlderThan());
     }
 
-    final Label hideOlderThenUnitLabel = new Label(dateGroup, SWT.NONE);
-    hideOlderThenUnitLabel.setText(UIPlugin.getDefault().getString("dialog.todo.filter.hideolderthan.unit"));
+    final Label hideOlderCreatedThenUnitLabel = new Label(dateGroup, SWT.NONE);
+    hideOlderCreatedThenUnitLabel.setText(UIPlugin.getDefault().getString(
+        "dialog.todo.filter.hidecreateddolderthan.unit"));
+
+    m_hideCompletedOlderThenButton = new Button(dateGroup, SWT.CHECK);
+    m_hideCompletedOlderThenButton.setText(UIPlugin.getDefault().getString(
+        "dialog.todo.filter.hidecompletedolderthan.label"));
+    m_hideCompletedOlderThenButton.setSelection(m_filterSettings.getHideCompletedOlderThan() != null);
+    m_hideCompletedOlderThenSpinner = new Spinner(dateGroup, SWT.BORDER);
+    if (m_filterSettings.getHideCompletedOlderThan() != null) {
+      m_hideCompletedOlderThenSpinner.setSelection(m_filterSettings.getHideCompletedOlderThan());
+    }
+
+    final Label hideOlderCompletedThenUnitLabel = new Label(dateGroup, SWT.NONE);
+    hideOlderCompletedThenUnitLabel.setText(UIPlugin.getDefault().getString(
+        "dialog.todo.filter.hidecompletedolderthan.unit"));
 
     return composite;
   }
@@ -116,10 +133,15 @@ public class TodoFilterDialog extends Dialog
         m_filterSettings.getStates().remove(stateButton.getData());
       }
     }
-    if (!m_hideOlderThenButton.getSelection()) {
-      m_filterSettings.setHideOderThan(null);
+    if (!m_hideCreatedOlderThenButton.getSelection()) {
+      m_filterSettings.setHideCreatedOderThan(null);
     } else {
-      m_filterSettings.setHideOderThan(m_hideOlderThenSpinner.getSelection());
+      m_filterSettings.setHideCreatedOderThan(m_hideCreatedOlderThenSpinner.getSelection());
+    }
+    if (!m_hideCompletedOlderThenButton.getSelection()) {
+      m_filterSettings.setHideCompletedOlderThan(null);
+    } else {
+      m_filterSettings.setHideCompletedOlderThan(m_hideCompletedOlderThenSpinner.getSelection());
     }
 
     super.okPressed();

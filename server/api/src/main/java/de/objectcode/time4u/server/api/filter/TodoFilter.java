@@ -1,6 +1,7 @@
 package de.objectcode.time4u.server.api.filter;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.xml.bind.annotation.XmlType;
 
@@ -31,9 +32,13 @@ public class TodoFilter implements Serializable
   /** Filter todos associated with a certain task */
   String m_taskId;
   /** An array of desired todo states */
-  TodoState[] todoStates;
+  TodoState[] m_todoStates;
   /** Optional assignement filter */
-  AssignmentFilter assignmentFilter;
+  AssignmentFilter m_assignmentFilter;
+  /** CompletedAt is greater or equals this value. */
+  Date m_completedAtGe;
+  /** CreatedAt is greater or equals this value. */
+  Date m_createdAtGe;
   /** Desired order */
   Order m_order;
 
@@ -124,22 +129,42 @@ public class TodoFilter implements Serializable
 
   public TodoState[] getTodoStates()
   {
-    return todoStates;
+    return m_todoStates;
   }
 
   public void setTodoStates(final TodoState[] todoStates)
   {
-    this.todoStates = todoStates;
+    m_todoStates = todoStates;
   }
 
   public AssignmentFilter getAssignmentFilter()
   {
-    return assignmentFilter;
+    return m_assignmentFilter;
   }
 
   public void setAssignmentFilter(final AssignmentFilter assignmentFilter)
   {
-    this.assignmentFilter = assignmentFilter;
+    m_assignmentFilter = assignmentFilter;
+  }
+
+  public Date getCompletedAtGe()
+  {
+    return m_completedAtGe;
+  }
+
+  public void setCompletedAtGe(final Date completedAtGe)
+  {
+    m_completedAtGe = completedAtGe;
+  }
+
+  public Date getCreatedAtGe()
+  {
+    return m_createdAtGe;
+  }
+
+  public void setCreatedAtGe(final Date createdAtGe)
+  {
+    m_createdAtGe = createdAtGe;
   }
 
   public Order getOrder()

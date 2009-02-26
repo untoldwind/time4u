@@ -144,6 +144,13 @@ public class HibernateTodoRepository implements ITodoRepository
         if (filter.getTodoStates() != null && filter.getTodoStates().length > 0) {
           criteria.add(Restrictions.in("state", filter.getTodoStates()));
         }
+        if (filter.getCompletedAtGe() != null) {
+          criteria.add(Restrictions.or(Restrictions.isNull("completedAt"), Restrictions.ge("completedAt", filter
+              .getCompletedAtGe())));
+        }
+        if (filter.getCreatedAtGe() != null) {
+          criteria.add(Restrictions.ge("createdAt", filter.getCreatedAtGe()));
+        }
         if (filter.getAssignmentFilter() != null) {
           final Disjunction disjunction = Restrictions.disjunction();
 
@@ -254,6 +261,13 @@ public class HibernateTodoRepository implements ITodoRepository
         }
         if (filter.getTodoStates() != null && filter.getTodoStates().length > 0) {
           criteria.add(Restrictions.in("state", filter.getTodoStates()));
+        }
+        if (filter.getCompletedAtGe() != null) {
+          criteria.add(Restrictions.or(Restrictions.isNull("completedAt"), Restrictions.ge("completedAt", filter
+              .getCompletedAtGe())));
+        }
+        if (filter.getCreatedAtGe() != null) {
+          criteria.add(Restrictions.ge("createdAt", filter.getCreatedAtGe()));
         }
         if (filter.getAssignmentFilter() != null) {
           final Disjunction disjunction = Restrictions.disjunction();

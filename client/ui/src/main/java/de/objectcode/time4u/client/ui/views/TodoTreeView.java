@@ -42,6 +42,7 @@ import de.objectcode.time4u.client.ui.util.CompoundSelectionProvider;
 import de.objectcode.time4u.client.ui.util.SelectionServiceAdapter;
 import de.objectcode.time4u.server.api.data.Todo;
 import de.objectcode.time4u.server.api.data.TodoGroup;
+import de.objectcode.time4u.server.api.data.TodoState;
 import de.objectcode.time4u.server.api.data.TodoSummary;
 
 public class TodoTreeView extends ViewPart implements IRepositoryListener
@@ -298,6 +299,27 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
           .getBoolean("filter.assignedToMe") : true);
       m_filterSettings.setAssignedToOther(memento.getBoolean("filter.assignedToOther") != null ? memento
           .getBoolean("filter.assignedToOther") : true);
+      for (final TodoState state : TodoState.values()) {
+        final Boolean value = memento.getBoolean("filter.state." + state);
+
+        if (value == null || value) {
+          m_filterSettings.getStates().add(state);
+        } else {
+          m_filterSettings.getStates().remove(state);
+        }
+      }
+      final Boolean hideCreatedOlderThan = memento.getBoolean("filter.hideCreatedOlderThan");
+      if (hideCreatedOlderThan != null && hideCreatedOlderThan) {
+        m_filterSettings.setHideCreatedOderThan(memento.getInteger("filter.hideCreatedOlderThan.value"));
+      } else {
+        m_filterSettings.setHideCreatedOderThan(null);
+      }
+      final Boolean hideCompletedOlderThan = memento.getBoolean("filter.hideCompletedOlderThan");
+      if (hideCompletedOlderThan != null && hideCompletedOlderThan) {
+        m_filterSettings.setHideCompletedOlderThan(memento.getInteger("filter.hideCompletedOlderThan.value"));
+      } else {
+        m_filterSettings.setHideCompletedOlderThan(null);
+      }
     }
   }
 
@@ -313,6 +335,17 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
     memento.putBoolean("filter.unassigned", m_filterSettings.isUnassigned());
     memento.putBoolean("filter.assignedToMe", m_filterSettings.isAssignedToMe());
     memento.putBoolean("filter.assignedToOther", m_filterSettings.isAssignedToOther());
+    for (final TodoState state : TodoState.values()) {
+      memento.putBoolean("filter.state." + state, m_filterSettings.getStates().contains(state));
+    }
+    memento.putBoolean("filter.hideCreatedOlderThan", m_filterSettings.getHideCreatedOlderThan() != null);
+    if (m_filterSettings.getHideCreatedOlderThan() != null) {
+      memento.putInteger("filter.hideCreatedOlderThan.value", m_filterSettings.getHideCreatedOlderThan());
+    }
+    memento.putBoolean("filter.hideCompletedOlderThan", m_filterSettings.getHideCompletedOlderThan() != null);
+    if (m_filterSettings.getHideCompletedOlderThan() != null) {
+      memento.putInteger("filter.hideCompletedOlderThan.value", m_filterSettings.getHideCompletedOlderThan());
+    }
   }
 
   /**
