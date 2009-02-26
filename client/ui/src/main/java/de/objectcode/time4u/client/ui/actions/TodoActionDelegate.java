@@ -69,7 +69,8 @@ public class TodoActionDelegate implements IWorkbenchWindowActionDelegate, IView
 
     if ("de.objectcode.time4u.client.ui.todo.new".equals(id)) {
       final TaskSummary task = (TaskSummary) m_selection.getAdapter(TaskSummary.class);
-      final TodoDialog dialog = new TodoDialog(m_shellProvider, task);
+      final TodoSummary todo = (TodoSummary) m_selection.getAdapter(TodoSummary.class);
+      final TodoDialog dialog = new TodoDialog(m_shellProvider, task, todo);
 
       if (dialog.open() == TodoDialog.OK) {
         try {
@@ -79,7 +80,8 @@ public class TodoActionDelegate implements IWorkbenchWindowActionDelegate, IView
         }
       }
     } else if ("de.objectcode.time4u.client.ui.todoGroup.new".equals(id)) {
-      final TodoGroupDialog dialog = new TodoGroupDialog(m_shellProvider);
+      final TodoSummary todo = (TodoSummary) m_selection.getAdapter(TodoSummary.class);
+      final TodoGroupDialog dialog = new TodoGroupDialog(m_shellProvider, todo);
 
       if (dialog.open() == TodoGroupDialog.OK) {
         try {
@@ -96,7 +98,7 @@ public class TodoActionDelegate implements IWorkbenchWindowActionDelegate, IView
           try {
             final TodoGroup todoGroup = RepositoryFactory.getRepository().getTodoRepository().getTodoGroup(
                 selection.getId());
-            final TodoGroupDialog dialog = new TodoGroupDialog(m_shellProvider, todoGroup);
+            final TodoGroupDialog dialog = new TodoGroupDialog(m_shellProvider, todoGroup, false);
 
             if (dialog.open() == TodoGroupDialog.OK) {
               RepositoryFactory.getRepository().getTodoRepository().storeTodoGroup(dialog.getTodoGroup(), true);

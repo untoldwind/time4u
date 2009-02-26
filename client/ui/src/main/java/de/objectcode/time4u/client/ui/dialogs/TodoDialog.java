@@ -46,6 +46,7 @@ import de.objectcode.time4u.client.ui.provider.TodoStateLabelProvider;
 import de.objectcode.time4u.server.api.data.PersonSummary;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.data.Todo;
+import de.objectcode.time4u.server.api.data.TodoGroup;
 import de.objectcode.time4u.server.api.data.TodoState;
 import de.objectcode.time4u.server.api.data.TodoSummary;
 
@@ -68,7 +69,7 @@ public class TodoDialog extends Dialog
   private final boolean m_create;
   private Todo m_todo;
 
-  public TodoDialog(final IShellProvider shellProvider, final TaskSummary task)
+  public TodoDialog(final IShellProvider shellProvider, final TaskSummary task, final TodoSummary currentTodo)
   {
     super(shellProvider);
 
@@ -83,6 +84,33 @@ public class TodoDialog extends Dialog
     m_todo.setDescription("");
     m_todo.setState(TodoState.UNASSIGNED);
     m_todo.setReporterId(RepositoryFactory.getRepository().getOwner().getId());
+    if (currentTodo != null) {
+      if (currentTodo.isGroup()) {
+        m_todo.setGroupdId(currentTodo.getId());
+
+        try {
+          final TodoGroup todoGroup = RepositoryFactory.getRepository().getTodoRepository().getTodoGroup(
+              currentTodo.getId());
+
+          m_todo.setVisibleToPersonIds(todoGroup.getVisibleToPersonIds());
+          m_todo.setVisibleToTeamIds(todoGroup.getVisibleToTeamIds());
+        } catch (final Exception e) {
+          UIPlugin.getDefault().log(e);
+        }
+      } else {
+        m_todo.setGroupdId(currentTodo.getGroupdId());
+
+        try {
+          final Todo todo = RepositoryFactory.getRepository().getTodoRepository().getTodo(currentTodo.getId());
+
+          m_todo.setVisibleToPersonIds(todo.getVisibleToPersonIds());
+          m_todo.setVisibleToTeamIds(todo.getVisibleToTeamIds());
+          m_todo.setTaskId(todo.getTaskId());
+        } catch (final Exception e) {
+          UIPlugin.getDefault().log(e);
+        }
+      }
+    }
     if (task != null) {
       m_todo.setTaskId(task.getId());
     }

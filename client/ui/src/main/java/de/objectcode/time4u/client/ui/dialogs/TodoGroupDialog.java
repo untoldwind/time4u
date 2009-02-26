@@ -43,12 +43,20 @@ public class TodoGroupDialog extends Dialog
   private final boolean m_create;
   private final TodoGroup m_todoGroup;
 
-  public TodoGroupDialog(final IShellProvider shellProvider)
+  public TodoGroupDialog(final IShellProvider shellProvider, final TodoSummary currentTodo)
   {
-    this(shellProvider, null);
+    this(shellProvider, null, true);
+
+    if (currentTodo != null) {
+      if (currentTodo.isGroup()) {
+        m_todoGroup.setGroupdId(currentTodo.getId());
+      } else {
+        m_todoGroup.setGroupdId(currentTodo.getGroupdId());
+      }
+    }
   }
 
-  public TodoGroupDialog(final IShellProvider shellProvider, final TodoGroup todoGroup)
+  public TodoGroupDialog(final IShellProvider shellProvider, final TodoGroup todoGroup, final boolean create)
   {
     super(shellProvider);
 
