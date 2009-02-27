@@ -25,6 +25,11 @@ public class StringArrayConverter implements javax.faces.convert.Converter
 
   public String getAsString(final FacesContext context, final UIComponent component, final Object value)
   {
+    return format(value);
+  }
+
+  public static String format(final Object value)
+  {
     if (value instanceof Collection<?>) {
       final StringBuffer buffer = new StringBuffer();
       final Iterator<?> it = ((Collection<?>) value).iterator();
