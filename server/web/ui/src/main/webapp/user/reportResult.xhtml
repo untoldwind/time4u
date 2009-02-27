@@ -9,7 +9,11 @@
 	<ui:define name="contentDetail">
 		<h:form>
 			<a4j:commandLink action="#{user.reportController.back}" value="Back"/>
-
+    		<h:outputText value=" "/>
+			<h:outputLink value="/time4u/seam/resource/csvreport/#{user.reportResult.name}.csv">
+				<s:conversationId/>
+    			<h:outputText value="CSV"/>
+			</h:outputLink>
 			<table class="report">
 				<thead class="report reportHeader">
 					<tr class="report reportHeader">

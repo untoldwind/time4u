@@ -88,6 +88,11 @@ public class ReportController
     return VIEW_ID;
   }
 
+  public ReportResult getReportResult()
+  {
+    return m_reportResult;
+  }
+
   public String generate()
   {
     final Map<String, BaseParameterValue> parameters = new HashMap<String, BaseParameterValue>();
