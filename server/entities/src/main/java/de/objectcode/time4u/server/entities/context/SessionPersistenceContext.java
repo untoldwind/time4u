@@ -1,6 +1,12 @@
 package de.objectcode.time4u.server.entities.context;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import de.objectcode.time4u.server.entities.DayTagEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
@@ -50,6 +56,19 @@ public class SessionPersistenceContext implements IPersistenceContext
     }
 
     return project;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @SuppressWarnings("unchecked")
+  public List<ProjectEntity> findAllChildrenDeep(final String parentKey)
+  {
+    final Criteria criteria = m_session.createCriteria(ProjectEntity.class);
+    criteria.add(Restrictions.like("parentKey", parentKey + ":", MatchMode.START));
+    criteria.addOrder(Order.asc("parentKey"));
+
+    return criteria.list();
   }
 
   /**

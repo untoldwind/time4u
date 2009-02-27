@@ -177,6 +177,13 @@ public abstract class BaseStatisticRepository implements IStatisticRepository, I
         }
 
         break;
+      case PROJECT:
+        synchronized (this) {
+          m_yearCache.clear();
+          m_monthCache.clear();
+          m_weekCache.clear();
+        }
+        break;
     }
   }
 

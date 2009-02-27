@@ -245,6 +245,10 @@ public class TodoFilter implements Serializable
     boolean m_assignedToOther;
     String m_personId;
 
+    public AssignmentFilter()
+    {
+    }
+
     public AssignmentFilter(final boolean unassigned, final boolean assignedToPerson, final boolean assignedToOther,
         final String personId)
     {

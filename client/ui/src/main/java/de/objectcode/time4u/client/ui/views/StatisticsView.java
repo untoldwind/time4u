@@ -60,6 +60,7 @@ public class StatisticsView extends ViewPart implements ISelectionListener, IRep
     getSite().getPage().addSelectionListener(this);
 
     RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.DAYINFO, this);
+    RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.PROJECT, this);
 
     UIPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(new IPropertyChangeListener() {
       public void propertyChange(final PropertyChangeEvent event)
@@ -92,6 +93,7 @@ public class StatisticsView extends ViewPart implements ISelectionListener, IRep
     getSite().getPage().removeSelectionListener(this);
 
     RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.DAYINFO, this);
+    RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.PROJECT, this);
 
     super.dispose();
   }
@@ -115,6 +117,7 @@ public class StatisticsView extends ViewPart implements ISelectionListener, IRep
   {
     switch (event.getEventType()) {
       case DAYINFO:
+      case PROJECT:
         // Do not queue more than 2 refresh
         synchronized (this) {
           if (m_refreshCounter >= 2) {

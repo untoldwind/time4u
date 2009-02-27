@@ -1,6 +1,9 @@
 package de.objectcode.time4u.server.entities.context;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import de.objectcode.time4u.server.entities.DayTagEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
@@ -50,6 +53,20 @@ public class EntityManagerPersistenceContext implements IPersistenceContext
     }
 
     return project;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @SuppressWarnings("unchecked")
+  public List<ProjectEntity> findAllChildrenDeep(final String parentKey)
+  {
+    final Query query = m_manager.createQuery("from " + ProjectEntity.class.getName()
+        + " p where p.parentKey like :parentKey order by p.parentKey asc");
+
+    query.setParameter("parentKey", parentKey + ":%");
+
+    return query.getResultList();
   }
 
   /**

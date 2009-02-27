@@ -1,5 +1,7 @@
 package de.objectcode.time4u.server.entities.context;
 
+import java.util.List;
+
 import de.objectcode.time4u.server.entities.DayTagEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
@@ -23,6 +25,16 @@ public interface IPersistenceContext
    * @return The project with id <tt>projectId</tt>
    */
   ProjectEntity findProject(String projectId, long clientId);
+
+  /**
+   * Find all child projects of a parent. This is a deep recursion in the project tree, though just a single query
+   * should be used.
+   * 
+   * @param parentKey
+   *          The parent key
+   * @return All child projects
+   */
+  List<ProjectEntity> findAllChildrenDeep(String parentKey);
 
   /**
    * Find a task.

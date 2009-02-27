@@ -112,6 +112,7 @@ public class HibernateRepository implements IRepository
     m_statisticRepository = new HibernateStatisticRepository(this, m_hibernateTemplate);
     m_serverConnectionRepository = new HibernateServerConnectionRepository(this, m_hibernateTemplate);
 
+    addRepositoryListener(RepositoryEventType.PROJECT, m_statisticRepository);
     addRepositoryListener(RepositoryEventType.DAYINFO, m_statisticRepository);
   }
 

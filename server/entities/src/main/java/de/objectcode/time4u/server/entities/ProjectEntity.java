@@ -245,7 +245,13 @@ public class ProjectEntity
     m_name = project.getName() != null ? project.getName() : "";
     m_parent = project.getParentId() != null ? context.findProject(project.getParentId(), project
         .getLastModifiedByClient()) : null;
+    final String oldParentKey = m_parentKey;
     updateParentKey();
+    if (oldParentKey != null && !oldParentKey.equals(m_parentKey)) {
+      for (final ProjectEntity child : context.findAllChildrenDeep(oldParentKey)) {
+        child.updateParentKey();
+      }
+    }
     m_description = project.getDescription();
 
     if (m_metaProperties == null) {
