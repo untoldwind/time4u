@@ -1,6 +1,7 @@
 package de.objectcode.time4u.client.store.impl.hibernate;
 
 import java.io.File;
+import java.net.InetAddress;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -340,8 +341,20 @@ public class HibernateRepository implements IRepository
         ClientDataEntity clientData = (ClientDataEntity) session.get(ClientDataEntity.class, 1);
 
         if (clientData == null) {
-          // TODO: Reconsider this adhoc generation
-          final long clientId = new SecureRandom().nextLong() & 0xffffffffffffffL;
+          long clientId;
+          try {
+            final byte[] address = InetAddress.getLocalHost().getAddress();
+
+            if (address[0] == 127) {
+              clientId = new SecureRandom().nextLong() & 0xffffffffffffffL;
+            } else {
+              clientId = ((long) address[0] & 0xff) << 56 | ((long) address[1] & 0xff) << 48
+                  | ((long) address[2] & 0xff) << 40 | ((long) address[3] & 0xff) << 32;
+              clientId |= System.currentTimeMillis() / 1000L & 0xffffffff;
+            }
+          } catch (final Exception e) {
+            clientId = new SecureRandom().nextLong() & 0xffffffffffffffL;
+          }
 
           m_idGenerator = new SessionLocalIdGenerator(session.getSessionFactory(), clientId);
 
