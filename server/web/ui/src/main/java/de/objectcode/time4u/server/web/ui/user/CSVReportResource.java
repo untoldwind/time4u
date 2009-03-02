@@ -58,7 +58,7 @@ public class CSVReportResource extends AbstractResource
       final ReportResult reportResult = (ReportResult) Contexts.getConversationContext().get("user.reportResult");
 
       if (reportResult != null) {
-        response.setContentType("text/csv;charset=UTF-8");
+        response.setContentType("text/csv");
         response.setCharacterEncoding("UTF-8");
 
         final ServletOutputStream out = response.getOutputStream();
@@ -81,6 +81,9 @@ public class CSVReportResource extends AbstractResource
         }
         out.println();
 
+        for (final ReportResultGroup group : reportResult.getGroups()) {
+          writeReportGroup(0, group, out);
+        }
         for (final ReportRow row : reportResult.getRows()) {
           writeReportRow(row, reportResult.getColumns(), out);
         }
@@ -117,9 +120,19 @@ public class CSVReportResource extends AbstractResource
     for (int i = 0; i < depth; i++) {
       out.print(DELIM);
     }
-    out.print(String.valueOf(group.getValue()));
+    out.print(String.valueOf(group.getLabel()));
+    for (int i = 0; i < group.getGroupByColumns().size() + group.getColumns().size(); i++) {
+      out.print(DELIM);
+    }
+    out.println();
     for (final ReportResultGroup subGroup : group.getGroups()) {
       writeReportGroup(depth + 1, subGroup, out);
+    }
+    for (final ReportRow row : group.getRows()) {
+      for (int i = 0; i < depth + 1; i++) {
+        out.print(DELIM);
+      }
+      writeReportRow(row, group.getColumns(), out);
     }
   }
 
