@@ -32,7 +32,7 @@ public class TodoListContentProvider implements IStructuredContentProvider
       result.add(EMPTY);
 
       try {
-        result.addAll(m_todoRepository.getTodoSummaries(TodoFilter.filterTodoForTask(task.getId())));
+        result.addAll(m_todoRepository.getTodoSummaries(TodoFilter.filterTodoForTask(task.getId()), true));
       } catch (final Exception e) {
         UIPlugin.getDefault().log(e);
       }

@@ -30,7 +30,7 @@ public class SendTodoChangesCommand extends BaseSendCommand<TodoSummary>
     filter.setMaxRevision(maxRevision);
     filter.setOrder(TodoFilter.Order.ID);
 
-    return context.getRepository().getTodoRepository().getTodos(filter);
+    return context.getRepository().getTodoRepository().getTodos(filter, false);
   }
 
   @Override

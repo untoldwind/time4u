@@ -31,13 +31,13 @@ public class TodoTreeContentProvider implements IStructuredContentProvider, ITre
 
         m_filterSettings.apply(filter);
 
-        return m_todoRepository.getTodoSummaries(filter).toArray();
+        return m_todoRepository.getTodoSummaries(filter, true).toArray();
       } else {
         final TodoFilter filter = TodoFilter.filterRootTodos();
 
         m_filterSettings.apply(filter);
 
-        return m_todoRepository.getTodoSummaries(filter).toArray();
+        return m_todoRepository.getTodoSummaries(filter, true).toArray();
       }
     } catch (final Exception e) {
       UIPlugin.getDefault().log(e);

@@ -27,10 +27,10 @@ public class TodoGroupContentProvider implements IStructuredContentProvider, ITr
   {
     try {
       if (parentElement instanceof TodoSummary) {
-        return m_todoRepository.getTodoSummaries(TodoFilter.filterTodoGroups(((TodoSummary) parentElement).getId()))
-            .toArray();
+        return m_todoRepository.getTodoSummaries(TodoFilter.filterTodoGroups(((TodoSummary) parentElement).getId()),
+            true).toArray();
       } else {
-        return m_todoRepository.getTodoSummaries(TodoFilter.filterRootTodoGroups()).toArray();
+        return m_todoRepository.getTodoSummaries(TodoFilter.filterRootTodoGroups(), true).toArray();
       }
     } catch (final Exception e) {
       UIPlugin.getDefault().log(e);

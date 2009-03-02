@@ -56,7 +56,7 @@ public interface ITodoRepository
    * @throws RepositoryException
    *           on error
    */
-  List<TodoSummary> getTodos(TodoFilter filter) throws RepositoryException;
+  List<TodoSummary> getTodos(TodoFilter filter, boolean onlyVisible) throws RepositoryException;
 
   /**
    * Get all todos matching a filter condition.
@@ -67,7 +67,7 @@ public interface ITodoRepository
    * @throws RepositoryException
    *           on error
    */
-  List<TodoSummary> getTodoSummaries(TodoFilter filter) throws RepositoryException;
+  List<TodoSummary> getTodoSummaries(TodoFilter filter, boolean onlyVisible) throws RepositoryException;
 
   /**
    * Store a todo. This method either inserts a new todo or updates an existing one.

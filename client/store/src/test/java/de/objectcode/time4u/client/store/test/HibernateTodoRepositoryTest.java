@@ -64,13 +64,13 @@ public class HibernateTodoRepositoryTest
   public void testFind1() throws Exception
   {
     final List<TodoSummary> todoSummaries = repository.getTodoRepository().getTodoSummaries(
-        new TodoFilter(null, null, null, null, TodoFilter.Order.ID));
+        new TodoFilter(null, null, null, null, TodoFilter.Order.ID), true);
 
     assertNotNull(todoSummaries);
     assertEquals(todoSummaries.size(), 90);
 
     final List<TodoSummary> todos = repository.getTodoRepository().getTodos(
-        new TodoFilter(null, null, null, null, TodoFilter.Order.ID));
+        new TodoFilter(null, null, null, null, TodoFilter.Order.ID), true);
 
     assertNotNull(todos);
     assertEquals(todos.size(), 90);
@@ -88,7 +88,7 @@ public class HibernateTodoRepositoryTest
   public void testAssign() throws Exception
   {
     final List<TodoSummary> todos = repository.getTodoRepository().getTodos(
-        new TodoFilter(null, null, null, null, TodoFilter.Order.ID));
+        new TodoFilter(null, null, null, null, TodoFilter.Order.ID), true);
 
     assertNotNull(todos);
     assertEquals(todos.size(), 90);
@@ -134,7 +134,7 @@ public class HibernateTodoRepositoryTest
   public void testFind2() throws Exception
   {
     List<TodoSummary> todoSummaries = repository.getTodoRepository().getTodoSummaries(
-        new TodoFilter(null, null, null, null, TodoFilter.Order.ID));
+        new TodoFilter(null, null, null, null, TodoFilter.Order.ID), true);
 
     assertNotNull(todoSummaries);
     assertEquals(todoSummaries.size(), 90);
@@ -143,14 +143,14 @@ public class HibernateTodoRepositoryTest
 
     filter.setTodoStates(new TodoState[] { TodoState.UNASSIGNED });
 
-    todoSummaries = repository.getTodoRepository().getTodoSummaries(filter);
+    todoSummaries = repository.getTodoRepository().getTodoSummaries(filter, true);
 
     assertNotNull(todoSummaries);
     assertEquals(todoSummaries.size(), 10);
 
     filter.setTodoStates(new TodoState[] { TodoState.ASSIGNED_INPROGRESS, TodoState.ASSIGNED_OPEN });
 
-    todoSummaries = repository.getTodoRepository().getTodoSummaries(filter);
+    todoSummaries = repository.getTodoRepository().getTodoSummaries(filter, true);
 
     assertNotNull(todoSummaries);
     assertEquals(todoSummaries.size(), 80);
@@ -161,28 +161,28 @@ public class HibernateTodoRepositoryTest
 
     filter.setAssignmentFilter(new TodoFilter.AssignmentFilter(false, false, false, owner.getId()));
 
-    todoSummaries = repository.getTodoRepository().getTodoSummaries(filter);
+    todoSummaries = repository.getTodoRepository().getTodoSummaries(filter, true);
 
     assertNotNull(todoSummaries);
     assertEquals(todoSummaries.size(), 0);
 
     filter.setAssignmentFilter(new TodoFilter.AssignmentFilter(true, false, false, owner.getId()));
 
-    todoSummaries = repository.getTodoRepository().getTodoSummaries(filter);
+    todoSummaries = repository.getTodoRepository().getTodoSummaries(filter, true);
 
     assertNotNull(todoSummaries);
     assertEquals(todoSummaries.size(), 10);
 
     filter.setAssignmentFilter(new TodoFilter.AssignmentFilter(true, true, false, owner.getId()));
 
-    todoSummaries = repository.getTodoRepository().getTodoSummaries(filter);
+    todoSummaries = repository.getTodoRepository().getTodoSummaries(filter, true);
 
     assertNotNull(todoSummaries);
     assertEquals(todoSummaries.size(), 20);
 
     filter.setAssignmentFilter(new TodoFilter.AssignmentFilter(false, false, true, owner.getId()));
 
-    todoSummaries = repository.getTodoRepository().getTodoSummaries(filter);
+    todoSummaries = repository.getTodoRepository().getTodoSummaries(filter, true);
 
     assertNotNull(todoSummaries);
     assertEquals(todoSummaries.size(), 70);
@@ -206,6 +206,7 @@ public class HibernateTodoRepositoryTest
       todo.setDescription("DescTestTodo " + (i + 1));
       todo.setState(TodoState.UNASSIGNED);
       todo.setTaskId(taskSummaries.get(i).getId());
+      todo.setReporterId(repository.getOwner().getId());
 
       result[i] = new Object[] { todo };
     }
