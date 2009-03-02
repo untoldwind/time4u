@@ -45,7 +45,8 @@ public class WorkItemReportDefinition extends BaseReportDefinition
       @XmlElement(name = "task", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = TaskProjection.class),
       @XmlElement(name = "workitem", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = WorkItemProjection.class),
       @XmlElement(name = "person", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = PersonProjection.class),
-      @XmlElement(name = "dayinfo", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = DayInfoProjection.class) })
+      @XmlElement(name = "dayinfo", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = DayInfoProjection.class),
+      @XmlElement(name = "todo", namespace = "http://objectcode.de/time4u/ejb/seam/report", type = TodoProjection.class) })
   public List<IProjection> getProjections()
   {
     return m_projections;

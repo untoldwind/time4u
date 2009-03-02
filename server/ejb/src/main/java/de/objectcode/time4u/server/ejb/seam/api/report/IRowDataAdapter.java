@@ -7,6 +7,7 @@ import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
 import de.objectcode.time4u.server.entities.TimePolicyEntity;
+import de.objectcode.time4u.server.entities.TodoEntity;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
 
 /**
@@ -55,6 +56,13 @@ public interface IRowDataAdapter
    * @return WorkItemEntity or <tt>null</tt>
    */
   WorkItemEntity getWorkItem();
+
+  /**
+   * Get the TodoEntity if available.
+   * 
+   * @return TodoEntity or <tt>null</tt>
+   */
+  TodoEntity getTodo();
 
   /**
    * Get all time policies if available.

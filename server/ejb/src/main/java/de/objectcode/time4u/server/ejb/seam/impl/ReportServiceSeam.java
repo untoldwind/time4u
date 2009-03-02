@@ -33,6 +33,7 @@ import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
 import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.TimePolicyEntity;
+import de.objectcode.time4u.server.entities.TodoEntity;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 
@@ -147,6 +148,11 @@ public class ReportServiceSeam implements IReportServiceLocal
       return m_currentWorkItem;
     }
 
+    public TodoEntity getTodo()
+    {
+      return m_currentWorkItem.getTodo();
+    }
+
     public List<TimePolicyEntity> getTimePolicies()
     {
       final List<TimePolicyEntity> timePolicies = new ArrayList<TimePolicyEntity>();
@@ -190,6 +196,11 @@ public class ReportServiceSeam implements IReportServiceLocal
     }
 
     public WorkItemEntity getWorkItem()
+    {
+      return null;
+    }
+
+    public TodoEntity getTodo()
     {
       return null;
     }

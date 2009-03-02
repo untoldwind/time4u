@@ -20,5 +20,7 @@
 		<workitem>END</workitem>
 		<workitem>DURATION</workitem>
 		<workitem>COMMENT</workitem>
+		<todo>GROUPS</todo>
+		<todo>HEADER</todo>
 	</projections>
 </workitem-report>
