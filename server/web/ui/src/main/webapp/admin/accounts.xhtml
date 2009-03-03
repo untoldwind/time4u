@@ -41,7 +41,7 @@
 						</rich:column>
 						<f:facet name="footer">
 							<rich:datascroller for="accountListTable"
-								pageIndexVar="pageIndex" pagesVar="pages">
+								pageIndexVar="pageIndex" pagesVar="pages" page="#{admin.accountListController.currentPage}">
 								<f:facet name="pages">
 									<h:outputText value="#{pageIndex} / #{pages}"></h:outputText>
 								</f:facet>
@@ -49,10 +49,13 @@
 						</f:facet>
 					</rich:dataTable>
 				</a4j:region>
+				<h:panelGroup>
+					<a4j:commandButton action="#{admin.accountListController.newUserAccount}" value="New" reRender="accountDetail"/>
+				</h:panelGroup>
 				<h:panelGroup id="accountDetail"
 					rendered="#{admin.accountListController.hasSelection}">
 					<rich:tabPanel switchType="client">
-						<rich:tab label="Account">
+						<rich:tab label="Account" rendered="#{!admin.accountListController.create}">
 							<table>
 								<s:decorate template="../templates/decorateTableField.xhtml">
 									<ui:define name="label">UserId</ui:define>
@@ -75,7 +78,7 @@
 								</tr>
 							</table>
 						</rich:tab>
-						<rich:tab label="Personal Information">
+						<rich:tab label="Personal Information" rendered="#{!admin.accountListController.create}">
 							<table>
 								<s:decorate template="../templates/decorateTableField.xhtml">
 									<ui:define name="label">Griven name</ui:define>
@@ -98,6 +101,44 @@
 											action="#{admin.accountListController.updatePerson}" value="Update" />
 									</td>
 								</tr>								
+							</table>
+						</rich:tab>
+						<rich:tab label="New Account" rendered="#{admin.accountListController.create}">
+							<table>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">UserId</ui:define>
+									<h:inputText
+										value="#{admin.accountListController.selectedAccount.userId}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Password</ui:define>
+									<h:inputSecret value="#{common.passwordConfirm.password}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Password Confirm</ui:define>
+									<h:inputSecret value="#{common.passwordConfirm.passwordConfirm}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Griven name</ui:define>
+									<h:inputText
+										value="#{admin.accountListController.selectedAccount.person.givenName}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Surname</ui:define>
+									<h:inputText
+										value="#{admin.accountListController.selectedAccount.person.surname}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Email</ui:define>
+									<h:inputText
+										value="#{admin.accountListController.selectedAccount.person.email}" />
+								</s:decorate>
+								<tr>
+									<td colspan="3">
+										<a4j:commandButton
+											action="#{admin.accountListController.createAccount}" value="Create" />
+									</td>
+								</tr>
 							</table>
 						</rich:tab>
 					</rich:tabPanel>

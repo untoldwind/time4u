@@ -9,4 +9,7 @@ public interface IAccountServiceLocal
   void changePassword(String userId, String hashedPassword);
 
   void updatePerson(String userId, String givenName, String surname, String email);
+
+  void createAccount(final String userId, final String hashedPassword, final String givenName, final String surname,
+      final String email);
 }

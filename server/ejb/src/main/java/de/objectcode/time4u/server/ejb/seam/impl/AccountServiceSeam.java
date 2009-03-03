@@ -2,6 +2,7 @@ package de.objectcode.time4u.server.ejb.seam.impl;
 
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -14,16 +15,18 @@ import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
-import org.jboss.seam.annotations.Observer;
-import org.jboss.seam.annotations.RaiseEvent;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
 import org.jboss.seam.annotations.security.Restrict;
 import org.jboss.seam.security.Identity;
 
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.ejb.seam.api.IAccountServiceLocal;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
+import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
+import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
+import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 
 @Stateless
 @Local(IAccountServiceLocal.class)
@@ -36,6 +39,12 @@ public class AccountServiceSeam implements IAccountServiceLocal
   @PersistenceContext(unitName = "time4u")
   private EntityManager m_manager;
 
+  @EJB
+  private IRevisionGenerator m_revisionGenerator;
+
+  @EJB
+  private ILocalIdGenerator m_idGenerator;
+
   @In("org.jboss.seam.security.identity")
   Identity m_identity;
 
@@ -45,7 +54,6 @@ public class AccountServiceSeam implements IAccountServiceLocal
   @SuppressWarnings("unchecked")
   @Restrict("#{s:hasRole('admin')}")
   @Factory("admin.accountList")
-  @Observer("admin.accountList.updated")
   public void initUserAccounts()
   {
     final Query query = m_manager.createQuery("from " + UserAccountEntity.class.getName() + " a");
@@ -73,7 +81,6 @@ public class AccountServiceSeam implements IAccountServiceLocal
     m_manager.flush();
   }
 
-  @RaiseEvent("admin.accountList.updated")
   @Restrict("#{s:hasRole('admin')}")
   public void updatePerson(final String userId, final String givenName, final String surname, final String email)
   {
@@ -86,6 +93,29 @@ public class AccountServiceSeam implements IAccountServiceLocal
     person.setEmail(email);
 
     m_manager.flush();
+
+    initUserAccounts();
   }
 
+  @Restrict("#{s:hasRole('admin')}")
+  public void createAccount(final String userId, final String hashedPassword, final String givenName,
+      final String surname, final String email)
+  {
+    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(EntityType.PERSON, null);
+    final PersonEntity person = new PersonEntity(m_idGenerator.generateLocalId(EntityType.PERSON), revisionLock
+        .getLatestRevision(), m_idGenerator.getClientId());
+    person.setGivenName(givenName);
+    person.setSurname(surname);
+    person.setEmail(email);
+
+    m_manager.persist(person);
+
+    final UserAccountEntity userAccount = new UserAccountEntity(userId, hashedPassword, person);
+
+    m_manager.persist(userAccount);
+
+    m_manager.flush();
+
+    initUserAccounts();
+  }
 }
