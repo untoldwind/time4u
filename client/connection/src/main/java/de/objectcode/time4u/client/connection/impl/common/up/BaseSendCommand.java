@@ -26,7 +26,7 @@ import de.objectcode.time4u.server.api.data.SynchronizationStatus;
  */
 public abstract class BaseSendCommand<T extends ISynchronizableData> implements ISynchronizationCommand
 {
-  private final static int REVISION_CHUNK = 10;
+  private final static int REVISION_CHUNK = 50;
 
   protected final EntityType m_entityType;
 

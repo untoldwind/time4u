@@ -106,6 +106,20 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
                     final TodoSummary target = (TodoSummary) data;
 
                     if (target.isGroup()) {
+                      // Test for a look (i.e. dragging a parent to one of its own children)
+                      TodoSummary current = target;
+                      while (current != null) {
+                        if (current.getId().equals(todoGroup.getId())) {
+                          // We have loop
+                          return;
+                        }
+                        if (current.getGroupdId() != null) {
+                          current = RepositoryFactory.getRepository().getTodoRepository().getTodoSummary(
+                              current.getGroupdId());
+                        } else {
+                          current = null;
+                        }
+                      }
                       todoGroup.setGroupdId(target.getId());
                     }
                   }

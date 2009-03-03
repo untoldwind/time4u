@@ -136,6 +136,21 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
 
             if (dialog.open() == ProjectMoveDialog.OK) {
               newParent = dialog.getNewParent();
+              // Test for a look (i.e. dragging a parent to one of its own children)
+              ProjectSummary current = newParent;
+              while (current != null) {
+                if (current.getId().equals(project.getId())) {
+                  // We have loop
+                  return;
+                }
+                if (current.getParentId() != null) {
+                  current = RepositoryFactory.getRepository().getProjectRepository().getProjectSummary(
+                      current.getParentId());
+                } else {
+                  current = null;
+                }
+              }
+
               project.setParentId(newParent != null ? newParent.getId() : null);
 
               RepositoryFactory.getRepository().getProjectRepository().storeProject(project, true);
