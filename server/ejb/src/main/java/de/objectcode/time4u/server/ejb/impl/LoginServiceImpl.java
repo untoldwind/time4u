@@ -1,5 +1,8 @@
 package de.objectcode.time4u.server.ejb.impl;
 
+import static de.objectcode.time4u.server.ejb.config.IConfigurationKeys.CONTEXT_SERVER;
+import static de.objectcode.time4u.server.ejb.config.IConfigurationKeys.LOGIN_AUTOREGISTRATION_ENABLED;
+
 import java.util.Date;
 
 import javax.ejb.EJB;
@@ -11,8 +14,9 @@ import javax.persistence.PersistenceContext;
 import org.jboss.annotation.ejb.RemoteBinding;
 
 import de.objectcode.time4u.server.api.ILoginService;
-import de.objectcode.time4u.server.api.data.RegistrationInfo;
 import de.objectcode.time4u.server.api.data.EntityType;
+import de.objectcode.time4u.server.api.data.RegistrationInfo;
+import de.objectcode.time4u.server.ejb.config.IConfigurationServiceLocal;
 import de.objectcode.time4u.server.entities.ClientEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
@@ -31,6 +35,9 @@ public class LoginServiceImpl implements ILoginService
   @EJB
   private IRevisionGenerator m_revisionGenerator;
 
+  @EJB
+  private IConfigurationServiceLocal m_configurationService;
+
   /**
    * {@inheritDoc}
    */
@@ -46,6 +53,13 @@ public class LoginServiceImpl implements ILoginService
    */
   public boolean registerLogin(final RegistrationInfo registrationInfo)
   {
+    final boolean autoRegistrationEnabled = m_configurationService.getBooleanValue(CONTEXT_SERVER,
+        LOGIN_AUTOREGISTRATION_ENABLED, true);
+
+    if (!autoRegistrationEnabled) {
+      return false;
+    }
+
     UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, registrationInfo.getUserId());
 
     if (userAccount != null) {

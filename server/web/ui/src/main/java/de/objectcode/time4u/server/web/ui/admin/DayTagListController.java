@@ -18,7 +18,7 @@ public class DayTagListController
   DayTagEntity m_selectedDayTag;
 
   @In("WorkItemService")
-  IWorkItemServiceLocal m_workItemService;;
+  IWorkItemServiceLocal m_workItemService;
 
   public DayTagEntity getSelectedDayTag()
   {

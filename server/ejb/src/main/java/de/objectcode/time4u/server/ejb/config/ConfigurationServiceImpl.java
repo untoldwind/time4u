@@ -32,7 +32,7 @@ public class ConfigurationServiceImpl implements IConfigurationServiceLocal
     }
     final Object value = m_configuration.get(contextId + ":" + name);
 
-    if (value == null || !(value instanceof Boolean)) {
+    if (value != null && value instanceof Boolean) {
       return (Boolean) value;
     }
 
@@ -47,7 +47,7 @@ public class ConfigurationServiceImpl implements IConfigurationServiceLocal
 
     final Object value = m_configuration.get(contextId + ":" + name);
 
-    if (value == null || !(value instanceof Long)) {
+    if (value != null && value instanceof Long) {
       return (Long) value;
     }
 
@@ -62,7 +62,7 @@ public class ConfigurationServiceImpl implements IConfigurationServiceLocal
 
     final Object value = m_configuration.get(contextId + ":" + name);
 
-    if (value == null || !(value instanceof String)) {
+    if (value != null && value instanceof String) {
       return (String) value;
     }
 

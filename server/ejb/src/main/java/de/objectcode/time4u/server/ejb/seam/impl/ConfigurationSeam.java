@@ -1,0 +1,49 @@
+package de.objectcode.time4u.server.ejb.seam.impl;
+
+import static de.objectcode.time4u.server.ejb.config.IConfigurationKeys.CONTEXT_SERVER;
+import static de.objectcode.time4u.server.ejb.config.IConfigurationKeys.LOGIN_AUTOREGISTRATION_ENABLED;
+
+import javax.ejb.EJB;
+import javax.ejb.Local;
+import javax.ejb.Stateless;
+
+import org.jboss.annotation.ejb.LocalBinding;
+import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.AutoCreate;
+import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.annotations.security.Restrict;
+
+import de.objectcode.time4u.server.ejb.config.IConfigurationServiceLocal;
+import de.objectcode.time4u.server.ejb.seam.api.ConfigurationData;
+import de.objectcode.time4u.server.ejb.seam.api.IConfigurationLocal;
+
+@Stateless
+@Local(IConfigurationLocal.class)
+@LocalBinding(jndiBinding = "time4u-server/seam/ConfigurationSeam/local")
+@Name("Configuration")
+@AutoCreate
+@Scope(ScopeType.CONVERSATION)
+public class ConfigurationSeam implements IConfigurationLocal
+{
+  @EJB
+  IConfigurationServiceLocal m_configurationService;
+
+  @Restrict("#{s:hasRole('admin')}")
+  public ConfigurationData getConfiguration()
+  {
+    final ConfigurationData configuration = new ConfigurationData();
+
+    configuration.setAutoRegistrationEnabled(m_configurationService.getBooleanValue(CONTEXT_SERVER,
+        LOGIN_AUTOREGISTRATION_ENABLED, true));
+
+    return configuration;
+  }
+
+  @Restrict("#{s:hasRole('admin')}")
+  public void setConfiguration(final ConfigurationData configuration)
+  {
+    m_configurationService.setBooleanValue(CONTEXT_SERVER, LOGIN_AUTOREGISTRATION_ENABLED, configuration
+        .isAutoRegistrationEnabled());
+  }
+}

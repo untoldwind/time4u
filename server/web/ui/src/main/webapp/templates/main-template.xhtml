@@ -34,6 +34,7 @@
 				</rich:dropDownMenu>
 
 				<rich:dropDownMenu value="Admin" rendered="#{s:hasRole('admin')}">
+					
 					<rich:menuItem submitMode="ajax" value="Accounts"
 						action="#{admin.accountListController.enter}" rendered="#{s:hasRole('admin')}" />
 
@@ -42,6 +43,9 @@
 
 					<rich:menuItem submitMode="ajax" value="Day tags"
 						action="#{admin.dayTagListController.enter}" rendered="#{s:hasRole('admin')}" />
+
+					<rich:menuItem submitMode="ajax" value="Configuration"
+						action="#{admin.configurationController.enter}" rendered="#{s:hasRole('admin')}" />
 				</rich:dropDownMenu>
 			</h:panelGrid>
 		</a4j:form>
