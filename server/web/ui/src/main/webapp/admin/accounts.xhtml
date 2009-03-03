@@ -74,6 +74,8 @@
 									<td colspan="3">
 										<a4j:commandButton
 											action="#{admin.accountListController.resetPassword}" value="Reset Password" />
+										<a4j:commandButton
+											action="#{admin.accountListController.confirmDeleteAccount}" value="Delete Account" rendered="#{admin.accountListController.selectedAccount.userId != 'admin'}"/>
 									</td>
 								</tr>
 							</table>

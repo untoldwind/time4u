@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+	template="../templates/main-template.xhtml">
+
+	<ui:define name="title">Delete Account</ui:define>
+	<ui:define name="contentDetail">
+		<h:form>
+			<table>
+				<s:decorate template="../templates/decorateTableField.xhtml">
+					<ui:define name="label">UserId</ui:define>
+					<h:outputText
+						value="#{admin.accountListController.selectedAccount.userId}" />
+				</s:decorate>
+				<tr>
+					<td colspan="3">
+						<a4j:commandButton
+							action="#{admin.accountListController.deleteAccount}" value="Delete" />
+						<a4j:commandButton
+							action="#{admin.accountListController.enter}" value="Cancel" />
+					</td>
+				</tr>
+			</table>
+		</h:form>
+	</ui:define>
+</ui:composition>

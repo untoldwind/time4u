@@ -118,4 +118,15 @@ public class AccountServiceSeam implements IAccountServiceLocal
 
     initUserAccounts();
   }
+
+  @Restrict("#{s:hasRole('admin')}")
+  public void deleteAccount(final String userId)
+  {
+    final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, userId);
+
+    m_manager.remove(userAccount);
+    m_manager.flush();
+
+    initUserAccounts();
+  }
 }

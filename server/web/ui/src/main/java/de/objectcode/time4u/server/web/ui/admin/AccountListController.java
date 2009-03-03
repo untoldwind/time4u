@@ -20,6 +20,8 @@ public class AccountListController
 {
   public static final String VIEW_ID = "/admin/accounts.xhtml";
 
+  public static final String DELETE_VIEW_ID = "/admin/deleteAccount.xhtml";
+
   @In("AccountService")
   IAccountServiceLocal m_accountService;
 
@@ -116,6 +118,21 @@ public class AccountListController
       } else {
         StatusMessages.instance().add(StatusMessage.Severity.ERROR, "Passwords do not match");
       }
+    }
+    return VIEW_ID;
+  }
+
+  public String confirmDeleteAccount()
+  {
+    return DELETE_VIEW_ID;
+  }
+
+  public String deleteAccount()
+  {
+    if (m_selectedAccount != null) {
+      m_accountService.deleteAccount(m_selectedAccount.getUserId());
+
+      m_selectedAccount = null;
     }
     return VIEW_ID;
   }

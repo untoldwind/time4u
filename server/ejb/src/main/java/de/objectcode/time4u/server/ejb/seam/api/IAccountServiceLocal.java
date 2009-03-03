@@ -10,6 +10,7 @@ public interface IAccountServiceLocal
 
   void updatePerson(String userId, String givenName, String surname, String email);
 
-  void createAccount(final String userId, final String hashedPassword, final String givenName, final String surname,
-      final String email);
+  void createAccount(String userId, String hashedPassword, String givenName, String surname, String email);
+
+  public void deleteAccount(String userId);
 }
