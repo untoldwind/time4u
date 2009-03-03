@@ -137,6 +137,14 @@
                toolbarPath="filter"
                tooltip="%action.todo.view.filter.tooltip">
          </action>
+         <action
+               class="de.objectcode.time4u.client.ui.actions.TodoViewActionDelegate"
+               id="de.objectcode.time4u.client.ui.todo.filter.onlyVisible"
+               label="%action.todo.view.filter.onlyVisible.label"
+               menubarPath="visibleFilter"
+               style="toggle"
+               tooltip="%action.todo.view.filter.onlyVisible.tooltip">
+         </action>
       </viewContribution>
    </extension>
    <extension

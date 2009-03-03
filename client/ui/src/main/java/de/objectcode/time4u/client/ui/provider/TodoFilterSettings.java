@@ -16,6 +16,7 @@ public class TodoFilterSettings
   Set<TodoState> m_states = EnumSet.allOf(TodoState.class);
   Integer m_hideCreatedOlderThan;
   Integer m_hideCompletedOlderThan;
+  boolean m_onlyVisible = true;
 
   public boolean isUnassigned()
   {
@@ -62,7 +63,7 @@ public class TodoFilterSettings
     return m_hideCreatedOlderThan;
   }
 
-  public void setHideCreatedOderThan(final Integer hideCreatedOlderThan)
+  public void setHideCreatedOlderThan(final Integer hideCreatedOlderThan)
   {
     m_hideCreatedOlderThan = hideCreatedOlderThan;
   }
@@ -75,6 +76,16 @@ public class TodoFilterSettings
   public void setHideCompletedOlderThan(final Integer hideCompletedOlderThan)
   {
     m_hideCompletedOlderThan = hideCompletedOlderThan;
+  }
+
+  public boolean isOnlyVisible()
+  {
+    return m_onlyVisible;
+  }
+
+  public void setOnlyVisible(final boolean onlyVisible)
+  {
+    m_onlyVisible = onlyVisible;
   }
 
   public void apply(final TodoFilter filter)

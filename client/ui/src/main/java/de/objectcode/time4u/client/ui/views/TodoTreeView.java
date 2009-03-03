@@ -307,6 +307,8 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
         m_viewType = ViewType.valueOf(viewType);
       }
 
+      m_filterSettings.setOnlyVisible(memento.getBoolean("filter.onlyVisible") != null ? memento
+          .getBoolean("filter.onlyVisible") : true);
       m_filterSettings.setUnassigned(memento.getBoolean("filter.unassigned") != null ? memento
           .getBoolean("filter.unassigned") : true);
       m_filterSettings.setAssignedToMe(memento.getBoolean("filter.assignedToMe") != null ? memento
@@ -324,9 +326,9 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
       }
       final Boolean hideCreatedOlderThan = memento.getBoolean("filter.hideCreatedOlderThan");
       if (hideCreatedOlderThan != null && hideCreatedOlderThan) {
-        m_filterSettings.setHideCreatedOderThan(memento.getInteger("filter.hideCreatedOlderThan.value"));
+        m_filterSettings.setHideCreatedOlderThan(memento.getInteger("filter.hideCreatedOlderThan.value"));
       } else {
-        m_filterSettings.setHideCreatedOderThan(null);
+        m_filterSettings.setHideCreatedOlderThan(null);
       }
       final Boolean hideCompletedOlderThan = memento.getBoolean("filter.hideCompletedOlderThan");
       if (hideCompletedOlderThan != null && hideCompletedOlderThan) {
@@ -346,6 +348,7 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
     super.saveState(memento);
 
     memento.putString("viewType", m_viewType.toString());
+    memento.putBoolean("filter.onlyVisible", m_filterSettings.isOnlyVisible());
     memento.putBoolean("filter.unassigned", m_filterSettings.isUnassigned());
     memento.putBoolean("filter.assignedToMe", m_filterSettings.isAssignedToMe());
     memento.putBoolean("filter.assignedToOther", m_filterSettings.isAssignedToOther());

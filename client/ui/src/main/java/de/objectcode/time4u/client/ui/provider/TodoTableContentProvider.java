@@ -26,7 +26,7 @@ public class TodoTableContentProvider implements IStructuredContentProvider
 
       m_filterSettings.apply(filter);
 
-      return m_todoRepository.getTodoSummaries(filter, true).toArray();
+      return m_todoRepository.getTodoSummaries(filter, m_filterSettings.isOnlyVisible()).toArray();
     } catch (final Exception e) {
       UIPlugin.getDefault().log(e);
     }

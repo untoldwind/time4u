@@ -44,6 +44,10 @@ public class TodoViewActionDelegate implements IViewActionDelegate
       m_view.getFilterSettings().setAssignedToOther(!m_view.getFilterSettings().isAssignedToOther());
       action.setChecked(m_view.getFilterSettings().isAssignedToOther());
       m_view.refresh();
+    } else if ("de.objectcode.time4u.client.ui.todo.filter.onlyVisible".equals(id)) {
+      m_view.getFilterSettings().setOnlyVisible(!m_view.getFilterSettings().isOnlyVisible());
+      action.setChecked(m_view.getFilterSettings().isOnlyVisible());
+      m_view.refresh();
     } else if ("de.objectcode.time4u.client.ui.todo.filter".equals(id)) {
       final TodoFilterDialog dialog = new TodoFilterDialog(m_view.getSite(), m_view.getFilterSettings());
 
@@ -70,6 +74,8 @@ public class TodoViewActionDelegate implements IViewActionDelegate
       action.setChecked(m_view.getFilterSettings().isAssignedToMe());
     } else if ("de.objectcode.time4u.client.ui.todo.filter.assignedtoother".equals(id)) {
       action.setChecked(m_view.getFilterSettings().isAssignedToOther());
+    } else if ("de.objectcode.time4u.client.ui.todo.filter.onlyVisible".equals(id)) {
+      action.setChecked(m_view.getFilterSettings().isOnlyVisible());
     }
   }
 }

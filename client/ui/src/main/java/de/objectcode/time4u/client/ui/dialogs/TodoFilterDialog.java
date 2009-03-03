@@ -134,9 +134,9 @@ public class TodoFilterDialog extends Dialog
       }
     }
     if (!m_hideCreatedOlderThenButton.getSelection()) {
-      m_filterSettings.setHideCreatedOderThan(null);
+      m_filterSettings.setHideCreatedOlderThan(null);
     } else {
-      m_filterSettings.setHideCreatedOderThan(m_hideCreatedOlderThenSpinner.getSelection());
+      m_filterSettings.setHideCreatedOlderThan(m_hideCreatedOlderThenSpinner.getSelection());
     }
     if (!m_hideCompletedOlderThenButton.getSelection()) {
       m_filterSettings.setHideCompletedOlderThan(null);
