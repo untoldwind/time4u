@@ -2,7 +2,7 @@
   <parent>
 	<groupId>de.objectcode.time4u</groupId>
 	<artifactId>time4u</artifactId>
-	<version>0.9.6</version>
+	<version>0.9.7-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
