@@ -25,6 +25,8 @@ public class PersonSummary implements ISynchronizableData
   private long m_lastModifiedByClient;
   /** Flag if the person is deleted. */
   private boolean m_deleted;
+  /** Flag if the person is active. */
+  private boolean m_active;
   /** Given name of the person. */
   private String m_givenName;
   /** Surname of the person. */
@@ -98,6 +100,17 @@ public class PersonSummary implements ISynchronizableData
   public void setDeleted(final boolean deleted)
   {
     m_deleted = deleted;
+  }
+
+  @XmlAttribute
+  public boolean isActive()
+  {
+    return m_active;
+  }
+
+  public void setActive(final boolean active)
+  {
+    m_active = active;
   }
 
   @XmlAttribute

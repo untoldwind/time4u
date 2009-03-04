@@ -16,6 +16,8 @@ public class PersonFilter implements Serializable
 
   /** Condition for the delete flag (optional). */
   Boolean m_deleted;
+  /** Condition for the active flag (optional). */
+  Boolean m_active;
   /** Minimum (inclusive) revision number (i.e. only revisions greater or equals are returned). */
   Long m_minRevision;
   /** Maximum (inclusive) revision number (i.e. only revisions less or equals are returned). */
@@ -32,9 +34,11 @@ public class PersonFilter implements Serializable
     m_order = Order.ID;
   }
 
-  public PersonFilter(final Boolean deleted, final Long minRevision, final Long maxRevision, final Order order)
+  public PersonFilter(final Boolean deleted, final Boolean active, final Long minRevision, final Long maxRevision,
+      final Order order)
   {
     m_deleted = deleted;
+    m_active = active;
     m_minRevision = minRevision;
     m_maxRevision = maxRevision;
     m_order = order;
@@ -48,6 +52,16 @@ public class PersonFilter implements Serializable
   public void setDeleted(final Boolean deleted)
   {
     m_deleted = deleted;
+  }
+
+  public Boolean getActive()
+  {
+    return m_active;
+  }
+
+  public void setActive(final Boolean active)
+  {
+    m_active = active;
   }
 
   public Long getMinRevision()
@@ -102,12 +116,12 @@ public class PersonFilter implements Serializable
 
   public static PersonFilter filterAll()
   {
-    return new PersonFilter(false, 0L, null, Order.NAME);
+    return new PersonFilter(false, true, 0L, null, Order.NAME);
   }
 
   public static PersonFilter filterMemberOf(final String teamId)
   {
-    final PersonFilter filter = new PersonFilter(false, 0L, null, Order.NAME);
+    final PersonFilter filter = new PersonFilter(false, true, 0L, null, Order.NAME);
     filter.setMemberOfTeamId(teamId);
     return filter;
   }
@@ -117,6 +131,7 @@ public class PersonFilter implements Serializable
   {
     final StringBuffer buffer = new StringBuffer("PersonFilter(");
     buffer.append("deleted=").append(m_deleted);
+    buffer.append(",active=").append(m_active);
     buffer.append(",minRevision=").append(m_minRevision);
     buffer.append(",maxRevision=").append(m_maxRevision);
     buffer.append(",lastModifiedByClient=").append(m_lastModifiedByClient);

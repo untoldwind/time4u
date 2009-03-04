@@ -31,7 +31,7 @@ public class AccountListController
   @In("common.passwordConfirm")
   PasswordConfirm m_passwordConfirm;
 
-  int currentPage;
+  int m_currentPage;
 
   @Begin(join = true)
   public String enter()
@@ -73,12 +73,12 @@ public class AccountListController
 
   public int getCurrentPage()
   {
-    return currentPage;
+    return m_currentPage;
   }
 
   public void setCurrentPage(final int currentPage)
   {
-    this.currentPage = currentPage;
+    m_currentPage = currentPage;
   }
 
   public String resetPassword()

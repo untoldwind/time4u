@@ -62,13 +62,13 @@
 						</rich:tab>
 						<rich:tab label="Owners">
 							<rich:pickList value="#{admin.teamListController.selectedTeam.owners}">
-								<s:selectItems value="#{admin.personList.wrappedData}"
+								<s:selectItems value="#{admin.activePersonList.wrappedData}"
 									var="person" itemValue="#{person.id}" label="#{person.givenName} #{person.surname}" />
 							</rich:pickList>
 						</rich:tab>
 						<rich:tab label="Members">
 							<rich:pickList value="#{admin.teamListController.selectedTeam.members}">
-								<s:selectItems value="#{admin.personList.wrappedData}"
+								<s:selectItems value="#{admin.activePersonList.wrappedData}"
 									var="person" itemValue="#{person.id}" label="#{person.givenName} #{person.surname}" />
 							</rich:pickList>
 						</rich:tab>

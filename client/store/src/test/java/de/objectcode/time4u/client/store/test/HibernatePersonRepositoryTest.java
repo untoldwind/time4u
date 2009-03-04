@@ -63,7 +63,7 @@ public class HibernatePersonRepositoryTest
   public void testFind() throws Exception
   {
     final List<PersonSummary> personSummaries = repository.getPersonRepository().getPersonSummaries(
-        new PersonFilter(null, null, null, PersonFilter.Order.ID));
+        new PersonFilter(null, null, null, null, PersonFilter.Order.ID));
 
     assertNotNull(personSummaries);
     assertEquals(personSummaries.size(), 11);

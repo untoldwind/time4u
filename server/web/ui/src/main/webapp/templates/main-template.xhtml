@@ -38,6 +38,9 @@
 					<rich:menuItem submitMode="ajax" value="Accounts"
 						action="#{admin.accountListController.enter}" rendered="#{s:hasRole('admin')}" />
 
+					<rich:menuItem submitMode="ajax" value="Persons"
+						action="#{admin.personListController.enter}" rendered="#{s:hasRole('admin')}" />
+						
 					<rich:menuItem submitMode="ajax" value="Teams"
 						action="#{admin.teamListController.enter}" rendered="#{s:hasRole('admin')}" />
 

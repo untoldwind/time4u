@@ -36,6 +36,8 @@ public class PersonEntity
   private long m_revision;
   /** Flag if the person is deleted. */
   private boolean m_deleted;
+  /** Flag if the person is active. */
+  private boolean m_active;
   /** Client id of the last modification */
   private long m_lastModifiedByClient;
   /** Given name of the person. */
@@ -64,6 +66,7 @@ public class PersonEntity
     m_id = id;
     m_revision = revision;
     m_lastModifiedByClient = lastModifiedByClient;
+    m_active = true;
   }
 
   @Id
@@ -174,6 +177,20 @@ public class PersonEntity
     m_deleted = deleted;
   }
 
+  public Boolean getActive()
+  {
+    return m_active;
+  }
+
+  public void setActive(final Boolean active)
+  {
+    if (active == null) {
+      m_active = true;
+    } else {
+      m_active = active;
+    }
+  }
+
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
   @OrderBy
   public Set<TimePolicyEntity> getTimePolicies()
@@ -229,6 +246,7 @@ public class PersonEntity
     person.setSurname(m_surname);
     person.setEmail(m_email);
     person.setDeleted(m_deleted);
+    person.setActive(m_active);
     person.setLastSynchronize(m_lastSynchronize);
 
   }
@@ -258,6 +276,7 @@ public class PersonEntity
     m_surname = person.getSurname();
     m_email = person.getEmail();
     m_deleted = person.isDeleted();
+    m_active = person.isActive();
 
     if (m_metaProperties == null) {
       m_metaProperties = new HashMap<String, PersonMetaPropertyEntity>();

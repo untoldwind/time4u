@@ -110,7 +110,7 @@ public class HibernateTodoRepositoryTest
     }
 
     final List<PersonSummary> personSummaries = repository.getPersonRepository().getPersonSummaries(
-        new PersonFilter(null, null, null, PersonFilter.Order.ID));
+        new PersonFilter(null, null, null, null, PersonFilter.Order.ID));
 
     assertNotNull(personSummaries);
     assertTrue(personSummaries.size() > 1);

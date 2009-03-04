@@ -91,6 +91,13 @@ public class HibernatePersonRepository implements IPersonRepository
         if (filter.getDeleted() != null) {
           criteria.add(Restrictions.eq("deleted", filter.getDeleted()));
         }
+        if (filter.getActive() != null) {
+          if (filter.getActive()) {
+            criteria.add(Restrictions.or(Restrictions.isNull("active"), Restrictions.eq("active", true)));
+          } else {
+            criteria.add(Restrictions.and(Restrictions.isNotNull("active"), Restrictions.eq("active", false)));
+          }
+        }
         if (filter.getMinRevision() != null) {
           criteria.add(Restrictions.ge("revision", filter.getMinRevision()));
         }

@@ -6,7 +6,11 @@ public interface IPersonServiceLocal
 {
   void initPersons();
 
+  public void initActivePersons();
+
   PersonEntity getPerson(String id);
 
   void initAllowedPersons();
+
+  void storePerson(final PersonEntity personEntity);
 }

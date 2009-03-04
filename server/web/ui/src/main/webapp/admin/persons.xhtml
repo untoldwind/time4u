@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+	template="../templates/main-template.xhtml">
+
+	<ui:define name="title">Persons</ui:define>
+	<ui:define name="contentDetail">
+		<h:form>
+			<h:panelGroup>
+				<a4j:region renderRegionOnly="true">
+					<rich:dataTable id="personListTable" rows="10"
+						value="#{admin.personList}" var="person" rowClasses="first,second"
+						columnClasses="narrow,wide">
+						<rich:column>
+							<h:outputText value="*"
+								rendered="#{person.id == admin.personListController.selectedPerson.id}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Surname</f:facet>
+							<a4j:commandLink action="#{admin.personListController.select(person)}"
+								reRender="personDetail"
+								rendered="#{person.id != admin.personListController.selectedPerson.id}">
+								#{person.surname}
+							</a4j:commandLink>
+							<h:outputText value="#{person.surname}" 
+								rendered="#{person.id == admin.personListController.selectedPerson.id}"/>
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Given name</f:facet>
+							#{person.givenName} 
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">EMail</f:facet>
+							#{person.email}
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Active</f:facet>
+							<h:outputText value="*"
+								rendered="#{person.active}" />
+						</rich:column>
+						<f:facet name="footer">
+							<rich:datascroller for="personListTable"
+								pageIndexVar="pageIndex" pagesVar="pages" page="#{admin.personListController.currentPage}">
+								<f:facet name="pages">
+									<h:outputText value="#{pageIndex} / #{pages}"></h:outputText>
+								</f:facet>
+							</rich:datascroller>
+						</f:facet>
+					</rich:dataTable>
+				</a4j:region>
+				<h:panelGroup id="accountDetail"
+					rendered="#{admin.personListController.hasSelection}">
+					<table>
+						<s:decorate template="../templates/decorateTableField.xhtml">
+							<ui:define name="label">Griven name</ui:define>
+							<h:inputText
+								value="#{admin.personListController.selectedPerson.givenName}" />
+						</s:decorate>
+						<s:decorate template="../templates/decorateTableField.xhtml">
+							<ui:define name="label">Surname</ui:define>
+							<h:inputText
+								value="#{admin.personListController.selectedPerson.surname}" />
+						</s:decorate>
+						<s:decorate template="../templates/decorateTableField.xhtml">
+							<ui:define name="label">Email</ui:define>
+							<h:inputText
+								value="#{admin.personListController.selectedPerson.email}" />
+						</s:decorate>
+						<s:decorate template="../templates/decorateTableField.xhtml">
+							<ui:define name="label">Active</ui:define>
+							<h:selectBooleanCheckbox
+								value="#{admin.personListController.selectedPerson.active}" />
+						</s:decorate>
+						<tr>
+							<td colspan="3">
+								<a4j:commandButton
+									action="#{admin.personListController.updatePerson}" value="Update" />
+							</td>
+						</tr>								
+					</table>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>
