@@ -9,7 +9,7 @@ Name: epl-v10.html
 SHA1-Digest: pTOyybcpEe+Y8lkSVUtarMleXqE=
 
 Name: feature.xml
-SHA1-Digest: 7LhUeuGkaK4h8aDmpomC+HkYJGs=
+SHA1-Digest: rRMV613wVxP0N3I+DgVzQMx+dm0=
 
 Name: license.html
 SHA1-Digest: YXfaVLayE8gaE0VWfKzUHsp6IyM=

@@ -82,22 +82,22 @@
 			<dependency>
 				<groupId>org.eclipse</groupId>
 				<artifactId>osgi</artifactId>
-				<version>3.4.2</version>
+				<version>3.4.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse</groupId>
 				<artifactId>ui</artifactId>
-				<version>3.4.1</version>
+				<version>3.4.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse</groupId>
 				<artifactId>rcp</artifactId>
-				<version>3.4.0</version>
+				<version>3.4.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse</groupId>
 				<artifactId>help</artifactId>
-				<version>3.3.101</version>
+				<version>3.3.102</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.core</groupId>
@@ -127,12 +127,12 @@
 			<dependency>
 				<groupId>org.eclipse.core</groupId>
 				<artifactId>expressions</artifactId>
-				<version>3.4.0</version>
+				<version>3.4.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.core</groupId>
 				<artifactId>jobs</artifactId>
-				<version>3.4.0</version>
+				<version>3.4.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.core.databinding</groupId>
@@ -177,7 +177,7 @@
 			<dependency>
 				<groupId>org.eclipse.ui</groupId>
 				<artifactId>workbench</artifactId>
-				<version>3.4.1</version>
+				<version>3.4.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.ui</groupId>
@@ -187,7 +187,7 @@
 			<dependency>
 				<groupId>org.eclipse</groupId>
 				<artifactId>jface</artifactId>
-				<version>3.4.1</version>
+				<version>3.4.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.jface</groupId>
@@ -197,7 +197,7 @@
 			<dependency>
 				<groupId>org.eclipse</groupId>
 				<artifactId>swt</artifactId>
-				<version>3.4.1</version>
+				<version>3.4.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.swt.carbon</groupId>
