@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.objectcode.time4u</groupId>
 	<artifactId>time4u</artifactId>
-	<version>0.9.6-SNAPSHOT</version>
+	<version>0.9.6</version>
 	<packaging>pom</packaging>
 	<name>time4u</name>
 	<modules>
@@ -12,9 +12,9 @@
 		<module>migrator</module>
 	</modules>
 	<scm>
-		<connection>scm:svn:https://time4u.svn.sourceforge.net/svnroot/time4u/trunk</connection>
-		<developerConnection>scm:svn:https://time4u.svn.sourceforge.net/svnroot/time4u/trunk</developerConnection>
-		<url>http://time4u.svn.sourceforge.net/viewvc/time4u/trunk</url>
+		<connection>scm:svn:https://time4u.svn.sourceforge.net/svnroot/time4u/tags/time4u-0.9.6</connection>
+		<developerConnection>scm:svn:https://time4u.svn.sourceforge.net/svnroot/time4u/tags/time4u-0.9.6</developerConnection>
+		<url>http://time4u.svn.sourceforge.net/viewvc/time4u/tags/time4u-0.9.6</url>
 	</scm>
 	<distributionManagement>
 		<site>
