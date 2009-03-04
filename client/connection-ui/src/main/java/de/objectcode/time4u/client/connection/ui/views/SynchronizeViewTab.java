@@ -29,6 +29,7 @@ public class SynchronizeViewTab
   Composite m_top;
   Label m_statusLabel;
   Label m_lastRunLabel;
+  Label m_lastErrorLabel;
   Button m_synchronizeNow;
 
   SimpleDateFormat m_lastRunFormat;
@@ -73,6 +74,13 @@ public class SynchronizeViewTab
     m_lastRunLabel = new Label(labelBar, SWT.CENTER | SWT.BORDER);
     m_lastRunLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     m_lastRunFormat = new SimpleDateFormat(ConnectionUIPlugin.getDefault().getString("synchronizeView.lastRun.format"));
+
+    final Label lastErrorLabel = new Label(labelBar, SWT.LEFT);
+
+    lastErrorLabel.setText(ConnectionUIPlugin.getDefault().getString("synchronizeView.lastError.label"));
+
+    m_lastErrorLabel = new Label(labelBar, SWT.CENTER | SWT.BORDER);
+    m_lastErrorLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
     final Composite buttonBar = new Composite(top, SWT.NONE);
 
@@ -123,18 +131,22 @@ public class SynchronizeViewTab
             case NONE:
               m_statusLabel.setText(ConnectionUIPlugin.getDefault().getString("synchronizeView.status.none"));
               m_statusLabel.setBackground(m_statusLabel.getDisplay().getSystemColor(SWT.COLOR_GRAY));
+              m_lastErrorLabel.setText("");
               break;
             case SCHEDULED:
               m_statusLabel.setText(ConnectionUIPlugin.getDefault().getString("synchronizeView.status.scheduled"));
               m_statusLabel.setBackground(m_statusLabel.getDisplay().getSystemColor(SWT.COLOR_YELLOW));
+              m_lastErrorLabel.setText("");
               break;
             case OK:
               m_statusLabel.setText(ConnectionUIPlugin.getDefault().getString("synchronizeView.status.ok"));
               m_statusLabel.setBackground(m_statusLabel.getDisplay().getSystemColor(SWT.COLOR_GREEN));
+              m_lastErrorLabel.setText("");
               break;
             case FAILURE:
               m_statusLabel.setText(ConnectionUIPlugin.getDefault().getString("synchronizeView.status.failure"));
               m_statusLabel.setBackground(m_statusLabel.getDisplay().getSystemColor(SWT.COLOR_RED));
+              m_lastErrorLabel.setText(job.getLastError());
               break;
           }
           if (lastRun != null) {

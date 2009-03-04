@@ -16,6 +16,7 @@ public class SynchronizeJob extends Job
 {
   private final ServerConnection m_serverConnection;
   private Date m_lastRun;
+  private String m_lastError;
   private SynchronizationStatus m_status;
 
   public SynchronizeJob(final ServerConnection serverConnection)
@@ -41,6 +42,7 @@ public class SynchronizeJob extends Job
     } catch (final Exception e) {
       ConnectionUIPlugin.getDefault().log(e);
       m_status = SynchronizationStatus.FAILURE;
+      m_lastError = e.getMessage();
     } finally {
       monitor.done();
     }
@@ -54,6 +56,11 @@ public class SynchronizeJob extends Job
   public Date getLastRun()
   {
     return m_lastRun;
+  }
+
+  public String getLastError()
+  {
+    return m_lastError;
   }
 
   public SynchronizationStatus getStatus()

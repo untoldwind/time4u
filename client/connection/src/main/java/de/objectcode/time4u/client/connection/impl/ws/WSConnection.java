@@ -183,6 +183,9 @@ public class WSConnection implements IConnection
 
   public void sychronizeNow(final IProgressMonitor monitor) throws ConnectionException
   {
+    if (!testConnection()) {
+      throw new ConnectionException("API Version differs");
+    }
     monitor.beginTask("Synchronize", m_synchronizationCommands.size());
 
     try {
