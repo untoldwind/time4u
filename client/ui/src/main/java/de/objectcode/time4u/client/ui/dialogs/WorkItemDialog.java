@@ -12,6 +12,8 @@ import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -212,6 +214,16 @@ public class WorkItemDialog extends Dialog
     m_commentText.setLayoutData(gridData);
     m_commentText.setText(m_workItem.getComment());
     m_commentText.setTextLimit(1000);
+    m_commentText.addTraverseListener(new TraverseListener() {
+      public void keyTraversed(final TraverseEvent e)
+      {
+        if (e.detail == SWT.TRAVERSE_TAB_NEXT || e.detail == SWT.TRAVERSE_TAB_PREVIOUS) {
+          e.doit = true;
+        } else if (e.detail == SWT.TRAVERSE_RETURN && e.stateMask != 0) {
+          e.doit = true;
+        }
+      }
+    });
 
     final Label todoLabel = new Label(root, SWT.LEFT);
     todoLabel.setText(UIPlugin.getDefault().getString("workItem.todo.label"));

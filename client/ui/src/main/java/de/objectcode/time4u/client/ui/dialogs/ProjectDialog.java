@@ -17,6 +17,8 @@ import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -146,6 +148,16 @@ public class ProjectDialog extends Dialog
     m_descriptionText.setLayoutData(gridData);
     m_descriptionText.setText(m_project.getDescription() != null ? m_project.getDescription() : "");
     m_descriptionText.setTextLimit(1000);
+    m_descriptionText.addTraverseListener(new TraverseListener() {
+      public void keyTraversed(final TraverseEvent e)
+      {
+        if (e.detail == SWT.TRAVERSE_TAB_NEXT || e.detail == SWT.TRAVERSE_TAB_PREVIOUS) {
+          e.doit = true;
+        } else if (e.detail == SWT.TRAVERSE_RETURN && e.stateMask != 0) {
+          e.doit = true;
+        }
+      }
+    });
 
     m_metaFields = new ArrayList<MetaField>();
     for (final MetaCategory category : RepositoryFactory.getMetaRepository().getCategories()) {
