@@ -45,6 +45,7 @@ import de.objectcode.time4u.client.ui.provider.TodoAssginmentTableLabelProvider;
 import de.objectcode.time4u.client.ui.provider.TodoGroupContentProvider;
 import de.objectcode.time4u.client.ui.provider.TodoLabelProvider;
 import de.objectcode.time4u.client.ui.provider.TodoStateLabelProvider;
+import de.objectcode.time4u.client.ui.util.TimeFormat;
 import de.objectcode.time4u.server.api.data.PersonSummary;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.data.Todo;
@@ -56,6 +57,7 @@ public class TodoDialog extends Dialog
 {
   private Text m_headerText;
   private ComboViewer m_stateCombo;
+  private Text m_estimatedTime;
   private Text m_descriptionText;
   private ComboTreeViewer m_groupTreeViewer;
   private ComboTreeViewer m_projectTreeViewer;
@@ -260,6 +262,14 @@ public class TodoDialog extends Dialog
       UIPlugin.getDefault().log(e);
     }
 
+    final Label estimateLabel = new Label(root, SWT.NONE);
+    estimateLabel.setText(UIPlugin.getDefault().getString("todo.estimatedTime.label"));
+
+    m_estimatedTime = new Text(root, SWT.BORDER);
+    if (m_todo.getEstimatedTime() != null) {
+      m_estimatedTime.setText(TimeFormat.format(m_todo.getEstimatedTime()));
+    }
+
     final Label descriptionLabel = new Label(root, SWT.LEFT);
     descriptionLabel.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
     descriptionLabel.setText(UIPlugin.getDefault().getString("todo.description.label"));
@@ -350,6 +360,12 @@ public class TodoDialog extends Dialog
   {
     m_todo.setHeader(m_headerText.getText());
     m_todo.setDescription(m_descriptionText.getText());
+    if (m_estimatedTime.getText() != null && m_estimatedTime.getText().length() > 0) {
+      try {
+        m_todo.setEstimatedTime(TimeFormat.parse(m_estimatedTime.getText()));
+      } catch (final NumberFormatException e) {
+      }
+    }
     m_todo.setGroupdId(null);
     final ISelection stateSelection = m_stateCombo.getSelection();
     if (stateSelection instanceof IStructuredSelection) {
