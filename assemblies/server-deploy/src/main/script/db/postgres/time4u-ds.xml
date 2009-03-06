@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ===================================================================== -->
+<!--                                                                       -->
+<!--  JBoss Server Configuration                                           -->
+<!--                                                                       -->
+<!-- ===================================================================== -->
+
+<!-- $Id: postgres-ds.xml 71535 2008-04-01 07:05:03Z adrian@jboss.org $ -->
+<!-- ==================================================================== -->
+<!--  Datasource config for Postgres                                      -->
+<!-- ==================================================================== -->
+
+
+<datasources>
+  <local-tx-datasource>
+    <jndi-name>Time4UDS</jndi-name>
+    <connection-url>jdbc:postgresql://@db.host@:5432/@db.name@</connection-url>
+    <driver-class>org.postgresql.Driver</driver-class>
+	<user-name>@db.user@</user-name>
+	<password>@db.password@</password>
+	<transaction-isolation>TRANSACTION_READ_COMMITTED</transaction-isolation>
+        <!-- sql to call when connection is created.  Can be anything, select 1 is valid for PostgreSQL
+        <new-connection-sql>select 1</new-connection-sql>
+        -->
+
+        <!-- sql to call on an existing pooled connection when it is obtained from pool.  Can be anything, select 1 is valid for PostgreSQL
+        <check-valid-connection-sql>select 1</check-valid-connection-sql>
+        -->
+
+      <!-- corresponding type-mapping in the standardjbosscmp-jdbc.xml (optional) -->
+      <metadata>
+         <type-mapping>PostgreSQL 7.2</type-mapping>
+      </metadata>
+  </local-tx-datasource>
+
+</datasources>

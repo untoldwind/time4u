@@ -2,7 +2,7 @@
 <datasources>
   <local-tx-datasource>
     <jndi-name>Time4UDS</jndi-name>
-    <connection-url>jdbc:oracle:thin:@@db.host@:1521:@db.name@</connection-url>
+    <connection-url>jdbc:oracle:thin:@db.host@:1521:@db.name@</connection-url>
 	<!--
 
 		Here are a couple of the possible OCI configurations.
