@@ -12,5 +12,9 @@ public interface IPersonServiceLocal
 
   void initAllowedPersons();
 
-  void storePerson(final PersonEntity personEntity);
+  void storePerson(PersonEntity personEntity);
+
+  PersonStatisticData getPersonStatistics(String personId);
+
+  void deletePerson(String personId);
 }

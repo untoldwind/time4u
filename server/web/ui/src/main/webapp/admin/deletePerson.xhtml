@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+	template="../templates/main-template.xhtml">
+
+	<ui:define name="title">Delete Person</ui:define>
+	<ui:define name="contentDetail">
+		<h:form>
+			<table>
+				<s:decorate template="../templates/decorateTableField.xhtml">
+					<ui:define name="label">Griven name</ui:define>
+					<h:inputText
+						value="#{admin.personListController.selectedPerson.givenName}" />
+				</s:decorate>
+				<s:decorate template="../templates/decorateTableField.xhtml">
+					<ui:define name="label">Surname</ui:define>
+					<h:inputText
+						value="#{admin.personListController.selectedPerson.surname}" />
+				</s:decorate>
+				<s:decorate template="../templates/decorateTableField.xhtml">
+					<ui:define name="label">Email</ui:define>
+					<h:inputText
+						value="#{admin.personListController.selectedPerson.email}" />
+				</s:decorate>
+				<tr>
+					<td colspan="3">The following information associated with this person will be irreversibly deleted.</td>
+				</tr>
+				<s:decorate template="../templates/decorateTableField.xhtml">
+					<ui:define name="label">Number of accounts</ui:define>
+					<h:outputText
+						value="#{admin.personListController.selectedPersonStatistic.numberOfAccounts}" />
+				</s:decorate>
+				<s:decorate template="../templates/decorateTableField.xhtml">
+					<ui:define name="label">Number of timepolicies</ui:define>
+					<h:outputText
+						value="#{admin.personListController.selectedPersonStatistic.numberOfTimepolicies}" />
+				</s:decorate>
+				<s:decorate template="../templates/decorateTableField.xhtml">
+					<ui:define name="label">Number of dayinfos</ui:define>
+					<h:outputText
+						value="#{admin.personListController.selectedPersonStatistic.numberOfDayinfos}" />
+				</s:decorate>
+				<s:decorate template="../templates/decorateTableField.xhtml">
+					<ui:define name="label">Number of workitems</ui:define>
+					<h:outputText
+						value="#{admin.personListController.selectedPersonStatistic.numberOfWorkitems}" />
+				</s:decorate>
+				<s:decorate template="../templates/decorateTableField.xhtml">
+					<ui:define name="label">Number of todo assignments</ui:define>
+					<h:outputText
+						value="#{admin.personListController.selectedPersonStatistic.numberOfTodoassignments}" />
+				</s:decorate>
+				<tr>
+					<td colspan="3">
+						<a4j:commandButton
+							action="#{admin.personListController.deletePerson}" value="Delete" />
+						<a4j:commandButton
+							action="#{admin.personListController.enter}" value="Cancel" />
+					</td>
+				</tr>
+			</table>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -26,8 +26,15 @@ import org.jboss.seam.security.Identity;
 
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.ejb.seam.api.IPersonServiceLocal;
+import de.objectcode.time4u.server.ejb.seam.api.PersonStatisticData;
+import de.objectcode.time4u.server.entities.ClientEntity;
+import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.TeamEntity;
+import de.objectcode.time4u.server.entities.TimePolicyEntity;
+import de.objectcode.time4u.server.entities.TodoAssignmentEntity;
+import de.objectcode.time4u.server.entities.TodoEntity;
+import de.objectcode.time4u.server.entities.WorkItemEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
@@ -139,4 +146,148 @@ public class PersonServiceSeam implements IPersonServiceLocal
     }
   }
 
+  @Restrict("#{s:hasRole('user')}")
+  public PersonStatisticData getPersonStatistics(final String personId)
+  {
+    final Query countUserAccount = m_manager.createQuery("select count(*) from " + UserAccountEntity.class.getName()
+        + " a where a.person.id = :personId");
+    countUserAccount.setParameter("personId", personId);
+
+    final long numberOfUserAccounts = (Long) countUserAccount.getSingleResult();
+
+    final Query countTimepolicy = m_manager.createQuery("select count(*) from " + TimePolicyEntity.class.getName()
+        + " p where p.person.id = :personId");
+    countTimepolicy.setParameter("personId", personId);
+
+    final long numberOfTimepolicies = (Long) countTimepolicy.getSingleResult();
+
+    final Query countDayinfo = m_manager.createQuery("select count(*) from " + DayInfoEntity.class.getName()
+        + " d where d.person.id = :personId");
+    countDayinfo.setParameter("personId", personId);
+
+    final long numberOfDayinfos = (Long) countDayinfo.getSingleResult();
+
+    final Query countWorkitem = m_manager.createQuery("select count(*) from " + WorkItemEntity.class.getName()
+        + " w where w.dayInfo.person.id = :personId");
+    countWorkitem.setParameter("personId", personId);
+
+    final long numberOfWorkitems = (Long) countWorkitem.getSingleResult();
+
+    final Query countTodoAssignment = m_manager.createQuery("select count(*) from "
+        + TodoAssignmentEntity.class.getName() + " a where a.person.id = :personId");
+    countTodoAssignment.setParameter("personId", personId);
+
+    final long numberOfTodoassignments = (Long) countTodoAssignment.getSingleResult();
+
+    return new PersonStatisticData(numberOfUserAccounts, numberOfTimepolicies, numberOfDayinfos, numberOfWorkitems,
+        numberOfTodoassignments);
+  }
+
+  @Restrict("#{s:hasRole('admin')}")
+  public void deletePerson(final String personId)
+  {
+    final IRevisionLock personRevisionLock = m_revisionGenerator.getNextRevision(EntityType.PERSON, null);
+    final IRevisionLock teamRevisionLock = m_revisionGenerator.getNextRevision(EntityType.TEAM, null);
+    final IRevisionLock todoRevisionLock = m_revisionGenerator.getNextRevision(EntityType.TODO, null);
+
+    final PersonEntity personEntity = m_manager.find(PersonEntity.class, personId);
+    personEntity.setRevision(personRevisionLock.getLatestRevision());
+    personEntity.setLastModifiedByClient(m_idGenerator.getClientId());
+    personEntity.setDeleted(true);
+    personEntity.setGivenName("<deleted>");
+    personEntity.setSurname("<deleted>");
+    personEntity.setEmail("<deleted>");
+
+    m_manager.flush();
+
+    for (final TeamEntity team : personEntity.getMemberOf()) {
+      team.getMembers().remove(personEntity);
+      team.setRevision(teamRevisionLock.getLatestRevision());
+      team.setLastModifiedByClient(m_idGenerator.getClientId());
+    }
+
+    for (final TeamEntity team : personEntity.getResponsibleFor()) {
+      team.getOwners().remove(personEntity);
+      team.setRevision(teamRevisionLock.getLatestRevision());
+      team.setLastModifiedByClient(m_idGenerator.getClientId());
+    }
+
+    m_manager.flush();
+
+    final Query todoAssignment = m_manager.createQuery("from " + TodoAssignmentEntity.class.getName()
+        + " a where a.person.id = :personId");
+    todoAssignment.setParameter("personId", personId);
+
+    for (final Object row : todoAssignment.getResultList()) {
+      final TodoAssignmentEntity todoAssignmentEntity = (TodoAssignmentEntity) row;
+      final TodoEntity todoEntity = todoAssignmentEntity.getTodo();
+
+      todoEntity.setRevision(todoRevisionLock.getLatestRevision());
+      todoEntity.setLastModifiedByClient(m_idGenerator.getClientId());
+
+      m_manager.remove(todoAssignmentEntity);
+    }
+
+    m_manager.flush();
+
+    final Query todoReporter = m_manager.createQuery("from " + TodoEntity.class.getName()
+        + " t where t.reporter.id = :personId");
+    todoReporter.setParameter("personId", personId);
+
+    for (final Object row : todoReporter.getResultList()) {
+      final TodoEntity todoEntity = (TodoEntity) row;
+
+      todoEntity.setReporter(null);
+      todoEntity.setRevision(todoRevisionLock.getLatestRevision());
+      todoEntity.setLastModifiedByClient(m_idGenerator.getClientId());
+    }
+
+    m_manager.flush();
+
+    final Query deleteClients = m_manager.createQuery("delete from " + ClientEntity.class.getName()
+        + " a where a.person.id = :personId");
+    deleteClients.setParameter("personId", personId);
+    deleteClients.executeUpdate();
+
+    final Query userAccounts = m_manager.createQuery("from " + UserAccountEntity.class.getName()
+        + " a where a.person.id = :personId");
+    userAccounts.setParameter("personId", personId);
+
+    for (final Object row : userAccounts.getResultList()) {
+      final UserAccountEntity userAccountEntity = (UserAccountEntity) row;
+
+      m_manager.remove(userAccountEntity);
+    }
+
+    m_manager.flush();
+
+    final Query deleteTimepolicy = m_manager.createQuery("delete from " + TimePolicyEntity.class.getName()
+        + " p where p.person.id = :personId");
+    deleteTimepolicy.setParameter("personId", personId);
+    deleteTimepolicy.executeUpdate();
+
+    final Query dayInfos = m_manager.createQuery("from " + DayInfoEntity.class.getName()
+        + " d where d.person.id = :personId");
+    dayInfos.setParameter("personId", personId);
+
+    for (final Object row : dayInfos.getResultList()) {
+      final DayInfoEntity dayInfoEntity = (DayInfoEntity) row;
+
+      final Query deleteWorkitem = m_manager.createQuery("delete from " + WorkItemEntity.class.getName()
+          + " w where w.dayInfo.id = :dayInfoId");
+      deleteWorkitem.setParameter("dayInfoId", dayInfoEntity.getId());
+      deleteWorkitem.executeUpdate();
+
+      m_manager.remove(dayInfoEntity);
+    }
+
+    m_manager.flush();
+
+    if (m_persons != null) {
+      initPersons();
+    }
+    if (m_activePersons != null) {
+      initActivePersons();
+    }
+  }
 }

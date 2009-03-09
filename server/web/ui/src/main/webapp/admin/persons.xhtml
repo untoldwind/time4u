@@ -52,34 +52,69 @@
 				</a4j:region>
 				<h:panelGroup id="accountDetail"
 					rendered="#{admin.personListController.hasSelection}">
-					<table>
-						<s:decorate template="../templates/decorateTableField.xhtml">
-							<ui:define name="label">Griven name</ui:define>
-							<h:inputText
-								value="#{admin.personListController.selectedPerson.givenName}" />
-						</s:decorate>
-						<s:decorate template="../templates/decorateTableField.xhtml">
-							<ui:define name="label">Surname</ui:define>
-							<h:inputText
-								value="#{admin.personListController.selectedPerson.surname}" />
-						</s:decorate>
-						<s:decorate template="../templates/decorateTableField.xhtml">
-							<ui:define name="label">Email</ui:define>
-							<h:inputText
-								value="#{admin.personListController.selectedPerson.email}" />
-						</s:decorate>
-						<s:decorate template="../templates/decorateTableField.xhtml">
-							<ui:define name="label">Active</ui:define>
-							<h:selectBooleanCheckbox
-								value="#{admin.personListController.selectedPerson.active}" />
-						</s:decorate>
-						<tr>
-							<td colspan="3">
-								<a4j:commandButton
-									action="#{admin.personListController.updatePerson}" value="Update" />
-							</td>
-						</tr>								
-					</table>
+					<rich:tabPanel switchType="client">
+						<rich:tab label="Information">
+							<table>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Griven name</ui:define>
+									<h:inputText
+										value="#{admin.personListController.selectedPerson.givenName}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Surname</ui:define>
+									<h:inputText
+										value="#{admin.personListController.selectedPerson.surname}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Email</ui:define>
+									<h:inputText
+										value="#{admin.personListController.selectedPerson.email}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Active</ui:define>
+									<h:selectBooleanCheckbox
+										value="#{admin.personListController.selectedPerson.active}" />
+								</s:decorate>
+								<tr>
+									<td colspan="3">
+										<a4j:commandButton
+											action="#{admin.personListController.updatePerson}" value="Update" />
+									</td>
+								</tr>								
+							</table>
+						</rich:tab>
+						<rich:tab label="Statistic">
+							<table>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Number of accounts</ui:define>
+									<h:outputText
+										value="#{admin.personListController.selectedPersonStatistic.numberOfAccounts}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Number of timepolicies</ui:define>
+									<h:outputText
+										value="#{admin.personListController.selectedPersonStatistic.numberOfTimepolicies}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Number of dayinfos</ui:define>
+									<h:outputText
+										value="#{admin.personListController.selectedPersonStatistic.numberOfDayinfos}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Number of workitems</ui:define>
+									<h:outputText
+										value="#{admin.personListController.selectedPersonStatistic.numberOfWorkitems}" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Number of todo assignments</ui:define>
+									<h:outputText
+										value="#{admin.personListController.selectedPersonStatistic.numberOfTodoassignments}" />
+								</s:decorate>
+							</table>
+						</rich:tab>
+					</rich:tabPanel>
+					<a4j:commandButton
+						action="#{admin.personListController.confirmDeletePerson}" value="Delete Person" rendered="#{admin.accountListController.selectedAccount.userId != 'admin'}"/>
 				</h:panelGroup>
 			</h:panelGroup>
 		</h:form>

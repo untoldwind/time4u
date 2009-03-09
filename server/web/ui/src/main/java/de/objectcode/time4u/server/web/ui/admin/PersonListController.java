@@ -8,6 +8,7 @@ import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.international.StatusMessages;
 
 import de.objectcode.time4u.server.ejb.seam.api.IPersonServiceLocal;
+import de.objectcode.time4u.server.ejb.seam.api.PersonStatisticData;
 import de.objectcode.time4u.server.entities.PersonEntity;
 
 @Name("admin.personListController")
@@ -16,10 +17,13 @@ public class PersonListController
 {
   public static final String VIEW_ID = "/admin/persons.xhtml";
 
+  public static final String DELETE_VIEW_ID = "/admin/deletePerson.xhtml";
+
   @In("PersonService")
   IPersonServiceLocal m_personService;
 
   PersonEntity m_selectedPerson;
+  PersonStatisticData m_selectedPersonStatistic;
   int m_currentPage;
 
   @Begin(join = true)
@@ -31,6 +35,7 @@ public class PersonListController
   public String select(final PersonEntity personEntity)
   {
     m_selectedPerson = personEntity;
+    m_selectedPersonStatistic = null;
 
     return VIEW_ID;
   }
@@ -43,6 +48,18 @@ public class PersonListController
   public PersonEntity getSelectedPerson()
   {
     return m_selectedPerson;
+  }
+
+  public PersonStatisticData getSelectedPersonStatistic()
+  {
+    if (m_selectedPersonStatistic != null) {
+      return m_selectedPersonStatistic;
+    }
+    if (m_selectedPerson == null) {
+      return null;
+    }
+    m_selectedPersonStatistic = m_personService.getPersonStatistics(m_selectedPerson.getId());
+    return m_selectedPersonStatistic;
   }
 
   public int getCurrentPage()
@@ -60,6 +77,22 @@ public class PersonListController
     if (m_selectedPerson != null) {
       m_personService.storePerson(m_selectedPerson);
       StatusMessages.instance().add("Person information updated");
+    }
+    return VIEW_ID;
+  }
+
+  public String confirmDeletePerson()
+  {
+    return DELETE_VIEW_ID;
+  }
+
+  public String deletePerson()
+  {
+    if (m_selectedPerson != null) {
+      m_personService.deletePerson(m_selectedPerson.getId());
+      StatusMessages.instance().add("Person information deleted");
+      m_selectedPerson = null;
+      m_selectedPersonStatistic = null;
     }
     return VIEW_ID;
   }

@@ -12,5 +12,5 @@ public interface IAccountServiceLocal
 
   void createAccount(String userId, String hashedPassword, String givenName, String surname, String email);
 
-  public void deleteAccount(String userId);
+  void deleteAccount(String userId);
 }
