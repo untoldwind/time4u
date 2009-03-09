@@ -6,8 +6,6 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.commands.Command;
-import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
@@ -38,9 +36,9 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
+import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.ViewPart;
 
@@ -206,11 +204,10 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
       public void doubleClick(final DoubleClickEvent event)
       {
         try {
-          final ICommandService commandService = (ICommandService) getSite().getWorkbenchWindow().getWorkbench()
-              .getService(ICommandService.class);
-          final Command command = commandService.getCommand(ICommandIds.CMD_WORKITEM_EDIT);
+          final IHandlerService handlerService = (IHandlerService) getSite().getWorkbenchWindow().getWorkbench()
+              .getService(IHandlerService.class);
 
-          command.executeWithChecks(new ExecutionEvent());
+          handlerService.executeCommand(ICommandIds.CMD_WORKITEM_EDIT, null);
         } catch (final Exception e) {
           UIPlugin.getDefault().log(e);
         }

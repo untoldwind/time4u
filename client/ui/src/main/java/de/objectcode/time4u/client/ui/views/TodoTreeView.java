@@ -3,6 +3,8 @@ package de.objectcode.time4u.client.ui.views;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -23,6 +25,7 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
+import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.ViewPart;
 
@@ -31,6 +34,7 @@ import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
 import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
+import de.objectcode.time4u.client.ui.ICommandIds;
 import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.dnd.TodoTransfer;
 import de.objectcode.time4u.client.ui.provider.TodoFilterSettings;
@@ -74,6 +78,19 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
         m_filterSettings));
     m_treeViewer.setLabelProvider(new TodoLabelProvider());
     m_treeViewer.setInput(new Object());
+    m_treeViewer.addDoubleClickListener(new IDoubleClickListener() {
+      public void doubleClick(final DoubleClickEvent event)
+      {
+        try {
+          final IHandlerService handlerService = (IHandlerService) getSite().getWorkbenchWindow().getWorkbench()
+              .getService(IHandlerService.class);
+
+          handlerService.executeCommand(ICommandIds.CMD_TODO_EDIT, null);
+        } catch (final Exception e) {
+          UIPlugin.getDefault().log(e);
+        }
+      }
+    });
     m_treeViewer.addDragSupport(DND.DROP_MOVE | DND.DROP_DEFAULT, new Transfer[] { TodoTransfer.getInstance() },
         new DragSourceAdapter() {
           @Override
@@ -177,6 +194,19 @@ public class TodoTreeView extends ViewPart implements IRepositoryListener
     m_flatViewer.setLabelProvider(new TodoLabelProvider());
     m_flatViewer.setInput(new Object());
     m_flatViewer.getTable().setLinesVisible(true);
+    m_flatViewer.addDoubleClickListener(new IDoubleClickListener() {
+      public void doubleClick(final DoubleClickEvent event)
+      {
+        try {
+          final IHandlerService handlerService = (IHandlerService) getSite().getWorkbenchWindow().getWorkbench()
+              .getService(IHandlerService.class);
+
+          handlerService.executeCommand(ICommandIds.CMD_TODO_EDIT, null);
+        } catch (final Exception e) {
+          UIPlugin.getDefault().log(e);
+        }
+      }
+    });
 
     m_selectionProvider = new CompoundSelectionProvider();
     m_selectionProvider.addPostSelectionProvider(CompoundSelectionEntityType.TODO, m_treeViewer);

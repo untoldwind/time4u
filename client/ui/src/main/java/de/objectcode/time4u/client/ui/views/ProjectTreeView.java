@@ -1,7 +1,5 @@
 package de.objectcode.time4u.client.ui.views;
 
-import org.eclipse.core.commands.Command;
-import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
@@ -24,9 +22,9 @@ import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
+import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
@@ -95,12 +93,10 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
       public void doubleClick(final DoubleClickEvent event)
       {
         try {
-          final ICommandService commandService = (ICommandService) getSite().getWorkbenchWindow().getWorkbench()
-              .getService(ICommandService.class);
+          final IHandlerService handlerService = (IHandlerService) getSite().getWorkbenchWindow().getWorkbench()
+              .getService(IHandlerService.class);
 
-          final Command command = commandService.getCommand(ICommandIds.CMD_PROJECT_EDIT);
-
-          command.executeWithChecks(new ExecutionEvent());
+          handlerService.executeCommand(ICommandIds.CMD_PROJECT_EDIT, null);
         } catch (final Exception e) {
           UIPlugin.getDefault().log(e);
         }

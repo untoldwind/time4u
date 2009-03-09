@@ -21,6 +21,7 @@ public interface ICommandIds
   String CMD_PROJECT_EDIT = "de.objectcode.time4u.client.ui.project.edit";
   String CMD_TASK_EDIT = "de.objectcode.time4u.client.ui.task.edit";
   String CMD_WORKITEM_EDIT = "de.objectcode.time4u.client.ui.workitem.edit";
+  String CMD_TODO_EDIT = "de.objectcode.time4u.client.ui.todo.edit";
 
   String CMD_TODO_PUNCHIN = "de.objectcode.time4u.client.todo.punchin";
 }
