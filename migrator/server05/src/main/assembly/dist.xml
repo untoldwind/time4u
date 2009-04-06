@@ -28,10 +28,7 @@
 				<include>de.objectcode.time4u.migrator:time4u-migrator-server05</include>
 				<include>de.objectcode.time4u.server:time4u-server-entities</include>
 				<include>de.objectcode.time4u.server:time4u-server-api</include>
-				<include>javax.xml.bind:jaxb-api</include>
-				<include>javax.persistence:persistence-api</include>
 				<include>javax.transaction:jta</include>
-				<include>commons-logging:commons-logging</include>
 				<include>commons-collections:commons-collections</include>
 				<include>mysql:mysql-connector-java</include>
 				<include>org.hibernate:hibernate</include>
@@ -40,7 +37,19 @@
 				<include>asm:asm</include>
 				<include>asm:asm-attrs</include>
 				<include>cglib:cglib</include>
+			</includes>
+		</dependencySet>
+		<dependencySet>
+			<outputFileNameMapping>
+				${artifact.artifactId}_${artifact.version}.${artifact.extension}
+			</outputFileNameMapping>
+			<outputDirectory>lib</outputDirectory>
+			<scope>provided</scope>
+			<includes>
+				<include>javax.persistence:persistence-api</include>
 				<include>log4j:log4j</include>
+				<include>javax.xml.bind:jaxb-api</include>
+				<include>commons-logging:commons-logging</include>
 			</includes>
 		</dependencySet>
 	</dependencySets>
