@@ -1,5 +1,8 @@
 package de.objectcode.time4u.migrator.server05;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +65,21 @@ public class Migrator
 
   Migrator(final String[] args) throws Exception
   {
+    List<String> userIds = null;
+
+    if (args.length > 1) {
+      if (args.length == 2 || "-f".equals(args[0])) {
+        userIds = readFromFile(args[1]);
+      } else {
+        userIds = new ArrayList<String>();
+        for (final String userId : args) {
+          userIds.add(userId);
+        }
+      }
+
+      System.out.println("Restrict to users: " + userIds);
+    }
+
     m_oldSessionFactory = buildOldSessionFactory();
     m_newSessionFactory = buildNewSessionFactory();
 
@@ -69,15 +87,35 @@ public class Migrator
     m_migratorParts.add(new ProjectMigratorPart());
     m_migratorParts.add(new TaskMigratorPart());
     if (args.length > 0) {
-      m_migratorParts.add(new PersonMigratorPart(args));
+      m_migratorParts.add(new PersonMigratorPart(userIds));
     } else {
       m_migratorParts.add(new PersonMigratorPart());
     }
     m_migratorParts.add(new TeamMigratorPart());
     if (args.length > 0) {
-      m_migratorParts.add(new WorkItemMigrator(args));
+      m_migratorParts.add(new WorkItemMigrator(userIds));
     } else {
       m_migratorParts.add(new WorkItemMigrator());
+    }
+  }
+
+  private List<String> readFromFile(final String fileName)
+  {
+    try {
+      final List<String> result = new ArrayList<String>();
+      final BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "UTF-8"));
+      String line;
+
+      while ((line = reader.readLine()) != null) {
+        if (line.trim().length() > 0) {
+          result.add(line.trim());
+        }
+      }
+
+      return result;
+    } catch (final Exception e) {
+      e.printStackTrace();
+      throw new RuntimeException("IOException");
     }
   }
 

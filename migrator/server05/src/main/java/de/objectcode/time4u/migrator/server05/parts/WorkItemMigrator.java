@@ -1,6 +1,7 @@
 package de.objectcode.time4u.migrator.server05.parts;
 
 import java.util.Calendar;
+import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -17,7 +18,7 @@ import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 
 public class WorkItemMigrator extends BasePersonalizedMigratorPart<OldWorkitems>
 {
-  String[] userIds;
+  List<String> userIds;
 
   public WorkItemMigrator()
   {
@@ -26,7 +27,7 @@ public class WorkItemMigrator extends BasePersonalizedMigratorPart<OldWorkitems>
     userIds = null;
   }
 
-  public WorkItemMigrator(final String[] userIds)
+  public WorkItemMigrator(final List<String> userIds)
   {
     this();
 

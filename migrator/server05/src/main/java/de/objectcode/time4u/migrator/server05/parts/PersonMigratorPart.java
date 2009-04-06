@@ -1,5 +1,7 @@
 package de.objectcode.time4u.migrator.server05.parts;
 
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -16,7 +18,7 @@ import de.objectcode.time4u.server.utils.IPasswordEncoder;
 public class PersonMigratorPart extends BaseMigratorPart<OldPersons>
 {
   IPasswordEncoder m_passwordEncoder;
-  String[] userIds;
+  List<String> userIds;
 
   public PersonMigratorPart()
   {
@@ -26,7 +28,7 @@ public class PersonMigratorPart extends BaseMigratorPart<OldPersons>
     userIds = null;
   }
 
-  public PersonMigratorPart(final String[] userIds)
+  public PersonMigratorPart(final List<String> userIds)
   {
     this();
 
