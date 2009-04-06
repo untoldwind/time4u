@@ -67,7 +67,7 @@ public class Migrator
   {
     List<String> userIds = null;
 
-    if (args.length > 1) {
+    if (args.length > 0) {
       if (args.length == 2 || "-f".equals(args[0])) {
         userIds = readFromFile(args[1]);
       } else {
