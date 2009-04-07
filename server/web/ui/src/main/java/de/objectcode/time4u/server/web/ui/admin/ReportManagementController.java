@@ -2,9 +2,11 @@ package de.objectcode.time4u.server.web.ui.admin;
 
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Begin;
+import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 
+import de.objectcode.time4u.server.ejb.seam.api.IReportManagementServiceLocal;
 import de.objectcode.time4u.server.entities.report.ReportDefinitionEntity;
 
 @Name("admin.reportManagementController")
@@ -12,6 +14,9 @@ import de.objectcode.time4u.server.entities.report.ReportDefinitionEntity;
 public class ReportManagementController
 {
   public static final String VIEW_ID = "/admin/manageReports.xhtml";
+
+  @In("ReportManagementService")
+  IReportManagementServiceLocal m_reportManagementService;
 
   ReportDefinitionEntity m_selectedReport;
   int m_currentPage;
@@ -47,5 +52,30 @@ public class ReportManagementController
   public void setCurrentPage(final int currentPage)
   {
     m_currentPage = currentPage;
+  }
+
+  public String updateReport()
+  {
+    if (m_selectedReport != null) {
+      m_reportManagementService.storeReportDefinitionEntity(m_selectedReport);
+    }
+
+    return VIEW_ID;
+  }
+
+  public String newReport()
+  {
+    m_selectedReport = new ReportDefinitionEntity("", "", "", "", "");
+
+    return VIEW_ID;
+  }
+
+  public String deleteReport()
+  {
+    if (m_selectedReport != null) {
+      m_reportManagementService.deleteReportDeinfitionEntity(m_selectedReport.getId());
+    }
+
+    return VIEW_ID;
   }
 }

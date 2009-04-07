@@ -41,6 +41,9 @@
 						</f:facet>
 					</rich:dataTable>
 				</a4j:region>
+				<h:panelGroup>
+					<a4j:commandButton action="#{admin.reportManagementController.newReport}" value="New" reRender="reportDetail"/>
+				</h:panelGroup>
 				<h:panelGroup id="reportDetail"
 					rendered="#{admin.reportManagementController.hasSelection}">
 					<rich:tabPanel switchType="client">
@@ -57,6 +60,14 @@
 								<tr>
 									<td colspan="2">
 										<h:inputTextarea cols="80" rows="40" value="#{admin.reportManagementController.selectedReport.definitionXml}"/>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<a4j:commandButton
+											action="#{admin.reportManagementController.updateReport}" value="Update" />
+										<a4j:commandButton
+											action="#{admin.reportManagementController.deleteReport}" value="Delete" />
 									</td>
 								</tr>
 							</table>

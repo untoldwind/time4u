@@ -3,6 +3,7 @@ package de.objectcode.time4u.server.ejb.seam.api.io;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -58,6 +59,25 @@ public class XMLIO
    *           on error
    */
   public BaseReportDefinition read(final InputStream in) throws IOException
+  {
+    try {
+      return (BaseReportDefinition) unmarshaller.unmarshal(in);
+    } catch (final JAXBException e) {
+      LOG.error("Exception", e);
+      throw new IOException(e.toString());
+    }
+  }
+
+  /**
+   * Read a report definition from an xml stream.
+   * 
+   * @param in
+   *          The xml reader
+   * @return The report definition
+   * @throws IOException
+   *           on error
+   */
+  public BaseReportDefinition read(final Reader in) throws IOException
   {
     try {
       return (BaseReportDefinition) unmarshaller.unmarshal(in);

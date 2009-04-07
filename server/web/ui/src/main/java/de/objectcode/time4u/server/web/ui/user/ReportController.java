@@ -1,5 +1,6 @@
 package de.objectcode.time4u.server.web.ui.user;
 
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
 
+import de.objectcode.time4u.server.ejb.seam.api.IReportManagementServiceLocal;
 import de.objectcode.time4u.server.ejb.seam.api.IReportServiceLocal;
 import de.objectcode.time4u.server.ejb.seam.api.io.XMLIO;
 import de.objectcode.time4u.server.ejb.seam.api.report.BaseReportDefinition;
@@ -23,6 +25,7 @@ import de.objectcode.time4u.server.ejb.seam.api.report.ColumnType;
 import de.objectcode.time4u.server.ejb.seam.api.report.ReportParameterDefinition;
 import de.objectcode.time4u.server.ejb.seam.api.report.ReportResult;
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.BaseParameterValue;
+import de.objectcode.time4u.server.entities.report.ReportDefinitionEntity;
 import de.objectcode.time4u.server.web.ui.converter.DateConverter;
 import de.objectcode.time4u.server.web.ui.converter.StringArrayConverter;
 import de.objectcode.time4u.server.web.ui.converter.StringConverter;
@@ -40,6 +43,9 @@ public class ReportController
 
   @In("ReportService")
   IReportServiceLocal m_reportService;
+
+  @In("ReportManagementService")
+  IReportManagementServiceLocal m_reportManagementService;
 
   @In(value = "user.reportDefinition", required = false)
   @Out("user.reportDefinition")
@@ -66,11 +72,12 @@ public class ReportController
   }
 
   @Begin(join = true)
-  public String enter(final String reportResource)
+  public String enter(final String reportId)
   {
     try {
-      m_reportDefinition = XMLIO.INSTANCE.read(getClass().getClassLoader().getResourceAsStream(
-          "reports/" + reportResource + ".xml"));
+      final ReportDefinitionEntity entity = m_reportManagementService.getReportDefinitionEntity(reportId);
+
+      m_reportDefinition = XMLIO.INSTANCE.read(new StringReader(entity.getDefinitionXml()));
       m_reportParameters = new ArrayList<BaseParameterValue>();
 
       for (final ReportParameterDefinition parameterDefinition : m_reportDefinition.getParameters()) {
