@@ -46,6 +46,9 @@
 					<rich:menuItem submitMode="ajax" value="Teams"
 						action="#{admin.teamListController.enter}" rendered="#{s:hasRole('admin')}" />
 
+					<rich:menuItem submitMode="ajax" value="Manage Reports"
+						action="#{admin.reportManagementController.enter}" rendered="#{s:hasRole('admin')}" />
+						
 					<rich:menuItem submitMode="ajax" value="Day tags"
 						action="#{admin.dayTagListController.enter}" rendered="#{s:hasRole('admin')}" />
 

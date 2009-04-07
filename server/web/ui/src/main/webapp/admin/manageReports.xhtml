@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+	template="../templates/main-template.xhtml">
+
+	<ui:define name="title">Manage reports</ui:define>
+	<ui:define name="contentDetail">
+		<h:form>
+			<h:panelGroup>
+				<a4j:region renderRegionOnly="true">
+					<rich:dataTable id="reportDefinitionListTable" rows="10"
+						value="#{admin.reportDefinitionList}" var="report" rowClasses="first,second"
+						columnClasses="narrow,wide">
+						<rich:column>
+							<h:outputText value="*"
+								rendered="#{report.id == admin.reportManagementController.selectedReport.id}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Name</f:facet>
+							<a4j:commandLink action="#{admin.reportManagementController.select(report)}"
+								reRender="reportDetail"
+								rendered="#{report.id != admin.reportManagementController.selectedReport.id}">
+								#{report.name}
+							</a4j:commandLink>
+							<h:outputText value="#{report.name}" 
+								rendered="#{report.id == admin.reportManagementController.selectedReport.id}"/>
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Type</f:facet>
+							#{report.type} 
+						</rich:column>
+						<f:facet name="footer">
+							<rich:datascroller for="reportDefinitionListTable"
+								pageIndexVar="pageIndex" pagesVar="pages" page="#{admin.personListController.currentPage}">
+								<f:facet name="pages">
+									<h:outputText value="#{pageIndex} / #{pages}"></h:outputText>
+								</f:facet>
+							</rich:datascroller>
+						</f:facet>
+					</rich:dataTable>
+				</a4j:region>
+				<h:panelGroup id="reportDetail"
+					rendered="#{admin.reportManagementController.hasSelection}">
+					<rich:tabPanel switchType="client">
+						<rich:tab label="Information">
+							<table>
+								<tr>
+									<td>Name:</td>
+									<td><h:outputText value="#{admin.reportManagementController.selectedReport.name}"/></td>
+								</tr>
+								<tr>
+									<td>Description:</td>
+									<td><h:outputText value="#{admin.reportManagementController.selectedReport.description}"/></td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<h:inputTextarea cols="80" rows="40" value="#{admin.reportManagementController.selectedReport.definitionXml}"/>
+									</td>
+								</tr>
+							</table>
+						</rich:tab>
+					</rich:tabPanel>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>

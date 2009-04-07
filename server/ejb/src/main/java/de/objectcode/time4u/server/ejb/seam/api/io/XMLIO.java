@@ -39,6 +39,8 @@ public class XMLIO
           .newInstance("de.objectcode.time4u.server.ejb.seam.api.filter:de.objectcode.time4u.server.ejb.seam.api.report");
 
       marshaller = context.createMarshaller();
+      marshaller.setProperty("jaxb.encoding", "UTF-8");
+      marshaller.setProperty("jaxb.formatted.output", true);
       unmarshaller = context.createUnmarshaller();
     } catch (final Exception e) {
       e.printStackTrace();

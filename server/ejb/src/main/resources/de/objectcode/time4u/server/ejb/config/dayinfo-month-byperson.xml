@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<dayinfo-report xmlns="http://objectcode.de/time4u/ejb/seam/report"
+	xmlns:filter="http://objectcode.de/time4u/ejb/seam/filter" name="dayinfo-month-byperson">
+	<description>Dayinfo month report group by person</description>
+	<filter:parameter-ref parameter="month" />
+	<parameters>
+		<parameter type="MONTH" name="month" label="Month"/>
+	</parameters>
+	<group-bys>
+		<group-by>
+			<label-person>NAME</label-person>
+			<value-person>ID</value-person>
+		</group-by>
+	</group-bys>
+	<projections>
+		<dayinfo>DATE</dayinfo>
+		<dayinfo>SUM_DURATIONS</dayinfo>
+		<dayinfo>REGULAR_TIME</dayinfo>
+		<dayinfo>TAGS</dayinfo>
+	</projections>
+</dayinfo-report>
