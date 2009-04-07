@@ -15,17 +15,17 @@
 						columnClasses="narrow,wide">
 						<rich:column>
 							<h:outputText value="*"
-								rendered="#{userAccount.userId == admin.accountListController.selectedAccount.userId}" />
+								rendered="#{userAccount.userId == admin.accountListController.selectedAccount.account.userId}" />
 						</rich:column>
 						<rich:column>
 							<f:facet name="header">User Id</f:facet>
 							<a4j:commandLink action="#{admin.accountListController.select(userAccount)}"
 								reRender="accountDetail"
-								rendered="#{userAccount.userId != admin.accountListController.selectedAccount.userId}">
+								rendered="#{userAccount.userId != admin.accountListController.selectedAccount.account.userId}">
 								#{userAccount.userId}
 						</a4j:commandLink>
 							<h:outputText value="#{userAccount.userId}"
-								rendered="#{userAccount.userId == admin.accountListController.selectedAccount.userId}" />
+								rendered="#{userAccount.userId == admin.accountListController.selectedAccount.account.userId}" />
 						</rich:column>
 						<rich:column>
 							<f:facet name="header">Name</f:facet>
@@ -60,7 +60,7 @@
 								<s:decorate template="../templates/decorateTableField.xhtml">
 									<ui:define name="label">UserId</ui:define>
 									<h:outputText
-										value="#{admin.accountListController.selectedAccount.userId}" />
+										value="#{admin.accountListController.selectedAccount.account.userId}" />
 								</s:decorate>
 								<s:decorate template="../templates/decorateTableField.xhtml">
 									<ui:define name="label">Password</ui:define>
@@ -75,7 +75,7 @@
 										<a4j:commandButton
 											action="#{admin.accountListController.resetPassword}" value="Reset Password" />
 										<a4j:commandButton
-											action="#{admin.accountListController.confirmDeleteAccount}" value="Delete Account" rendered="#{admin.accountListController.selectedAccount.userId != 'admin'}"/>
+											action="#{admin.accountListController.confirmDeleteAccount}" value="Delete Account" rendered="#{admin.accountListController.selectedAccount.account.userId != 'admin'}"/>
 									</td>
 								</tr>
 							</table>
@@ -85,17 +85,17 @@
 								<s:decorate template="../templates/decorateTableField.xhtml">
 									<ui:define name="label">Griven name</ui:define>
 									<h:inputText
-										value="#{admin.accountListController.selectedAccount.person.givenName}" />
+										value="#{admin.accountListController.selectedAccount.account.person.givenName}" />
 								</s:decorate>
 								<s:decorate template="../templates/decorateTableField.xhtml">
 									<ui:define name="label">Surname</ui:define>
 									<h:inputText
-										value="#{admin.accountListController.selectedAccount.person.surname}" />
+										value="#{admin.accountListController.selectedAccount.account.person.surname}" />
 								</s:decorate>
 								<s:decorate template="../templates/decorateTableField.xhtml">
 									<ui:define name="label">Email</ui:define>
 									<h:inputText
-										value="#{admin.accountListController.selectedAccount.person.email}" />
+										value="#{admin.accountListController.selectedAccount.account.person.email}" />
 								</s:decorate>
 								<tr>
 									<td colspan="3">
@@ -105,12 +105,30 @@
 								</tr>								
 							</table>
 						</rich:tab>
+						<rich:tab label="Roles" rendered="#{!admin.accountListController.create}">
+							<table>
+								<tr>
+									<td>
+										<rich:pickList value="#{admin.accountListController.selectedAccount.roles}">
+											<s:selectItems value="#{admin.roleList.wrappedData}"
+												var="role" itemValue="#{role.roleId}" label="#{role.name}" />
+										</rich:pickList>							
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<a4j:commandButton
+											action="#{admin.accountListController.updateRoles}" value="Update" />
+									</td>
+								</tr>
+							</table>
+						</rich:tab>
 						<rich:tab label="New Account" rendered="#{admin.accountListController.create}">
 							<table>
 								<s:decorate template="../templates/decorateTableField.xhtml">
 									<ui:define name="label">UserId</ui:define>
 									<h:inputText
-										value="#{admin.accountListController.selectedAccount.userId}" />
+										value="#{admin.accountListController.selectedAccount.account.userId}" />
 								</s:decorate>
 								<s:decorate template="../templates/decorateTableField.xhtml">
 									<ui:define name="label">Password</ui:define>
@@ -123,17 +141,17 @@
 								<s:decorate template="../templates/decorateTableField.xhtml">
 									<ui:define name="label">Griven name</ui:define>
 									<h:inputText
-										value="#{admin.accountListController.selectedAccount.person.givenName}" />
+										value="#{admin.accountListController.selectedAccount.account.person.givenName}" />
 								</s:decorate>
 								<s:decorate template="../templates/decorateTableField.xhtml">
 									<ui:define name="label">Surname</ui:define>
 									<h:inputText
-										value="#{admin.accountListController.selectedAccount.person.surname}" />
+										value="#{admin.accountListController.selectedAccount.account.person.surname}" />
 								</s:decorate>
 								<s:decorate template="../templates/decorateTableField.xhtml">
 									<ui:define name="label">Email</ui:define>
 									<h:inputText
-										value="#{admin.accountListController.selectedAccount.person.email}" />
+										value="#{admin.accountListController.selectedAccount.account.person.email}" />
 								</s:decorate>
 								<tr>
 									<td colspan="3">

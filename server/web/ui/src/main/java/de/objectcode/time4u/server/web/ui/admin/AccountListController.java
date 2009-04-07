@@ -25,7 +25,7 @@ public class AccountListController
   @In("AccountService")
   IAccountServiceLocal m_accountService;
 
-  UserAccountEntity m_selectedAccount;
+  AccountBean m_selectedAccount;
   boolean m_create;
 
   @In("common.passwordConfirm")
@@ -42,7 +42,8 @@ public class AccountListController
   public String newUserAccount()
   {
     final PersonEntity person = new PersonEntity(null, 0L, 0L);
-    m_selectedAccount = new UserAccountEntity(null, null, person);
+    m_selectedAccount = new AccountBean(new UserAccountEntity(null, null, person));
+    m_selectedAccount.getRoles().add("user");
     m_create = true;
 
     return VIEW_ID;
@@ -50,13 +51,13 @@ public class AccountListController
 
   public String select(final UserAccountEntity userAccountEntity)
   {
-    m_selectedAccount = userAccountEntity;
+    m_selectedAccount = new AccountBean(m_accountService.getUserAccount(userAccountEntity.getUserId()));
     m_create = false;
 
     return VIEW_ID;
   }
 
-  public UserAccountEntity getSelectedAccount()
+  public AccountBean getSelectedAccount()
   {
     return m_selectedAccount;
   }
@@ -85,7 +86,7 @@ public class AccountListController
   {
     if (m_selectedAccount != null) {
       if (m_passwordConfirm.getPassword().equals(m_passwordConfirm.getPasswordConfirm())) {
-        m_accountService.changePassword(m_selectedAccount.getUserId(), new DefaultPasswordEncoder()
+        m_accountService.changePassword(m_selectedAccount.getAccount().getUserId(), new DefaultPasswordEncoder()
             .encrypt(m_passwordConfirm.getPassword().toCharArray()));
         StatusMessages.instance().add("Password updated");
       } else {
@@ -99,9 +100,19 @@ public class AccountListController
   public String updatePerson()
   {
     if (m_selectedAccount != null) {
-      m_accountService.updatePerson(m_selectedAccount.getUserId(), m_selectedAccount.getPerson().getGivenName(),
-          m_selectedAccount.getPerson().getSurname(), m_selectedAccount.getPerson().getEmail());
+      m_accountService.updatePerson(m_selectedAccount.getAccount().getUserId(), m_selectedAccount.getAccount()
+          .getPerson().getGivenName(), m_selectedAccount.getAccount().getPerson().getSurname(), m_selectedAccount
+          .getAccount().getPerson().getEmail());
       StatusMessages.instance().add("Personal information updated");
+    }
+    return VIEW_ID;
+  }
+
+  public String updateRoles()
+  {
+    if (m_selectedAccount != null) {
+      m_accountService.setUserRoles(m_selectedAccount.getAccount().getUserId(), m_selectedAccount.getRoles());
+      StatusMessages.instance().add("Role information updated");
     }
     return VIEW_ID;
   }
@@ -110,9 +121,10 @@ public class AccountListController
   {
     if (m_selectedAccount != null) {
       if (m_passwordConfirm.getPassword().equals(m_passwordConfirm.getPasswordConfirm())) {
-        m_accountService.createAccount(m_selectedAccount.getUserId(), new DefaultPasswordEncoder()
-            .encrypt(m_passwordConfirm.getPassword().toCharArray()), m_selectedAccount.getPerson().getGivenName(),
-            m_selectedAccount.getPerson().getSurname(), m_selectedAccount.getPerson().getEmail());
+        m_accountService.createAccount(m_selectedAccount.getAccount().getUserId(), new DefaultPasswordEncoder()
+            .encrypt(m_passwordConfirm.getPassword().toCharArray()), m_selectedAccount.getAccount().getPerson()
+            .getGivenName(), m_selectedAccount.getAccount().getPerson().getSurname(), m_selectedAccount.getAccount()
+            .getPerson().getEmail());
 
         m_create = false;
       } else {
@@ -130,7 +142,7 @@ public class AccountListController
   public String deleteAccount()
   {
     if (m_selectedAccount != null) {
-      m_accountService.deleteAccount(m_selectedAccount.getUserId());
+      m_accountService.deleteAccount(m_selectedAccount.getAccount().getUserId());
 
       m_selectedAccount = null;
     }

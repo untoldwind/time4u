@@ -52,6 +52,9 @@ public class AccountServiceSeam implements IAccountServiceLocal
   @DataModel("admin.accountList")
   List<UserAccountEntity> m_userAccounts;
 
+  @DataModel("admin.roleList")
+  List<UserRoleEntity> m_userRoles;
+
   @SuppressWarnings("unchecked")
   @Restrict("#{s:hasRole('admin')}")
   @Factory("admin.accountList")
@@ -60,6 +63,22 @@ public class AccountServiceSeam implements IAccountServiceLocal
     final Query query = m_manager.createQuery("from " + UserAccountEntity.class.getName() + " a");
 
     m_userAccounts = query.getResultList();
+  }
+
+  @SuppressWarnings("unchecked")
+  @Restrict("#{s:hasRole('admin')}")
+  @Factory("admin.roleList")
+  public void initUserRoles()
+  {
+    final Query query = m_manager.createQuery("from " + UserRoleEntity.class.getName() + " r");
+
+    m_userRoles = query.getResultList();
+  }
+
+  @Restrict("#{s:hasRole('admin')}")
+  public UserAccountEntity getUserAccount(final String userId)
+  {
+    return m_manager.find(UserAccountEntity.class, userId);
   }
 
   @Restrict("#{s:hasRole('user')}")
@@ -119,6 +138,19 @@ public class AccountServiceSeam implements IAccountServiceLocal
     m_manager.flush();
 
     initUserAccounts();
+  }
+
+  @Restrict("#{s:hasRole('admin')}")
+  public void setUserRoles(final String userId, final List<String> roleIds)
+  {
+    final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, userId);
+
+    userAccount.getRoles().clear();
+    for (final String roleId : roleIds) {
+      userAccount.getRoles().add(m_manager.find(UserRoleEntity.class, roleId));
+    }
+
+    m_manager.flush();
   }
 
   @Restrict("#{s:hasRole('admin')}")
