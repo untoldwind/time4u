@@ -24,6 +24,8 @@
 						action="#{user.reportController.enter('workitem-month-bydateperson')}" rendered="#{s:hasRole('user')}" />
 					<rich:menuItem submitMode="ajax" value="Workitem month of person"
 						action="#{user.reportController.enter('workitem-month-ofperson')}" rendered="#{s:hasRole('user')}" />
+					<rich:menuItem submitMode="ajax" value="WorkItem month by project"
+						action="#{user.reportController.enter('workitem-month-byproject')}" rendered="#{s:hasRole('user')}" />
 					<rich:menuItem submitMode="ajax" value="Dayinfo month"
 						action="#{user.reportController.enter('dayinfo-month-flat')}" rendered="#{s:hasRole('user')}" />
 					<rich:menuItem submitMode="ajax" value="Dayinfo month by person"
