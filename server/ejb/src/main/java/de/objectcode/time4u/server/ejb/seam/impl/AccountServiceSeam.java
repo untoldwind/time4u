@@ -24,6 +24,7 @@ import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.ejb.seam.api.IAccountServiceLocal;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
+import de.objectcode.time4u.server.entities.account.UserRoleEntity;
 import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
@@ -112,6 +113,7 @@ public class AccountServiceSeam implements IAccountServiceLocal
 
     final UserAccountEntity userAccount = new UserAccountEntity(userId, hashedPassword, person);
 
+    userAccount.getRoles().add(m_manager.find(UserRoleEntity.class, "user"));
     m_manager.persist(userAccount);
 
     m_manager.flush();
