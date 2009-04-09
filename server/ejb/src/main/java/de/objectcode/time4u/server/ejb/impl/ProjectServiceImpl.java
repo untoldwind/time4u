@@ -12,14 +12,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.jboss.annotation.ejb.RemoteBinding;
-import org.jboss.annotation.security.SecurityDomain;
-
 import de.objectcode.time4u.server.api.IProjectService;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
-import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.filter.ProjectFilter;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.context.EntityManagerPersistenceContext;
@@ -34,8 +31,9 @@ import de.objectcode.time4u.server.entities.revision.IRevisionLock;
  */
 @Stateless
 @Remote(IProjectService.class)
-@RemoteBinding(jndiBinding = "time4u-server/ProjectService/remote")
-@SecurityDomain("time4u")
+@org.jboss.annotation.ejb.RemoteBinding(jndiBinding = "time4u-server/ProjectService/remote")
+@org.jboss.ejb3.annotation.RemoteBinding(jndiBinding = "time4u-server/ProjectService/remote")
+@org.jboss.annotation.security.SecurityDomain("time4u")
 public class ProjectServiceImpl implements IProjectService
 {
   @PersistenceContext(unitName = "time4u")

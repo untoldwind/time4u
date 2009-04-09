@@ -12,12 +12,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.jboss.annotation.ejb.RemoteBinding;
-import org.jboss.annotation.security.SecurityDomain;
-
 import de.objectcode.time4u.server.api.ITaskService;
-import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.EntityType;
+import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.filter.TaskFilter;
@@ -35,8 +32,9 @@ import de.objectcode.time4u.server.entities.revision.IRevisionLock;
  */
 @Stateless
 @Remote(ITaskService.class)
-@RemoteBinding(jndiBinding = "time4u-server/TaskService/remote")
-@SecurityDomain("time4u")
+@org.jboss.annotation.ejb.RemoteBinding(jndiBinding = "time4u-server/TaskService/remote")
+@org.jboss.ejb3.annotation.RemoteBinding(jndiBinding = "time4u-server/TaskService/remote")
+@org.jboss.annotation.security.SecurityDomain("time4u")
 public class TaskServiceImpl implements ITaskService
 {
   @PersistenceContext(unitName = "time4u")

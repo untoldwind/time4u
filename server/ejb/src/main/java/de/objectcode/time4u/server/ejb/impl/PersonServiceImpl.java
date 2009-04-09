@@ -15,8 +15,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.jboss.annotation.ejb.RemoteBinding;
-
 import de.objectcode.time4u.server.api.IPersonService;
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Person;
@@ -28,7 +26,8 @@ import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 
 @Stateless
 @Remote(IPersonService.class)
-@RemoteBinding(jndiBinding = "time4u-server/PersonService/remote")
+@org.jboss.annotation.ejb.RemoteBinding(jndiBinding = "time4u-server/PersonService/remote")
+@org.jboss.ejb3.annotation.RemoteBinding(jndiBinding = "time4u-server/PersonService/remote")
 public class PersonServiceImpl implements IPersonService
 {
   @PersistenceContext(unitName = "time4u")

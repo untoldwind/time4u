@@ -13,7 +13,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.Factory;
@@ -42,7 +41,8 @@ import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 
 @Stateless
 @Local(IPersonServiceLocal.class)
-@LocalBinding(jndiBinding = "time4u-server/seam/PersonServiceSeam/local")
+@org.jboss.annotation.ejb.LocalBinding(jndiBinding = "time4u-server/seam/PersonServiceSeam/local")
+@org.jboss.ejb3.annotation.LocalBinding(jndiBinding = "time4u-server/seam/PersonServiceSeam/local")
 @Name("PersonService")
 @AutoCreate
 @Scope(ScopeType.CONVERSATION)

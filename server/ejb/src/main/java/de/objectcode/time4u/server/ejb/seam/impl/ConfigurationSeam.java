@@ -7,7 +7,6 @@ import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 
-import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.Name;
@@ -20,7 +19,8 @@ import de.objectcode.time4u.server.ejb.seam.api.IConfigurationLocal;
 
 @Stateless
 @Local(IConfigurationLocal.class)
-@LocalBinding(jndiBinding = "time4u-server/seam/ConfigurationSeam/local")
+@org.jboss.annotation.ejb.LocalBinding(jndiBinding = "time4u-server/seam/ConfigurationSeam/local")
+@org.jboss.ejb3.annotation.LocalBinding(jndiBinding = "time4u-server/seam/ConfigurationSeam/local")
 @Name("Configuration")
 @AutoCreate
 @Scope(ScopeType.CONVERSATION)

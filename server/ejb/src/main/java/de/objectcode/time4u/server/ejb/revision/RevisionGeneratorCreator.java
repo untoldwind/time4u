@@ -7,14 +7,13 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.jboss.annotation.ejb.LocalBinding;
-
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
 import de.objectcode.time4u.server.entities.revision.RevisionEntityKey;
 
 @Stateless
 @Local(IRevisionGeneratorCreator.class)
-@LocalBinding(jndiBinding = "time4u-server/RevisionGeneratorCreator/local")
+@org.jboss.annotation.ejb.LocalBinding(jndiBinding = "time4u-server/RevisionGeneratorCreator/local")
+@org.jboss.ejb3.annotation.LocalBinding(jndiBinding = "time4u-server/RevisionGeneratorCreator/local")
 public class RevisionGeneratorCreator implements IRevisionGeneratorCreator
 {
   @PersistenceContext(unitName = "time4u")

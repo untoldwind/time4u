@@ -22,10 +22,6 @@ import javax.persistence.Query;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jboss.annotation.ejb.Depends;
-import org.jboss.annotation.ejb.LocalBinding;
-import org.jboss.annotation.ejb.Management;
-import org.jboss.annotation.ejb.Service;
 
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.ejb.seam.api.io.XMLIO;
@@ -42,11 +38,15 @@ import de.objectcode.time4u.server.entities.revision.LocalIdEntity;
 import de.objectcode.time4u.server.utils.DefaultPasswordEncoder;
 import de.objectcode.time4u.server.utils.IPasswordEncoder;
 
-@Service(objectName = "time4u:service=ConfigService")
-@Management(IConfigServiceManagement.class)
+@org.jboss.annotation.ejb.Service(objectName = "time4u:service=ConfigService")
+@org.jboss.ejb3.annotation.Service(objectName = "time4u:service=ConfigService")
+@org.jboss.annotation.ejb.Management(IConfigServiceManagement.class)
+@org.jboss.ejb3.annotation.Management(IConfigServiceManagement.class)
 @Local(ILocalIdGenerator.class)
-@LocalBinding(jndiBinding = "time4u-server/ConfigService/local")
-@Depends("time4u:service=LocalIdService")
+@org.jboss.annotation.ejb.LocalBinding(jndiBinding = "time4u-server/ConfigService/local")
+@org.jboss.ejb3.annotation.LocalBinding(jndiBinding = "time4u-server/ConfigService/local")
+@org.jboss.annotation.ejb.Depends("time4u:service=LocalIdService")
+@org.jboss.ejb3.annotation.Depends("time4u:service=LocalIdService")
 public class ConfigService implements IConfigServiceManagement, ILocalIdGenerator
 {
   private final static Log LOG = LogFactory.getLog(ConfigService.class);

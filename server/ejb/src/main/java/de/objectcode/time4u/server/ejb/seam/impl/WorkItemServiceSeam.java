@@ -10,7 +10,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.Factory;
@@ -30,7 +29,8 @@ import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 
 @Stateless
 @Local(IWorkItemServiceLocal.class)
-@LocalBinding(jndiBinding = "time4u-server/seam/WorkItemServiceSeam/local")
+@org.jboss.annotation.ejb.LocalBinding(jndiBinding = "time4u-server/seam/WorkItemServiceSeam/local")
+@org.jboss.ejb3.annotation.LocalBinding(jndiBinding = "time4u-server/seam/WorkItemServiceSeam/local")
 @Name("WorkItemService")
 @AutoCreate
 @Scope(ScopeType.CONVERSATION)

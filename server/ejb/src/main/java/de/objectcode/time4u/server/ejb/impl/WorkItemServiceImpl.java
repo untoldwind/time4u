@@ -14,9 +14,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.jboss.annotation.ejb.RemoteBinding;
-import org.jboss.annotation.security.SecurityDomain;
-
 import de.objectcode.time4u.server.api.IWorkItemService;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
@@ -42,8 +39,9 @@ import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 
 @Stateless
 @Remote(IWorkItemService.class)
-@RemoteBinding(jndiBinding = "time4u-server/WorkItemService/remote")
-@SecurityDomain("time4u")
+@org.jboss.annotation.ejb.RemoteBinding(jndiBinding = "time4u-server/WorkItemService/remote")
+@org.jboss.ejb3.annotation.RemoteBinding(jndiBinding = "time4u-server/WorkItemService/remote")
+@org.jboss.annotation.security.SecurityDomain("time4u")
 public class WorkItemServiceImpl implements IWorkItemService
 {
   @PersistenceContext(unitName = "time4u")

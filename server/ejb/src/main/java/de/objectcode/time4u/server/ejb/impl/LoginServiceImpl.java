@@ -11,8 +11,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.jboss.annotation.ejb.RemoteBinding;
-
 import de.objectcode.time4u.server.api.ILoginService;
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.RegistrationInfo;
@@ -26,7 +24,8 @@ import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 
 @Stateless
 @Remote(ILoginService.class)
-@RemoteBinding(jndiBinding = "time4u-server/LoginService/remote")
+@org.jboss.annotation.ejb.RemoteBinding(jndiBinding = "time4u-server/LoginService/remote")
+@org.jboss.ejb3.annotation.RemoteBinding(jndiBinding = "time4u-server/LoginService/remote")
 public class LoginServiceImpl implements ILoginService
 {
   @PersistenceContext(unitName = "time4u")

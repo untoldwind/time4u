@@ -12,20 +12,18 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.jboss.annotation.ejb.RemoteBinding;
-import org.jboss.annotation.security.SecurityDomain;
-
 import de.objectcode.time4u.server.api.IRevisionService;
-import de.objectcode.time4u.server.api.data.RevisionStatus;
 import de.objectcode.time4u.server.api.data.EntityType;
+import de.objectcode.time4u.server.api.data.RevisionStatus;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
 
 @Stateless
 @Remote(IRevisionService.class)
-@RemoteBinding(jndiBinding = "time4u-server/RevisionService/remote")
-@SecurityDomain("time4u")
+@org.jboss.annotation.ejb.RemoteBinding(jndiBinding = "time4u-server/RevisionService/remote")
+@org.jboss.ejb3.annotation.RemoteBinding(jndiBinding = "time4u-server/RevisionService/remote")
+@org.jboss.annotation.security.SecurityDomain("time4u")
 public class RevisionServiceImpl implements IRevisionService
 {
   @PersistenceContext(unitName = "time4u")

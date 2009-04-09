@@ -9,8 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.jboss.annotation.ejb.LocalBinding;
-
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
@@ -19,7 +17,8 @@ import de.objectcode.time4u.server.entities.revision.RevisionEntityKey;
 
 @Stateless
 @Local(IRevisionGenerator.class)
-@LocalBinding(jndiBinding = "time4u-server/RevisionGenerator/local")
+@org.jboss.annotation.ejb.LocalBinding(jndiBinding = "time4u-server/RevisionGenerator/local")
+@org.jboss.ejb3.annotation.LocalBinding(jndiBinding = "time4u-server/RevisionGenerator/local")
 public class RevisionGenerator implements IRevisionGenerator
 {
   @PersistenceContext(unitName = "time4u")

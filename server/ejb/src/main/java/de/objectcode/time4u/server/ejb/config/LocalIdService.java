@@ -7,17 +7,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.jboss.annotation.ejb.LocalBinding;
-import org.jboss.annotation.ejb.Management;
-import org.jboss.annotation.ejb.Service;
-
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.revision.LocalIdEntity;
 
-@Service(objectName = "time4u:service=LocalIdService")
+@org.jboss.annotation.ejb.Service(objectName = "time4u:service=LocalIdService")
+@org.jboss.ejb3.annotation.Service(objectName = "time4u:service=LocalIdService")
 @Local(ILocalIdService.class)
-@LocalBinding(jndiBinding = "time4u-server/LocalIdCreator/local")
-@Management(ILocalIdServiceManagement.class)
+@org.jboss.annotation.ejb.LocalBinding(jndiBinding = "time4u-server/LocalIdCreator/local")
+@org.jboss.ejb3.annotation.LocalBinding(jndiBinding = "time4u-server/LocalIdCreator/local")
+@org.jboss.annotation.ejb.Management(ILocalIdServiceManagement.class)
+@org.jboss.ejb3.annotation.Management(ILocalIdServiceManagement.class)
 public class LocalIdService implements ILocalIdService, ILocalIdServiceManagement
 {
   public final static int CHUNK_SIZE = 100;

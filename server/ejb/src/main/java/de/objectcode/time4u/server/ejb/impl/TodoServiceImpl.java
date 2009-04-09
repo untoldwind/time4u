@@ -11,8 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.jboss.annotation.ejb.RemoteBinding;
-
 import de.objectcode.time4u.server.api.ITodoService;
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.FilterResult;
@@ -35,7 +33,8 @@ import de.objectcode.time4u.server.entities.revision.IRevisionLock;
  */
 @Stateless
 @Remote(ITodoService.class)
-@RemoteBinding(jndiBinding = "time4u-server/TodoService/remote")
+@org.jboss.annotation.ejb.RemoteBinding(jndiBinding = "time4u-server/TodoService/remote")
+@org.jboss.ejb3.annotation.RemoteBinding(jndiBinding = "time4u-server/TodoService/remote")
 public class TodoServiceImpl implements ITodoService
 {
   @PersistenceContext(unitName = "time4u")

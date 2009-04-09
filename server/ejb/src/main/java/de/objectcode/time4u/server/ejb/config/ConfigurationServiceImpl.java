@@ -10,14 +10,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.jboss.annotation.ejb.LocalBinding;
-
 import de.objectcode.time4u.server.entities.config.ConfigValueType;
 import de.objectcode.time4u.server.entities.config.ConfigurationEntity;
 
 @Stateless
 @Local(IConfigurationServiceLocal.class)
-@LocalBinding(jndiBinding = "time4u-server/ConfigurationService/local")
+@org.jboss.annotation.ejb.LocalBinding(jndiBinding = "time4u-server/ConfigurationService/local")
+@org.jboss.ejb3.annotation.LocalBinding(jndiBinding = "time4u-server/ConfigurationService/local")
 public class ConfigurationServiceImpl implements IConfigurationServiceLocal
 {
   @PersistenceContext(unitName = "time4u")

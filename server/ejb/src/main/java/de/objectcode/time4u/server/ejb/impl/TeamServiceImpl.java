@@ -14,8 +14,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.jboss.annotation.ejb.RemoteBinding;
-
 import de.objectcode.time4u.server.api.ITeamService;
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Team;
@@ -25,7 +23,8 @@ import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 
 @Stateless
 @Remote(ITeamService.class)
-@RemoteBinding(jndiBinding = "time4u-server/TeamService/remote")
+@org.jboss.annotation.ejb.RemoteBinding(jndiBinding = "time4u-server/TeamService/remote")
+@org.jboss.ejb3.annotation.RemoteBinding(jndiBinding = "time4u-server/TeamService/remote")
 public class TeamServiceImpl implements ITeamService
 {
   @PersistenceContext(unitName = "time4u")
