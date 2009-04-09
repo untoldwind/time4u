@@ -64,8 +64,15 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<!-- JBoss 4.2 needs this -->
 			<groupId>jboss</groupId>
 			<artifactId>jboss-annotations-ejb3</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<!-- JBoss 5.0 needs this -->
+			<groupId>org.jboss.ejb3</groupId>
+			<artifactId>jboss-ejb3-ext-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

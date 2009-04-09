@@ -43,7 +43,7 @@ public class ReportManagementServiceSeam implements IReportManagementServiceLoca
   List<ReportDefinitionEntity> m_reportDefinitions;
 
   @SuppressWarnings("unchecked")
-  @Restrict("#{s:hasRole('admin')}")
+  @Restrict("#{s:hasRole('user')}")
   @Factory("admin.reportDefinitionList")
   public void initReportDefinitions()
   {
@@ -52,11 +52,13 @@ public class ReportManagementServiceSeam implements IReportManagementServiceLoca
     m_reportDefinitions = query.getResultList();
   }
 
+  @Restrict("#{s:hasRole('user')}")
   public ReportDefinitionEntity getReportDefinitionEntity(final String reportId)
   {
     return m_manager.find(ReportDefinitionEntity.class, reportId);
   }
 
+  @Restrict("#{s:hasRole('admin')}")
   public void storeReportDefinitionEntity(final ReportDefinitionEntity reportDefinitionEntity)
   {
     try {
@@ -77,6 +79,7 @@ public class ReportManagementServiceSeam implements IReportManagementServiceLoca
     }
   }
 
+  @Restrict("#{s:hasRole('admin')}")
   public void deleteReportDeinfitionEntity(final String reportId)
   {
     final ReportDefinitionEntity entity = m_manager.find(ReportDefinitionEntity.class, reportId);
