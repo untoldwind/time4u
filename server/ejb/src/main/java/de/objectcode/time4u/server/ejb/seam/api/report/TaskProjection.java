@@ -10,7 +10,10 @@ public enum TaskProjection implements IProjection
   NAME(ColumnType.NAME, "Task") {
     public Object project(final IRowDataAdapter rowData)
     {
-      return rowData.getTask().getName();
+      if (rowData.getTask() != null) {
+        return rowData.getTask().getName();
+      }
+      return "";
     }
   };
 

@@ -45,8 +45,10 @@ public class PersonFilter implements IFilter
         return "(d.person.id = :personId)";
       case WORKITEM:
         return "(w.dayInfo.person.id = :personId)";
+      case TODO:
+        return "(t.reporter.id = :personId)";
       default:
-        throw new RuntimeException("DateRangeFilter not applicable for entity type: " + entityType);
+        throw new RuntimeException("PersonFilter not applicable for entity type: " + entityType);
     }
   }
 

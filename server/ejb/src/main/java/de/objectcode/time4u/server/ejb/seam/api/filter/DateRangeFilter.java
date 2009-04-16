@@ -40,6 +40,8 @@ public class DateRangeFilter implements IFilter
         return "(d.date >= :from and d.date < :until)";
       case WORKITEM:
         return "(w.dayInfo.date >= :from and w.dayInfo.date < :until)";
+      case TODO:
+        return "(t.createdAt >= :from and t.createdAt < :until)";
       default:
         throw new RuntimeException("DateRangeFilter not applicable for entity type: " + entityType);
     }

@@ -15,27 +15,36 @@ public enum ProjectProjection implements IProjection
   ID(ColumnType.NAME, "Project id") {
     public Object project(final IRowDataAdapter rowData)
     {
-      return rowData.getProject().getId();
+      if (rowData.getProject() != null) {
+        return rowData.getProject().getId();
+      }
+      return "";
     }
   },
   NAME(ColumnType.NAME, "Project") {
     public Object project(final IRowDataAdapter rowData)
     {
-      return rowData.getProject().getName();
+      if (rowData.getProject() != null) {
+        return rowData.getProject().getName();
+      }
+      return "";
     }
   },
   PATH(ColumnType.NAME_ARRAY, "Project") {
     public Object project(final IRowDataAdapter rowData)
     {
-      final List<String> names = new ArrayList<String>();
+      if (rowData.getProject() != null) {
+        final List<String> names = new ArrayList<String>();
 
-      ProjectEntity current = rowData.getProject();
+        ProjectEntity current = rowData.getProject();
 
-      while (current != null) {
-        names.add(0, current.getName());
-        current = current.getParent();
+        while (current != null) {
+          names.add(0, current.getName());
+          current = current.getParent();
+        }
+        return names;
       }
-      return names;
+      return new String[0];
     }
   };
 

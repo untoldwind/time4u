@@ -80,6 +80,11 @@ public class ReportServiceSeam implements IReportServiceLocal
         orderStr = " order by d.date asc";
         rowDataAdapter = new DayInfoRowDataAdapter();
         break;
+      case TODO:
+        queryStr.append(TodoEntity.class.getName());
+        queryStr.append(" t where t.reporter.id in (:allowedPersons)");
+        orderStr = " order by t.header asc";
+        rowDataAdapter = new TodoRowDataAdapter();
     }
 
     if (reportDefinition.getFilter() != null) {
@@ -216,6 +221,53 @@ public class ReportServiceSeam implements IReportServiceLocal
       }
       return timePolicies;
     }
+  }
 
+  private static class TodoRowDataAdapter implements IExtendedRowDataAdapter
+  {
+    TodoEntity m_currentTodo;
+
+    public void setCurrentRow(final Object row)
+    {
+      m_currentTodo = (TodoEntity) row;
+    }
+
+    public DayInfoEntity getDayInfo()
+    {
+      return null;
+    }
+
+    public PersonEntity getPerson()
+    {
+      return m_currentTodo.getReporter();
+    }
+
+    public ProjectEntity getProject()
+    {
+      if (m_currentTodo.getTask() != null) {
+        return m_currentTodo.getTask().getProject();
+      }
+      return null;
+    }
+
+    public TaskEntity getTask()
+    {
+      return m_currentTodo.getTask();
+    }
+
+    public List<TimePolicyEntity> getTimePolicies()
+    {
+      return null;
+    }
+
+    public TodoEntity getTodo()
+    {
+      return m_currentTodo;
+    }
+
+    public WorkItemEntity getWorkItem()
+    {
+      return null;
+    }
   }
 }

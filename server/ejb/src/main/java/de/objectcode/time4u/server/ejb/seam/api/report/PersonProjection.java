@@ -10,31 +10,46 @@ public enum PersonProjection implements IProjection
   ID(ColumnType.NAME, "Person id") {
     public Object project(final IRowDataAdapter rowData)
     {
-      return rowData.getPerson().getId();
+      if (rowData.getPerson() != null) {
+        return rowData.getPerson().getId();
+      }
+      return "";
     }
   },
   GIVEN_NAME(ColumnType.NAME, "Given name") {
     public Object project(final IRowDataAdapter rowData)
     {
-      return rowData.getPerson().getGivenName();
+      if (rowData.getPerson() != null) {
+        return rowData.getPerson().getGivenName();
+      }
+      return "";
     }
   },
   SURNAME(ColumnType.NAME, "Surname") {
     public Object project(final IRowDataAdapter rowData)
     {
-      return rowData.getPerson().getSurname();
+      if (rowData.getPerson() != null) {
+        return rowData.getPerson().getSurname();
+      }
+      return "";
     }
   },
   NAME(ColumnType.NAME, "Person") {
     public Object project(final IRowDataAdapter rowData)
     {
-      return rowData.getPerson().getGivenName() + " " + rowData.getPerson().getSurname();
+      if (rowData.getPerson() != null) {
+        return rowData.getPerson().getGivenName() + " " + rowData.getPerson().getSurname();
+      }
+      return "";
     }
   },
   EMAIL(ColumnType.NAME, "Email") {
     public Object project(final IRowDataAdapter rowData)
     {
-      return rowData.getPerson().getEmail();
+      if (rowData.getPerson() != null) {
+        return rowData.getPerson().getEmail();
+      }
+      return "";
     }
   };
 
