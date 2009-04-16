@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -41,6 +42,8 @@ public class TodoEntity extends TodoBaseEntity
   private Integer m_estimatedTime;
   /** Assignments */
   private Map<String, TodoAssignmentEntity> m_assignments;
+  /** Workitems associated with this todo. */
+  private Set<WorkItemEntity> m_workItems;
 
   /**
    * Default constructor for hibernate.
@@ -102,6 +105,17 @@ public class TodoEntity extends TodoBaseEntity
   public void setAssignments(final Map<String, TodoAssignmentEntity> assignments)
   {
     m_assignments = assignments;
+  }
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "todo", cascade = {})
+  public Set<WorkItemEntity> getWorkItems()
+  {
+    return m_workItems;
+  }
+
+  public void setWorkItems(final Set<WorkItemEntity> workItems)
+  {
+    m_workItems = workItems;
   }
 
   public void fromDTO(final IPersistenceContext context, final Todo todo)

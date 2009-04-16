@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import de.objectcode.time4u.server.entities.TodoAssignmentEntity;
 import de.objectcode.time4u.server.entities.TodoGroupEntity;
+import de.objectcode.time4u.server.entities.WorkItemEntity;
 
 /**
  * Enumeration of all todo projections.
@@ -87,6 +88,7 @@ public enum TodoProjection implements IProjection
       return "";
     }
   },
+  /** Estimated effort by reporter. */
   ESTIMATED_REPORTER(ColumnType.TIME, "Estimated (Reporter)") {
     public Object project(final IRowDataAdapter rowData)
     {
@@ -96,6 +98,7 @@ public enum TodoProjection implements IProjection
       return null;
     }
   },
+  /** Sum of estimated efforts by assigned persons. */
   ESTIMATED_ASSIGNEES(ColumnType.TIME, "Estimated (Assignees)") {
     public Object project(final IRowDataAdapter rowData)
     {
@@ -107,6 +110,20 @@ public enum TodoProjection implements IProjection
           }
         }
         return estimatedTime;
+      }
+      return null;
+    }
+  },
+  /** Sum of all durations associated with this todo. */
+  SUM_DURATIONS(ColumnType.TIME, "Sum durations") {
+    public Object project(final IRowDataAdapter rowData)
+    {
+      if (rowData.getTodo() != null) {
+        int sumDuration = 0;
+        for (final WorkItemEntity workItem : rowData.getTodo().getWorkItems()) {
+          sumDuration += workItem.getDuration();
+        }
+        return sumDuration;
       }
       return null;
     }
