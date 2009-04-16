@@ -27,10 +27,10 @@ public class DateRangeFilter implements IFilter
   {
   }
 
-  public DateRangeFilter(final Date from, final Date until)
+  public DateRangeFilter(final java.util.Date from, final java.util.Date until)
   {
-    m_from = from;
-    m_until = until;
+    m_from = new Date(from.getTime());
+    m_until = new Date(until.getTime());
   }
 
   public String getWhereClause(final EntityType entityType, final Map<String, BaseParameterValue> parameters)
