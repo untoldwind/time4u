@@ -16,5 +16,7 @@ public enum ColumnType
   /** Time of day 00:00:00 to 24:00:00 */
   TIME,
   /** A date */
-  DATE
+  DATE,
+  /** A timestamp */
+  TIMESTAMP
 }

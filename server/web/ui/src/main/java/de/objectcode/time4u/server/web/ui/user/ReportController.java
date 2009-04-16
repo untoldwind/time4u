@@ -30,6 +30,7 @@ import de.objectcode.time4u.server.web.ui.converter.DateConverter;
 import de.objectcode.time4u.server.web.ui.converter.StringArrayConverter;
 import de.objectcode.time4u.server.web.ui.converter.StringConverter;
 import de.objectcode.time4u.server.web.ui.converter.TimeConverter;
+import de.objectcode.time4u.server.web.ui.converter.TimestampConverter;
 
 @Name("user.reportController")
 @Scope(ScopeType.CONVERSATION)
@@ -69,6 +70,7 @@ public class ReportController
     m_converters.put(ColumnType.NAME, new StringConverter());
     m_converters.put(ColumnType.NAME_ARRAY, new StringArrayConverter());
     m_converters.put(ColumnType.DESCRIPTION, new StringConverter());
+    m_converters.put(ColumnType.TIMESTAMP, new TimestampConverter());
   }
 
   @Begin(join = true)

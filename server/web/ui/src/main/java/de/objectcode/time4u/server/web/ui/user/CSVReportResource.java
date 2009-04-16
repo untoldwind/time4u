@@ -44,6 +44,8 @@ public class CSVReportResource extends AbstractResource
 
   private final static DateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
+  private final static DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+
   @Override
   public void getResource(final HttpServletRequest request, final HttpServletResponse response)
       throws ServletException, IOException
@@ -157,6 +159,11 @@ public class CSVReportResource extends AbstractResource
       case TIME:
         if (value != null && value instanceof Integer) {
           out.print(TimeConverter.format((Integer) value));
+        }
+        break;
+      case TIMESTAMP:
+        if (value != null && value instanceof Date) {
+          out.print(TIMESTAMP_FORMAT.format((Date) value));
         }
         break;
     }

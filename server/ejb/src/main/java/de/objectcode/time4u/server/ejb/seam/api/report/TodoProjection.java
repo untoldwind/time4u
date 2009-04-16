@@ -6,6 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlType;
 
+import de.objectcode.time4u.server.entities.TodoAssignmentEntity;
 import de.objectcode.time4u.server.entities.TodoGroupEntity;
 
 /**
@@ -54,6 +55,60 @@ public enum TodoProjection implements IProjection
         }
       }
       return headers;
+    }
+  },
+  /** Project the createdAt of a todo to a report column. */
+  CREATED_AT(ColumnType.TIMESTAMP, "Created at") {
+    public Object project(final IRowDataAdapter rowData)
+    {
+      if (rowData.getTodo() != null) {
+        return rowData.getTodo().getCreatedAt();
+      }
+      return null;
+    }
+  },
+  /** Project the completedAt of a todo to a report column. */
+  COMPLETED_AT(ColumnType.TIMESTAMP, "Created at") {
+    public Object project(final IRowDataAdapter rowData)
+    {
+      if (rowData.getTodo() != null) {
+        return rowData.getTodo().getCompletedAt();
+      }
+      return null;
+    }
+  },
+  /** Project the state of a todo to a report column. */
+  STATE(ColumnType.NAME, "State") {
+    public Object project(final IRowDataAdapter rowData)
+    {
+      if (rowData.getTodo() != null) {
+        return rowData.getTodo().getState().toString();
+      }
+      return "";
+    }
+  },
+  ESTIMATED_REPORTER(ColumnType.TIME, "Estimated (Reporter)") {
+    public Object project(final IRowDataAdapter rowData)
+    {
+      if (rowData.getTodo() != null) {
+        return rowData.getTodo().getEstimatedTime();
+      }
+      return null;
+    }
+  },
+  ESTIMATED_ASSIGNEES(ColumnType.TIME, "Estimated (Assignees)") {
+    public Object project(final IRowDataAdapter rowData)
+    {
+      if (rowData.getTodo() != null) {
+        int estimatedTime = 0;
+        for (final TodoAssignmentEntity assignement : rowData.getTodo().getAssignments().values()) {
+          if (assignement.getEstimatedTime() != null) {
+            estimatedTime += assignement.getEstimatedTime();
+          }
+        }
+        return estimatedTime;
+      }
+      return null;
     }
   };
 
