@@ -3,3 +3,7 @@ DateRangeFilter
 OrFilter
 ParameterRef
 PersonFilter
+TodoStateFilter
+TaskFilter
+ProjectFilter
+ProjectPathFilter
