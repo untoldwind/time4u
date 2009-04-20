@@ -151,6 +151,11 @@ public class CSVReportResource extends AbstractResource
       case NAME_ARRAY:
         out.print(toCSVString(StringArrayConverter.format(value)));
         break;
+      case INTEGER:
+        if (value != null) {
+          out.print(value.toString());
+        }
+        break;
       case DATE:
         if (value != null && value instanceof Date) {
           out.print(DATE_FORMAT.format((Date) value));

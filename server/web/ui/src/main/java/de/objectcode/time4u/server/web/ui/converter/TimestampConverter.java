@@ -20,6 +20,9 @@ import org.jboss.seam.annotations.intercept.BypassInterceptors;
 public class TimestampConverter implements javax.faces.convert.Converter
 {
 
+  /**
+   * {@inheritDoc}
+   */
   public Object getAsObject(final FacesContext context, final UIComponent component, final String value)
   {
     final DateFormat format = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, context
@@ -35,6 +38,9 @@ public class TimestampConverter implements javax.faces.convert.Converter
     return null;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public String getAsString(final FacesContext context, final UIComponent component, final Object value)
   {
     final DateFormat format = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, context

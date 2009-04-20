@@ -21,6 +21,16 @@ import de.objectcode.time4u.server.entities.WorkItemEntity;
 @XmlType(name = "todo-projection")
 public enum TodoProjection implements IProjection
 {
+  /** Project the id of a todo to a report column. */
+  ID(ColumnType.NAME, "Todo id") {
+    public Object project(final IRowDataAdapter rowData)
+    {
+      if (rowData.getTodo() != null) {
+        return rowData.getTodo().getId();
+      }
+      return "";
+    }
+  },
   /** Project the header of a todo to a report column. */
   HEADER(ColumnType.NAME, "Todo header") {
     public Object project(final IRowDataAdapter rowData)
@@ -78,12 +88,32 @@ public enum TodoProjection implements IProjection
       return null;
     }
   },
+  /** Project the deadline of a todo to a report column. */
+  DEADLINE(ColumnType.TIMESTAMP, "Deadline") {
+    public Object project(final IRowDataAdapter rowData)
+    {
+      if (rowData.getTodo() != null) {
+        return rowData.getTodo().getDeadline();
+      }
+      return "";
+    }
+  },
   /** Project the state of a todo to a report column. */
   STATE(ColumnType.NAME, "State") {
     public Object project(final IRowDataAdapter rowData)
     {
       if (rowData.getTodo() != null) {
         return rowData.getTodo().getState().toString();
+      }
+      return "";
+    }
+  },
+  /** Priority of the todo */
+  PRIORITY(ColumnType.INTEGER, "Priority") {
+    public Object project(final IRowDataAdapter rowData)
+    {
+      if (rowData.getTodo() != null) {
+        return rowData.getTodo().getPriority();
       }
       return "";
     }

@@ -27,6 +27,7 @@ import de.objectcode.time4u.server.ejb.seam.api.report.ReportResult;
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.BaseParameterValue;
 import de.objectcode.time4u.server.entities.report.ReportDefinitionEntity;
 import de.objectcode.time4u.server.web.ui.converter.DateConverter;
+import de.objectcode.time4u.server.web.ui.converter.IntegerConverter;
 import de.objectcode.time4u.server.web.ui.converter.StringArrayConverter;
 import de.objectcode.time4u.server.web.ui.converter.StringConverter;
 import de.objectcode.time4u.server.web.ui.converter.TimeConverter;
@@ -69,6 +70,7 @@ public class ReportController
     m_converters.put(ColumnType.DATE, new DateConverter());
     m_converters.put(ColumnType.NAME, new StringConverter());
     m_converters.put(ColumnType.NAME_ARRAY, new StringArrayConverter());
+    m_converters.put(ColumnType.INTEGER, new IntegerConverter());
     m_converters.put(ColumnType.DESCRIPTION, new StringConverter());
     m_converters.put(ColumnType.TIMESTAMP, new TimestampConverter());
   }

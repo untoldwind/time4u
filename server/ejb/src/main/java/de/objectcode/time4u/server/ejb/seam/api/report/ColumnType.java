@@ -13,6 +13,8 @@ public enum ColumnType
   NAME_ARRAY,
   /** A description is a long text like a project description, workitem comment, ... */
   DESCRIPTION,
+  /** An integer value */
+  INTEGER,
   /** Time of day 00:00:00 to 24:00:00 */
   TIME,
   /** A date */

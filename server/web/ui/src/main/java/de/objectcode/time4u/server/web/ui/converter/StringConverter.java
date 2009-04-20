@@ -15,11 +15,17 @@ import org.jboss.seam.annotations.intercept.BypassInterceptors;
 @Scope(ScopeType.APPLICATION)
 public class StringConverter implements javax.faces.convert.Converter
 {
+  /**
+   * {@inheritDoc}
+   */
   public Object getAsObject(final FacesContext context, final UIComponent component, final String value)
   {
     return value;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public String getAsString(final FacesContext context, final UIComponent component, final Object value)
   {
     return (String) value;
