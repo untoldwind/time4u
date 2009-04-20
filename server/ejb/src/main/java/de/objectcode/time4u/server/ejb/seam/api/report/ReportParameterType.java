@@ -9,6 +9,7 @@ import de.objectcode.time4u.server.ejb.seam.api.report.parameter.BaseParameterVa
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.DateRangeParameterValue;
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.MonthParameterValue;
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.PersonParameterValue;
+import de.objectcode.time4u.server.ejb.seam.api.report.parameter.ProjectParameterValue;
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.TodoStateParameterValue;
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.WeekParameterValue;
 
@@ -20,6 +21,7 @@ public enum ReportParameterType
   WEEK("week", WeekParameterValue.class),
   DATE_RANGE("daterange", DateRangeParameterValue.class),
   PERSON("person", PersonParameterValue.class),
+  PROJECT("project", ProjectParameterValue.class),
   TODO_STATE("todostate", TodoStateParameterValue.class);
 
   private final String m_id;

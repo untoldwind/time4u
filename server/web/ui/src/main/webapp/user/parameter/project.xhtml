@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+	<a4j:region>
+		<s:div id="panel">
+			<ui:repeat value="#{parameter.projectStack}" var="projectId">
+				<h:outputText value="#{ProjectService.getProject(projectId).name}"/>
+				&lt;
+			</ui:repeat>
+			<h:selectOneMenu value="#{parameter.projectId}" required="false">
+				<s:selectItems value="#{ProjectService.getChildProjects(parameter.projectId)}"
+					var="project" itemValue="#{project.id}" label="#{project.name}" hideNoSelection="false" noSelectionLabel="*no project*"/>
+				<f:selectItem itemLabel="*parent*" itemValue="parent" />
+				<a4j:support event="onchange" reRender="panel"/>
+			</h:selectOneMenu>
+		</s:div>
+	</a4j:region>
+</ui:composition>

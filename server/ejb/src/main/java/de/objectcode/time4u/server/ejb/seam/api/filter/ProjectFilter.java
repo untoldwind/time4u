@@ -62,4 +62,8 @@ public class ProjectFilter implements IFilter
     query.setParameter("projectId", m_projectId);
   }
 
+  public static ProjectFilter filterProject(final String projectId)
+  {
+    return new ProjectFilter(projectId);
+  }
 }
