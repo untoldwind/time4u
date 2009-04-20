@@ -38,6 +38,9 @@ public class PersonFilter implements IFilter
     m_personId = personId;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public String getWhereClause(final EntityType entityType, final Map<String, BaseParameterValue> parameters)
   {
     switch (entityType) {
@@ -52,6 +55,9 @@ public class PersonFilter implements IFilter
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void setQueryParameters(final EntityType entityType, final Query query,
       final Map<String, BaseParameterValue> parameters)
   {

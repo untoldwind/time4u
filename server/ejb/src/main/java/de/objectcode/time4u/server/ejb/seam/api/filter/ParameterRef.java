@@ -41,6 +41,9 @@ public class ParameterRef implements IFilter
     m_parameter = parameter;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public String getWhereClause(final EntityType entityType, final Map<String, BaseParameterValue> parameters)
   {
     final BaseParameterValue parameterValue = parameters.get(m_parameter.getName());
@@ -48,6 +51,9 @@ public class ParameterRef implements IFilter
     return parameterValue.getFilter().getWhereClause(entityType, parameters);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void setQueryParameters(final EntityType entityType, final Query query,
       final Map<String, BaseParameterValue> parameters)
   {

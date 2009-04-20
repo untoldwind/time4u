@@ -33,6 +33,9 @@ public class DateRangeFilter implements IFilter
     m_until = new Date(until.getTime());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public String getWhereClause(final EntityType entityType, final Map<String, BaseParameterValue> parameters)
   {
     switch (entityType) {
@@ -71,6 +74,9 @@ public class DateRangeFilter implements IFilter
     m_until = until;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void setQueryParameters(final EntityType entityType, final Query query,
       final Map<String, BaseParameterValue> parameters)
   {
