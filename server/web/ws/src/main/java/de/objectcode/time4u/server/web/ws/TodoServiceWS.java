@@ -39,6 +39,15 @@ public class TodoServiceWS implements ITodoService
     return m_todoService.getTodos(filter);
   }
 
+  public FilterResult<TodoSummary> getTodoSummaries(final TodoFilter filter)
+  {
+    if (LOG.isInfoEnabled()) {
+      LOG.info("getTodoSummaries: " + filter);
+    }
+
+    return m_todoService.getTodoSummaries(filter);
+  }
+
   public Todo storeTodo(final Todo todo)
   {
     if (LOG.isInfoEnabled()) {
@@ -53,6 +62,22 @@ public class TodoServiceWS implements ITodoService
       LOG.info("storeTodoGroup: " + todoGroup);
     }
     return m_todoService.storeTodoGroup(todoGroup);
+  }
+
+  public TodoSummary getTodo(final String todoId)
+  {
+    if (LOG.isInfoEnabled()) {
+      LOG.info("getTodo: " + todoId);
+    }
+    return m_todoService.getTodo(todoId);
+  }
+
+  public TodoSummary getTodoSummary(final String todoId)
+  {
+    if (LOG.isInfoEnabled()) {
+      LOG.info("getTodoSummary: " + todoId);
+    }
+    return m_todoService.getTodoSummary(todoId);
   }
 
 }

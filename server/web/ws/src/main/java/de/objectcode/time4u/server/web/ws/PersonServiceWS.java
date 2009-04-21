@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import de.objectcode.time4u.server.api.IPersonService;
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Person;
+import de.objectcode.time4u.server.api.data.PersonSummary;
 import de.objectcode.time4u.server.api.filter.PersonFilter;
 
 @WebService(targetNamespace = "http://objectcode.de/time4u/api/ws", endpointInterface = "de.objectcode.time4u.server.api.IPersonService")
@@ -49,5 +50,21 @@ public class PersonServiceWS implements IPersonService
       LOG.info("getPersons: " + filter);
     }
     return m_personService.getPersons(filter);
+  }
+
+  public FilterResult<PersonSummary> getPersonSummaries(final PersonFilter filter)
+  {
+    if (LOG.isInfoEnabled()) {
+      LOG.info("getPersonSummaries: " + filter);
+    }
+    return m_personService.getPersonSummaries(filter);
+  }
+
+  public Person getPerson(final String personId)
+  {
+    if (LOG.isInfoEnabled()) {
+      LOG.info("getPerson: " + personId);
+    }
+    return m_personService.getPerson(personId);
   }
 }

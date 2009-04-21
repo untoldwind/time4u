@@ -31,6 +31,16 @@ public interface ITodoService
   FilterResult<TodoSummary> getTodos(TodoFilter filter);
 
   /**
+   * Get all todo summaries matching a filter condition. Note: This might be todos as well as todo groups.
+   * 
+   * @param filter
+   *          The filter condition
+   * @return A todo summaries matching <tt>filter</tt>
+   */
+  @WebMethod
+  FilterResult<TodoSummary> getTodoSummaries(TodoFilter filter);
+
+  /**
    * Store a todo. This method either updates an existing todo or inserts a new one.
    * 
    * @param todo
@@ -50,4 +60,21 @@ public interface ITodoService
   @WebMethod
   TodoGroup storeTodoGroup(TodoGroup todoGroup);
 
+  /**
+   * Get a todo by its identifier.
+   * 
+   * @param todoId
+   *          The identifier of the todo.
+   * @return Either a <tt>Todo</tt> or a <tt>TodoGroup</tt>
+   */
+  TodoSummary getTodo(String todoId);
+
+  /**
+   * Get a todo summary by its identifier.
+   * 
+   * @param todoId
+   *          The identifier of the todo.
+   * @return The <tt>TodoSummary</tt>
+   */
+  TodoSummary getTodoSummary(String todoId);
 }

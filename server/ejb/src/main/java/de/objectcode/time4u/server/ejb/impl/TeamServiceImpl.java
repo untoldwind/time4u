@@ -17,6 +17,7 @@ import javax.persistence.Query;
 import de.objectcode.time4u.server.api.ITeamService;
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Team;
+import de.objectcode.time4u.server.api.data.TeamSummary;
 import de.objectcode.time4u.server.api.filter.TeamFilter;
 import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
@@ -33,6 +34,9 @@ public class TeamServiceImpl implements ITeamService
   @Resource
   SessionContext m_sessionContext;
 
+  /**
+   * {@inheritDoc}
+   */
   @RolesAllowed("user")
   public FilterResult<Team> getTeams(final TeamFilter filter)
   {
@@ -63,6 +67,60 @@ public class TeamServiceImpl implements ITeamService
     }
 
     return new FilterResult<Team>(result);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @RolesAllowed("user")
+  public FilterResult<TeamSummary> getTeamSummaries(final TeamFilter filter)
+  {
+    final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, m_sessionContext.getCallerPrincipal()
+        .getName());
+    final Set<String> allowedTeamIds = new HashSet<String>();
+
+    for (final TeamEntity team : userAccount.getPerson().getResponsibleFor()) {
+      allowedTeamIds.add(team.getId());
+    }
+    for (final TeamEntity team : userAccount.getPerson().getMemberOf()) {
+      allowedTeamIds.add(team.getId());
+    }
+
+    final Query query = createQuery(filter);
+    final List<TeamSummary> result = new ArrayList<TeamSummary>();
+
+    for (final Object row : query.getResultList()) {
+      final TeamEntity teamEntity = (TeamEntity) row;
+
+      if (allowedTeamIds.contains(teamEntity.getId())) {
+        final TeamSummary team = new TeamSummary();
+
+        teamEntity.toSummaryDTO(team);
+
+        result.add(team);
+      }
+    }
+
+    return new FilterResult<TeamSummary>(result);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @RolesAllowed("user")
+  public Team getTeam(final String teamId)
+  {
+    final TeamEntity teamEntity = m_manager.find(TeamEntity.class, teamId);
+
+    if (teamEntity != null) {
+      final Team team = new Team();
+
+      teamEntity.toDTO(team);
+
+      return team;
+    }
+
+    return null;
   }
 
   private Query createQuery(final TeamFilter filter)

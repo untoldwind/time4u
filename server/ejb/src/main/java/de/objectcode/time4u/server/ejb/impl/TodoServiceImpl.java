@@ -78,6 +78,26 @@ public class TodoServiceImpl implements ITodoService
    * {@inheritDoc}
    */
   @RolesAllowed("user")
+  public FilterResult<TodoSummary> getTodoSummaries(final TodoFilter filter)
+  {
+    final Query query = createQuery(filter);
+    final List<TodoSummary> result = new ArrayList<TodoSummary>();
+
+    for (final Object row : query.getResultList()) {
+      final TodoSummary todoSummary = new TodoSummary();
+
+      ((TodoBaseEntity) row).toSummaryDTO(todoSummary);
+
+      result.add(todoSummary);
+    }
+
+    return new FilterResult<TodoSummary>(result);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @RolesAllowed("user")
   public Todo storeTodo(final Todo todo)
   {
     final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(EntityType.TODO, null);
@@ -140,6 +160,52 @@ public class TodoServiceImpl implements ITodoService
     todoEntity.toDTO(result);
 
     return result;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @RolesAllowed("user")
+  public TodoSummary getTodo(final String todoId)
+  {
+    final TodoBaseEntity todoEntity = m_manager.find(TodoBaseEntity.class, todoId);
+
+    if (todoEntity != null) {
+      if (todoEntity instanceof TodoEntity) {
+        final Todo todo = new Todo();
+
+        ((TodoEntity) todoEntity).toDTO(todo);
+
+        return todo;
+      } else if (todoEntity instanceof TodoGroupEntity) {
+        final TodoGroup todoGroup = new TodoGroup();
+
+        ((TodoGroupEntity) todoEntity).toDTO(todoGroup);
+
+        return todoGroup;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @RolesAllowed("user")
+  public TodoSummary getTodoSummary(final String todoId)
+  {
+    final TodoBaseEntity todoEntity = m_manager.find(TodoBaseEntity.class, todoId);
+
+    if (todoEntity != null) {
+      final TodoSummary todoSummary = new TodoSummary();
+
+      todoEntity.toSummaryDTO(todoSummary);
+
+      return todoSummary;
+    }
+
+    return null;
   }
 
   private Query createQuery(final TodoFilter filter)

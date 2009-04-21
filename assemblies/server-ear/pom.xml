@@ -68,6 +68,12 @@
 			<version>${pom.version}</version>
 			<type>war</type>
 		</dependency>
+		<dependency>
+			<groupId>de.objectcode.time4u.server.web</groupId>
+			<artifactId>time4u-server-web-rest</artifactId>
+			<version>${pom.version}</version>
+			<type>war</type>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -107,6 +113,11 @@
 							<groupId>de.objectcode.time4u.server.web</groupId>
 							<artifactId>time4u-server-web-ws</artifactId>
 							<contextRoot>/time4u-ws</contextRoot>
+						</webModule>
+						<webModule>
+							<groupId>de.objectcode.time4u.server.web</groupId>
+							<artifactId>time4u-server-web-rest</artifactId>
+							<contextRoot>/time4u-rest</contextRoot>
 						</webModule>
 					</modules>
 				</configuration>

@@ -39,13 +39,17 @@ public class Projects
   @Produces("text/xml")
   public FilterResult<? extends ProjectSummary> getProjectSummaries(@QueryParam("active") final Boolean active,
       @QueryParam("deleted") final Boolean deleted, @QueryParam("minRevision") final Long minRevision,
-      @QueryParam("maxRevision") final Long maxRevision, @QueryParam("full") final boolean full)
+      @QueryParam("maxRevision") final Long maxRevision, @QueryParam("full") final boolean full,
+      @QueryParam("deep") final boolean deep)
   {
     final ProjectFilter filter = new ProjectFilter();
     filter.setActive(active);
     filter.setDeleted(deleted);
     filter.setMinRevision(minRevision);
     filter.setMaxRevision(maxRevision);
+    if (!deep) {
+      filter.setParentProject(null);
+    }
 
     if (full) {
       return m_projectService.getProjects(filter);

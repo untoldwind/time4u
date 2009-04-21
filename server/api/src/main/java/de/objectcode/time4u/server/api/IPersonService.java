@@ -7,6 +7,7 @@ import javax.jws.soap.SOAPBinding.Style;
 
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Person;
+import de.objectcode.time4u.server.api.data.PersonSummary;
 import de.objectcode.time4u.server.api.filter.PersonFilter;
 
 /**
@@ -46,4 +47,26 @@ public interface IPersonService
    */
   @WebMethod
   FilterResult<Person> getPersons(PersonFilter filter);
+
+  /**
+   * Get all person summaries matching a filter condition.
+   * 
+   * @param filter
+   *          The filter condition
+   * @return A tasks matching <tt>filter</tt>
+   * @throws RepositoryException
+   *           on error
+   */
+  @WebMethod
+  FilterResult<PersonSummary> getPersonSummaries(PersonFilter filter);
+
+  /**
+   * Get a person by its identifier
+   * 
+   * @param personId
+   *          The identifier of the person
+   * @return The person with identifier <tt>personId</tt>
+   */
+  @WebMethod
+  Person getPerson(String personId);
 }

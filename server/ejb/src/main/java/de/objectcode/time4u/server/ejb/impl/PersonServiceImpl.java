@@ -18,6 +18,7 @@ import javax.persistence.Query;
 import de.objectcode.time4u.server.api.IPersonService;
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Person;
+import de.objectcode.time4u.server.api.data.PersonSummary;
 import de.objectcode.time4u.server.api.filter.PersonFilter;
 import de.objectcode.time4u.server.entities.ClientEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
@@ -36,6 +37,9 @@ public class PersonServiceImpl implements IPersonService
   @Resource
   SessionContext m_sessionContext;
 
+  /**
+   * {@inheritDoc}
+   */
   @RolesAllowed("user")
   public Person getSelf()
   {
@@ -49,6 +53,9 @@ public class PersonServiceImpl implements IPersonService
     return person;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @RolesAllowed("user")
   public boolean registerClient(final long clientId)
   {
@@ -71,6 +78,9 @@ public class PersonServiceImpl implements IPersonService
     return true;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @RolesAllowed("user")
   public FilterResult<Person> getPersons(final PersonFilter filter)
   {
@@ -104,6 +114,63 @@ public class PersonServiceImpl implements IPersonService
     }
 
     return new FilterResult<Person>(result);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @RolesAllowed("user")
+  public FilterResult<PersonSummary> getPersonSummaries(final PersonFilter filter)
+  {
+    final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, m_sessionContext.getCallerPrincipal()
+        .getName());
+    final Set<String> allowedTeamIds = new HashSet<String>();
+
+    for (final TeamEntity team : userAccount.getPerson().getResponsibleFor()) {
+      allowedTeamIds.add(team.getId());
+    }
+    for (final TeamEntity team : userAccount.getPerson().getMemberOf()) {
+      allowedTeamIds.add(team.getId());
+    }
+
+    final Query query = createQuery(filter);
+    final List<PersonSummary> result = new ArrayList<PersonSummary>();
+
+    for (final Object row : query.getResultList()) {
+      final PersonEntity personEntity = (PersonEntity) row;
+
+      for (final TeamEntity team : personEntity.getMemberOf()) {
+        if (allowedTeamIds.contains(team.getId())) {
+          final PersonSummary person = new Person();
+
+          personEntity.toSummaryDTO(person);
+
+          result.add(person);
+          break;
+        }
+      }
+    }
+
+    return new FilterResult<PersonSummary>(result);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @RolesAllowed("user")
+  public Person getPerson(final String personId)
+  {
+    final PersonEntity personEntity = m_manager.find(PersonEntity.class, personId);
+
+    if (personEntity != null) {
+      final Person person = new Person();
+
+      personEntity.toDTO(person);
+
+      return person;
+    }
+
+    return null;
   }
 
   private Query createQuery(final PersonFilter filter)

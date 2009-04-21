@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import de.objectcode.time4u.server.api.ITeamService;
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Team;
+import de.objectcode.time4u.server.api.data.TeamSummary;
 import de.objectcode.time4u.server.api.filter.TeamFilter;
 
 @WebService(targetNamespace = "http://objectcode.de/time4u/api/ws", endpointInterface = "de.objectcode.time4u.server.api.ITeamService")
@@ -36,4 +37,23 @@ public class TeamServiceWS implements ITeamService
 
     return m_teamService.getTeams(filter);
   }
+
+  public FilterResult<TeamSummary> getTeamSummaries(final TeamFilter filter)
+  {
+    if (LOG.isInfoEnabled()) {
+      LOG.info("getTeamSummaries: " + filter);
+    }
+
+    return m_teamService.getTeamSummaries(filter);
+  }
+
+  public Team getTeam(final String teamId)
+  {
+    if (LOG.isInfoEnabled()) {
+      LOG.info("getTeam: " + teamId);
+    }
+
+    return m_teamService.getTeam(teamId);
+  }
+
 }

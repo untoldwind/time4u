@@ -7,6 +7,7 @@ import javax.jws.soap.SOAPBinding.Style;
 
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Team;
+import de.objectcode.time4u.server.api.data.TeamSummary;
 import de.objectcode.time4u.server.api.filter.TeamFilter;
 
 /**
@@ -29,4 +30,27 @@ public interface ITeamService
    */
   @WebMethod
   FilterResult<Team> getTeams(TeamFilter filter);
+
+  /**
+   * Get all team summaries matching a filter condition.
+   * 
+   * @param filter
+   *          The filter condition
+   * @return A tasks matching <tt>filter</tt>
+   * @throws RepositoryException
+   *           on error
+   */
+  @WebMethod
+  FilterResult<TeamSummary> getTeamSummaries(TeamFilter filter);
+
+  /**
+   * Get a team by its identifier.
+   * 
+   * @param teamId
+   *          The identifier of the team.
+   * 
+   * @return The the <tt>Team</tt> with identifier <tt>teamId</tt>
+   */
+  @WebMethod
+  Team getTeam(String teamId);
 }
