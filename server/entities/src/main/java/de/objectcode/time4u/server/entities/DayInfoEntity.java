@@ -335,8 +335,12 @@ public class DayInfoEntity
           m_tags.add(dayTagEntity);
         }
       }
+    } else {
+      m_tags.clear();
     }
+
     m_hasTags = !m_tags.isEmpty();
+
     final Set<String> workItemIds = new HashSet<String>();
 
     if (dayInfo.getWorkItems() != null) {
@@ -356,6 +360,7 @@ public class DayInfoEntity
         workItemIds.add(workItem.getId());
       }
     }
+
     final Iterator<WorkItemEntity> it = m_workItems.values().iterator();
     while (it.hasNext()) {
       final WorkItemEntity entity = it.next();
