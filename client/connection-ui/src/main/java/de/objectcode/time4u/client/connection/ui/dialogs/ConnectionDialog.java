@@ -170,7 +170,9 @@ public class ConnectionDialog extends Dialog
     m_serverConnection.setName(m_nameText.getText());
     m_serverConnection.setUrl(m_urlText.getText());
     m_serverConnection.getCredentials().put("userId", m_userIdText.getText());
-    m_serverConnection.getCredentials().put("password", m_passwordText.getText());
+    if (m_passwordText.getText().length() > 0) {
+      m_serverConnection.getCredentials().put("password", m_passwordText.getText());
+    }
     m_serverConnection.setSynchronizeInterval(m_synchronizeItervalSpinner.getSelection() * 60);
 
     super.okPressed();
@@ -192,7 +194,7 @@ public class ConnectionDialog extends Dialog
 
     enabled = enabled && m_urlText.getText() != null && m_urlText.getText().length() > 0;
     enabled = enabled && m_userIdText.getText() != null && m_userIdText.getText().length() > 0;
-    enabled = enabled && m_passwordText.getText() != null && m_passwordText.getText().length() > 0;
+    enabled = enabled && m_passwordText.getText() != null;
     enabled = enabled && m_passwordText.getText().equals(m_passwordConfirmText.getText());
 
     final Button button = getButton(IDialogConstants.OK_ID);
