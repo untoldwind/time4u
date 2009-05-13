@@ -1,6 +1,7 @@
 package de.objectcode.time4u.client.connection;
 
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -40,6 +41,17 @@ public class ConnectionPlugin extends Plugin
   {
     plugin = null;
     super.stop(context);
+  }
+
+  /**
+   * Log an error to the client log.
+   * 
+   * @param e
+   *          The exception to log
+   */
+  public void log(final Exception e)
+  {
+    getLog().log(new Status(Status.ERROR, PLUGIN_ID, Status.ERROR, e.toString(), e));
   }
 
   /**

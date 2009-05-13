@@ -16,6 +16,8 @@ public class SynchronizationWizardPage extends WizardPage
 
   Spinner m_synchronizeItervalSpinner;
 
+  boolean m_active;
+
   public SynchronizationWizardPage(final ServerConnection serverConnection)
   {
     super("Syncrhonization", "Synchronization Information", null);
@@ -35,5 +37,19 @@ public class SynchronizationWizardPage extends WizardPage
     m_synchronizeItervalSpinner = new Spinner(root, SWT.BORDER);
     m_synchronizeItervalSpinner.setIncrement(30);
     m_synchronizeItervalSpinner.setValues(m_serverConnection.getSynchronizeInterval() / 60, 0, 120, 0, 1, 5);
+  }
+
+  @Override
+  public void setVisible(final boolean visible)
+  {
+    if (visible) {
+      m_active = true;
+    } else {
+      if (m_active) {
+        m_serverConnection.setSynchronizeInterval(m_synchronizeItervalSpinner.getSelection() * 60);
+      }
+      m_active = false;
+    }
+    super.setVisible(visible);
   }
 }

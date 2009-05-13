@@ -175,6 +175,7 @@ public class UserAccountWizardPage extends WizardPage
         }
       }
     } catch (final Exception e) {
+      e.printStackTrace();
       m_testResultLabel.setText("Connection failed: " + e.getMessage());
       m_testResultLabel.setForeground(getShell().getDisplay().getSystemColor(SWT.COLOR_RED));
       setPageComplete(false);

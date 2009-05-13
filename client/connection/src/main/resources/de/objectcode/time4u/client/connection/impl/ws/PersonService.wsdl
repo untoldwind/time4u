@@ -28,12 +28,14 @@
 				<xs:complexContent>
 					<xs:extension base='tns:person-summary'>
 						<xs:sequence>
+							<xs:element maxOccurs='unbounded' minOccurs='0'
+								name='memberOfTeamIds' nillable='true' type='xs:string' />
 							<xs:element name='metaProperties'>
 								<xs:complexType>
 									<xs:sequence>
+
 										<xs:element maxOccurs='unbounded' minOccurs='0'
 											name='entry'>
-
 											<xs:complexType>
 												<xs:sequence>
 													<xs:element minOccurs='0' name='key' type='xs:string' />
@@ -43,8 +45,8 @@
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
-								</xs:complexType>
 
+								</xs:complexType>
 							</xs:element>
 						</xs:sequence>
 					</xs:extension>
@@ -52,9 +54,10 @@
 			</xs:complexType>
 			<xs:complexType name='person-summary'>
 				<xs:sequence />
+				<xs:attribute name='active' type='xs:boolean' use='required' />
+
 				<xs:attribute name='deleted' type='xs:boolean' use='required' />
 				<xs:attribute name='email' type='xs:string' />
-
 				<xs:attribute name='givenName' type='xs:string' />
 				<xs:attribute name='id' type='xs:string' />
 				<xs:attribute name='lastModifiedByClient' type='xs:long'
@@ -63,9 +66,9 @@
 				<xs:attribute name='revision' type='xs:long' use='required' />
 				<xs:attribute name='surname' type='xs:string' />
 			</xs:complexType>
+
 			<xs:complexType name='meta-property'>
 				<xs:sequence />
-
 				<xs:attribute name='name' type='xs:string' />
 				<xs:attribute name='type' type='xs:string' />
 				<xs:attribute name='value' type='xs:string' />
@@ -73,9 +76,9 @@
 			<xs:complexType name='filter-result'>
 				<xs:sequence>
 					<xs:choice maxOccurs='unbounded' minOccurs='0'>
+
 						<xs:element ref='tns:project' />
 						<xs:element ref='tns:project-summary' />
-
 						<xs:element ref='tns:task' />
 						<xs:element ref='tns:task-summary' />
 						<xs:element ref='tns:day-info' />
@@ -83,9 +86,9 @@
 						<xs:element ref='tns:week-time-policy' />
 						<xs:element ref='tns:day-tag' />
 						<xs:element ref='tns:person-summary' />
+
 						<xs:element ref='tns:person' />
 						<xs:element ref='tns:team-summary' />
-
 						<xs:element ref='tns:team' />
 						<xs:element ref='tns:todo-summary' />
 						<xs:element ref='tns:todo' />
@@ -93,9 +96,9 @@
 					</xs:choice>
 				</xs:sequence>
 			</xs:complexType>
+
 			<xs:complexType name='project'>
 				<xs:complexContent>
-
 					<xs:extension base='tns:project-summary'>
 						<xs:sequence>
 							<xs:element minOccurs='0' name='description' type='xs:string' />
@@ -104,9 +107,9 @@
 									<xs:sequence>
 										<xs:element maxOccurs='unbounded' minOccurs='0'
 											name='entry'>
+
 											<xs:complexType>
 												<xs:sequence>
-
 													<xs:element minOccurs='0' name='key' type='xs:string' />
 													<xs:element minOccurs='0' name='value'
 														type='tns:meta-property' />
@@ -115,9 +118,9 @@
 										</xs:element>
 									</xs:sequence>
 								</xs:complexType>
+
 							</xs:element>
 						</xs:sequence>
-
 					</xs:extension>
 				</xs:complexContent>
 			</xs:complexType>
@@ -125,10 +128,10 @@
 				<xs:sequence />
 				<xs:attribute name='active' type='xs:boolean' use='required' />
 				<xs:attribute name='deleted' type='xs:boolean' use='required' />
+
 				<xs:attribute name='id' type='xs:string' />
 				<xs:attribute name='lastModifiedByClient' type='xs:long'
 					use='required' />
-
 				<xs:attribute name='name' type='xs:string' />
 				<xs:attribute name='parentId' type='xs:string' />
 				<xs:attribute name='revision' type='xs:long' use='required' />
@@ -136,9 +139,9 @@
 			<xs:complexType name='task'>
 				<xs:complexContent>
 					<xs:extension base='tns:task-summary'>
+
 						<xs:sequence>
 							<xs:element minOccurs='0' name='description' type='xs:string' />
-
 							<xs:element name='metaProperties'>
 								<xs:complexType>
 									<xs:sequence>
@@ -147,10 +150,10 @@
 											<xs:complexType>
 												<xs:sequence>
 													<xs:element minOccurs='0' name='key' type='xs:string' />
+
 													<xs:element minOccurs='0' name='value'
 														type='tns:meta-property' />
 												</xs:sequence>
-
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
@@ -158,9 +161,9 @@
 							</xs:element>
 						</xs:sequence>
 					</xs:extension>
+
 				</xs:complexContent>
 			</xs:complexType>
-
 			<xs:complexType name='task-summary'>
 				<xs:sequence />
 				<xs:attribute name='active' type='xs:boolean' use='required' />
@@ -169,9 +172,9 @@
 				<xs:attribute name='lastModifiedByClient' type='xs:long'
 					use='required' />
 				<xs:attribute name='name' type='xs:string' />
+
 				<xs:attribute name='projectId' type='xs:string' />
 				<xs:attribute name='revision' type='xs:long' use='required' />
-
 			</xs:complexType>
 			<xs:complexType name='day-info'>
 				<xs:complexContent>
@@ -179,10 +182,10 @@
 						<xs:sequence>
 							<xs:element name='metaProperties'>
 								<xs:complexType>
+
 									<xs:sequence>
 										<xs:element maxOccurs='unbounded' minOccurs='0'
 											name='entry'>
-
 											<xs:complexType>
 												<xs:sequence>
 													<xs:element minOccurs='0' name='key' type='xs:string' />
@@ -191,9 +194,9 @@
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
+
 									</xs:sequence>
 								</xs:complexType>
-
 							</xs:element>
 							<xs:element maxOccurs='unbounded' minOccurs='0' name='tags'
 								nillable='true' type='xs:string' />
@@ -203,9 +206,9 @@
 					</xs:extension>
 				</xs:complexContent>
 			</xs:complexType>
+
 			<xs:complexType name='day-info-summary'>
 				<xs:sequence>
-
 					<xs:element minOccurs='0' name='day' type='tns:calendar-day' />
 				</xs:sequence>
 				<xs:attribute name='hasInvalidWorkItems' type='xs:boolean'
@@ -216,9 +219,9 @@
 				<xs:attribute name='id' type='xs:string' />
 				<xs:attribute name='lastModifiedByClient' type='xs:long'
 					use='required' />
+
 				<xs:attribute name='regularTime' type='xs:int' use='required' />
 				<xs:attribute name='revision' type='xs:long' use='required' />
-
 				<xs:attribute name='sumDurations' type='xs:int' use='required' />
 			</xs:complexType>
 			<xs:complexType name='workitem'>
@@ -226,9 +229,9 @@
 					<xs:element name='begin' type='xs:int' />
 					<xs:element minOccurs='0' name='comment' type='xs:string' />
 					<xs:element minOccurs='0' name='day' type='tns:calendar-day' />
+
 					<xs:element name='end' type='xs:int' />
 					<xs:element minOccurs='0' name='id' type='xs:string' />
-
 					<xs:element minOccurs='0' name='projectId' type='xs:string' />
 					<xs:element minOccurs='0' name='taskId' type='xs:string' />
 					<xs:element minOccurs='0' name='todoId' type='xs:string' />
@@ -236,9 +239,9 @@
 				</xs:sequence>
 			</xs:complexType>
 			<xs:complexType name='calendar-day'>
+
 				<xs:sequence />
 				<xs:attribute name='day' type='xs:int' use='required' />
-
 				<xs:attribute name='month' type='xs:int' use='required' />
 				<xs:attribute name='year' type='xs:int' use='required' />
 			</xs:complexType>
@@ -246,9 +249,9 @@
 				<xs:complexContent>
 					<xs:extension base='tns:time-policy'>
 						<xs:sequence>
+
 							<xs:element name='fridayTime' type='xs:int' />
 							<xs:element name='mondayTime' type='xs:int' />
-
 							<xs:element name='saturdayTime' type='xs:int' />
 							<xs:element name='sundayTime' type='xs:int' />
 							<xs:element name='thursdayTime' type='xs:int' />
@@ -256,9 +259,9 @@
 							<xs:element name='wednesdayTime' type='xs:int' />
 						</xs:sequence>
 					</xs:extension>
+
 				</xs:complexContent>
 			</xs:complexType>
-
 			<xs:complexType abstract='true' name='time-policy'>
 				<xs:sequence>
 					<xs:element name='deleted' type='xs:boolean' />
@@ -266,63 +269,72 @@
 					<xs:element name='lastModifiedByClient' type='xs:long' />
 					<xs:element name='revision' type='xs:long' />
 					<xs:element minOccurs='0' name='validFrom' type='tns:calendar-day' />
+
 					<xs:element minOccurs='0' name='validUntil' type='tns:calendar-day' />
 				</xs:sequence>
-
 			</xs:complexType>
 			<xs:complexType name='day-tag'>
-				<xs:sequence />
-				<xs:attribute name='description' type='xs:string' />
+				<xs:sequence>
+					<xs:element minOccurs='0' name='description' type='xs:string' />
+				</xs:sequence>
+				<xs:attribute name='deleted' type='xs:boolean' use='required' />
+				<xs:attribute name='label' type='xs:string' />
+
 				<xs:attribute name='name' type='xs:string' />
 				<xs:attribute name='regularTime' type='xs:int' />
 			</xs:complexType>
 			<xs:complexType name='team-summary'>
 				<xs:sequence>
-
 					<xs:element name='deleted' type='xs:boolean' />
 					<xs:element minOccurs='0' name='description' type='xs:string' />
 					<xs:element minOccurs='0' name='id' type='xs:string' />
 					<xs:element name='lastModifiedByClient' type='xs:long' />
+
 					<xs:element minOccurs='0' name='name' type='xs:string' />
 					<xs:element name='revision' type='xs:long' />
 				</xs:sequence>
 			</xs:complexType>
 			<xs:complexType name='team'>
-
 				<xs:complexContent>
 					<xs:extension base='tns:team-summary'>
 						<xs:sequence>
 							<xs:element maxOccurs='unbounded' minOccurs='0'
 								name='memberIds' nillable='true' type='xs:string' />
+
 							<xs:element name='metaProperties'>
 								<xs:complexType>
 									<xs:sequence>
 										<xs:element maxOccurs='unbounded' minOccurs='0'
 											name='entry'>
 											<xs:complexType>
-
 												<xs:sequence>
 													<xs:element minOccurs='0' name='key' type='xs:string' />
 													<xs:element minOccurs='0' name='value'
 														type='tns:meta-property' />
 												</xs:sequence>
+
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
 								</xs:complexType>
 							</xs:element>
-
 							<xs:element maxOccurs='unbounded' minOccurs='0' name='ownerIds'
 								nillable='true' type='xs:string' />
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
+
 			</xs:complexType>
 			<xs:complexType name='todo-summary'>
 				<xs:sequence>
+					<xs:element name='completed' type='xs:boolean' />
+					<xs:element minOccurs='0' name='completedAt' type='xs:dateTime' />
+					<xs:element minOccurs='0' name='createdAt' type='xs:dateTime' />
+					<xs:element minOccurs='0' name='deadline' type='xs:dateTime' />
 					<xs:element name='deleted' type='xs:boolean' />
 					<xs:element minOccurs='0' name='description' type='xs:string' />
 
+					<xs:element minOccurs='0' name='estimatedTime' type='xs:int' />
 					<xs:element name='group' type='xs:boolean' />
 					<xs:element minOccurs='0' name='groupdId' type='xs:string' />
 					<xs:element minOccurs='0' name='header' type='xs:string' />
@@ -330,20 +342,19 @@
 					<xs:element name='lastModifiedByClient' type='xs:long' />
 					<xs:element minOccurs='0' name='reporterId' type='xs:string' />
 					<xs:element name='revision' type='xs:long' />
+					<xs:element minOccurs='0' name='state' type='tns:todoState' />
+
 				</xs:sequence>
 			</xs:complexType>
-
 			<xs:complexType name='todo'>
 				<xs:complexContent>
 					<xs:extension base='tns:todo-summary'>
 						<xs:sequence>
-							<xs:element name='completed' type='xs:boolean' />
-							<xs:element minOccurs='0' name='completedAt' type='xs:dateTime' />
-							<xs:element minOccurs='0' name='createdAt' type='xs:dateTime' />
-							<xs:element minOccurs='0' name='deadline' type='xs:dateTime' />
+							<xs:element maxOccurs='unbounded' minOccurs='0'
+								name='assignments' nillable='true' type='tns:todo-assigment' />
 							<xs:element name='metaProperties'>
-
 								<xs:complexType>
+
 									<xs:sequence>
 										<xs:element maxOccurs='unbounded' minOccurs='0'
 											name='entry'>
@@ -354,36 +365,84 @@
 														type='tns:meta-property' />
 												</xs:sequence>
 											</xs:complexType>
-
 										</xs:element>
+
 									</xs:sequence>
 								</xs:complexType>
 							</xs:element>
 							<xs:element name='priority' type='xs:int' />
 							<xs:element minOccurs='0' name='taskId' type='xs:string' />
+							<xs:element maxOccurs='unbounded' minOccurs='0'
+								name='visibleToPersonIds' nillable='true' type='xs:string' />
+							<xs:element maxOccurs='unbounded' minOccurs='0'
+								name='visibleToTeamIds' nillable='true' type='xs:string' />
+						</xs:sequence>
+					</xs:extension>
+
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name='todo-assigment'>
+				<xs:sequence />
+				<xs:attribute name='deleted' type='xs:boolean' use='required' />
+				<xs:attribute name='estimatedTime' type='xs:int' />
+				<xs:attribute name='personId' type='xs:string' />
+			</xs:complexType>
+			<xs:complexType name='todo-group'>
+
+				<xs:complexContent>
+					<xs:extension base='tns:todo-summary'>
+						<xs:sequence>
+							<xs:element name='metaProperties'>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element maxOccurs='unbounded' minOccurs='0'
+											name='entry'>
+											<xs:complexType>
+												<xs:sequence>
+
+													<xs:element minOccurs='0' name='key' type='xs:string' />
+													<xs:element minOccurs='0' name='value'
+														type='tns:meta-property' />
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element maxOccurs='unbounded' minOccurs='0' name='partIds'
+								nillable='true' type='xs:string' />
+
+							<xs:element maxOccurs='unbounded' minOccurs='0'
+								name='visibleToPersonIds' nillable='true' type='xs:string' />
+							<xs:element maxOccurs='unbounded' minOccurs='0'
+								name='visibleToTeamIds' nillable='true' type='xs:string' />
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
+			</xs:complexType>
+			<xs:simpleType name='todoState'>
+				<xs:restriction base='xs:string'>
+					<xs:enumeration value='UNASSIGNED' />
 
-			</xs:complexType>
-			<xs:complexType name='todo-group'>
-				<xs:complexContent>
-					<xs:extension base='tns:todo-summary'>
-						<xs:sequence />
-					</xs:extension>
-				</xs:complexContent>
-			</xs:complexType>
+					<xs:enumeration value='ASSIGNED_OPEN' />
+					<xs:enumeration value='ASSIGNED_INPROGRESS' />
+					<xs:enumeration value='COMPLETED' />
+					<xs:enumeration value='REJECTED' />
+				</xs:restriction>
+			</xs:simpleType>
 		</xs:schema>
-
 		<xs:schema targetNamespace='http://objectcode.de/time4u/api/data/filter'
 			version='1.0' xmlns:tns='http://objectcode.de/time4u/api/data/filter'
 			xmlns:xs='http://www.w3.org/2001/XMLSchema'>
 			<xs:complexType name='person-filter'>
+
 				<xs:sequence>
+					<xs:element minOccurs='0' name='active' type='xs:boolean' />
 					<xs:element minOccurs='0' name='deleted' type='xs:boolean' />
 					<xs:element minOccurs='0' name='lastModifiedByClient'
 						type='xs:long' />
 					<xs:element minOccurs='0' name='maxRevision' type='xs:long' />
+					<xs:element minOccurs='0' name='memberOfTeamId' type='xs:string' />
 					<xs:element minOccurs='0' name='minRevision' type='xs:long' />
 					<xs:element minOccurs='0' name='order' type='tns:order' />
 				</xs:sequence>
@@ -409,15 +468,37 @@
 		<part name='arg0' type='ns2:person-filter'></part>
 
 	</message>
+	<message name='IPersonService_getPersonSummaries'>
+		<part name='arg0' type='ns2:person-filter'></part>
+	</message>
 	<message name='IPersonService_getPersonsResponse'>
+		<part name='return' type='ns1:filter-result'></part>
+	</message>
+	<message name='IPersonService_getPersonResponse'>
+		<part name='return' type='ns1:person'></part>
+
+	</message>
+	<message name='IPersonService_getPerson'>
+		<part name='arg0' type='xsd:string'></part>
+	</message>
+	<message name='IPersonService_getPersonSummariesResponse'>
 		<part name='return' type='ns1:filter-result'></part>
 	</message>
 	<message name='IPersonService_getSelfResponse'>
 		<part name='return' type='ns1:person'></part>
+
 	</message>
 	<portType name='IPersonService'>
-		<operation name='getPersons' parameterOrder='arg0'>
+		<operation name='getPerson' parameterOrder='arg0'>
+			<input message='tns:IPersonService_getPerson'></input>
+			<output message='tns:IPersonService_getPersonResponse'></output>
+		</operation>
+		<operation name='getPersonSummaries' parameterOrder='arg0'>
+			<input message='tns:IPersonService_getPersonSummaries'></input>
+			<output message='tns:IPersonService_getPersonSummariesResponse'></output>
 
+		</operation>
+		<operation name='getPersons' parameterOrder='arg0'>
 			<input message='tns:IPersonService_getPersons'></input>
 			<output message='tns:IPersonService_getPersonsResponse'></output>
 		</operation>
@@ -425,21 +506,45 @@
 			<input message='tns:IPersonService_getSelf'></input>
 			<output message='tns:IPersonService_getSelfResponse'></output>
 		</operation>
+
 		<operation name='registerClient' parameterOrder='arg0'>
 			<input message='tns:IPersonService_registerClient'></input>
-
 			<output message='tns:IPersonService_registerClientResponse'></output>
 		</operation>
 	</portType>
 	<binding name='IPersonServiceBinding' type='tns:IPersonService'>
 		<soap:binding style='rpc'
 			transport='http://schemas.xmlsoap.org/soap/http' />
-		<operation name='getPersons'>
+		<operation name='getPerson'>
 			<soap:operation soapAction='' />
+
 			<input>
 				<soap:body namespace='http://objectcode.de/time4u/api/ws'
 					use='literal' />
+			</input>
+			<output>
+				<soap:body namespace='http://objectcode.de/time4u/api/ws'
+					use='literal' />
+			</output>
+		</operation>
+		<operation name='getPersonSummaries'>
+			<soap:operation soapAction='' />
 
+			<input>
+				<soap:body namespace='http://objectcode.de/time4u/api/ws'
+					use='literal' />
+			</input>
+			<output>
+				<soap:body namespace='http://objectcode.de/time4u/api/ws'
+					use='literal' />
+			</output>
+		</operation>
+		<operation name='getPersons'>
+			<soap:operation soapAction='' />
+
+			<input>
+				<soap:body namespace='http://objectcode.de/time4u/api/ws'
+					use='literal' />
 			</input>
 			<output>
 				<soap:body namespace='http://objectcode.de/time4u/api/ws'
@@ -448,10 +553,10 @@
 		</operation>
 		<operation name='getSelf'>
 			<soap:operation soapAction='' />
+
 			<input>
 				<soap:body namespace='http://objectcode.de/time4u/api/ws'
 					use='literal' />
-
 			</input>
 			<output>
 				<soap:body namespace='http://objectcode.de/time4u/api/ws'
@@ -460,10 +565,10 @@
 		</operation>
 		<operation name='registerClient'>
 			<soap:operation soapAction='' />
+
 			<input>
 				<soap:body namespace='http://objectcode.de/time4u/api/ws'
 					use='literal' />
-
 			</input>
 			<output>
 				<soap:body namespace='http://objectcode.de/time4u/api/ws'
@@ -472,9 +577,9 @@
 		</operation>
 	</binding>
 	<service name='PersonServiceWSService'>
+
 		<port binding='tns:IPersonServiceBinding' name='PersonServiceWSPort'>
 			<soap:address location='http://127.0.0.1:8080/time4u-ws/secure/PersonService' />
-
 		</port>
 	</service>
 </definitions>

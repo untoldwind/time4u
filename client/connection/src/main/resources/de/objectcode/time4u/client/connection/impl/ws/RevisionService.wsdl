@@ -1,72 +1,81 @@
-<definitions name='RevisionServiceWSService' targetNamespace='http://objectcode.de/time4u/api/ws' xmlns='http://schemas.xmlsoap.org/wsdl/' xmlns:ns1='http://objectcode.de/time4u/api/data' xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' xmlns:tns='http://objectcode.de/time4u/api/ws' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
- <types>
-  <xs:schema targetNamespace='http://objectcode.de/time4u/api/data' version='1.0' xmlns:tns='http://objectcode.de/time4u/api/data' xmlns:xs='http://www.w3.org/2001/XMLSchema'>
-   <xs:element name='revision-status' type='tns:revision-status'/>
-   <xs:complexType name='revision-status'>
-    <xs:sequence>
-     <xs:element name='latestRevisions'>
-      <xs:complexType>
-       <xs:sequence>
+<definitions name='RevisionServiceWSService'
+	targetNamespace='http://objectcode.de/time4u/api/ws' xmlns='http://schemas.xmlsoap.org/wsdl/'
+	xmlns:ns1='http://objectcode.de/time4u/api/data' xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/'
+	xmlns:tns='http://objectcode.de/time4u/api/ws' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+	<types>
+		<xs:schema targetNamespace='http://objectcode.de/time4u/api/data'
+			version='1.0' xmlns:tns='http://objectcode.de/time4u/api/data'
+			xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+			<xs:element name='revision-status' type='tns:revision-status' />
+			<xs:complexType name='revision-status'>
+				<xs:sequence>
+					<xs:element name='latestRevisions'>
+						<xs:complexType>
+							<xs:sequence>
 
-        <xs:element maxOccurs='unbounded' minOccurs='0' name='entry'>
-         <xs:complexType>
-          <xs:sequence>
-           <xs:element minOccurs='0' name='key' type='tns:entityType'/>
-           <xs:element minOccurs='0' name='value' type='xs:long'/>
-          </xs:sequence>
-         </xs:complexType>
-        </xs:element>
-       </xs:sequence>
+								<xs:element maxOccurs='unbounded' minOccurs='0' name='entry'>
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element minOccurs='0' name='key' type='tns:entityType' />
+											<xs:element minOccurs='0' name='value' type='xs:long' />
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
 
-      </xs:complexType>
-     </xs:element>
-    </xs:sequence>
-   </xs:complexType>
-   <xs:simpleType name='entityType'>
-    <xs:restriction base='xs:string'>
-     <xs:enumeration value='PERSON'/>
-     <xs:enumeration value='TEAM'/>
-     <xs:enumeration value='PROJECT'/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:simpleType name='entityType'>
+				<xs:restriction base='xs:string'>
+					<xs:enumeration value='PERSON' />
+					<xs:enumeration value='TEAM' />
+					<xs:enumeration value='PROJECT' />
 
-     <xs:enumeration value='TASK'/>
-     <xs:enumeration value='TODO'/>
-     <xs:enumeration value='DAYINFO'/>
-     <xs:enumeration value='WORKITEM'/>
-     <xs:enumeration value='ACTIVE_WORKITEM'/>
-     <xs:enumeration value='TIMEPOLICY'/>
-    </xs:restriction>
-   </xs:simpleType>
-  </xs:schema>
+					<xs:enumeration value='TASK' />
+					<xs:enumeration value='TODO' />
+					<xs:enumeration value='DAYINFO' />
+					<xs:enumeration value='WORKITEM' />
+					<xs:enumeration value='ACTIVE_WORKITEM' />
+					<xs:enumeration value='TIMEPOLICY' />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:schema>
 
- </types>
- <message name='IRevisionService_getRevisionStatus'></message>
- <message name='IRevisionService_getRevisionStatusResponse'>
-  <part name='return' type='ns1:revision-status'></part>
- </message>
- <portType name='IRevisionService'>
-  <operation name='getRevisionStatus'>
-   <input message='tns:IRevisionService_getRevisionStatus'></input>
-   <output message='tns:IRevisionService_getRevisionStatusResponse'></output>
+	</types>
+	<message name='IRevisionService_getRevisionStatus'></message>
+	<message name='IRevisionService_getRevisionStatusResponse'>
+		<part name='return' type='ns1:revision-status'></part>
+	</message>
+	<portType name='IRevisionService'>
+		<operation name='getRevisionStatus'>
+			<input message='tns:IRevisionService_getRevisionStatus'></input>
+			<output message='tns:IRevisionService_getRevisionStatusResponse'></output>
 
-  </operation>
- </portType>
- <binding name='IRevisionServiceBinding' type='tns:IRevisionService'>
-  <soap:binding style='rpc' transport='http://schemas.xmlsoap.org/soap/http'/>
-  <operation name='getRevisionStatus'>
-   <soap:operation soapAction=''/>
-   <input>
-    <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
-   </input>
+		</operation>
+	</portType>
+	<binding name='IRevisionServiceBinding' type='tns:IRevisionService'>
+		<soap:binding style='rpc'
+			transport='http://schemas.xmlsoap.org/soap/http' />
+		<operation name='getRevisionStatus'>
+			<soap:operation soapAction='' />
+			<input>
+				<soap:body namespace='http://objectcode.de/time4u/api/ws'
+					use='literal' />
+			</input>
 
-   <output>
-    <soap:body namespace='http://objectcode.de/time4u/api/ws' use='literal'/>
-   </output>
-  </operation>
- </binding>
- <service name='RevisionServiceWSService'>
-  <port binding='tns:IRevisionServiceBinding' name='RevisionServiceWSPort'>
-   <soap:address location='http://127.0.0.1:8080/time4u-ws/secure/RevisionService'/>
-  </port>
+			<output>
+				<soap:body namespace='http://objectcode.de/time4u/api/ws'
+					use='literal' />
+			</output>
+		</operation>
+	</binding>
+	<service name='RevisionServiceWSService'>
+		<port binding='tns:IRevisionServiceBinding' name='RevisionServiceWSPort'>
+			<soap:address
+				location='http://127.0.0.1:8080/time4u-ws/secure/RevisionService' />
+		</port>
 
- </service>
+	</service>
 </definitions>

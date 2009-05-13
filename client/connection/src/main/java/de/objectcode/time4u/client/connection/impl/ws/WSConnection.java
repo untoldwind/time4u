@@ -13,6 +13,7 @@ import javax.xml.ws.Service;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 
+import de.objectcode.time4u.client.connection.ConnectionPlugin;
 import de.objectcode.time4u.client.connection.api.ConnectionException;
 import de.objectcode.time4u.client.connection.api.IConnection;
 import de.objectcode.time4u.client.connection.impl.common.ISynchronizationCommand;
@@ -102,6 +103,7 @@ public class WSConnection implements IConnection
 
       return pingResult.getApiVersionMajor() == IConstants.API_VERSION_MAJOR;
     } catch (final Exception e) {
+      ConnectionPlugin.getDefault().log(e);
       throw new ConnectionException(e.toString(), e);
     }
   }
@@ -111,6 +113,7 @@ public class WSConnection implements IConnection
     try {
       return m_loginService.checkLogin(credentials.get("userId"));
     } catch (final Exception e) {
+      ConnectionPlugin.getDefault().log(e);
       throw new ConnectionException(e.toString(), e);
     }
   }
@@ -125,6 +128,7 @@ public class WSConnection implements IConnection
     try {
       return m_revisionService.getRevisionStatus();
     } catch (final Exception e) {
+      ConnectionPlugin.getDefault().log(e);
       throw new ConnectionException(e.toString(), e);
     }
   }
@@ -147,6 +151,7 @@ public class WSConnection implements IConnection
 
       return m_loginService.registerLogin(registrationInfo);
     } catch (final Exception e) {
+      ConnectionPlugin.getDefault().log(e);
       throw new ConnectionException(e.toString(), e);
     }
   }
@@ -204,6 +209,7 @@ public class WSConnection implements IConnection
         }
       }
     } catch (final Exception e) {
+      ConnectionPlugin.getDefault().log(e);
       throw new ConnectionException(e.toString(), e);
     } finally {
       monitor.done();
