@@ -27,4 +27,6 @@ public interface IServerConnectionRepository
 
   void storeSynchronizationStatus(long serverConnectionId, SynchronizationStatus synchronizationStatus)
       throws RepositoryException;
+
+  void markSynchronized(long serverConnectionId) throws RepositoryException;
 }

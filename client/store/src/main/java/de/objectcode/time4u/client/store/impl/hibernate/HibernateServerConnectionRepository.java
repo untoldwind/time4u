@@ -1,6 +1,7 @@
 package de.objectcode.time4u.client.store.impl.hibernate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,26 +42,27 @@ public class HibernateServerConnectionRepository implements IServerConnectionRep
    */
   public List<ServerConnection> getServerConnections() throws RepositoryException
   {
-    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<List<ServerConnection>>() {
-      public List<ServerConnection> perform(final Session session)
-      {
-        final Criteria criteria = session.createCriteria(ServerConnectionEntity.class);
-        criteria.addOrder(Order.asc("id"));
+    return m_hibernateTemplate
+        .executeInTransaction(new HibernateTemplate.OperationWithResult<List<ServerConnection>>() {
+          public List<ServerConnection> perform(final Session session)
+          {
+            final Criteria criteria = session.createCriteria(ServerConnectionEntity.class);
+            criteria.addOrder(Order.asc("id"));
 
-        final List<ServerConnection> result = new ArrayList<ServerConnection>();
+            final List<ServerConnection> result = new ArrayList<ServerConnection>();
 
-        for (final Object row : criteria.list()) {
-          final ServerConnection serverConnection = new ServerConnection();
+            for (final Object row : criteria.list()) {
+              final ServerConnection serverConnection = new ServerConnection();
 
-          ((ServerConnectionEntity) row).toDTO(serverConnection, m_repository.getKeyChainEncoder());
+              ((ServerConnectionEntity) row).toDTO(serverConnection, m_repository.getKeyChainEncoder());
 
-          result.add(serverConnection);
-        }
+              result.add(serverConnection);
+            }
 
-        return result;
-      }
+            return result;
+          }
 
-    });
+        });
   }
 
   /**
@@ -102,6 +104,21 @@ public class HibernateServerConnectionRepository implements IServerConnectionRep
     m_repository.fireRepositoryEvent(new ServerConnectionRepositoryEvent(result));
 
     return result;
+  }
+
+  public void markSynchronized(final long serverConnectionId) throws RepositoryException
+  {
+    m_hibernateTemplate.executeInTransaction(new HibernateTemplate.Operation() {
+      public void perform(final Session session)
+      {
+        final ServerConnectionEntity serverConnectionEntity = (ServerConnectionEntity) session.get(
+            ServerConnectionEntity.class, serverConnectionId);
+
+        serverConnectionEntity.setLastSynchronize(new Date());
+
+        session.flush();
+      }
+    });
   }
 
   /**

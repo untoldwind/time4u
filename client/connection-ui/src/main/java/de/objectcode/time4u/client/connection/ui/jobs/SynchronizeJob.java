@@ -10,6 +10,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import de.objectcode.time4u.client.connection.api.ConnectionFactory;
 import de.objectcode.time4u.client.connection.api.IConnection;
 import de.objectcode.time4u.client.connection.ui.ConnectionUIPlugin;
+import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.server.api.data.ServerConnection;
 
 public class SynchronizeJob extends Job
@@ -39,7 +40,10 @@ public class SynchronizeJob extends Job
       connection.sychronizeNow(monitor);
 
       m_status = SynchronizationStatus.OK;
-    } catch (final Exception e) {
+
+      RepositoryFactory.getRepository().getServerConnectionRepository().markSynchronized(m_serverConnection.getId());
+    } catch (final Throwable e) {
+      e.printStackTrace();
       ConnectionUIPlugin.getDefault().log(e);
       m_status = SynchronizationStatus.FAILURE;
       m_lastError = e.getMessage();
