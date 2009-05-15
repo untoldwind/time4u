@@ -15,10 +15,13 @@ import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.ejb.Local;
+import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Status;
+import javax.transaction.UserTransaction;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -87,48 +90,64 @@ public class ConfigService implements IConfigServiceManagement, ILocalIdGenerato
 
   public void start() throws Exception
   {
-    final Query query = m_manager.createQuery("from " + ClientEntity.class.getName() + " c where c.myself = :myself");
+    final InitialContext ctx = new InitialContext();
 
-    query.setParameter("myself", true);
+    final UserTransaction ut = (UserTransaction) ctx.lookup("UserTransaction");
+    boolean manualCommit = false;
+
+    if (ut.getStatus() != Status.STATUS_ACTIVE) {
+      ut.begin();
+      manualCommit = true;
+    }
 
     try {
-      final ClientEntity clientEntity = (ClientEntity) query.getSingleResult();
+      final Query query = m_manager.createQuery("from " + ClientEntity.class.getName() + " c where c.myself = :myself");
 
-      if (clientEntity != null) {
-        m_serverId = clientEntity.getClientId();
+      query.setParameter("myself", true);
+
+      try {
+        final ClientEntity clientEntity = (ClientEntity) query.getSingleResult();
+
+        if (clientEntity != null) {
+          m_serverId = clientEntity.getClientId();
+        }
+      } catch (final NoResultException e) {
       }
-    } catch (final NoResultException e) {
-    }
 
-    if (m_serverId == 0L) {
-      final byte[] address = InetAddress.getLocalHost().getAddress();
-      m_serverId = ((long) address[0] & 0xff) << 56 | ((long) address[1] & 0xff) << 48
-          | ((long) address[2] & 0xff) << 40 | ((long) address[3] & 0xff) << 32;
+      if (m_serverId == 0L) {
+        final byte[] address = InetAddress.getLocalHost().getAddress();
+        m_serverId = ((long) address[0] & 0xff) << 56 | ((long) address[1] & 0xff) << 48
+            | ((long) address[2] & 0xff) << 40 | ((long) address[3] & 0xff) << 32;
 
-      final ClientEntity clientEntity = new ClientEntity();
-      clientEntity.setClientId(m_serverId);
-      clientEntity.setMyself(true);
-      clientEntity.setServer(true);
-      clientEntity.setRegisteredAt(new Date());
+        final ClientEntity clientEntity = new ClientEntity();
+        clientEntity.setClientId(m_serverId);
+        clientEntity.setMyself(true);
+        clientEntity.setServer(true);
+        clientEntity.setRegisteredAt(new Date());
 
-      m_manager.persist(clientEntity);
-    }
-    final Map<EntityType, EntityTypeIdGenerator> generators = new HashMap<EntityType, EntityTypeIdGenerator>();
+        m_manager.persist(clientEntity);
+      }
+      final Map<EntityType, EntityTypeIdGenerator> generators = new HashMap<EntityType, EntityTypeIdGenerator>();
 
-    for (final EntityType type : EntityType.values()) {
-      generators.put(type, new EntityTypeIdGenerator(type));
-    }
-    m_generators = Collections.unmodifiableMap(generators);
+      for (final EntityType type : EntityType.values()) {
+        generators.put(type, new EntityTypeIdGenerator(type));
+      }
+      m_generators = Collections.unmodifiableMap(generators);
 
-    if (m_manager.find(UserAccountEntity.class, "admin") == null) {
-      initializeAdmin();
-    }
+      if (m_manager.find(UserAccountEntity.class, "admin") == null) {
+        initializeAdmin();
+      }
 
-    final Query reportCountQuery = m_manager.createQuery("select count(*) from "
-        + ReportDefinitionEntity.class.getName() + " r");
+      final Query reportCountQuery = m_manager.createQuery("select count(*) from "
+          + ReportDefinitionEntity.class.getName() + " r");
 
-    if ((Long) reportCountQuery.getSingleResult() == 0L) {
-      initializeReports();
+      if ((Long) reportCountQuery.getSingleResult() == 0L) {
+        initializeReports();
+      }
+    } finally {
+      if (manualCommit) {
+        ut.commit();
+      }
     }
   }
 

@@ -3,9 +3,12 @@ package de.objectcode.time4u.server.ejb.config;
 import javax.ejb.Local;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Status;
+import javax.transaction.UserTransaction;
 
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.revision.LocalIdEntity;
@@ -17,6 +20,8 @@ import de.objectcode.time4u.server.entities.revision.LocalIdEntity;
 @org.jboss.ejb3.annotation.LocalBinding(jndiBinding = "time4u-server/LocalIdCreator/local")
 @org.jboss.annotation.ejb.Management(ILocalIdServiceManagement.class)
 @org.jboss.ejb3.annotation.Management(ILocalIdServiceManagement.class)
+@org.jboss.annotation.ejb.Depends("jboss:service=ClientUserTransaction")
+@org.jboss.ejb3.annotation.Depends("jboss:service=ClientUserTransaction")
 public class LocalIdService implements ILocalIdService, ILocalIdServiceManagement
 {
   public final static int CHUNK_SIZE = 100;
@@ -26,9 +31,25 @@ public class LocalIdService implements ILocalIdService, ILocalIdServiceManagemen
 
   public void start() throws Exception
   {
-    for (final EntityType type : EntityType.values()) {
-      if (m_manager.find(LocalIdEntity.class, type) == null) {
-        m_manager.persist(new LocalIdEntity(type));
+    final InitialContext ctx = new InitialContext();
+
+    final UserTransaction ut = (UserTransaction) ctx.lookup("UserTransaction");
+    boolean manualCommit = false;
+
+    if (ut.getStatus() != Status.STATUS_ACTIVE) {
+      ut.begin();
+      manualCommit = true;
+    }
+
+    try {
+      for (final EntityType type : EntityType.values()) {
+        if (m_manager.find(LocalIdEntity.class, type) == null) {
+          m_manager.persist(new LocalIdEntity(type));
+        }
+      }
+    } finally {
+      if (manualCommit) {
+        ut.commit();
       }
     }
   }
