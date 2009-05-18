@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.net.ssl.SSLSocketFactory;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Service;
@@ -31,6 +32,7 @@ import de.objectcode.time4u.client.connection.impl.common.up.SendProjectChangesC
 import de.objectcode.time4u.client.connection.impl.common.up.SendTaskChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.up.SendTimePolicyChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.up.SendTodoChangesCommand;
+import de.objectcode.time4u.client.connection.util.NaiveTrustManager;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.server.api.IConstants;
 import de.objectcode.time4u.server.api.ILoginService;
@@ -54,6 +56,8 @@ public class WSConnection implements IConnection
 {
   private final List<ISynchronizationCommand> m_synchronizationCommands;
 
+  private final SSLSocketFactory m_sslSocketFactory;
+
   private final ServerConnection m_serverConnection;
   private final IPingService m_pingService;
   private final ILoginService m_loginService;
@@ -67,6 +71,8 @@ public class WSConnection implements IConnection
 
   public WSConnection(final ServerConnection serverConnection) throws ConnectionException
   {
+    m_sslSocketFactory = NaiveTrustManager.getSSLSocketFactory();
+
     // TODO: This may either be static or configurable
     m_synchronizationCommands = new ArrayList<ISynchronizationCommand>();
     m_synchronizationCommands.add(new SendProjectChangesCommand());
@@ -182,6 +188,7 @@ public class WSConnection implements IConnection
       bp.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, credentials.get("userId"));
       bp.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, credentials.get("password"));
     }
+    bp.getRequestContext().put("com.sun.xml.ws.transport.https.client.SSLSocketFactory", m_sslSocketFactory);
 
     return port;
   }
