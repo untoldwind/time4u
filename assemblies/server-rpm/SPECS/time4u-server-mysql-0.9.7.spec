@@ -11,8 +11,11 @@ Requires: time4u-server mysql-connector-java
 Use MySql as database backend.
 
 %prep
-rm -rf jboss-5.0.1.GA
-unzip $RPM_SOURCE_DIR/jboss-5.0.1.GA-jdk6.zip
+JBOSS_VERSION=5.0.1.GA
+rm -rf jboss-$JBOSS_VERSION
+rm -rf time4u-with-jboss
+unzip $RPM_SOURCE_DIR/jboss-$JBOSS_VERSION-jdk6.zip
+mv jboss-$JBOSS_VERSION time4u-with-jboss
 tar xjf $RPM_SOURCE_DIR/time4u-assemblies-deploy-%{version}.tar.bz2
 chown wwwrun:www -R time4u-assemblies-deploy-%{version}
 
@@ -24,7 +27,7 @@ mv $RPM_BUILD_DIR/time4u-assemblies-deploy-%{version}/db/mysql/time4u-hibernate.
 cp $RPM_SOURCE_DIR/time4u-mysql-init.sql /srv/time4u-with-jboss
 chown wwwrun:www /srv/time4u-with-jboss/time4u-mysql-init.sql
 mkdir -p /srv/time4u-with-jboss/server/time4u/deploy/messaging
-sed "s/DefaultDS/Time4UDS/ ; 149d" $RPM_BUILD_DIR/jboss-5.0.1.GA/docs/examples/jms/mysql-persistence-service.xml > /srv/time4u-with-jboss/server/time4u/deploy/messaging/mysql-persistence-service.xml
+sed "s/DefaultDS/Time4UDS/ ; 149d" $RPM_BUILD_DIR/time4u-with-jboss/docs/examples/jms/mysql-persistence-service.xml > /srv/time4u-with-jboss/server/time4u/deploy/messaging/mysql-persistence-service.xml
 chown wwwrun:www /srv/time4u-with-jboss/server/time4u/deploy/messaging/mysql-persistence-service.xml
 
 %files

@@ -11,11 +11,12 @@ Requires: java-1_6_0-sun-devel
 This contains everything to run a basic Time4U server.
 
 %prep
-rm -rf jboss-5.0.1.GA
+JBOSS_VERSION=5.0.1.GA
+rm -rf jboss-$JBOSS_VERSION
 rm -rf time4u-with-jboss
 rm -rf time4u-assemblies-deploy-%{version}
-unzip $RPM_SOURCE_DIR/jboss-5.0.1.GA-jdk6.zip
-mv jboss-5.0.1.GA time4u-with-jboss
+unzip $RPM_SOURCE_DIR/jboss-$JBOSS_VERSION-jdk6.zip
+mv jboss-$JBOSS_VERSION time4u-with-jboss
 rm -rf time4u-with-jboss/server/all
 rm -rf time4u-with-jboss/server/web
 rm -rf time4u-with-jboss/server/minimal
