@@ -2,7 +2,6 @@ package de.objectcode.time4u.client.connection.impl.ws;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -220,24 +219,6 @@ public class WSConnection implements IConnection
       throw new ConnectionException(e.toString(), e);
     } finally {
       monitor.done();
-    }
-
-    // TODO: Update lastSynchronized here
-  }
-
-  public static void main(final String[] args)
-  {
-    try {
-      final ServerConnection serverConnection = new ServerConnection();
-
-      final Map<String, String> cred = new HashMap<String, String>();
-      cred.put("userId", "admin");
-      cred.put("password", "admin");
-      serverConnection.setCredentials(cred);
-      serverConnection.setUrl("http://localhost:8080");
-      final WSConnection con = new WSConnection(serverConnection);
-    } catch (final Exception e) {
-      e.printStackTrace();
     }
   }
 }
