@@ -143,7 +143,7 @@ public class ReportServiceSeam implements IReportServiceLocal
     query.setParameter("from", from);
     query.setParameter("until", until);
     if (mainProject != null) {
-      query.setParameter("parentKey", mainProject.getParentKey() + ":%");
+      query.setParameter("parentKey", mainProject.getParentKey() + "%");
     }
 
     final ProjectPersonCrosstableDataCollector dataCollector = new ProjectPersonCrosstableDataCollector(mainProject);

@@ -37,7 +37,9 @@ public class ProjectPersonCrosstableDataCollector
       final PersonEntity person = rowData.getPerson();
       final WorkItemEntity workItem = rowData.getWorkItem();
 
-      m_sortedProjects.add(project);
+      if (m_mainProject == null || !m_mainProject.getId().equals(project.getId())) {
+        m_sortedProjects.add(project);
+      }
       m_sortedPersons.add(person);
 
       Map<String, Integer> dataSubMap = m_dataMap.get(project.getId());
@@ -61,9 +63,12 @@ public class ProjectPersonCrosstableDataCollector
 
   public CrossTableResult getCrossTable()
   {
-    final ValueLabelPair projects[] = new ValueLabelPair[m_sortedProjects.size()];
+    final ValueLabelPair projects[] = new ValueLabelPair[m_sortedProjects.size() + (m_mainProject != null ? 1 : 0)];
     int columnCount = 0;
 
+    if (m_mainProject != null) {
+      projects[columnCount++] = new ValueLabelPair(m_mainProject.getId(), m_mainProject.getName());
+    }
     for (final ProjectEntity project : m_sortedProjects) {
       projects[columnCount++] = new ValueLabelPair(project.getId(), project.getName());
     }
@@ -75,23 +80,19 @@ public class ProjectPersonCrosstableDataCollector
     for (final PersonEntity person : m_sortedPersons) {
       final ValueLabelPair rowHeader = new ValueLabelPair(person.getId(), person.getGivenName() + " "
           + person.getSurname());
-      final Object[] data = new Object[m_sortedProjects.size()];
+      final Object[] data = new Object[projects.length];
 
-      columnCount = 0;
       int rowAggregate = 0;
-      for (final ProjectEntity project : m_sortedProjects) {
-        final Map<String, Integer> dataSubMap = m_dataMap.get(project.getId());
+      for (int i = 0; i < projects.length; i++) {
+        final Map<String, Integer> dataSubMap = m_dataMap.get(projects[i].getValue().toString());
 
         if (dataSubMap != null) {
           final Integer value = dataSubMap.get(person.getId());
-          data[columnCount] = value;
+          data[i] = value;
           rowAggregate += value != null ? value.intValue() : 0;
-          columnAggregates[columnCount] = (columnAggregates[columnCount] != null ? ((Integer) columnAggregates[columnCount])
-              .intValue()
-              : 0)
+          columnAggregates[i] = (columnAggregates[i] != null ? ((Integer) columnAggregates[i]).intValue() : 0)
               + (value != null ? value.intValue() : 0);
         }
-        columnCount++;
       }
 
       rows[rowCount] = new CrossTableResult.CrossTableRow(rowHeader, data, rowAggregate, rowCount);
@@ -108,7 +109,8 @@ public class ProjectPersonCrosstableDataCollector
         if (project.getParent() == null) {
           return project;
         }
-      } else if (project.getParent() != null && m_mainProject.getId().equals(project.getParent().getId())) {
+      } else if (m_mainProject.getId().equals(project.getId()) || project.getParent() != null
+          && m_mainProject.getId().equals(project.getParent().getId())) {
         return project;
       }
 

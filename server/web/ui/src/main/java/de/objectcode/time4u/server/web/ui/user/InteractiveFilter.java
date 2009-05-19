@@ -47,6 +47,9 @@ public class InteractiveFilter implements Serializable
 
   public void addProject(final ValueLabelPair project)
   {
+    if (project.getValue().equals(m_lastProjectId)) {
+      return;
+    }
     m_projectStack.addLast(project);
     m_lastProjectId = project.getValue().toString();
   }
