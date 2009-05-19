@@ -16,8 +16,9 @@
 					<h:outputLabel value="Until:"/> 
 					<rich:calendar value="#{user.interactiveFilter.until}"/>
 				</h:panelGrid>
-				<h:panelGrid columns="2">
+				<h:panelGrid columns="3">
 					<a4j:commandButton value="&lt;&lt; 1 month" action="#{user.interactiveReportController.back1Month}"/>
+					<a4j:commandButton value="Refresh" action="#{user.interactiveReportController.refresh}"/>
 					<a4j:commandButton value="1 month &gt;&gt;" action="#{user.interactiveReportController.forward1Month}"/>
 				</h:panelGrid>
 				<h:panelGrid columns="2" rendered="#{user.interactiveFilter.projectStack.size() > 0}">
