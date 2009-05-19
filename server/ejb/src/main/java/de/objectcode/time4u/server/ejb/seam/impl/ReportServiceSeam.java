@@ -66,7 +66,7 @@ public class ReportServiceSeam implements IReportServiceLocal
     switch (reportDefinition.getEntityType()) {
       case WORKITEM:
         queryStr.append(WorkItemEntity.class.getName());
-        queryStr.append(" w where w.dayInfo.person.id in (:allowedPersons)");
+        queryStr.append(" w join fetch w.dayInfo where w.dayInfo.person.id in (:allowedPersons)");
         orderStr = " order by w.dayInfo.date asc, w.begin asc";
         rowDataAdapter = new WorkItemRowDataAdapter();
         break;
@@ -130,7 +130,7 @@ public class ReportServiceSeam implements IReportServiceLocal
 
     final StringBuffer queryStr = new StringBuffer("from ");
     queryStr.append(WorkItemEntity.class.getName());
-    queryStr.append(" w where w.dayInfo.person.id in (:allowedPersons)");
+    queryStr.append(" w join fetch w.dayInfo where w.dayInfo.person.id in (:allowedPersons)");
     queryStr.append(" and (w.dayInfo.date >= :from and w.dayInfo.date < :until)");
     if (mainProject != null) {
       queryStr.append(" and w.project.parentKey like :parentKey");
