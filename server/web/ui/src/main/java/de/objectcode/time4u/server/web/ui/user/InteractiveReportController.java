@@ -12,6 +12,7 @@ import org.jboss.seam.annotations.Scope;
 
 import de.objectcode.time4u.server.ejb.seam.api.IReportServiceLocal;
 import de.objectcode.time4u.server.ejb.seam.api.report.CrossTableResult;
+import de.objectcode.time4u.server.ejb.seam.api.report.ValueLabelPair;
 
 @Name("user.interactiveReportController")
 @Scope(ScopeType.CONVERSATION)
@@ -79,10 +80,36 @@ public class InteractiveReportController implements Serializable
     return refresh();
   }
 
+  public String clearFilterProject()
+  {
+    m_interactiveFilter.clearProject();
+
+    return refresh();
+  }
+
+  public String setFilterProject(final ValueLabelPair project)
+  {
+    m_interactiveFilter.setProject(project);
+
+    return refresh();
+  }
+
+  public String addFilterProject(final ValueLabelPair project)
+  {
+    m_interactiveFilter.addProject(project);
+
+    return refresh();
+  }
+
+  public String setFilterPerson(final ValueLabelPair person)
+  {
+    return VIEW_ID;
+  }
+
   public String refresh()
   {
-    m_crossTable = m_reportService.generateProjectPersonCrossTable(null, m_interactiveFilter.getFrom(),
-        m_interactiveFilter.getUntil());
+    m_crossTable = m_reportService.generateProjectPersonCrossTable(m_interactiveFilter.getLastProjectId(),
+        m_interactiveFilter.getFrom(), m_interactiveFilter.getUntil());
 
     return VIEW_ID;
   }

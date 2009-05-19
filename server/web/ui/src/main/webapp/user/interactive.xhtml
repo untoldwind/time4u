@@ -20,6 +20,16 @@
 					<a4j:commandButton value="&lt;&lt; 1 month" action="#{user.interactiveReportController.back1Month}"/>
 					<a4j:commandButton value="1 month &gt;&gt;" action="#{user.interactiveReportController.forward1Month}"/>
 				</h:panelGrid>
+				<h:panelGrid columns="2" rendered="#{user.interactiveFilter.projectStack.size() > 0}">
+					<h:outputLabel value="Project:"/>
+					<s:div>
+						<a4j:commandLink value="[ROOT]" action="#{user.interactiveReportController.clearFilterProject}"/>
+						<ui:repeat value="#{user.interactiveFilter.projectStack}" var="project">
+							&gt;
+							<a4j:commandLink value="#{project.label}" action="#{user.interactiveReportController.setFilterProject(project)}"/>
+						</ui:repeat>
+					</s:div>
+				</h:panelGrid>
 			</h:panelGrid>
 			<table class="report">
 				<thead class="report reportHeader">
@@ -28,7 +38,9 @@
 						<ui:repeat
 							value="#{user.interactiveReport.columnHeaders}"
 							var="column">
-							<th class="report reportHeader">#{column.label}</th>
+							<th class="report reportHeader">
+								<a4j:commandLink value="#{column.label}" action="#{user.interactiveReportController.addFilterProject(column)}"/>
+							</th>
 						</ui:repeat>
 						<th class="report reportHeader"></th>
 					</tr>
@@ -39,7 +51,7 @@
 						var="row">
 						<tr class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
 							<td class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
-								#{row.rowHeader.label}
+								<a4j:commandLink value="#{row.rowHeader.label}" action="#{user.interactiveReportController.setFilterPerson(row.rowHeader)}"/>
 							</td>
 							<ui:repeat
 								value="#{row.data}"
