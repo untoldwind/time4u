@@ -1,8 +1,10 @@
 package de.objectcode.time4u.server.ejb.seam.api;
 
+import java.util.Date;
 import java.util.Map;
 
 import de.objectcode.time4u.server.ejb.seam.api.report.BaseReportDefinition;
+import de.objectcode.time4u.server.ejb.seam.api.report.CrossTableResult;
 import de.objectcode.time4u.server.ejb.seam.api.report.ReportResult;
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.BaseParameterValue;
 
@@ -25,4 +27,9 @@ public interface IReportServiceLocal
    * @return The result of the report
    */
   ReportResult generateReport(BaseReportDefinition reportDefinition, Map<String, BaseParameterValue> parameters);
+
+  /**
+   * Temporary helper until we have found a way to abstractify this.
+   */
+  CrossTableResult generateProjectPersonCrossTable(String mainProjectId, Date from, Date until);
 }

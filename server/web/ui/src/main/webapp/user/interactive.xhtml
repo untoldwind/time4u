@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core" xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="../templates/main-template.xhtml">
+
+	<ui:define name="title">Interactive report
+	</ui:define>
+	<ui:define name="contentDetail">
+		<h:form>
+			<h:panelGrid columns="1">
+				<h:panelGrid columns="4">
+					<h:outputLabel value="From:"/>
+					<rich:calendar value="#{user.interactiveFilter.from}"/> 
+					<h:outputLabel value="Until:"/> 
+					<rich:calendar value="#{user.interactiveFilter.until}"/>
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<a4j:commandButton value="&lt;&lt; 1 month" action="#{user.interactiveReportController.back1Month}"/>
+					<a4j:commandButton value="1 month &gt;&gt;" action="#{user.interactiveReportController.forward1Month}"/>
+				</h:panelGrid>
+			</h:panelGrid>
+			<table class="report">
+				<thead class="report reportHeader">
+					<tr class="report reportHeader">
+						<th class="report reportHeader"></th>
+						<ui:repeat
+							value="#{user.interactiveReport.columnHeaders}"
+							var="column">
+							<th class="report reportHeader">#{column.label}</th>
+						</ui:repeat>
+						<th class="report reportHeader"></th>
+					</tr>
+				</thead>
+				<tbody class="report">
+					<ui:repeat
+						value="#{user.interactiveReport.rows}"
+						var="row">
+						<tr class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
+							<td class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
+								#{row.rowHeader.label}
+							</td>
+							<ui:repeat
+								value="#{row.data}"
+								var="cell">
+								<td class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
+									<h:outputText value="#{cell}" converter="timeConverter"/>
+								</td>
+							</ui:repeat>
+							<td class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
+								<h:outputText value="#{row.rowAggregate}" converter="timeConverter"/>
+							</td>
+						</tr>
+					</ui:repeat>
+					<tr class="report">
+						<td class="report"></td>
+						<ui:repeat
+							value="#{user.interactiveReport.columnAggregates}"
+							var="cell">
+							<td class="report">
+								<h:outputText value="#{cell}" converter="timeConverter"/>
+							</td>
+						</ui:repeat>
+						<td class="report"></td>
+					</tr>
+				</tbody>
+			</table>
+		</h:form>
+	</ui:define>
+</ui:composition>

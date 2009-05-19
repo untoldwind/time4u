@@ -11,6 +11,7 @@
 			<h:panelGrid id="grid" columns="3" cellspacing="4">
 				<rich:dropDownMenu value="Time4U">
 					<rich:menuItem submitMode="ajax" value="Overview" action="/user/main.xhtml"/>
+					<rich:menuItem submitMode="ajax" value="Interactive report" action="#{user.interactiveReportController.enter}"/>
 					<rich:menuItem submitMode="ajax" value="Change password" action="#{user.changePasswordController.enter}"/>
 					<rich:menuItem submitMode="ajax" value="Logout"
 						action="#{identity.logout}" />

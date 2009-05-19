@@ -1,8 +1,7 @@
 package de.objectcode.time4u.server.ejb.seam.impl;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,19 +18,16 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.security.Identity;
 
-import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.ejb.seam.api.IReportServiceLocal;
 import de.objectcode.time4u.server.ejb.seam.api.report.BaseReportDefinition;
+import de.objectcode.time4u.server.ejb.seam.api.report.CrossTableResult;
 import de.objectcode.time4u.server.ejb.seam.api.report.IReportDataCollector;
-import de.objectcode.time4u.server.ejb.seam.api.report.IRowDataAdapter;
 import de.objectcode.time4u.server.ejb.seam.api.report.ReportResult;
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.BaseParameterValue;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
-import de.objectcode.time4u.server.entities.TaskEntity;
 import de.objectcode.time4u.server.entities.TeamEntity;
-import de.objectcode.time4u.server.entities.TimePolicyEntity;
 import de.objectcode.time4u.server.entities.TodoEntity;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
@@ -98,7 +94,7 @@ public class ReportServiceSeam implements IReportServiceLocal
 
     query.setParameter("allowedPersons", allowedPersonIds);
     if (reportDefinition.getFilter() != null) {
-      reportDefinition.getFilter().setQueryParameters(EntityType.WORKITEM, query, parameters);
+      reportDefinition.getFilter().setQueryParameters(reportDefinition.getEntityType(), query, parameters);
     }
 
     final IReportDataCollector dataCollector = reportDefinition.createDataCollector();
@@ -114,160 +110,54 @@ public class ReportServiceSeam implements IReportServiceLocal
     return dataCollector.getReportResult();
   }
 
-  private static interface IExtendedRowDataAdapter extends IRowDataAdapter
+  public CrossTableResult generateProjectPersonCrossTable(final String mainProjectId, final Date from, final Date until)
   {
-    void setCurrentRow(Object row);
-  }
+    final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, m_identity.getPrincipal().getName());
+    final Set<String> allowedPersonIds = new HashSet<String>();
 
-  private static class WorkItemRowDataAdapter implements IExtendedRowDataAdapter
-  {
-    WorkItemEntity m_currentWorkItem;
-
-    public void setCurrentRow(final Object currentWorkItem)
-    {
-      m_currentWorkItem = (WorkItemEntity) currentWorkItem;
-    }
-
-    public DayInfoEntity getDayInfo()
-    {
-      return m_currentWorkItem.getDayInfo();
-    }
-
-    public PersonEntity getPerson()
-    {
-      return m_currentWorkItem.getDayInfo().getPerson();
-    }
-
-    public ProjectEntity getProject()
-    {
-      return m_currentWorkItem.getProject();
-    }
-
-    public TaskEntity getTask()
-    {
-      return m_currentWorkItem.getTask();
-    }
-
-    public WorkItemEntity getWorkItem()
-    {
-      return m_currentWorkItem;
-    }
-
-    public TodoEntity getTodo()
-    {
-      return m_currentWorkItem.getTodo();
-    }
-
-    public List<TimePolicyEntity> getTimePolicies()
-    {
-      final List<TimePolicyEntity> timePolicies = new ArrayList<TimePolicyEntity>();
-
-      for (final TimePolicyEntity timePolicy : m_currentWorkItem.getDayInfo().getPerson().getTimePolicies()) {
-        if (!timePolicy.isDeleted()) {
-          timePolicies.add(timePolicy);
-        }
+    allowedPersonIds.add(userAccount.getPerson().getId());
+    for (final TeamEntity team : userAccount.getPerson().getResponsibleFor()) {
+      for (final PersonEntity member : team.getMembers()) {
+        allowedPersonIds.add(member.getId());
       }
-      return timePolicies;
     }
+
+    ProjectEntity mainProject = null;
+
+    if (mainProjectId != null) {
+      mainProject = m_manager.find(ProjectEntity.class, mainProjectId);
+    }
+
+    final StringBuffer queryStr = new StringBuffer("from ");
+    queryStr.append(WorkItemEntity.class.getName());
+    queryStr.append(" w where w.dayInfo.person.id in (:allowedPersons)");
+    queryStr.append(" and (w.dayInfo.date >= :from and w.dayInfo.date < :until)");
+    if (mainProject != null) {
+      queryStr.append(" and w.project.parentKey like :parentKey");
+    }
+    queryStr.append(" order by w.dayInfo.date asc, w.begin asc");
+
+    final Query query = m_manager.createQuery(queryStr.toString());
+
+    query.setParameter("allowedPersons", allowedPersonIds);
+    query.setParameter("from", from);
+    query.setParameter("until", until);
+    if (mainProject != null) {
+      query.setParameter("parentKey", mainProject.getParentKey() + ":%");
+    }
+
+    final ProjectPersonCrosstableDataCollector dataCollector = new ProjectPersonCrosstableDataCollector(mainProject);
+    final IExtendedRowDataAdapter rowDataAdapter = new WorkItemRowDataAdapter();
+
+    for (final Object row : query.getResultList()) {
+      rowDataAdapter.setCurrentRow(row);
+
+      dataCollector.collect(rowDataAdapter);
+    }
+    dataCollector.finish();
+    m_manager.clear();
+
+    return dataCollector.getCrossTable();
   }
 
-  private static class DayInfoRowDataAdapter implements IExtendedRowDataAdapter
-  {
-    DayInfoEntity m_currentDayInfo;
-
-    public void setCurrentRow(final Object row)
-    {
-      m_currentDayInfo = (DayInfoEntity) row;
-    }
-
-    public DayInfoEntity getDayInfo()
-    {
-      return m_currentDayInfo;
-    }
-
-    public PersonEntity getPerson()
-    {
-      return m_currentDayInfo.getPerson();
-    }
-
-    public ProjectEntity getProject()
-    {
-      return null;
-    }
-
-    public TaskEntity getTask()
-    {
-      return null;
-    }
-
-    public WorkItemEntity getWorkItem()
-    {
-      return null;
-    }
-
-    public TodoEntity getTodo()
-    {
-      return null;
-    }
-
-    public List<TimePolicyEntity> getTimePolicies()
-    {
-      final List<TimePolicyEntity> timePolicies = new ArrayList<TimePolicyEntity>();
-
-      for (final TimePolicyEntity timePolicy : m_currentDayInfo.getPerson().getTimePolicies()) {
-        if (!timePolicy.isDeleted()) {
-          timePolicies.add(timePolicy);
-        }
-      }
-      return timePolicies;
-    }
-  }
-
-  private static class TodoRowDataAdapter implements IExtendedRowDataAdapter
-  {
-    TodoEntity m_currentTodo;
-
-    public void setCurrentRow(final Object row)
-    {
-      m_currentTodo = (TodoEntity) row;
-    }
-
-    public DayInfoEntity getDayInfo()
-    {
-      return null;
-    }
-
-    public PersonEntity getPerson()
-    {
-      return m_currentTodo.getReporter();
-    }
-
-    public ProjectEntity getProject()
-    {
-      if (m_currentTodo.getTask() != null) {
-        return m_currentTodo.getTask().getProject();
-      }
-      return null;
-    }
-
-    public TaskEntity getTask()
-    {
-      return m_currentTodo.getTask();
-    }
-
-    public List<TimePolicyEntity> getTimePolicies()
-    {
-      return null;
-    }
-
-    public TodoEntity getTodo()
-    {
-      return m_currentTodo;
-    }
-
-    public WorkItemEntity getWorkItem()
-    {
-      return null;
-    }
-  }
 }
