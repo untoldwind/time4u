@@ -18,6 +18,16 @@ public class ProjectPathFilter implements IFilter
 
   private String m_projectPath;
 
+  public ProjectPathFilter()
+  {
+
+  }
+
+  public ProjectPathFilter(final String projectPath)
+  {
+    m_projectPath = projectPath;
+  }
+
   @XmlAttribute(name = "project-path")
   public String getProjectPath()
   {

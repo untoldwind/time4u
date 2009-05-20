@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import de.objectcode.time4u.server.ejb.seam.api.filter.AndFilter;
 import de.objectcode.time4u.server.ejb.seam.api.filter.DateRangeFilter;
 import de.objectcode.time4u.server.ejb.seam.api.filter.PersonFilter;
+import de.objectcode.time4u.server.ejb.seam.api.filter.ProjectPathFilter;
 import de.objectcode.time4u.server.ejb.seam.api.report.DayInfoProjection;
 import de.objectcode.time4u.server.ejb.seam.api.report.PersonProjection;
 import de.objectcode.time4u.server.ejb.seam.api.report.ProjectProjection;
@@ -110,7 +111,26 @@ public class InteractiveFilter implements Serializable
 
     definition.setName("Interactive Report");
     definition.setDescription("Interactive report");
-    definition.setFilter(new AndFilter(new DateRangeFilter(m_from, m_until), new PersonFilter(m_personId)));
+    final AndFilter filters = new AndFilter();
+    filters.add(new DateRangeFilter(m_from, m_until));
+    if (m_personId != null) {
+      filters.add(new PersonFilter(m_personId));
+    }
+    if (!m_projectStack.isEmpty()) {
+      final StringBuffer buffer = new StringBuffer();
+      boolean first = true;
+
+      for (final ValueLabelPair project : m_projectStack) {
+        if (!first) {
+          buffer.append(":");
+        }
+        buffer.append(project.getValue().toString());
+        first = false;
+      }
+
+      filters.add(new ProjectPathFilter(buffer.toString()));
+    }
+    definition.setFilter(filters);
     definition.addProjection(PersonProjection.NAME);
     definition.addProjection(DayInfoProjection.DATE);
     definition.addProjection(ProjectProjection.PATH);
