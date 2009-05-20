@@ -31,54 +31,121 @@
 						</ui:repeat>
 					</s:div>
 				</h:panelGrid>
+				<h:panelGrid columns="3" rendered="#{user.interactiveFilter.hasPerson}">
+					<h:outputLabel value="Person:"/>
+					<h:outputLabel value="#{user.interactiveFilter.person.label}"/>
+					<a4j:commandButton value="Clear" action="#{user.interactiveReportController.clearFilterPerson}"/>
+				</h:panelGrid>
 			</h:panelGrid>
-			<table class="report">
-				<thead class="report reportHeader">
-					<tr class="report reportHeader">
-						<th class="report reportHeader"></th>
-						<ui:repeat
-							value="#{user.interactiveReport.columnHeaders}"
-							var="column">
-							<th class="report reportHeader">
-								<a4j:commandLink value="#{column.label}" action="#{user.interactiveReportController.addFilterProject(column)}"/>
-							</th>
-						</ui:repeat>
-						<th class="report reportHeader"></th>
-					</tr>
-				</thead>
-				<tbody class="report">
-					<ui:repeat
-						value="#{user.interactiveReport.rows}"
-						var="row">
-						<tr class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
-							<td class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
-								<a4j:commandLink value="#{row.rowHeader.label}" action="#{user.interactiveReportController.setFilterPerson(row.rowHeader)}"/>
-							</td>
+			<s:div rendered="#{user.interactiveReportController.crossTableReport}">
+				<table class="report">
+					<thead class="report reportHeader">
+						<tr class="report reportHeader">
+							<th class="report reportHeader"></th>
 							<ui:repeat
-								value="#{row.data}"
-								var="cell">
+								value="#{user.interactiveCrossTable.columnHeaders}"
+								var="column">
+								<th class="report reportHeader">
+									<a4j:commandLink value="#{column.label}" action="#{user.interactiveReportController.addFilterProject(column)}"/>
+								</th>
+							</ui:repeat>
+							<th class="report reportHeader"></th>
+						</tr>
+					</thead>
+					<tbody class="report">
+						<ui:repeat
+							value="#{user.interactiveCrossTable.rows}"
+							var="row">
+							<tr class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
 								<td class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
+									<a4j:commandLink value="#{row.rowHeader.label}" action="#{user.interactiveReportController.setFilterPerson(row.rowHeader)}"/>
+								</td>
+								<ui:repeat
+									value="#{row.data}"
+									var="cell">
+									<td class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
+										<h:outputText value="#{cell}" converter="timeConverter"/>
+									</td>
+								</ui:repeat>
+								<td class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
+									<h:outputText value="#{row.rowAggregate}" converter="timeConverter"/>
+								</td>
+							</tr>
+						</ui:repeat>
+						<tr class="report">
+							<td class="report"></td>
+							<ui:repeat
+								value="#{user.interactiveCrossTable.columnAggregates}"
+								var="cell">
+								<td class="report">
 									<h:outputText value="#{cell}" converter="timeConverter"/>
 								</td>
 							</ui:repeat>
-							<td class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
-								<h:outputText value="#{row.rowAggregate}" converter="timeConverter"/>
-							</td>
+							<td class="report"></td>
 						</tr>
-					</ui:repeat>
-					<tr class="report">
-						<td class="report"></td>
-						<ui:repeat
-							value="#{user.interactiveReport.columnAggregates}"
-							var="cell">
-							<td class="report">
-								<h:outputText value="#{cell}" converter="timeConverter"/>
-							</td>
+					</tbody>
+				</table>
+			</s:div>
+			<s:div rendered="#{user.interactiveReportController.flatReport}">
+				<table class="report">
+					<thead class="report reportHeader">
+						<tr class="report reportHeader">
+							<ui:repeat
+								value="#{user.reportResult.groupByColumns}"
+								var="column">
+								<th class="report reportHeader">#{column.header}</th>
+							</ui:repeat>
+							<ui:repeat value="#{user.reportResult.columns}"
+								var="column">
+								<th class="report reportHeader">#{column.header}</th>
+							</ui:repeat>
+						</tr>
+					</thead>
+					<tbody class="report">
+						<ui:repeat value="#{user.reportResult.rows}"
+							var="row" rendered="#{!user.reportResult.hasGroups}">
+							<tr class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
+								<ui:repeat value="#{user.reportResult.columns}"
+									var="column">
+									<td
+										class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'} report#{column.columnType}">
+										<h:outputText value="#{row.data[column.index]}"
+											converter="#{user.reportConverters.get(column.columnType)}" />
+									</td>
+								</ui:repeat>
+							</tr>
 						</ui:repeat>
-						<td class="report"></td>
-					</tr>
-				</tbody>
-			</table>
+						<ui:repeat value="#{user.reportResult.groups}"
+							var="group" rendered="#{user.reportResult.hasGroups}">
+							<tr class="report reportGroupHeader">
+								<td class="report reportGroupHeader">
+									<h:outputText value="#{group.label}"
+										converter="#{user.reportConverters.get(column.columnType)}" />
+								</td>
+								<td class="report reportGroupHeader"
+									colspan="#{user.reportResult.columns.size() + user.reportResult.groupByColumns.size() - 1}" />
+							</tr>
+							<ui:include src="reportResultGroup.xhtml">
+								<ui:param name="report" value="#{group}" />
+								<ui:param name="depth" value="1"/>
+									value="#{user.reportResult.groupByColumns.size()}" />
+							</ui:include>
+						</ui:repeat>
+						<ui:fragment rendered="#{user.reportResult.hasAggregates}">
+							<tr class="report reportFooter">
+								<ui:repeat value="#{user.reportResult.columns}"
+									var="column">
+									<td
+										class="report reportFooter">
+										<h:outputText value="#{user.reportResult.aggregates[column.index]}"
+											converter="#{user.reportConverters.get(column.columnType)}" />
+									</td>
+								</ui:repeat>
+							</tr>
+						</ui:fragment>
+					</tbody>
+				</table>
+			</s:div>
 		</h:form>
 	</ui:define>
 </ui:composition>
