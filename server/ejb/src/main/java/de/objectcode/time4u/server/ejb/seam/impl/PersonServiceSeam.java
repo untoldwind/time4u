@@ -1,5 +1,6 @@
 package de.objectcode.time4u.server.ejb.seam.impl;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -24,6 +25,7 @@ import org.jboss.seam.annotations.security.Restrict;
 import org.jboss.seam.security.Identity;
 
 import de.objectcode.time4u.server.api.data.EntityType;
+import de.objectcode.time4u.server.ejb.seam.api.DataTransferList;
 import de.objectcode.time4u.server.ejb.seam.api.IPersonServiceLocal;
 import de.objectcode.time4u.server.ejb.seam.api.PersonStatisticData;
 import de.objectcode.time4u.server.entities.ClientEntity;
@@ -161,11 +163,14 @@ public class PersonServiceSeam implements IPersonServiceLocal
 
     final long numberOfTimepolicies = (Long) countTimepolicy.getSingleResult();
 
-    final Query countDayinfo = m_manager.createQuery("select count(*) from " + DayInfoEntity.class.getName()
-        + " d where d.person.id = :personId");
+    final Query countDayinfo = m_manager.createQuery("select count(*), min(d.date), max(d.date) from "
+        + DayInfoEntity.class.getName() + " d where d.person.id = :personId");
     countDayinfo.setParameter("personId", personId);
 
-    final long numberOfDayinfos = (Long) countDayinfo.getSingleResult();
+    final Object[] dayinfoStat = (Object[]) countDayinfo.getSingleResult();
+    final long numberOfDayinfos = (Long) dayinfoStat[0];
+    final Date minDayinfoDate = (Date) dayinfoStat[1];
+    final Date maxDayinfoDate = (Date) dayinfoStat[2];
 
     final Query countWorkitem = m_manager.createQuery("select count(*) from " + WorkItemEntity.class.getName()
         + " w where w.dayInfo.person.id = :personId");
@@ -179,8 +184,8 @@ public class PersonServiceSeam implements IPersonServiceLocal
 
     final long numberOfTodoassignments = (Long) countTodoAssignment.getSingleResult();
 
-    return new PersonStatisticData(numberOfUserAccounts, numberOfTimepolicies, numberOfDayinfos, numberOfWorkitems,
-        numberOfTodoassignments);
+    return new PersonStatisticData(numberOfUserAccounts, numberOfTimepolicies, numberOfDayinfos, minDayinfoDate,
+        maxDayinfoDate, numberOfWorkitems, numberOfTodoassignments);
   }
 
   @Restrict("#{s:hasRole('admin')}")
@@ -289,5 +294,38 @@ public class PersonServiceSeam implements IPersonServiceLocal
     if (m_activePersons != null) {
       initActivePersons();
     }
+  }
+
+  @SuppressWarnings("unchecked")
+  @Restrict("#{s:hasRole('admin')}")
+  public DataTransferList checkTransferDataPerson(final String fromPersonId, final String toPersonId)
+  {
+    final Query dayInfos = m_manager.createQuery("select d.date from " + DayInfoEntity.class.getName()
+        + " d where d.person.id = :personId");
+    dayInfos.setParameter("personId", fromPersonId);
+
+    final Set<Date> fromDates = new TreeSet<Date>(dayInfos.getResultList());
+
+    dayInfos.setParameter("personId", toPersonId);
+
+    final Set<Date> toDates = new TreeSet<Date>(dayInfos.getResultList());
+
+    final List<Date> okDates = new ArrayList<Date>();
+    final List<Date> confictDates = new ArrayList<Date>();
+
+    for (final Date date : fromDates) {
+      if (toDates.contains(date)) {
+        confictDates.add(date);
+      } else {
+        okDates.add(date);
+      }
+    }
+
+    return new DataTransferList(okDates, confictDates);
+  }
+
+  public void transferDataPerson(final String fromPersonId, final String toPersonId, final List<Date> dates)
+  {
+
   }
 }

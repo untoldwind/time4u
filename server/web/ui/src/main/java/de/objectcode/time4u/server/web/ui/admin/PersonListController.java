@@ -4,6 +4,7 @@ import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Begin;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.international.StatusMessages;
 
@@ -22,6 +23,7 @@ public class PersonListController
   @In("PersonService")
   IPersonServiceLocal m_personService;
 
+  @Out(value = "admin.selectedPerson", required = false)
   PersonEntity m_selectedPerson;
   PersonStatisticData m_selectedPersonStatistic;
   int m_currentPage;
@@ -93,6 +95,14 @@ public class PersonListController
       StatusMessages.instance().add("Person information deleted");
       m_selectedPerson = null;
       m_selectedPersonStatistic = null;
+    }
+    return VIEW_ID;
+  }
+
+  public String transferPerson()
+  {
+    if (m_selectedPerson != null) {
+      return PersonTransferController.VIEW_ID;
     }
     return VIEW_ID;
   }

@@ -101,6 +101,16 @@
 										value="#{admin.personListController.selectedPersonStatistic.numberOfDayinfos}" />
 								</s:decorate>
 								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Min date</ui:define>
+									<h:outputText
+										value="#{admin.personListController.selectedPersonStatistic.minDayinfoDate}" converter="dateConverter" />
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
+									<ui:define name="label">Max date</ui:define>
+									<h:outputText
+										value="#{admin.personListController.selectedPersonStatistic.maxDayinfoDate}" converter="dateConverter"/>
+								</s:decorate>
+								<s:decorate template="../templates/decorateTableField.xhtml">
 									<ui:define name="label">Number of workitems</ui:define>
 									<h:outputText
 										value="#{admin.personListController.selectedPersonStatistic.numberOfWorkitems}" />
@@ -110,6 +120,12 @@
 									<h:outputText
 										value="#{admin.personListController.selectedPersonStatistic.numberOfTodoassignments}" />
 								</s:decorate>
+								<tr>
+									<td colspan="3">
+										<a4j:commandButton
+											action="#{admin.personListController.transferPerson}" value="Transfer data to other person" />
+									</td>
+								</tr>																
 							</table>
 						</rich:tab>
 					</rich:tabPanel>
