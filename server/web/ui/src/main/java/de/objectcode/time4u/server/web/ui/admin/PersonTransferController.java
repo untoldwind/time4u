@@ -6,6 +6,7 @@ import java.util.List;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
 
@@ -25,13 +26,15 @@ public class PersonTransferController
   IPersonServiceLocal m_personService;
 
   @In("admin.selectedPerson")
+  @Out("admin.selectedPerson")
   PersonEntity m_selectedPerson;
 
   String m_targetPersonId;
-  DataTransferList m_dataTransferList;
 
   @DataModel("admin.transferDataConflictList")
   List<Date> m_transferDataConflictList;
+  List<Date> m_transferDataList;
+  int m_transferOverwriteCount;
 
   public String getTargetPersonId()
   {
@@ -43,21 +46,63 @@ public class PersonTransferController
     m_targetPersonId = targetPersonId;
   }
 
-  public DataTransferList getDataTransferList()
+  public boolean isHasConficts()
   {
-    return m_dataTransferList;
+    if (m_transferDataConflictList != null) {
+      return !m_transferDataConflictList.isEmpty();
+    }
+    return false;
   }
 
-  public void setDataTransferList(final DataTransferList dataTransferList)
+  public int getTransferDataSize()
   {
-    m_dataTransferList = dataTransferList;
+    if (m_transferDataList != null) {
+      return m_transferDataList.size();
+    }
+    return 0;
+  }
+
+  public int getTransferOverwriteCount()
+  {
+    return m_transferOverwriteCount;
+  }
+
+  public String ignoreDate(final Date date)
+  {
+    m_transferDataConflictList.remove(date);
+
+    return CONFLICTS_VIEW_ID;
+  }
+
+  public String overwriteDate(final Date date)
+  {
+    m_transferDataConflictList.remove(date);
+    m_transferDataList.add(date);
+    m_transferOverwriteCount++;
+
+    return CONFLICTS_VIEW_ID;
+
   }
 
   public String transferPerson()
   {
-    m_dataTransferList = m_personService.checkTransferDataPerson(m_selectedPerson.getId(), m_targetPersonId);
-    m_transferDataConflictList = m_dataTransferList.getConfictDays();
+    if (m_selectedPerson.getId().equals(m_targetPersonId)) {
+      return VIEW_ID;
+    }
+
+    final DataTransferList dataTransferList = m_personService.checkTransferDataPerson(m_selectedPerson.getId(),
+        m_targetPersonId);
+    m_transferDataList = dataTransferList.getOkDays();
+    m_transferDataConflictList = dataTransferList.getConfictDays();
+    m_transferOverwriteCount = 0;
 
     return CONFLICTS_VIEW_ID;
+  }
+
+  public String performTransfer()
+  {
+    m_personService.transferDataPerson(m_selectedPerson.getId(), m_targetPersonId, m_transferDataList);
+
+    return PersonListController.VIEW_ID;
   }
 }

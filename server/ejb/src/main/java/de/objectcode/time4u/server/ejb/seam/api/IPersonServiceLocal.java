@@ -23,5 +23,5 @@ public interface IPersonServiceLocal
 
   DataTransferList checkTransferDataPerson(final String fromPersonId, final String toPersonId);
 
-  void transferDataPerson(final String fromPersonId, final String toPersonId, final List<Date> dates);
+  int transferDataPerson(final String fromPersonId, final String toPersonId, final List<Date> dates);
 }

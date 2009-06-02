@@ -8,24 +8,44 @@
 	<ui:define name="title">Transfer conficts</ui:define>
 	<ui:define name="contentDetail">
 		<h:form>
-			<h:panelGroup>
-				<rich:dataTable id="conflictListTable" rows="10"
-					value="#{admin.transferDataConflictList}" var="conflict" rowClasses="first,second"
-					columnClasses="narrow,wide">
-					<rich:column>
-						<f:facet name="header">Date</f:facet>
-						<h:outputText value="#{conflict}" converter="dateConverter"/>
-					</rich:column>
-					<f:facet name="footer">
-						<rich:datascroller for="conflictListTable"
-							pageIndexVar="pageIndex" pagesVar="pages">
-							<f:facet name="pages">
-								<h:outputText value="#{pageIndex} / #{pages}"></h:outputText>
-							</f:facet>
-						</rich:datascroller>
-					</f:facet>
-				</rich:dataTable>
-			</h:panelGroup>
+			<h:panelGrid columns="1">
+				<h:panelGroup>
+					Days to transfer: #{admin.personTransferController.transferDataSize}
+				</h:panelGroup>
+				<h:panelGroup>
+					Days to be overwritten: #{admin.personTransferController.transferOverwriteCount}
+				</h:panelGroup>
+				<h:panelGroup rendered="#{admin.personTransferController.hasConficts}">
+					<rich:dataTable id="conflictListTable" rows="10"
+						value="#{admin.transferDataConflictList}" var="conflict" rowClasses="first,second"
+						columnClasses="narrow,wide">
+						<rich:column>
+							<f:facet name="header">Date</f:facet>
+							<h:outputText value="#{conflict}" converter="dateConverter"/>
+						</rich:column>
+						<rich:column>
+							<a4j:commandButton
+								action="#{admin.personTransferController.ignoreDate(conflict)}" value="Ignore" />
+							<a4j:commandButton
+								action="#{admin.personTransferController.overwriteDate(conflict)}" value="Overwrite" />
+						</rich:column>
+						<f:facet name="footer">
+							<rich:datascroller for="conflictListTable"
+								pageIndexVar="pageIndex" pagesVar="pages">
+								<f:facet name="pages">
+									<h:outputText value="#{pageIndex} / #{pages}"></h:outputText>
+								</f:facet>
+							</rich:datascroller>
+						</f:facet>
+					</rich:dataTable>
+				</h:panelGroup>
+				<h:panelGroup>
+					<a4j:commandButton
+								action="#{admin.personTransferController.performTransfer}" value="Perform transfer" />
+					<a4j:commandButton
+								action="#{admin.personListController.enter}" value="Cancel" />
+				</h:panelGroup>
+			</h:panelGrid>
 		</h:form>
 	</ui:define>
 </ui:composition>

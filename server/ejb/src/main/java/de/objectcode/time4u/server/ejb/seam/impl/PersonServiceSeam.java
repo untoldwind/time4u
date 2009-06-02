@@ -11,6 +11,7 @@ import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,6 +31,7 @@ import de.objectcode.time4u.server.ejb.seam.api.IPersonServiceLocal;
 import de.objectcode.time4u.server.ejb.seam.api.PersonStatisticData;
 import de.objectcode.time4u.server.entities.ClientEntity;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
+import de.objectcode.time4u.server.entities.DayTagEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.TimePolicyEntity;
@@ -324,8 +326,75 @@ public class PersonServiceSeam implements IPersonServiceLocal
     return new DataTransferList(okDates, confictDates);
   }
 
-  public void transferDataPerson(final String fromPersonId, final String toPersonId, final List<Date> dates)
+  public int transferDataPerson(final String fromPersonId, final String toPersonId, final List<Date> dates)
   {
+    final PersonEntity toPerson = m_manager.find(PersonEntity.class, toPersonId);
+    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(EntityType.DAYINFO, toPerson.getId());
+    final Query dayInfoQuery = m_manager.createQuery("from " + DayInfoEntity.class.getName()
+        + " d where d.person.id = :personId and d.date = :date");
+    int count = 0;
 
+    for (final Date date : dates) {
+      dayInfoQuery.setParameter("personId", fromPersonId);
+      dayInfoQuery.setParameter("date", date);
+
+      final DayInfoEntity fromDayInfo;
+
+      try {
+        fromDayInfo = (DayInfoEntity) dayInfoQuery.getSingleResult();
+      } catch (final NoResultException e) {
+        continue;
+      }
+
+      dayInfoQuery.setParameter("personId", toPersonId);
+      dayInfoQuery.setParameter("date", date);
+
+      DayInfoEntity toDayInfo = null;
+
+      try {
+        toDayInfo = (DayInfoEntity) dayInfoQuery.getSingleResult();
+      } catch (final NoResultException e) {
+      }
+
+      if (toDayInfo == null) {
+        toDayInfo = new DayInfoEntity(m_idGenerator.generateLocalId(EntityType.DAYINFO), revisionLock
+            .getLatestRevision(), m_idGenerator.getClientId(), toPerson, date);
+
+        m_manager.persist(toDayInfo);
+      } else {
+        toDayInfo.setRevision(revisionLock.getLatestRevision());
+        toDayInfo.setLastModifiedByClient(m_idGenerator.getClientId());
+        toDayInfo.getWorkItems().clear();
+        toDayInfo.getTags().clear();
+      }
+
+      toDayInfo.setRegularTime(fromDayInfo.getRegularTime());
+      for (final DayTagEntity dayTag : fromDayInfo.getTags()) {
+        toDayInfo.getTags().add(dayTag);
+      }
+      for (final WorkItemEntity workItem : fromDayInfo.getWorkItems().values()) {
+        final WorkItemEntity newWorkItem = new WorkItemEntity(m_idGenerator.generateLocalId(EntityType.WORKITEM),
+            toDayInfo);
+
+        newWorkItem.setBegin(workItem.getBegin());
+        newWorkItem.setEnd(workItem.getEnd());
+        newWorkItem.setComment(workItem.getComment());
+        newWorkItem.setProject(workItem.getProject());
+        newWorkItem.setTask(workItem.getTask());
+        newWorkItem.setTodo(workItem.getTodo());
+
+        m_manager.persist(newWorkItem);
+
+        toDayInfo.getWorkItems().put(newWorkItem.getId(), newWorkItem);
+      }
+      toDayInfo.validate();
+
+      m_manager.flush();
+      m_manager.clear();
+
+      count++;
+    }
+
+    return count;
   }
 }
