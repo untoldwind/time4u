@@ -1,6 +1,7 @@
 package de.objectcode.time4u.client.connection.ui.wizards;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.WizardPage;
@@ -19,6 +20,7 @@ import org.eclipse.swt.widgets.Text;
 import de.objectcode.time4u.client.connection.api.ConnectionFactory;
 import de.objectcode.time4u.client.connection.api.IConnection;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.Person;
 import de.objectcode.time4u.server.api.data.ServerConnection;
 
@@ -151,8 +153,24 @@ public class UserAccountWizardPage extends WizardPage
         final Person person = connection.getPerson();
 
         if (!RepositoryFactory.getRepository().getOwner().getId().equals(person.getId())) {
-          if (MessageDialog.openConfirm(getShell(), "Account already exists",
-              "Account already exists, but person id differs. Associate this client with this account?")) {
+          // If the repository is empty we assume that the user wants to connect to the existing data on the server
+          boolean cleanRepository = true;
+          final Map<EntityType, Long> status = RepositoryFactory.getRepository().getRevisionStatus();
+
+          for (final EntityType type : EntityType.values()) {
+            if (type == EntityType.PERSON) {
+              if (status.get(type).longValue() != 2L) {
+                cleanRepository = false;
+                break;
+              }
+            } else if (status.get(type).longValue() != 0L) {
+              cleanRepository = false;
+              break;
+            }
+          }
+          if (cleanRepository
+              || MessageDialog.openConfirm(getShell(), "Account already exists",
+                  "Account already exists, but person id differs. Associate this client with this account?")) {
             RepositoryFactory.getRepository().changeOwnerId(person.getId());
           } else {
             m_testResultLabel.setText("Existing account");
