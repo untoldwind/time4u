@@ -9,12 +9,15 @@ public class CrossTableResult implements Serializable
   private final ValueLabelPair[] m_columnHeaders;
   private final CrossTableRow[] m_rows;
   private final Object[] m_columnAggregates;
+  private final Object m_totalAggregate;
 
-  public CrossTableResult(final ValueLabelPair[] columnHeaders, final CrossTableRow[] rows, final Object[] columnAggregates)
+  public CrossTableResult(final ValueLabelPair[] columnHeaders, final CrossTableRow[] rows,
+      final Object[] columnAggregates, final Object totalAggregate)
   {
     m_columnHeaders = columnHeaders;
     m_rows = rows;
     m_columnAggregates = columnAggregates;
+    m_totalAggregate = totalAggregate;
   }
 
   public ValueLabelPair[] getColumnHeaders()
@@ -30,6 +33,11 @@ public class CrossTableResult implements Serializable
   public CrossTableRow[] getRows()
   {
     return m_rows;
+  }
+
+  public Object getTotalAggregate()
+  {
+    return m_totalAggregate;
   }
 
   public static class CrossTableRow implements Serializable

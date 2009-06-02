@@ -68,7 +68,9 @@
 									</td>
 								</ui:repeat>
 								<td class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
-									<h:outputText value="#{row.rowAggregate}" converter="timeConverter"/>
+								    <a4j:commandLink action="#{user.interactiveReportController.setFilterPerson(row.rowHeader)}">
+										<h:outputText value="#{row.rowAggregate}" converter="timeConverter"/>
+									</a4j:commandLink>
 								</td>
 							</tr>
 						</ui:repeat>
@@ -81,7 +83,9 @@
 									<h:outputText value="#{cell}" converter="timeConverter"/>
 								</td>
 							</ui:repeat>
-							<td class="report"></td>
+							<td class="report">
+									<h:outputText value="#{user.interactiveCrossTable.totalAggregate}" converter="timeConverter"/>
+							</td>
 						</tr>
 					</tbody>
 				</table>

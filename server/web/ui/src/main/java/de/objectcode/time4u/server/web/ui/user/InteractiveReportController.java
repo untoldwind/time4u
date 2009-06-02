@@ -46,10 +46,10 @@ public class InteractiveReportController implements Serializable
   private InteractiveFilter m_interactiveFilter;
 
   @Out("user.interactiveCrossTable")
-  private CrossTableResult m_crossTable;
+  CrossTableResult m_crossTable;
 
   @Out("user.reportResult")
-  private ReportResult m_reportResult;
+  ReportResult m_reportResult;
 
   @Out("user.reportConverters")
   Map<ColumnType, Converter> m_converters;
@@ -162,7 +162,7 @@ public class InteractiveReportController implements Serializable
   public String refresh()
   {
     if (m_interactiveFilter.isHasPerson()) {
-      m_crossTable = new CrossTableResult(new ValueLabelPair[0], new CrossTableRow[0], new Object[0]);
+      m_crossTable = new CrossTableResult(new ValueLabelPair[0], new CrossTableRow[0], new Object[0], null);
       m_reportResult = m_reportService.generateReport(m_interactiveFilter.getReportDefinition(),
           new HashMap<String, BaseParameterValue>());
     } else {

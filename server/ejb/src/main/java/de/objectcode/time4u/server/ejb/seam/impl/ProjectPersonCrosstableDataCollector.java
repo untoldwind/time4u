@@ -73,6 +73,7 @@ public class ProjectPersonCrosstableDataCollector
       projects[columnCount++] = new ValueLabelPair(project.getId(), project.getName());
     }
 
+    int totalAggregate = 0;
     final Object[] columnAggregates = new Object[projects.length];
     final CrossTableResult.CrossTableRow[] rows = new CrossTableResult.CrossTableRow[m_sortedPersons.size()];
 
@@ -89,6 +90,7 @@ public class ProjectPersonCrosstableDataCollector
         if (dataSubMap != null) {
           final Integer value = dataSubMap.get(person.getId());
           data[i] = value;
+          totalAggregate += value != null ? value.intValue() : 0;
           rowAggregate += value != null ? value.intValue() : 0;
           columnAggregates[i] = (columnAggregates[i] != null ? ((Integer) columnAggregates[i]).intValue() : 0)
               + (value != null ? value.intValue() : 0);
@@ -99,7 +101,7 @@ public class ProjectPersonCrosstableDataCollector
       rowCount++;
     }
 
-    return new CrossTableResult(projects, rows, columnAggregates);
+    return new CrossTableResult(projects, rows, columnAggregates, totalAggregate);
   }
 
   private ProjectEntity getParentProject(ProjectEntity project)
