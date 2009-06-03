@@ -32,7 +32,14 @@ public class TodoLabelProvider extends LabelProvider implements ITableLabelProvi
       final TodoSummary todo = (TodoSummary) obj;
 
       if (todo.isGroup()) {
-        return UIPlugin.getDefault().getImage("/icons/sitetree.gif");
+        switch (todo.getState()) {
+          case COMPLETED:
+            return UIPlugin.getDefault().getImage("/icons/todoGroupCompleted.png");
+          case REJECTED:
+            return UIPlugin.getDefault().getImage("/icons/todoGroupRejected.png");
+          default:
+            return UIPlugin.getDefault().getImage("/icons/todoGroup.png");
+        }
       } else {
         switch (todo.getState()) {
           case UNASSIGNED:

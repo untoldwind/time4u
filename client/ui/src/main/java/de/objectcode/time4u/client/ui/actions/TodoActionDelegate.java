@@ -225,18 +225,35 @@ public class TodoActionDelegate implements IWorkbenchWindowActionDelegate, IView
 
         if (result == TodoCompleteDialog.COMPLETE || result == TodoCompleteDialog.REJECT) {
           try {
-            final Todo todo = RepositoryFactory.getRepository().getTodoRepository().getTodo(selection.getId());
+            if (selection.isGroup()) {
+              final TodoGroup todoGroup = RepositoryFactory.getRepository().getTodoRepository().getTodoGroup(
+                  selection.getId());
 
-            if (todo != null) {
-              if (result == TodoCompleteDialog.COMPLETE) {
-                todo.setState(TodoState.COMPLETED);
-              } else {
-                todo.setState(TodoState.REJECTED);
+              if (todoGroup != null) {
+                if (result == TodoCompleteDialog.COMPLETE) {
+                  todoGroup.setState(TodoState.COMPLETED);
+                } else {
+                  todoGroup.setState(TodoState.REJECTED);
+                }
+                todoGroup.setCompleted(true);
+                todoGroup.setCompletedAt(new Date());
+
+                RepositoryFactory.getRepository().getTodoRepository().storeTodoGroup(todoGroup, true);
               }
-              todo.setCompleted(true);
-              todo.setCompletedAt(new Date());
+            } else {
+              final Todo todo = RepositoryFactory.getRepository().getTodoRepository().getTodo(selection.getId());
 
-              RepositoryFactory.getRepository().getTodoRepository().storeTodo(todo, true);
+              if (todo != null) {
+                if (result == TodoCompleteDialog.COMPLETE) {
+                  todo.setState(TodoState.COMPLETED);
+                } else {
+                  todo.setState(TodoState.REJECTED);
+                }
+                todo.setCompleted(true);
+                todo.setCompletedAt(new Date());
+
+                RepositoryFactory.getRepository().getTodoRepository().storeTodo(todo, true);
+              }
             }
           } catch (final Exception e) {
             UIPlugin.getDefault().log(e);

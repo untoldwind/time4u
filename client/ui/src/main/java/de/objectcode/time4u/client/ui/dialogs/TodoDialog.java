@@ -1,5 +1,7 @@
 package de.objectcode.time4u.client.ui.dialogs;
 
+import java.util.Date;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -374,6 +376,9 @@ public class TodoDialog extends Dialog
       if (obj != null && obj instanceof TodoState) {
         m_todo.setState((TodoState) obj);
         m_todo.setCompleted(m_todo.getState() == TodoState.COMPLETED || m_todo.getState() == TodoState.REJECTED);
+        if (m_todo.isCompleted() && m_todo.getCompletedAt() != null) {
+          m_todo.setCompletedAt(new Date());
+        }
       }
     }
     final ISelection groupSelection = m_groupTreeViewer.getSelection();

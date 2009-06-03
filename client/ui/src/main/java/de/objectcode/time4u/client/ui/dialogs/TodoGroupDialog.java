@@ -1,7 +1,11 @@
 package de.objectcode.time4u.client.ui.dialogs;
 
+import java.util.Date;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -25,6 +29,7 @@ import de.objectcode.time4u.client.ui.controls.ComboTreeViewer;
 import de.objectcode.time4u.client.ui.controls.TodoVisibilityControl;
 import de.objectcode.time4u.client.ui.provider.TodoGroupContentProvider;
 import de.objectcode.time4u.client.ui.provider.TodoLabelProvider;
+import de.objectcode.time4u.client.ui.provider.TodoStateLabelProvider;
 import de.objectcode.time4u.server.api.data.TodoGroup;
 import de.objectcode.time4u.server.api.data.TodoState;
 import de.objectcode.time4u.server.api.data.TodoSummary;
@@ -32,6 +37,7 @@ import de.objectcode.time4u.server.api.data.TodoSummary;
 public class TodoGroupDialog extends Dialog
 {
   private Text m_headerText;
+  private ComboViewer m_stateCombo;
   private Text m_descriptionText;
   private ComboTreeViewer m_groupTreeViewer;
   private TodoVisibilityControl m_todoVisibility;
@@ -112,6 +118,17 @@ public class TodoGroupDialog extends Dialog
     m_headerText.setLayoutData(gridData);
     m_headerText.setText(m_todoGroup.getHeader());
 
+    final Label stateLabel = new Label(root, SWT.LEFT);
+    stateLabel.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+    stateLabel.setText(UIPlugin.getDefault().getString("todo.state.label"));
+    gridData = new GridData(GridData.FILL_BOTH);
+    m_stateCombo = new ComboViewer(root, SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
+    m_stateCombo.getCombo().setLayoutData(gridData);
+    m_stateCombo.setContentProvider(new ArrayContentProvider());
+    m_stateCombo.setLabelProvider(new TodoStateLabelProvider());
+    m_stateCombo.setInput(new Object[] { TodoState.UNASSIGNED, TodoState.COMPLETED, TodoState.REJECTED });
+    m_stateCombo.setSelection(new StructuredSelection(m_todoGroup.getState()));
+
     final Label groupTreeLabel = new Label(root, SWT.LEFT);
     groupTreeLabel.setText(UIPlugin.getDefault().getString("todo.group.label"));
 
@@ -171,6 +188,19 @@ public class TodoGroupDialog extends Dialog
     m_todoGroup.setHeader(m_headerText.getText());
     m_todoGroup.setDescription(m_descriptionText.getText());
     m_todoGroup.setGroupdId(null);
+    final ISelection stateSelection = m_stateCombo.getSelection();
+    if (stateSelection instanceof IStructuredSelection) {
+      final Object obj = ((IStructuredSelection) stateSelection).getFirstElement();
+
+      if (obj != null && obj instanceof TodoState) {
+        m_todoGroup.setState((TodoState) obj);
+        m_todoGroup.setCompleted(m_todoGroup.getState() == TodoState.COMPLETED
+            || m_todoGroup.getState() == TodoState.REJECTED);
+        if (m_todoGroup.isCompleted() && m_todoGroup.getCompletedAt() != null) {
+          m_todoGroup.setCompletedAt(new Date());
+        }
+      }
+    }
     final ISelection groupSelection = m_groupTreeViewer.getSelection();
     if (groupSelection instanceof IStructuredSelection) {
       final Object obj = ((IStructuredSelection) groupSelection).getFirstElement();
