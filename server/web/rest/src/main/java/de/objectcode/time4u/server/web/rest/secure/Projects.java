@@ -48,7 +48,7 @@ public class Projects
     filter.setMinRevision(minRevision);
     filter.setMaxRevision(maxRevision);
     if (!deep) {
-      filter.setParentProject(null);
+      filter.setParentProject("");
     }
 
     if (full) {
