@@ -1,7 +1,11 @@
 package de.objectcode.time4u.server.ejb.seam.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -14,9 +18,16 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.security.Restrict;
 
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.ejb.seam.api.IProjectServiceLocal;
+import de.objectcode.time4u.server.entities.DayInfoEntity;
+import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
+import de.objectcode.time4u.server.entities.WorkItemEntity;
+import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
+import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
+import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 
 @Stateless
 @Local(IProjectServiceLocal.class)
@@ -29,6 +40,12 @@ public class ProjectServiceSeam implements IProjectServiceLocal
 {
   @PersistenceContext(unitName = "time4u")
   private EntityManager m_manager;
+
+  @EJB
+  private IRevisionGenerator m_revisionGenerator;
+
+  @EJB
+  private ILocalIdGenerator m_idGenerator;
 
   @Restrict("#{s:hasRole('user')}")
   public ProjectEntity getProject(final String projectId)
@@ -71,5 +88,58 @@ public class ProjectServiceSeam implements IProjectServiceLocal
     query.setParameter("projectId", projectId);
 
     return query.getResultList();
+  }
+
+  @SuppressWarnings("unchecked")
+  @Restrict("#{s:hasRole('admin')}")
+  public Map<PersonEntity, Long> checkTransferData(final String fromTaskId)
+  {
+    final Query query = m_manager.createQuery("select w.dayInfo.person, count(*) from "
+        + WorkItemEntity.class.getName() + " w where w.task.id = :taskId group by w.dayInfo.person.id");
+
+    query.setParameter("taskId", fromTaskId);
+
+    final List<Object[]> rows = query.getResultList();
+    final Map<PersonEntity, Long> result = new HashMap<PersonEntity, Long>();
+
+    for (final Object[] row : rows) {
+      result.put((PersonEntity) row[0], (Long) row[1]);
+    }
+
+    return result;
+  }
+
+  @SuppressWarnings("unchecked")
+  @Restrict("#{s:hasRole('admin')}")
+  public void transferData(final Set<String> personIds, final String fromTaskId, final String toTaskId)
+  {
+    final TaskEntity fromTask = m_manager.find(TaskEntity.class, fromTaskId);
+    final TaskEntity toTask = m_manager.find(TaskEntity.class, toTaskId);
+    final ProjectEntity toProject = toTask.getProject();
+
+    for (final String personId : personIds) {
+      final PersonEntity person = m_manager.find(PersonEntity.class, personId);
+      final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(EntityType.DAYINFO, person.getId());
+
+      final Query query = m_manager.createQuery("from " + WorkItemEntity.class.getName()
+          + " w join fetch w.dayInfo where w.taskId = :taskId and w.dayInfo.person.id = :personId");
+
+      query.setParameter("taskId", fromTask.getId());
+      query.setParameter("personId", person.getId());
+
+      final List<WorkItemEntity> result = query.getResultList();
+
+      for (final WorkItemEntity workItem : result) {
+        final DayInfoEntity dayInfo = workItem.getDayInfo();
+
+        dayInfo.setLastModifiedByClient(m_idGenerator.getClientId());
+        dayInfo.setRevision(revisionLock.getLatestRevision());
+        workItem.setProject(toProject);
+        workItem.setTask(toTask);
+      }
+
+      m_manager.flush();
+      m_manager.clear();
+    }
   }
 }

@@ -1,7 +1,10 @@
 package de.objectcode.time4u.server.ejb.seam.api;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
 
@@ -14,4 +17,8 @@ public interface IProjectServiceLocal
   List<ProjectEntity> getChildProjects(String projectId);
 
   List<TaskEntity> getTasks(final String projectId);
+
+  Map<PersonEntity, Long> checkTransferData(final String fromTaskId);
+
+  void transferData(final Set<String> personIds, final String fromTaskId, final String toTaskId);
 }

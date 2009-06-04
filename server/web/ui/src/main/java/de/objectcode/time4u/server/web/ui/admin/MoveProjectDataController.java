@@ -39,4 +39,12 @@ public class MoveProjectDataController
   {
     return m_toProject;
   }
+
+  public String checkTransferData()
+  {
+    if (m_fromProject.getSelectedTaskId() != null) {
+      System.out.println(">>> " + m_projectService.checkTransferData(m_fromProject.getSelectedTaskId()));
+    }
+    return VIEW_ID;
+  }
 }
