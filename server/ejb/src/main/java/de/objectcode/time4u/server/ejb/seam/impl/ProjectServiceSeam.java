@@ -16,6 +16,7 @@ import org.jboss.seam.annotations.security.Restrict;
 
 import de.objectcode.time4u.server.ejb.seam.api.IProjectServiceLocal;
 import de.objectcode.time4u.server.entities.ProjectEntity;
+import de.objectcode.time4u.server.entities.TaskEntity;
 
 @Stateless
 @Local(IProjectServiceLocal.class)
@@ -54,6 +55,18 @@ public class ProjectServiceSeam implements IProjectServiceLocal
     }
     final Query query = m_manager.createQuery("from " + ProjectEntity.class.getName()
         + " p where p.parent.id = :projectId and p.deleted = false order by p.name");
+
+    query.setParameter("projectId", projectId);
+
+    return query.getResultList();
+  }
+
+  @SuppressWarnings("unchecked")
+  @Restrict("#{s:hasRole('user')}")
+  public List<TaskEntity> getTasks(final String projectId)
+  {
+    final Query query = m_manager.createQuery("from " + TaskEntity.class.getName()
+        + " t where t.project.id = :projectId and t.deleted = false order by t.name");
 
     query.setParameter("projectId", projectId);
 

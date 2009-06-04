@@ -62,7 +62,7 @@ public class ProjectTreeConroller
     String m_name;
     boolean m_active;
 
-    ProjectBean(final ProjectEntity project)
+    public ProjectBean(final ProjectEntity project)
     {
       m_id = project.getId();
       m_name = project.getName();

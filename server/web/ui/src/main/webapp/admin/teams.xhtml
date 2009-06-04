@@ -46,7 +46,7 @@
 				</h:panelGroup>
 				<h:panelGroup id="teamDetail"
 					rendered="#{admin.teamListController.hasSelection}">
-					<rich:tabPanel switchType="ajax">
+					<rich:tabPanel switchType="client">
 						<rich:tab label="Information">
 							<table>
 								<s:decorate template="../templates/decorateTableField.xhtml">

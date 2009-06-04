@@ -9,41 +9,63 @@
 	<ui:define name="contentDetail">
 		<h:form>
 			<table>
-				<tr>
-					<td>From project:</td>
-					<td>
-						<s:div id="fromPanel">
-							<ui:repeat value="#{admin.moveProjectDataController.fromProjectStack}"
-								var="projectId">
-								<h:outputText value="#{ProjectService.getProject(projectId).name}" />
+				<s:div id="fromPanel">
+					<tr>
+						<td>From project:</td>
+						<td>
+							<a4j:commandLink value="[ROOT]"
+								action="#{admin.moveProjectDataController.fromProject.clearProject}" />
+							&lt;
+							<ui:repeat value="#{admin.moveProjectDataController.fromProject.projectStack}"
+								var="project">
+								<a4j:commandLink value="#{project.name}" action="#{admin.moveProjectDataController.fromProject.setProject(project.id)}"/>
 							&lt;
 						</ui:repeat>
-						<h:selectOneMenu value="#{admin.moveProjectDataController.fromProjectId}" required="false">
-							<s:selectItems value="#{ProjectService.getChildProjects(admin.moveProjectDataController.fromProjectId)}"
+						<h:selectOneMenu value="#{admin.moveProjectDataController.fromProject.nextProjectId}" required="false">
+							<s:selectItems value="#{admin.moveProjectDataController.fromProject.nextProjects}"
 								var="project" itemValue="#{project.id}" label="#{project.name}" hideNoSelection="false" noSelectionLabel="*no project*"/>
-							<a4j:support event="onchange" reRender="fromPanel"/>
-							<f:selectItem itemLabel="*parent*" itemValue="parent" />
+							<a4j:support event="onchange" action="#{admin.moveProjectDataController.fromProject.nextProject}" reRender="fromPanel"/>
 						</h:selectOneMenu>
-						</s:div>
 					</td>
 				</tr>
+				<tr>
+					<td>From task:</td>
+					<td>
+						<h:selectOneMenu value="#{admin.moveProjectDataController.fromProject.selectedTaskId}" required="false">
+							<s:selectItems value="#{admin.moveProjectDataController.fromProject.tasks}"
+								var="task" itemValue="#{task.id}" label="#{task.name}" hideNoSelection="false" noSelectionLabel="*no task*"/>
+						</h:selectOneMenu>
+					</td>
+				</tr>
+				</s:div>
+				<s:div id="toPanel">
 				<tr>
 					<td>To project:</td>
 					<td>
-						<s:div id="toPanel">
-							<ui:repeat value="#{admin.moveProjectDataController.toProjectStack}" var="projectId">
-								<h:outputText value="#{ProjectService.getProject(projectId).name}"/>
-								&lt;
-							</ui:repeat>
-							<h:selectOneMenu value="#{admin.moveProjectDataController.toProjectId}" required="false">
-								<s:selectItems value="#{ProjectService.getChildProjects(admin.moveProjectDataController.toProjectId)}"
-									var="project" itemValue="#{project.id}" label="#{project.name}" hideNoSelection="false" noSelectionLabel="*no project*"/>
-								<a4j:support event="onchange" reRender="toPanel"/>
-								<f:selectItem itemLabel="*parent*" itemValue="parent" />
-							</h:selectOneMenu>
-						</s:div>
+							<a4j:commandLink value="[ROOT]" action="#{admin.moveProjectDataController.toProject.clearProject}"/>
+							&lt;
+							<ui:repeat value="#{admin.moveProjectDataController.toProject.projectStack}"
+								var="project">
+								<a4j:commandLink value="#{project.name}" action="#{admin.moveProjectDataController.toProject.setProject(project.id)}"/>
+							&lt;
+						</ui:repeat>
+						<h:selectOneMenu value="#{admin.moveProjectDataController.toProject.nextProjectId}" required="false">
+							<s:selectItems value="#{admin.moveProjectDataController.toProject.nextProjects}"
+								var="project" itemValue="#{project.id}" label="#{project.name}" hideNoSelection="false" noSelectionLabel="*no project*"/>
+							<a4j:support event="onchange" action="#{admin.moveProjectDataController.toProject.nextProject}" reRender="toPanel"/>
+						</h:selectOneMenu>
 					</td>
 				</tr>
+				<tr>
+					<td>To task:</td>
+					<td>
+						<h:selectOneMenu value="#{admin.moveProjectDataController.toProject.selectedTaskId}" required="false">
+							<s:selectItems value="#{admin.moveProjectDataController.toProject.tasks}"
+								var="task" itemValue="#{task.id}" label="#{task.name}" hideNoSelection="false" noSelectionLabel="*no task*"/>
+						</h:selectOneMenu>
+					</td>
+				</tr>
+				</s:div>
 			</table>
 		</h:form>
 	</ui:define>
