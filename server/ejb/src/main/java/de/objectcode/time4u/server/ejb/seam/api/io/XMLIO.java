@@ -4,11 +4,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.Result;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -105,5 +111,39 @@ public class XMLIO
       LOG.error("Exception", e);
       throw new IOException(e.toString());
     }
+  }
+
+  public static void main(final String[] args)
+  {
+    try {
+      final JAXBContext context = JAXBContext
+          .newInstance("de.objectcode.time4u.server.ejb.seam.api.filter:de.objectcode.time4u.server.ejb.seam.api.report");
+
+      final Map<String, StringWriter> schemas = new HashMap<String, StringWriter>();
+
+      context.generateSchema(new SchemaOutputResolver() {
+
+        @Override
+        public Result createOutput(final String systemId, final String file) throws IOException
+        {
+          final StringWriter out = new StringWriter();
+
+          schemas.put(file, out);
+          final StreamResult result = new StreamResult(systemId);
+
+          result.setWriter(out);
+          return result;
+        }
+
+      });
+
+      for (final String file : schemas.keySet()) {
+        System.out.println(">> " + file);
+        System.out.println(schemas.get(file).toString());
+      }
+    } catch (final Exception e) {
+      e.printStackTrace();
+    }
+
   }
 }
