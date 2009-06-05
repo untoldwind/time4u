@@ -3,7 +3,6 @@ package de.objectcode.time4u.server.ejb.seam.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.ejb.Local;
@@ -111,7 +110,7 @@ public class ProjectServiceSeam implements IProjectServiceLocal
 
   @SuppressWarnings("unchecked")
   @Restrict("#{s:hasRole('admin')}")
-  public void transferData(final Set<String> personIds, final String fromTaskId, final String toTaskId)
+  public void transferData(final List<String> personIds, final String fromTaskId, final String toTaskId)
   {
     final TaskEntity fromTask = m_manager.find(TaskEntity.class, fromTaskId);
     final TaskEntity toTask = m_manager.find(TaskEntity.class, toTaskId);
@@ -122,7 +121,7 @@ public class ProjectServiceSeam implements IProjectServiceLocal
       final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(EntityType.DAYINFO, person.getId());
 
       final Query query = m_manager.createQuery("from " + WorkItemEntity.class.getName()
-          + " w join fetch w.dayInfo where w.taskId = :taskId and w.dayInfo.person.id = :personId");
+          + " w join fetch w.dayInfo where w.task.id = :taskId and w.dayInfo.person.id = :personId");
 
       query.setParameter("taskId", fromTask.getId());
       query.setParameter("personId", person.getId());
