@@ -53,7 +53,7 @@ public class WorkItemServiceSeam implements IWorkItemServiceLocal
     final Query query = m_manager
         .createQuery("select w.dayInfo.date, w.begin, w.end, w.comment, w.dayInfo.person.id, w.project.id, w.project.parentKey, w.project.name, w.task.id, w.task.name from "
             + WorkItemEntity.class.getName()
-            + " w where w.dayInfo.date >= :from and w.dayInfo.date < :until and w.dayInfo.person = :person");
+            + " w where w.dayInfo.date >= :from and w.dayInfo.date < :until and w.dayInfo.person = :person order by w.dayInfo.date asc, w.begin asc");
 
     query.setParameter("from", from);
     query.setParameter("until", until);
