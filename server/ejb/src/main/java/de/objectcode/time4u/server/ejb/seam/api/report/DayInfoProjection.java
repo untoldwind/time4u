@@ -1,6 +1,5 @@
 package de.objectcode.time4u.server.ejb.seam.api.report;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +9,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import de.objectcode.time4u.server.api.data.TimeContingent;
 import de.objectcode.time4u.server.entities.DayTagEntity;
-import de.objectcode.time4u.server.entities.TimePolicyEntity;
 
 @XmlEnum
 @XmlType(name = "dayinfo-projection")
@@ -44,23 +42,23 @@ public enum DayInfoProjection implements IProjection
   REGULAR_TIME(ColumnType.TIME, "Regular time") {
     public Object project(final IRowDataAdapter rowData)
     {
-      if (rowData.getDayInfo().getRegularTime() < 0) {
-        final List<TimePolicyEntity> timePolicies = rowData.getTimePolicies();
-        final Date date = rowData.getDayInfo().getDate();
+      return rowData.getDayInfo().getEffectiveRegularTime();
+    }
+  },
+  WORKTIME(ColumnType.TIME, "Work time") {
+    public Object project(final IRowDataAdapter rowData)
+    {
+      final Map<TimeContingent, Integer> timeContingents = rowData.getDayInfo().getTimeContingents();
 
-        if (timePolicies != null) {
-          for (final TimePolicyEntity timePolicy : timePolicies) {
-            final int regularTime = timePolicy.getRegularTime(date);
+      return timeContingents.get(TimeContingent.WORKTIME);
+    }
+  },
+  OVERTIME(ColumnType.TIME, "Overtime") {
+    public Object project(final IRowDataAdapter rowData)
+    {
+      final Map<TimeContingent, Integer> timeContingents = rowData.getDayInfo().getTimeContingents();
 
-            if (regularTime >= 0) {
-              return regularTime;
-            }
-          }
-        }
-
-        return 0;
-      }
-      return rowData.getDayInfo().getRegularTime();
+      return timeContingents.get(TimeContingent.WORKTIME) - rowData.getDayInfo().getEffectiveRegularTime();
     }
   },
   TAGS(ColumnType.NAME_ARRAY, "Tags") {

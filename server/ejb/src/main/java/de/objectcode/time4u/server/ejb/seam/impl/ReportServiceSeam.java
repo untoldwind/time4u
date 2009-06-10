@@ -60,23 +60,27 @@ public class ReportServiceSeam implements IReportServiceLocal
       }
     }
 
-    final StringBuffer queryStr = new StringBuffer("from ");
+    final StringBuffer queryStr = new StringBuffer();
     String orderStr = null;
     IExtendedRowDataAdapter rowDataAdapter = null;
     switch (reportDefinition.getEntityType()) {
       case WORKITEM:
+        queryStr.append("from ");
         queryStr.append(WorkItemEntity.class.getName());
         queryStr.append(" w join fetch w.dayInfo where w.dayInfo.person.id in (:allowedPersons)");
         orderStr = " order by w.dayInfo.date asc, w.begin asc";
         rowDataAdapter = new WorkItemRowDataAdapter();
         break;
       case DAYINFO:
+        queryStr.append("select distinct d from ");
         queryStr.append(DayInfoEntity.class.getName());
-        queryStr.append(" d where d.person.id in (:allowedPersons)");
+        queryStr
+            .append(" d left outer join fetch d.tags left outer join fetch d.workItems join fetch d.person where d.person.id in (:allowedPersons)");
         orderStr = " order by d.date asc";
         rowDataAdapter = new DayInfoRowDataAdapter();
         break;
       case TODO:
+        queryStr.append("from ");
         queryStr.append(TodoEntity.class.getName());
         queryStr.append(" t where t.reporter.id in (:allowedPersons)");
         orderStr = " order by t.header asc";

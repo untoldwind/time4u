@@ -44,6 +44,8 @@ import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 @Table(name = "T4U_DAYINFOS", uniqueConstraints = @UniqueConstraint(columnNames = { "person_id", "daydate" }))
 public class DayInfoEntity
 {
+  private static int DEFAULT_REGULARTIME = 8 * 3600;
+
   /** Primary key */
   private String m_id;
   /** Revision number (increased every time something has changed) */
@@ -225,6 +227,33 @@ public class DayInfoEntity
   public void setMetaProperties(final Map<String, DayInfoMetaPropertyEntity> metaProperties)
   {
     m_metaProperties = metaProperties;
+  }
+
+  @Transient
+  public int getEffectiveRegularTime()
+  {
+    if (m_regularTime >= 0) {
+      return m_regularTime;
+    }
+
+    // Try time policies
+    if (m_person.getTimePolicies() != null) {
+      for (final TimePolicyEntity timePolicy : m_person.getTimePolicies()) {
+        int regularTime;
+
+        if ((regularTime = timePolicy.getRegularTime(m_date)) >= 0) {
+          return regularTime;
+        }
+      }
+    }
+
+    // If there is no matching time policy (or none at all) we assume that every day with a least on workitem (on a work time task) is a regular working day
+    if (getTimeContingents().get(TimeContingent.WORKTIME) > 0) {
+      // It's arguable if this should be made configurable
+      return DEFAULT_REGULARTIME;
+    }
+
+    return 0;
   }
 
   @Transient
