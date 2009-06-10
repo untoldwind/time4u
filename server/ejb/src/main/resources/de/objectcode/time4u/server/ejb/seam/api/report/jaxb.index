@@ -2,3 +2,4 @@ BaseReportDefinition
 DayInfoReportDefinition
 WorkItemReportDefinition
 TodoReportDefinition
+GroovyReportDefinition

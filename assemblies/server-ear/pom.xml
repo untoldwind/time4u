@@ -20,6 +20,10 @@
 			<artifactId>jboss-el</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.jboss.seam</groupId>
 			<artifactId>jboss-seam</artifactId>
 			<type>ejb</type>
@@ -87,6 +91,11 @@
 							<groupId>de.objectcode.time4u.server</groupId>
 							<artifactId>time4u-server-api</artifactId>
 							<includeInApplicationXml>true</includeInApplicationXml>
+						</jarModule>
+						<jarModule>
+							<groupId>org.codehaus.groovy</groupId>
+							<artifactId>groovy</artifactId>
+							<includeInApplicationXml>true</includeInApplicationXml>							
 						</jarModule>
 						<ejbModule>
 							<groupId>org.jboss.seam</groupId>
