@@ -33,8 +33,6 @@ public class DayInfoSummary implements ISynchronizableData
   private boolean m_hasTags;
   /** The regular working time for the day (usually calculated by time policies) */
   private int m_regularTime;
-  /** Sum of all workitem durations or that day */
-  private int m_sumDurations;
 
   @XmlAttribute
   public String getId()
@@ -110,17 +108,6 @@ public class DayInfoSummary implements ISynchronizableData
   public void setRegularTime(final int regularTime)
   {
     m_regularTime = regularTime;
-  }
-
-  @XmlAttribute
-  public int getSumDurations()
-  {
-    return m_sumDurations;
-  }
-
-  public void setSumDurations(final int sumDurations)
-  {
-    m_sumDurations = sumDurations;
   }
 
   @XmlAttribute

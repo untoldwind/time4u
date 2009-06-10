@@ -29,8 +29,9 @@ import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.preferences.PreferenceConstants;
 import de.objectcode.time4u.client.ui.util.TimeFormat;
 import de.objectcode.time4u.server.api.data.CalendarDay;
-import de.objectcode.time4u.server.api.data.DayInfoSummary;
+import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
+import de.objectcode.time4u.server.api.data.TimeContingent;
 import de.objectcode.time4u.server.api.data.TimePolicy;
 import de.objectcode.time4u.server.api.filter.DayInfoFilter;
 import de.objectcode.time4u.server.api.filter.TimePolicyFilter;
@@ -60,6 +61,7 @@ public class StatisticsView extends ViewPart implements ISelectionListener, IRep
     getSite().getPage().addSelectionListener(this);
 
     RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.DAYINFO, this);
+    RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.TASK, this);
     RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.PROJECT, this);
 
     UIPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(new IPropertyChangeListener() {
@@ -93,6 +95,7 @@ public class StatisticsView extends ViewPart implements ISelectionListener, IRep
     getSite().getPage().removeSelectionListener(this);
 
     RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.DAYINFO, this);
+    RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.TASK, this);
     RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.PROJECT, this);
 
     super.dispose();
@@ -117,6 +120,7 @@ public class StatisticsView extends ViewPart implements ISelectionListener, IRep
   {
     switch (event.getEventType()) {
       case DAYINFO:
+      case TASK:
       case PROJECT:
         // Do not queue more than 2 refresh
         synchronized (this) {
@@ -348,9 +352,9 @@ public class StatisticsView extends ViewPart implements ISelectionListener, IRep
           final int month = cal.get(Calendar.MONTH) + 1;
           final int year = cal.get(Calendar.YEAR);
 
-          final Map<CalendarDay, DayInfoSummary> dayInfos = new HashMap<CalendarDay, DayInfoSummary>();
-          for (final DayInfoSummary dayInfo : RepositoryFactory.getRepository().getWorkItemRepository()
-              .getDayInfoSummaries(DayInfoFilter.filterMonth(year, month))) {
+          final Map<CalendarDay, DayInfo> dayInfos = new HashMap<CalendarDay, DayInfo>();
+          for (final DayInfo dayInfo : RepositoryFactory.getRepository().getWorkItemRepository().getDayInfos(
+              DayInfoFilter.filterMonth(year, month))) {
             dayInfos.put(dayInfo.getDay(), dayInfo);
           }
 
@@ -360,7 +364,7 @@ public class StatisticsView extends ViewPart implements ISelectionListener, IRep
             if (cal.compareTo(now) <= 0) {
               final CalendarDay day = new CalendarDay(cal);
 
-              DayInfoSummary dayInfo = null;
+              DayInfo dayInfo = null;
 
               int overtime = 0;
 
@@ -373,13 +377,14 @@ public class StatisticsView extends ViewPart implements ISelectionListener, IRep
 
                 for (final TimePolicy timePolicy : timePolicies) {
                   if ((regularTime = timePolicy.getRegularTime(day)) >= 0) {
-                    overtime = (dayInfo != null ? dayInfo.getSumDurations() : 0) - regularTime;
+                    overtime = (dayInfo != null ? dayInfo.getTimeContingents().get(TimeContingent.WORKTIME) : 0)
+                        - regularTime;
 
                     break;
                   }
                 }
               } else if (dayInfo != null && dayInfo.getRegularTime() >= 0) {
-                overtime = dayInfo.getSumDurations() - dayInfo.getRegularTime();
+                overtime = dayInfo.getTimeContingents().get(TimeContingent.WORKTIME) - dayInfo.getRegularTime();
               }
 
               if (day.getMonth() == currentDay.getMonth()) {
@@ -407,18 +412,18 @@ public class StatisticsView extends ViewPart implements ISelectionListener, IRep
           final int month = cal.get(Calendar.MONTH) + 1;
           final int year = cal.get(Calendar.YEAR);
 
-          final Map<CalendarDay, DayInfoSummary> dayInfos = new HashMap<CalendarDay, DayInfoSummary>();
-          for (final DayInfoSummary dayInfo : RepositoryFactory.getRepository().getWorkItemRepository()
-              .getDayInfoSummaries(DayInfoFilter.filterMonth(year, month))) {
+          final Map<CalendarDay, DayInfo> dayInfos = new HashMap<CalendarDay, DayInfo>();
+          for (final DayInfo dayInfo : RepositoryFactory.getRepository().getWorkItemRepository().getDayInfos(
+              DayInfoFilter.filterMonth(year, month))) {
             dayInfos.put(dayInfo.getDay(), dayInfo);
           }
 
           if (dayInfos != null) {
             for (final CalendarDay day : dayInfos.keySet()) {
-              final DayInfoSummary dayInfo = dayInfos.get(day);
+              final DayInfo dayInfo = dayInfos.get(day);
 
               if (dayInfo.isHasWorkItems()) {
-                final int overtime = dayInfo.getSumDurations() - regularTime;
+                final int overtime = dayInfo.getTimeContingents().get(TimeContingent.WORKTIME) - regularTime;
 
                 if (day.getMonth() == currentDay.getMonth()) {
                   overtimeMonth += overtime;

@@ -14,9 +14,13 @@ import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+
 import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.data.TaskSummary;
+import de.objectcode.time4u.server.api.data.TimeContingent;
 import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 
 /**
@@ -40,6 +44,8 @@ public class TaskEntity
   private boolean m_deleted;
   /** The project the task belongs too. */
   private ProjectEntity m_project;
+  /** The time contingent of this task. */
+  private TimeContingent m_timeContingent;
   /** All meta properties of the task. */
   private Map<String, TaskMetaPropertyEntity> m_metaProperties;
   /** Revision number (increased every time something has changed) */
@@ -142,6 +148,25 @@ public class TaskEntity
     m_metaProperties = metaProperties;
   }
 
+  @Type(type = "de.objectcode.time4u.server.entities.util.GenericEnumUserType", parameters = {
+      @Parameter(name = "enumClass", value = "de.objectcode.time4u.server.api.data.TimeContingent"),
+      @Parameter(name = "identifierMethod", value = "getCode"), @Parameter(name = "valueOfMethod", value = "forCode") })
+  @Column(name = "time_contingent", nullable = true)
+  public TimeContingent getTimeContingent()
+  {
+    if (m_timeContingent == null) {
+      // This will allow a smooth transition
+      return TimeContingent.WORKTIME;
+    }
+
+    return m_timeContingent;
+  }
+
+  public void setTimeContingent(final TimeContingent timeContingent)
+  {
+    m_timeContingent = timeContingent;
+  }
+
   public long getRevision()
   {
     return m_revision;
@@ -187,6 +212,7 @@ public class TaskEntity
     task.setDeleted(m_deleted);
     task.setName(m_name);
     task.setProjectId(m_project != null ? m_project.getId() : null);
+    task.setTimeContingent(m_timeContingent != null ? m_timeContingent : TimeContingent.WORKTIME);
   }
 
   public void toDTO(final Task task)
@@ -213,6 +239,7 @@ public class TaskEntity
       m_project = null;
     }
     m_description = task.getDescription();
+    m_timeContingent = task.getTimeContingent();
 
     if (m_metaProperties == null) {
       m_metaProperties = new HashMap<String, TaskMetaPropertyEntity>();

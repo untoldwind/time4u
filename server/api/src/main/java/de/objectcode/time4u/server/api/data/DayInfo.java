@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+
 /**
  * DayInfo DTO object.
  * 
@@ -20,12 +21,24 @@ public class DayInfo extends DayInfoSummary
 {
   private static final long serialVersionUID = -2048583139605476186L;
 
+  /** The time contingents of this day. */
+  private Map<TimeContingent, Integer> m_timeContingents;
   /** All tags of this day */
   private Set<String> m_tags;
   /** All workitems of the day. */
   private List<WorkItem> m_workItems;
   /** Map of all meta properties of the dayinfo. */
   private Map<String, MetaProperty> m_metaProperties;
+
+  public Map<TimeContingent, Integer> getTimeContingents()
+  {
+    return m_timeContingents;
+  }
+
+  public void setTimeContingents(final Map<TimeContingent, Integer> timeContingents)
+  {
+    m_timeContingents = timeContingents;
+  }
 
   public Set<String> getTags()
   {

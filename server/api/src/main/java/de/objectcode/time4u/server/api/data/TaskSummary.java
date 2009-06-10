@@ -31,6 +31,8 @@ public class TaskSummary implements ISynchronizableData
   private boolean m_deleted;
   /** Internal server id of the project owning the task. */
   private String m_projectId;
+  /** The time contingent */
+  private TimeContingent m_timeContingent;
 
   @XmlAttribute
   public String getId()
@@ -114,6 +116,16 @@ public class TaskSummary implements ISynchronizableData
   public void setProjectId(final String projectId)
   {
     m_projectId = projectId;
+  }
+
+  public TimeContingent getTimeContingent()
+  {
+    return m_timeContingent;
+  }
+
+  public void setTimeContingent(final TimeContingent timeContingent)
+  {
+    m_timeContingent = timeContingent;
   }
 
   /**

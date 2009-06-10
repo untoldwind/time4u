@@ -22,12 +22,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayInfoSummary;
 import de.objectcode.time4u.server.api.data.MetaProperty;
+import de.objectcode.time4u.server.api.data.TimeContingent;
 import de.objectcode.time4u.server.api.data.WorkItem;
 import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 
@@ -55,7 +57,6 @@ public class DayInfoEntity
   private boolean m_hasWorkItems;
   private boolean m_hasInvalidWorkItems;
   private boolean m_hasTags;
-  private int m_sumDurations;
   private int m_regularTime;
   /** Set of tags of the day */
   private Set<DayTagEntity> m_tags;
@@ -181,14 +182,15 @@ public class DayInfoEntity
     m_hasTags = hasTags != null ? hasTags : false;
   }
 
+  @Deprecated
   public int getSumDurations()
   {
-    return m_sumDurations;
+    return -1;
   }
 
+  @Deprecated
   public void setSumDurations(final int sumDurations)
   {
-    m_sumDurations = sumDurations;
   }
 
   public int getRegularTime()
@@ -225,6 +227,28 @@ public class DayInfoEntity
     m_metaProperties = metaProperties;
   }
 
+  @Transient
+  public Map<TimeContingent, Integer> getTimeContingents()
+  {
+    final Map<TimeContingent, Integer> timeContingents = new HashMap<TimeContingent, Integer>();
+
+    for (final TimeContingent timeContingent : TimeContingent.values()) {
+      timeContingents.put(timeContingent, 0);
+    }
+
+    if (m_workItems != null) {
+      for (final WorkItemEntity entity : m_workItems.values()) {
+        if (entity.isValid()) {
+          final TimeContingent timeContingent = entity.getTask().getTimeContingent();
+
+          timeContingents.put(timeContingent, timeContingents.get(timeContingent) + entity.getDuration());
+        }
+      }
+    }
+
+    return timeContingents;
+  }
+
   /**
    * Validate the dayinfo and all attached workitems.
    * 
@@ -238,7 +262,6 @@ public class DayInfoEntity
    */
   public void validate()
   {
-    int sumDurations = 0;
     boolean hasInvalidWorkItems = false;
 
     for (final WorkItemEntity item1 : m_workItems.values()) {
@@ -255,16 +278,11 @@ public class DayInfoEntity
             }
           }
         }
-
-        if (item1.isValid()) {
-          sumDurations += item1.getDuration();
-        }
       }
     }
 
     m_hasWorkItems = !m_workItems.isEmpty();
     m_hasInvalidWorkItems = hasInvalidWorkItems;
-    m_sumDurations = sumDurations;
   }
 
   public void toSummaryDTO(final DayInfoSummary dayinfo)
@@ -276,7 +294,6 @@ public class DayInfoEntity
     dayinfo.setHasWorkItems(m_hasWorkItems);
     dayinfo.setHasInvalidWorkItems(m_hasInvalidWorkItems);
     dayinfo.setRegularTime(m_regularTime);
-    dayinfo.setSumDurations(m_sumDurations);
     dayinfo.setHasTags(m_hasTags);
   }
 
@@ -284,6 +301,7 @@ public class DayInfoEntity
   {
     toSummaryDTO(dayinfo);
 
+    dayinfo.setTimeContingents(getTimeContingents());
     final Set<String> tags = new HashSet<String>();
     if (m_tags != null) {
       for (final DayTagEntity dayTag : m_tags) {

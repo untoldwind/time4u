@@ -3,10 +3,12 @@ package de.objectcode.time4u.server.ejb.seam.api.report;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlType;
 
+import de.objectcode.time4u.server.api.data.TimeContingent;
 import de.objectcode.time4u.server.entities.DayTagEntity;
 import de.objectcode.time4u.server.entities.TimePolicyEntity;
 
@@ -23,7 +25,14 @@ public enum DayInfoProjection implements IProjection
   SUM_DURATIONS(ColumnType.TIME, "Sum durations") {
     public Object project(final IRowDataAdapter rowData)
     {
-      return rowData.getDayInfo().getSumDurations();
+      final Map<TimeContingent, Integer> timeContingents = rowData.getDayInfo().getTimeContingents();
+      int sumDurations = 0;
+
+      for (final Integer duration : timeContingents.values()) {
+        sumDurations += duration;
+      }
+
+      return sumDurations;
     }
 
     @Override

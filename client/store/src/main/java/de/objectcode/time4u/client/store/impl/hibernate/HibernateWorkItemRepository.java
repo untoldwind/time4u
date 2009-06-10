@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -148,6 +149,8 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
           criteria.add(Restrictions.eq("lastModifiedByClient", filter.getLastModifiedByClient()));
         }
         criteria.addOrder(Order.asc("date"));
+        criteria.setFetchMode("workItems", FetchMode.JOIN);
+        criteria.setFetchMode("workItems.task", FetchMode.JOIN);
 
         final List<?> result = criteria.list();
         final List<DayInfo> dayInfos = new ArrayList<DayInfo>();

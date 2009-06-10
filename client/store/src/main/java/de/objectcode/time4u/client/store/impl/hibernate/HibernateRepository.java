@@ -405,7 +405,7 @@ public class HibernateRepository implements IRepository
       cfg.setProperty(Environment.ISOLATION, "2");
       cfg.setProperty(Environment.DIALECT, DerbyDialect.class.getName());
       cfg.setProperty(Environment.HBM2DDL_AUTO, "update");
-      cfg.setProperty(Environment.SHOW_SQL, "false");
+      cfg.setProperty(Environment.SHOW_SQL, "true");
       cfg.setProperty(Environment.CACHE_PROVIDER, HashtableCacheProvider.class.getName());
       cfg.setProperty(Environment.USE_QUERY_CACHE, "true");
 

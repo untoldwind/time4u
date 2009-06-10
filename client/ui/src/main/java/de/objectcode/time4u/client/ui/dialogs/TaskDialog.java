@@ -5,6 +5,11 @@ import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -23,9 +28,12 @@ import org.eclipse.swt.widgets.Text;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.client.store.api.meta.MetaCategory;
 import de.objectcode.time4u.client.store.api.meta.MetaDefinition;
+import de.objectcode.time4u.client.ui.UIPlugin;
+import de.objectcode.time4u.client.ui.provider.TimeContingentLabelProvider;
 import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.Task;
+import de.objectcode.time4u.server.api.data.TimeContingent;
 
 public class TaskDialog extends Dialog
 {
@@ -35,6 +43,7 @@ public class TaskDialog extends Dialog
   private Button m_activeCheck;
   private final Project m_project;
   private Task m_task;
+  private ComboViewer m_timeContingentCombo;
   private List<MetaField> m_metaFields;
   private boolean m_create;
 
@@ -78,9 +87,9 @@ public class TaskDialog extends Dialog
   protected Control createDialogArea(final Composite parent)
   {
     if (m_create) {
-      parent.getShell().setText("New Task");
+      parent.getShell().setText(UIPlugin.getDefault().getString("dialog.task.new.title"));
     } else {
-      parent.getShell().setText("Edit Task");
+      parent.getShell().setText(UIPlugin.getDefault().getString("dialog.task.edit.title"));
     }
 
     final Composite composite = (Composite) super.createDialogArea(parent);
@@ -89,13 +98,13 @@ public class TaskDialog extends Dialog
     root.setLayoutData(new GridData(GridData.FILL_BOTH));
 
     final Label parentLabel = new Label(root, SWT.NONE);
-    parentLabel.setText("Parent");
+    parentLabel.setText(UIPlugin.getDefault().getString("dialog.task.parent.label"));
     m_parentText = new Text(root, SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
     m_parentText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     m_parentText.setText(m_project.getName());
 
     final Label nameLabel = new Label(root, SWT.NONE);
-    nameLabel.setText("Name");
+    nameLabel.setText(UIPlugin.getDefault().getString("dialog.task.name.label"));
     m_nameText = new Text(root, SWT.BORDER);
     m_nameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     m_nameText.setText(m_task.getName());
@@ -108,14 +117,23 @@ public class TaskDialog extends Dialog
       }
     });
 
+    final Label timeContingentLabel = new Label(root, SWT.NONE);
+    timeContingentLabel.setText(UIPlugin.getDefault().getString("dialog.task.timeContingent.label"));
+    m_timeContingentCombo = new ComboViewer(root, SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
+    m_timeContingentCombo.getCombo().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    m_timeContingentCombo.setContentProvider(new ArrayContentProvider());
+    m_timeContingentCombo.setLabelProvider(new TimeContingentLabelProvider());
+    m_timeContingentCombo.setInput(TimeContingent.values());
+    m_timeContingentCombo.setSelection(new StructuredSelection(m_task.getTimeContingent()));
+
     final Label activeLabel = new Label(root, SWT.NONE);
-    activeLabel.setText("Active");
+    activeLabel.setText(UIPlugin.getDefault().getString("dialog.task.active.label"));
     m_activeCheck = new Button(root, SWT.CHECK);
     m_activeCheck.setSelection(m_task.isActive());
 
     final Label descriptionLabel = new Label(root, SWT.LEFT);
     descriptionLabel.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
-    descriptionLabel.setText("Description");
+    descriptionLabel.setText(UIPlugin.getDefault().getString("dialog.task.description.label"));
     m_descriptionText = new Text(root, SWT.BORDER | SWT.MULTI);
     GridData gridData = new GridData(GridData.FILL_BOTH);
     gridData.widthHint = convertWidthInCharsToPixels(60);
@@ -192,6 +210,14 @@ public class TaskDialog extends Dialog
     m_task.setActive(m_activeCheck.getSelection());
     if (m_create) {
       m_task.setProjectId(m_project.getId());
+    }
+    final ISelection timeContingentSelection = m_timeContingentCombo.getSelection();
+    if (timeContingentSelection instanceof IStructuredSelection) {
+      final Object obj = ((IStructuredSelection) timeContingentSelection).getFirstElement();
+
+      if (obj != null && obj instanceof TimeContingent) {
+        m_task.setTimeContingent((TimeContingent) obj);
+      }
     }
 
     for (final MetaField field : m_metaFields) {
