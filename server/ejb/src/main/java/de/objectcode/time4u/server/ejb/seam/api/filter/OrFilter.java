@@ -40,7 +40,7 @@ public class OrFilter implements IFilter
 
   @XmlElementRefs( { @XmlElementRef(type = AndFilter.class), @XmlElementRef(type = OrFilter.class),
       @XmlElementRef(type = DateRangeFilter.class), @XmlElementRef(type = ParameterRef.class),
-      @XmlElementRef(type = PersonFilter.class) })
+      @XmlElementRef(type = PersonFilter.class), @XmlElementRef(type = DayTagFilter.class) })
   public List<IFilter> getFilters()
   {
     return m_filters;

@@ -7,3 +7,4 @@ TodoStateFilter
 TaskFilter
 ProjectFilter
 ProjectPathFilter
+DayTagFilter

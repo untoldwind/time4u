@@ -67,7 +67,6 @@ public class GroovyReportDefinition extends BaseReportDefinition
   public IReportDataCollector createDataCollector()
   {
     try {
-      System.out.println(">>>>>>>>>> " + m_script);
       final GroovyClassLoader gcl = new GroovyClassLoader();
       final Class<? extends IReportDataCollector> gclass = gcl.parseClass(m_script);
 
