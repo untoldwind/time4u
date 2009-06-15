@@ -7,13 +7,15 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import de.objectcode.time4u.server.ejb.seam.api.report.CrossTableResult;
+import de.objectcode.time4u.server.ejb.seam.api.report.IReportDataCollector;
 import de.objectcode.time4u.server.ejb.seam.api.report.IRowDataAdapter;
+import de.objectcode.time4u.server.ejb.seam.api.report.ReportResult;
 import de.objectcode.time4u.server.ejb.seam.api.report.ValueLabelPair;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
 
-public class ProjectPersonCrosstableDataCollector
+public class ProjectPersonCrosstableDataCollector implements IReportDataCollector
 {
   private final ProjectEntity m_mainProject;
   private final SortedSet<ProjectEntity> m_sortedProjects;
@@ -59,6 +61,11 @@ public class ProjectPersonCrosstableDataCollector
   public void finish()
   {
 
+  }
+
+  public ReportResult getReportResult()
+  {
+    return null;
   }
 
   public CrossTableResult getCrossTable()

@@ -2,6 +2,8 @@ package de.objectcode.time4u.server.ejb.seam.impl;
 
 import java.util.List;
 
+import de.objectcode.time4u.server.ejb.seam.api.report.IReportDataCollector;
+import de.objectcode.time4u.server.ejb.seam.api.report.IRowDataAdapter;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
@@ -10,7 +12,7 @@ import de.objectcode.time4u.server.entities.TimePolicyEntity;
 import de.objectcode.time4u.server.entities.TodoEntity;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
 
-public class TodoRowDataAdapter implements IExtendedRowDataAdapter
+public class TodoRowDataIterator implements IRowDataIterator<TodoEntity>, IRowDataAdapter
 {
   TodoEntity m_currentTodo;
 
@@ -56,4 +58,15 @@ public class TodoRowDataAdapter implements IExtendedRowDataAdapter
   {
     return null;
   }
+
+  public void iterate(final List<TodoEntity> result, final IReportDataCollector collector)
+  {
+    for (final TodoEntity todo : result) {
+      m_currentTodo = todo;
+
+      collector.collect(this);
+    }
+    collector.finish();
+  }
+
 }

@@ -47,6 +47,7 @@ public class ReportServiceSeam implements IReportServiceLocal
   @In("org.jboss.seam.security.identity")
   Identity m_identity;
 
+  @SuppressWarnings("unchecked")
   public ReportResult generateReport(final BaseReportDefinition reportDefinition,
       final Map<String, BaseParameterValue> parameters)
   {
@@ -62,14 +63,14 @@ public class ReportServiceSeam implements IReportServiceLocal
 
     final StringBuffer queryStr = new StringBuffer();
     String orderStr = null;
-    IExtendedRowDataAdapter rowDataAdapter = null;
+    IRowDataIterator<?> rowDataIterator = null;
     switch (reportDefinition.getEntityType()) {
       case WORKITEM:
         queryStr.append("from ");
         queryStr.append(WorkItemEntity.class.getName());
         queryStr.append(" w join fetch w.dayInfo where w.dayInfo.person.id in (:allowedPersons)");
         orderStr = " order by w.dayInfo.date asc, w.begin asc";
-        rowDataAdapter = new WorkItemRowDataAdapter();
+        rowDataIterator = new WorkItemRowDataIterator();
         break;
       case DAYINFO:
         queryStr.append("select distinct d from ");
@@ -77,14 +78,14 @@ public class ReportServiceSeam implements IReportServiceLocal
         queryStr
             .append(" d left outer join fetch d.tags left outer join fetch d.workItems join fetch d.person where d.person.id in (:allowedPersons)");
         orderStr = " order by d.date asc";
-        rowDataAdapter = new DayInfoRowDataAdapter();
+        rowDataIterator = new DayInfoRowDataIterator();
         break;
       case TODO:
         queryStr.append("from ");
         queryStr.append(TodoEntity.class.getName());
         queryStr.append(" t where t.reporter.id in (:allowedPersons)");
         orderStr = " order by t.header asc";
-        rowDataAdapter = new TodoRowDataAdapter();
+        rowDataIterator = new TodoRowDataIterator();
     }
 
     if (reportDefinition.getFilter() != null) {
@@ -103,17 +104,14 @@ public class ReportServiceSeam implements IReportServiceLocal
 
     final IReportDataCollector dataCollector = reportDefinition.createDataCollector();
 
-    for (final Object row : query.getResultList()) {
-      rowDataAdapter.setCurrentRow(row);
+    rowDataIterator.iterate(query.getResultList(), dataCollector);
 
-      dataCollector.collect(rowDataAdapter);
-    }
-    dataCollector.finish();
     m_manager.clear();
 
     return dataCollector.getReportResult();
   }
 
+  @SuppressWarnings("unchecked")
   public CrossTableResult generateProjectPersonCrossTable(final String mainProjectId, final Date from, final Date until)
   {
     final UserAccountEntity userAccount = m_manager.find(UserAccountEntity.class, m_identity.getPrincipal().getName());
@@ -151,14 +149,10 @@ public class ReportServiceSeam implements IReportServiceLocal
     }
 
     final ProjectPersonCrosstableDataCollector dataCollector = new ProjectPersonCrosstableDataCollector(mainProject);
-    final IExtendedRowDataAdapter rowDataAdapter = new WorkItemRowDataAdapter();
+    final IRowDataIterator<?> rowDataIterator = new WorkItemRowDataIterator();
 
-    for (final Object row : query.getResultList()) {
-      rowDataAdapter.setCurrentRow(row);
+    rowDataIterator.iterate(query.getResultList(), dataCollector);
 
-      dataCollector.collect(rowDataAdapter);
-    }
-    dataCollector.finish();
     m_manager.clear();
 
     return dataCollector.getCrossTable();
