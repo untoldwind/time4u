@@ -26,4 +26,40 @@ public class ValueLabelPair
     return m_label;
   }
 
+  @Override
+  public boolean equals(final Object obj)
+  {
+    if (obj == null) {
+      return false;
+    }
+
+    if (!(obj instanceof ValueLabelPair)) {
+      return false;
+    }
+
+    final ValueLabelPair castObj = (ValueLabelPair) obj;
+
+    return m_value.equals(castObj.m_value) && m_label.equals(castObj.m_label);
+  }
+
+  @Override
+  public int hashCode()
+  {
+    int hash = m_value.hashCode();
+
+    hash = 13 * hash + m_label.hashCode();
+
+    return hash;
+  }
+
+  @Override
+  public String toString()
+  {
+    final StringBuffer buffer = new StringBuffer("ValueLabelPair(");
+    buffer.append("value=").append(m_value);
+    buffer.append(", label=").append(m_label);
+    buffer.append(")");
+    return buffer.toString();
+  }
+
 }

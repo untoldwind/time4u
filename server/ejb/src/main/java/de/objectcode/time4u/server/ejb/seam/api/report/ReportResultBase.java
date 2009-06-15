@@ -1,7 +1,6 @@
 package de.objectcode.time4u.server.ejb.seam.api.report;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -35,9 +34,19 @@ public class ReportResultBase
     m_groups = new TreeMap<Object, ReportResultGroup>();
   }
 
+  public void addColumn(final ColumnType columnType, final String header)
+  {
+    m_columns.add(new ColumnDefinition(columnType, header, m_columns.size()));
+  }
+
   public List<ColumnDefinition> getColumns()
   {
     return m_columns;
+  }
+
+  public void addGroupByColumn(final ColumnType columnType, final String header)
+  {
+    m_groupByColumns.add(new ColumnDefinition(columnType, header, m_groupByColumns.size()));
   }
 
   public List<ColumnDefinition> getGroupByColumns()
@@ -95,14 +104,19 @@ public class ReportResultBase
     return new ArrayList<ReportResultGroup>(m_groups.values());
   }
 
-  public void addRow(final LinkedList<ValueLabelPair> groups, final Object[] row)
+  public void addRow(final List<ValueLabelPair> groups, final Object[] row)
   {
-    if (groups.isEmpty()) {
+    addRow(0, groups, row);
+  }
+
+  protected void addRow(final int depth, final List<ValueLabelPair> groups, final Object[] row)
+  {
+    if (depth >= groups.size()) {
       if (row != null) {
         m_rows.add(new ReportRow(m_rows.size(), row));
       }
     } else {
-      final ValueLabelPair top = groups.removeFirst();
+      final ValueLabelPair top = groups.get(depth);
       ReportResultGroup group = m_groups.get(top.getValue());
 
       if (group == null) {
@@ -117,7 +131,7 @@ public class ReportResultBase
       }
 
       if (row != null) {
-        group.addRow(groups, row);
+        group.addRow(depth + 1, groups, row);
       }
     }
   }

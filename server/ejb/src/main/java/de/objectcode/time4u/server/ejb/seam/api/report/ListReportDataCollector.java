@@ -3,7 +3,6 @@ package de.objectcode.time4u.server.ejb.seam.api.report;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -56,7 +55,7 @@ public class ListReportDataCollector implements IReportDataCollector
       aggregate(null, row);
     }
 
-    final LinkedList<ValueLabelPair> groups = new LinkedList<ValueLabelPair>();
+    final List<ValueLabelPair> groups = new ArrayList<ValueLabelPair>();
     final List<Object> groupKey = new ArrayList<Object>();
     boolean addToList = true;
 

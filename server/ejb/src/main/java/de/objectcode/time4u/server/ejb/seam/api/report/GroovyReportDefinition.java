@@ -51,7 +51,7 @@ public class GroovyReportDefinition extends BaseReportDefinition
   @XmlAttribute(name = "entity-type")
   public EntityType getEntityType()
   {
-    return EntityType.WORKITEM;
+    return m_entityType;
   }
 
   public void setEntityType(final EntityType entityType)
