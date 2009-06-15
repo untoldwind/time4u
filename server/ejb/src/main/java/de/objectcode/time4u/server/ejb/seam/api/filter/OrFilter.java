@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.el.ELContext;
 import javax.persistence.Query;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementRefs;
@@ -51,7 +52,7 @@ public class OrFilter implements IFilter
     m_filters = filters;
   }
 
-  public String getWhereClause(final EntityType entityType, final Map<String, BaseParameterValue> parameters)
+  public String getWhereClause(final EntityType entityType, final Map<String, BaseParameterValue> parameters, ELContext context)
   {
     if (m_filters.isEmpty()) {
       return "";
@@ -59,7 +60,7 @@ public class OrFilter implements IFilter
     final StringBuffer buffer = new StringBuffer("(");
     final Iterator<IFilter> it = m_filters.iterator();
     while (it.hasNext()) {
-      buffer.append(it.next().getWhereClause(entityType, parameters));
+      buffer.append(it.next().getWhereClause(entityType, parameters, context));
       if (it.hasNext()) {
         buffer.append(" or ");
       }
@@ -69,10 +70,10 @@ public class OrFilter implements IFilter
   }
 
   public void setQueryParameters(final EntityType entityType, final Query query,
-      final Map<String, BaseParameterValue> parameters)
+      final Map<String, BaseParameterValue> parameters, ELContext context)
   {
     for (final IFilter filter : m_filters) {
-      filter.setQueryParameters(entityType, query, parameters);
+      filter.setQueryParameters(entityType, query, parameters, context);
     }
   }
 }

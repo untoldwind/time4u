@@ -1,6 +1,7 @@
 package de.objectcode.time4u.server.ejb.seam.api.report.parameter;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import de.objectcode.time4u.server.ejb.seam.api.filter.DateRangeFilter;
 import de.objectcode.time4u.server.ejb.seam.api.filter.IFilter;
@@ -54,6 +55,23 @@ public class MonthParameterValue extends BaseParameterValue
   public MonthEnum[] getMonthValues()
   {
     return MonthEnum.values();
+  }
+
+  public Date getFrom()
+  {
+    final Calendar calendar = Calendar.getInstance();
+
+    calendar.set(m_year, m_month - 1, 1, 0, 0, 0);
+    return calendar.getTime();
+  }
+
+  public Date getUntil()
+  {
+    final Calendar calendar = Calendar.getInstance();
+
+    calendar.set(m_year, m_month - 1, 1, 0, 0, 0);
+    calendar.add(Calendar.MONTH, 1);
+    return calendar.getTime();
   }
 
   @Override

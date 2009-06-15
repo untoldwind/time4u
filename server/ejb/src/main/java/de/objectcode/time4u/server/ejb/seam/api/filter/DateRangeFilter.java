@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.Calendar;
 import java.util.Map;
 
+import javax.el.ELContext;
+import javax.el.ExpressionFactory;
 import javax.persistence.Query;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -13,6 +15,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.ejb.seam.api.io.DateXmlAdatper;
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.BaseParameterValue;
+import de.objectcode.time4u.server.ejb.util.ReportEL;
 
 @XmlType(name = "date-range")
 @XmlRootElement(name = "date-range")
@@ -22,6 +25,8 @@ public class DateRangeFilter implements IFilter
 
   private Date m_from;
   private Date m_until;
+  private String m_fromExpression;
+  private String m_untilExpression;
 
   public DateRangeFilter()
   {
@@ -36,7 +41,8 @@ public class DateRangeFilter implements IFilter
   /**
    * {@inheritDoc}
    */
-  public String getWhereClause(final EntityType entityType, final Map<String, BaseParameterValue> parameters)
+  public String getWhereClause(final EntityType entityType, final Map<String, BaseParameterValue> parameters,
+      final ELContext context)
   {
     switch (entityType) {
       case DAYINFO:
@@ -74,14 +80,45 @@ public class DateRangeFilter implements IFilter
     m_until = until;
   }
 
+  @XmlAttribute(name = "from-expression")
+  public String getFromExpression()
+  {
+    return m_fromExpression;
+  }
+
+  public void setFromExpression(final String fromExpression)
+  {
+    m_fromExpression = fromExpression;
+  }
+
+  @XmlAttribute(name = "until-expression")
+  public String getUntilExpression()
+  {
+    return m_untilExpression;
+  }
+
+  public void setUntilExpression(final String untilExpression)
+  {
+    m_untilExpression = untilExpression;
+  }
+
   /**
    * {@inheritDoc}
    */
   public void setQueryParameters(final EntityType entityType, final Query query,
-      final Map<String, BaseParameterValue> parameters)
+      final Map<String, BaseParameterValue> parameters, final ELContext context)
   {
-    query.setParameter("from", m_from);
-    query.setParameter("until", m_until);
+    if (m_fromExpression != null && m_untilExpression != null) {
+      final ExpressionFactory factory = ReportEL.getExpressionFactory();
+
+      query.setParameter("from", factory.createValueExpression(context, m_fromExpression, java.util.Date.class)
+          .getValue(context));
+      query.setParameter("until", factory.createValueExpression(context, m_untilExpression, java.util.Date.class)
+          .getValue(context));
+    } else {
+      query.setParameter("from", m_from);
+      query.setParameter("until", m_until);
+    }
   }
 
   public static DateRangeFilter filterMonth(final int year, final int month)

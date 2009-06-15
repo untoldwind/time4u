@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.ejb.Local;
 import javax.ejb.Stateless;
+import javax.el.ELContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -24,6 +25,7 @@ import de.objectcode.time4u.server.ejb.seam.api.report.CrossTableResult;
 import de.objectcode.time4u.server.ejb.seam.api.report.IReportDataCollector;
 import de.objectcode.time4u.server.ejb.seam.api.report.ReportResult;
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.BaseParameterValue;
+import de.objectcode.time4u.server.ejb.util.ReportEL;
 import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.ProjectEntity;
@@ -93,9 +95,17 @@ public class ReportServiceSeam implements IReportServiceLocal
         break;
     }
 
+    final ELContext context = ReportEL.createELContext();
+
+    for (final Map.Entry<String, BaseParameterValue> parameter : parameters.entrySet()) {
+      context.getVariableMapper().setVariable(parameter.getKey(),
+          ReportEL.getExpressionFactory().createValueExpression(parameter.getValue(), Object.class));
+    }
+
     if (reportDefinition.getFilter() != null) {
       queryStr.append(" and ");
-      queryStr.append(reportDefinition.getFilter().getWhereClause(reportDefinition.getEntityType(), parameters));
+      queryStr.append(reportDefinition.getFilter()
+          .getWhereClause(reportDefinition.getEntityType(), parameters, context));
     }
 
     queryStr.append(orderStr);
@@ -104,7 +114,7 @@ public class ReportServiceSeam implements IReportServiceLocal
 
     query.setParameter("allowedPersons", allowedPersonIds);
     if (reportDefinition.getFilter() != null) {
-      reportDefinition.getFilter().setQueryParameters(reportDefinition.getEntityType(), query, parameters);
+      reportDefinition.getFilter().setQueryParameters(reportDefinition.getEntityType(), query, parameters, context);
     }
 
     final IReportDataCollector dataCollector = reportDefinition.createDataCollector();

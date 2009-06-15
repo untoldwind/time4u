@@ -2,6 +2,7 @@ package de.objectcode.time4u.server.ejb.seam.api.filter;
 
 import java.util.Map;
 
+import javax.el.ELContext;
 import javax.persistence.Query;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -41,7 +42,7 @@ public class PersonFilter implements IFilter
   /**
    * {@inheritDoc}
    */
-  public String getWhereClause(final EntityType entityType, final Map<String, BaseParameterValue> parameters)
+  public String getWhereClause(final EntityType entityType, final Map<String, BaseParameterValue> parameters, ELContext context)
   {
     switch (entityType) {
       case DAYINFO:
@@ -59,7 +60,7 @@ public class PersonFilter implements IFilter
    * {@inheritDoc}
    */
   public void setQueryParameters(final EntityType entityType, final Query query,
-      final Map<String, BaseParameterValue> parameters)
+      final Map<String, BaseParameterValue> parameters, ELContext context)
   {
     query.setParameter("personId", m_personId);
   }

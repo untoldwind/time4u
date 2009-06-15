@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.BaseParameterValue;
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.DateRangeParameterValue;
+import de.objectcode.time4u.server.ejb.seam.api.report.parameter.DayParameterValue;
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.MonthParameterValue;
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.PersonParameterValue;
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.ProjectParameterValue;
@@ -19,6 +20,7 @@ public enum ReportParameterType
 {
   MONTH("month", MonthParameterValue.class),
   WEEK("week", WeekParameterValue.class),
+  DAY("day", DayParameterValue.class),
   DATE_RANGE("daterange", DateRangeParameterValue.class),
   PERSON("person", PersonParameterValue.class),
   PROJECT("project", ProjectParameterValue.class),
