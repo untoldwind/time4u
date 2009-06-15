@@ -44,6 +44,12 @@ public enum DayInfoProjection implements IProjection
     {
       return rowData.getDayInfo().getEffectiveRegularTime();
     }
+
+    @Override
+    public IAggregation createAggregation()
+    {
+      return new SumAggregation();
+    }
   },
   WORKTIME(ColumnType.TIME, "Work time") {
     public Object project(final IRowDataAdapter rowData)
@@ -52,6 +58,12 @@ public enum DayInfoProjection implements IProjection
 
       return timeContingents.get(TimeContingent.WORKTIME);
     }
+
+    @Override
+    public IAggregation createAggregation()
+    {
+      return new SumAggregation();
+    }
   },
   OVERTIME(ColumnType.TIME, "Overtime") {
     public Object project(final IRowDataAdapter rowData)
@@ -59,6 +71,12 @@ public enum DayInfoProjection implements IProjection
       final Map<TimeContingent, Integer> timeContingents = rowData.getDayInfo().getTimeContingents();
 
       return timeContingents.get(TimeContingent.WORKTIME) - rowData.getDayInfo().getEffectiveRegularTime();
+    }
+
+    @Override
+    public IAggregation createAggregation()
+    {
+      return new SumAggregation();
     }
   },
   TAGS(ColumnType.NAME_ARRAY, "Tags") {

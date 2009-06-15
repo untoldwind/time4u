@@ -40,6 +40,9 @@
 	</c:if>
 	<ui:fragment rendered="#{report.hasAggregates}">
 		<tr class="report reportGroupFooter">
+            <ui:fragment rendered="#{!report.hasRows}">
+				<td colspan="#{depth}" class="report"/>
+			</ui:fragment>
 			<ui:repeat value="#{report.columns}"
 				var="column">
 				<td

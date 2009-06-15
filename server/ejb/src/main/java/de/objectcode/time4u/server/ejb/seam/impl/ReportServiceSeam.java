@@ -78,7 +78,11 @@ public class ReportServiceSeam implements IReportServiceLocal
         queryStr
             .append(" d left outer join fetch d.tags left outer join fetch d.workItems join fetch d.person where d.person.id in (:allowedPersons)");
         orderStr = " order by d.date asc";
-        rowDataIterator = new DayInfoRowDataIterator();
+        if (reportDefinition.isFill()) {
+          rowDataIterator = new DayInfoRowDataIteratorWithFill();
+        } else {
+          rowDataIterator = new DayInfoRowDataIterator();
+        }
         break;
       case TODO:
         queryStr.append("from ");
@@ -86,6 +90,7 @@ public class ReportServiceSeam implements IReportServiceLocal
         queryStr.append(" t where t.reporter.id in (:allowedPersons)");
         orderStr = " order by t.header asc";
         rowDataIterator = new TodoRowDataIterator();
+        break;
     }
 
     if (reportDefinition.getFilter() != null) {

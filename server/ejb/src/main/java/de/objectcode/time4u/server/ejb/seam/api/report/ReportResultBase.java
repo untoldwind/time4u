@@ -50,6 +50,11 @@ public class ReportResultBase
     return m_rows;
   }
 
+  public boolean isHasRows()
+  {
+    return m_rows != null && m_rows.size() > 0;
+  }
+
   public boolean isHasGroups()
   {
     return !m_groupByColumns.isEmpty();
@@ -93,7 +98,9 @@ public class ReportResultBase
   public void addRow(final LinkedList<ValueLabelPair> groups, final Object[] row)
   {
     if (groups.isEmpty()) {
-      m_rows.add(new ReportRow(m_rows.size(), row));
+      if (row != null) {
+        m_rows.add(new ReportRow(m_rows.size(), row));
+      }
     } else {
       final ValueLabelPair top = groups.removeFirst();
       ReportResultGroup group = m_groups.get(top.getValue());
@@ -109,7 +116,9 @@ public class ReportResultBase
         m_groups.put(group.getValue(), group);
       }
 
-      group.addRow(groups, row);
+      if (row != null) {
+        group.addRow(groups, row);
+      }
     }
   }
 }

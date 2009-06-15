@@ -16,14 +16,22 @@ public class GroupByDefinition implements Serializable
 
   public enum Mode
   {
-    LIST(false),
-    LIST_WITH_AGGREGATE(true);
+    LIST(false, true),
+    LIST_WITH_AGGREGATE(true, true),
+    AGGREGATE_ONLY(true, false);
 
-    private boolean m_aggregate;
+    private final boolean m_aggregate;
+    private final boolean m_list;
 
-    private Mode(final boolean aggregate)
+    private Mode(final boolean aggregate, final boolean list)
     {
       m_aggregate = aggregate;
+      m_list = list;
+    }
+
+    public boolean isList()
+    {
+      return m_list;
     }
 
     public boolean isAggregate()

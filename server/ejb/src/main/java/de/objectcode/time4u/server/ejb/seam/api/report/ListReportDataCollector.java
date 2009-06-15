@@ -58,6 +58,7 @@ public class ListReportDataCollector implements IReportDataCollector
 
     final LinkedList<ValueLabelPair> groups = new LinkedList<ValueLabelPair>();
     final List<Object> groupKey = new ArrayList<Object>();
+    boolean addToList = true;
 
     for (final GroupByDefinition groupBy : m_groupByDefinitions) {
       final ValueLabelPair group = groupBy.project(rowData);
@@ -67,9 +68,11 @@ public class ListReportDataCollector implements IReportDataCollector
       if (groupBy.getMode().isAggregate()) {
         aggregate(groupKey, row);
       }
+
+      addToList = groupBy.getMode().isList();
     }
 
-    m_reportResult.addRow(groups, row);
+    m_reportResult.addRow(groups, addToList ? row : null);
   }
 
   public void finish()

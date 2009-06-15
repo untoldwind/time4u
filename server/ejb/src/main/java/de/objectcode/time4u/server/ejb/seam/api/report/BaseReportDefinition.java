@@ -42,6 +42,8 @@ public abstract class BaseReportDefinition implements Serializable
   protected IFilter m_filter;
   /** Report parameters to be entered by the user. */
   protected List<ReportParameterDefinition> m_parameters;
+  /** Fill missing data with transient entities (if applicable) */
+  protected boolean m_fill;
 
   protected BaseReportDefinition()
   {
@@ -68,6 +70,17 @@ public abstract class BaseReportDefinition implements Serializable
   public void setDescription(final String description)
   {
     m_description = description;
+  }
+
+  @XmlAttribute
+  public boolean isFill()
+  {
+    return m_fill;
+  }
+
+  public void setFill(final boolean fill)
+  {
+    m_fill = fill;
   }
 
   @XmlElementRefs( { @XmlElementRef(type = AndFilter.class), @XmlElementRef(type = OrFilter.class),
