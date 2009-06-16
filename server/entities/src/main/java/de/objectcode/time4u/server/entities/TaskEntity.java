@@ -30,7 +30,7 @@ import de.objectcode.time4u.server.entities.context.IPersistenceContext;
  */
 @Entity
 @Table(name = "T4U_TASKS")
-public class TaskEntity
+public class TaskEntity implements IdAndNameAwareEntity
 {
   /** Primary key. */
   private String m_id;

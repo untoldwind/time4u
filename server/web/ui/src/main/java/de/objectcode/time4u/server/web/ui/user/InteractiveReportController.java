@@ -34,6 +34,18 @@ import de.objectcode.time4u.server.web.ui.converter.TimestampConverter;
 @Scope(ScopeType.CONVERSATION)
 public class InteractiveReportController implements Serializable
 {
+  private enum ReportColumnType
+  {
+    PROJECT,
+    TASK;
+  }
+
+  private enum ReportRowType
+  {
+    TEAM,
+    PERSON;
+  }
+
   private static final long serialVersionUID = -7166535296179928941L;
 
   public static final String VIEW_ID = "/user/interactive.xhtml";
@@ -53,6 +65,9 @@ public class InteractiveReportController implements Serializable
 
   @Out("user.reportConverters")
   Map<ColumnType, Converter> m_converters;
+
+  private ReportColumnType m_columnType = ReportColumnType.PROJECT;
+  private ReportRowType m_rowType = ReportRowType.TEAM;
 
   public InteractiveReportController()
   {
@@ -131,6 +146,28 @@ public class InteractiveReportController implements Serializable
     return refresh();
   }
 
+  public String switchColumnType()
+  {
+    if (m_columnType == ReportColumnType.PROJECT) {
+      m_columnType = ReportColumnType.TASK;
+    } else {
+      m_columnType = ReportColumnType.PROJECT;
+    }
+
+    return refresh();
+  }
+
+  public String switchRowType()
+  {
+    if (m_rowType == ReportRowType.PERSON) {
+      m_rowType = ReportRowType.TEAM;
+    } else {
+      m_rowType = ReportRowType.PERSON;
+    }
+
+    return refresh();
+  }
+
   public String setFilterProject(final ValueLabelPair project)
   {
     m_interactiveFilter.setProject(project);
@@ -166,12 +203,35 @@ public class InteractiveReportController implements Serializable
       m_reportResult = m_reportService.generateReport(m_interactiveFilter.getReportDefinition(),
           new HashMap<String, BaseParameterValue>());
     } else {
-      m_crossTable = m_reportService.generateProjectPersonCrossTable(m_interactiveFilter.getLastProjectId(),
-          m_interactiveFilter.getFrom(), m_interactiveFilter.getUntil());
+      if (m_columnType == ReportColumnType.PROJECT && m_rowType == ReportRowType.PERSON) {
+        m_crossTable = m_reportService.generateProjectPersonCrossTable(m_interactiveFilter.getLastProjectId(),
+            m_interactiveFilter.getFrom(), m_interactiveFilter.getUntil());
+      } else if (m_columnType == ReportColumnType.PROJECT && m_rowType == ReportRowType.TEAM) {
+        m_crossTable = m_reportService.generateProjectTeamCrossTable(m_interactiveFilter.getLastProjectId(),
+            m_interactiveFilter.getFrom(), m_interactiveFilter.getUntil());
+      } else if (m_columnType == ReportColumnType.TASK && m_rowType == ReportRowType.PERSON) {
+        m_crossTable = m_reportService.generateTaskPersonCrossTable(m_interactiveFilter.getLastProjectId(),
+            m_interactiveFilter.getFrom(), m_interactiveFilter.getUntil());
+      } else {
+        m_crossTable = m_reportService.generateTaskTeamCrossTable(m_interactiveFilter.getLastProjectId(),
+            m_interactiveFilter.getFrom(), m_interactiveFilter.getUntil());
+      }
+
       m_reportResult = new ReportResult("<empty>", Collections.<ColumnDefinition> emptyList(), Collections
           .<ColumnDefinition> emptyList());
     }
 
     return VIEW_ID;
   }
+
+  public boolean isRowHeaderLinkVisible()
+  {
+    return m_rowType == ReportRowType.PERSON;
+  }
+
+  public boolean isColumnHeaderLinkVisible()
+  {
+    return m_columnType == ReportColumnType.PROJECT;
+  }
+
 }

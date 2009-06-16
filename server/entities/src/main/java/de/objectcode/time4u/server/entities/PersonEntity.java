@@ -16,6 +16,7 @@ import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import de.objectcode.time4u.server.api.data.MetaProperty;
 import de.objectcode.time4u.server.api.data.Person;
@@ -28,7 +29,7 @@ import de.objectcode.time4u.server.api.data.PersonSummary;
  */
 @Entity
 @Table(name = "T4U_PERSONS")
-public class PersonEntity
+public class PersonEntity implements IdAndNameAwareEntity
 {
   /** Primary key. */
   private String m_id;
@@ -213,6 +214,12 @@ public class PersonEntity
   public void setMetaProperties(final Map<String, PersonMetaPropertyEntity> metaProperties)
   {
     m_metaProperties = metaProperties;
+  }
+
+  @Transient
+  public String getName()
+  {
+    return getGivenName() + ", " + getSurname();
   }
 
   @Override

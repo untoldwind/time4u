@@ -26,7 +26,7 @@ import de.objectcode.time4u.server.entities.context.IPersistenceContext;
  */
 @Entity
 @Table(name = "T4U_PROJECTS")
-public class ProjectEntity
+public class ProjectEntity implements IdAndNameAwareEntity
 {
   /** Primary key */
   private String m_id;

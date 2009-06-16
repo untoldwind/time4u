@@ -32,4 +32,10 @@ public interface IReportServiceLocal
    * Temporary helper until we have found a way to abstractify this.
    */
   CrossTableResult generateProjectPersonCrossTable(String mainProjectId, Date from, Date until);
+
+  CrossTableResult generateProjectTeamCrossTable(String mainProjectId, Date from, Date until);
+
+  CrossTableResult generateTaskTeamCrossTable(String lastProjectId, Date from, Date until);
+
+  CrossTableResult generateTaskPersonCrossTable(String lastProjectId, Date from, Date until);
 }
