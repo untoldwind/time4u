@@ -25,7 +25,7 @@
 			</outputFileNameMapping>
 			<outputDirectory>lib</outputDirectory>
 			<includes>
-				<include>de.objectcode.time4u.migrator:time4u-migrator-server05</include>
+				<include>de.objectcode.time4u.migrator:time4u-migrator-server04</include>
 				<include>de.objectcode.time4u.server:time4u-server-entities</include>
 				<include>de.objectcode.time4u.server:time4u-server-api</include>
 				<include>javax.transaction:jta</include>

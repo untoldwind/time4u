@@ -2,12 +2,12 @@
 	<parent>
 		<groupId>de.objectcode.time4u.migrator</groupId>
 		<artifactId>migrator</artifactId>
-		<version>0.9.8-SNAPSHOT</version>
+		<version>0.9.9-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>time4u-migrator-server05</artifactId>
-	<name>time4u-migrator-server05</name>
+	<artifactId>time4u-migrator-server04</artifactId>
+	<name>time4u-migrator-server04</name>
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
@@ -102,7 +102,7 @@
 									<tasks>
 										<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="maven.runtime.classpath" />
 										<hibernatetool templatepath="src/main/resources/templates">
-											<jdbcconfiguration configurationfile="target/classes/old-version.cfg.xml" reversestrategy="de.objectcode.time4u.migrator.server05.old.strategy.Time4UReverseEngineeringStrategy" packagename="de.objectcode.time4u.migrator.server05.old.entities" />
+											<jdbcconfiguration configurationfile="target/classes/old-version.cfg.xml" reversestrategy="de.objectcode.time4u.migrator.server04.old.strategy.Time4UReverseEngineeringStrategy" packagename="de.objectcode.time4u.migrator.server04.old.entities" />
 											<hbm2java jdk5="true" ejb3="true" destdir="${basedir}/src/main/java" />
 										</hibernatetool>
 									</tasks>

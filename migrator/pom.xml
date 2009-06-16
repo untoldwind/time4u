@@ -11,6 +11,7 @@
   <name>time4u-migrator</name>
   <packaging>pom</packaging>
   <modules>
+    <module>server04</module>
     <module>server05</module>
   </modules>
 </project>
