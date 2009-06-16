@@ -50,7 +50,12 @@
 								value="#{user.interactiveCrossTable.columnHeaders}"
 								var="column">
 								<th class="report reportHeader">
-									<a4j:commandLink value="#{column.label}" action="#{user.interactiveReportController.addFilterProject(column)}"/>
+									<c:if test="#{user.interactiveReportController.columnHeaderLinkVisible}">
+										<a4j:commandLink value="#{column.label}" action="#{user.interactiveReportController.addFilterProject(column)}"/>
+									</c:if>
+									<c:if test="#{not user.interactiveReportController.columnHeaderLinkVisible}">
+										<h:outputText value="#{column.label}" />
+									</c:if>
 								</th>
 							</ui:repeat>
 							<th class="report reportHeader"></th>
@@ -62,7 +67,12 @@
 							var="row">
 							<tr class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
 								<td class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
-									<a4j:commandLink value="#{row.rowHeader.label}" action="#{user.interactiveReportController.setFilterPerson(row.rowHeader)}"/>
+									<c:if test="#{user.interactiveReportController.rowHeaderLinkVisible}">
+										<a4j:commandLink value="#{row.rowHeader.label}" action="#{user.interactiveReportController.setFilterPerson(row.rowHeader)}"/>
+									</c:if>
+									<c:if test="#{not user.interactiveReportController.rowHeaderLinkVisible}">
+										<h:outputText value="#{row.rowHeader.label}" />
+									</c:if>
 								</td>
 								<ui:repeat
 									value="#{row.data}"
