@@ -1,12 +1,20 @@
 package de.objectcode.time4u.server.entities;
 
 import java.util.Date;
+import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKey;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import de.objectcode.time4u.server.api.data.EntityType;
+import de.objectcode.time4u.server.entities.sync.ClientSynchronizationStatusEntity;
 
 @Entity
 @Table(name = "T4U_CLIENTS")
@@ -17,6 +25,7 @@ public class ClientEntity
   boolean m_server;
   Date m_registeredAt;
   PersonEntity m_person;
+  Map<EntityType, ClientSynchronizationStatusEntity> m_synchronizationStatus;
 
   @Id
   public long getClientId()
@@ -70,4 +79,17 @@ public class ClientEntity
   {
     m_person = person;
   }
+
+  @MapKey(name = "entityType")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")
+  public Map<EntityType, ClientSynchronizationStatusEntity> getSynchronizationStatus()
+  {
+    return m_synchronizationStatus;
+  }
+
+  public void setSynchronizationStatus(final Map<EntityType, ClientSynchronizationStatusEntity> synchronizationStatus)
+  {
+    m_synchronizationStatus = synchronizationStatus;
+  }
+
 }

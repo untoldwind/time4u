@@ -2,9 +2,11 @@ package de.objectcode.time4u.server.api.data;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType(name = "synchronization-status")
+@XmlRootElement(name = "synchronization-status")
 public class SynchronizationStatus implements Serializable
 {
   private static final long serialVersionUID = 7066442424410214823L;

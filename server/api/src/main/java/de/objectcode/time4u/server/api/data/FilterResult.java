@@ -41,7 +41,7 @@ public class FilterResult<T> implements Serializable
       @XmlElementRef(type = PersonSummary.class), @XmlElementRef(type = Person.class),
       @XmlElementRef(type = TeamSummary.class), @XmlElementRef(type = Team.class),
       @XmlElementRef(type = TodoSummary.class), @XmlElementRef(type = Todo.class),
-      @XmlElementRef(type = TodoGroup.class) })
+      @XmlElementRef(type = TodoGroup.class), @XmlElementRef(type = SynchronizationStatus.class) })
   public List<T> getResults()
   {
     return results;

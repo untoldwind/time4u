@@ -9,7 +9,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import de.objectcode.time4u.server.api.IRevisionService;
+import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.RevisionStatus;
+import de.objectcode.time4u.server.api.data.SynchronizationStatus;
 
 /**
  * Web-service delegate to the revision service.
@@ -36,6 +38,20 @@ public class RevisionServiceWS implements IRevisionService
     LOG.info("getRevisionStatus");
 
     return m_revisionService.getRevisionStatus();
+  }
+
+  public FilterResult<SynchronizationStatus> getClientSynchronizationStatus(final long clientId)
+  {
+    LOG.info("getClientSynchronizationStatus: " + clientId);
+
+    return m_revisionService.getClientSynchronizationStatus(clientId);
+  }
+
+  public void storeClientSynchronizationStatus(final long clientId, final FilterResult<SynchronizationStatus> statusList)
+  {
+    LOG.info("storeClientSynchronizationStatus: " + clientId + " " + statusList);
+
+    m_revisionService.storeClientSynchronizationStatus(clientId, statusList);
   }
 
 }

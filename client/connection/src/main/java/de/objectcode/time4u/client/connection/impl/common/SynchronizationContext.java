@@ -1,5 +1,7 @@
 package de.objectcode.time4u.client.connection.impl.common;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import de.objectcode.time4u.client.store.api.IRepository;
@@ -28,6 +30,7 @@ public class SynchronizationContext
   private final Map<EntityType, Long> m_clientRevisionStatus;
   private final Map<EntityType, Long> m_serverRevisionStatus;
   private final IRepository m_repository;
+  private final IRevisionService m_revisionService;
   private final IProjectService m_projectService;
   private final ITaskService m_taskService;
   private final IWorkItemService m_workItemService;
@@ -42,6 +45,7 @@ public class SynchronizationContext
   {
     m_repository = repository;
     m_serverConnectionId = serverConnectionId;
+    m_revisionService = revisionService;
     m_projectService = projectService;
     m_taskService = taskService;
     m_workItemService = workItemService;
@@ -58,6 +62,11 @@ public class SynchronizationContext
   public long getServerConnectionId()
   {
     return m_serverConnectionId;
+  }
+
+  public List<SynchronizationStatus> getSynchronizationStatusList()
+  {
+    return new ArrayList<SynchronizationStatus>(m_synchronizationStatus.values());
   }
 
   public SynchronizationStatus getSynchronizationStatus(final EntityType type)
@@ -78,6 +87,11 @@ public class SynchronizationContext
   public IRepository getRepository()
   {
     return m_repository;
+  }
+
+  public IRevisionService getRevisionService()
+  {
+    return m_revisionService;
   }
 
   public IProjectService getProjectService()

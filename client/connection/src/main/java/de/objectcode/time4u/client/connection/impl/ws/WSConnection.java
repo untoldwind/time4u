@@ -28,6 +28,7 @@ import de.objectcode.time4u.client.connection.impl.common.down.ReceiveTimePolicy
 import de.objectcode.time4u.client.connection.impl.common.down.ReceiveTodoChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.up.SendDayInfoChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.up.SendProjectChangesCommand;
+import de.objectcode.time4u.client.connection.impl.common.up.SendSynchronizationStatusCommand;
 import de.objectcode.time4u.client.connection.impl.common.up.SendTaskChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.up.SendTimePolicyChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.up.SendTodoChangesCommand;
@@ -87,6 +88,7 @@ public class WSConnection implements IConnection
     m_synchronizationCommands.add(new ReceiveDayInfoChangesCommand());
     m_synchronizationCommands.add(new ReceiveTimePolicyChangesCommand());
     m_synchronizationCommands.add(new ReceiveTodoChangesCommand());
+    m_synchronizationCommands.add(new SendSynchronizationStatusCommand());
 
     m_serverConnection = serverConnection;
 

@@ -5,7 +5,9 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
+import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.RevisionStatus;
+import de.objectcode.time4u.server.api.data.SynchronizationStatus;
 
 /**
  * Remote revision service interface.
@@ -18,4 +20,10 @@ public interface IRevisionService
 {
   @WebMethod
   RevisionStatus getRevisionStatus();
+
+  @WebMethod
+  FilterResult<SynchronizationStatus> getClientSynchronizationStatus(long clientId);
+
+  @WebMethod
+  void storeClientSynchronizationStatus(long clientId, FilterResult<SynchronizationStatus> statusList);
 }
