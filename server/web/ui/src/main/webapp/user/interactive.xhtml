@@ -82,9 +82,14 @@
 									</td>
 								</ui:repeat>
 								<td class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
-								    <a4j:commandLink action="#{user.interactiveReportController.setFilterPerson(row.rowHeader)}">
+									<c:if test="#{user.interactiveReportController.rowHeaderLinkVisible}">
+										<a4j:commandLink action="#{user.interactiveReportController.setFilterPerson(row.rowHeader)}">
 										<h:outputText value="#{row.rowAggregate}" converter="timeConverter"/>
 									</a4j:commandLink>
+									</c:if>
+									<c:if test="#{not user.interactiveReportController.rowHeaderLinkVisible}">
+										<h:outputText value="#{row.rowAggregate}" converter="timeConverter"/>
+									</c:if>
 								</td>
 							</tr>
 						</ui:repeat>

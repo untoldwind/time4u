@@ -79,8 +79,7 @@ public class ReportServiceSeam implements IReportServiceLocal
       case DAYINFO:
         queryStr.append("select distinct d from ");
         queryStr.append(DayInfoEntity.class.getName());
-        queryStr
-            .append(" d left outer join fetch d.tags left outer join fetch d.workItems join fetch d.person where d.person.id in (:allowedPersons)");
+        queryStr.append(" d left outer join fetch d.tags left outer join fetch d.workItems join fetch d.person where d.person.id in (:allowedPersons)");
         orderStr = " order by d.date asc";
         if (reportDefinition.isFill()) {
           rowDataIterator = new DayInfoRowDataIteratorWithFill();
@@ -196,7 +195,6 @@ public class ReportServiceSeam implements IReportServiceLocal
     newQueryString.append(" INNER JOIN wi.project ");
     newQueryString.append(" INNER JOIN wi.dayInfo.person.memberOf team ");
     newQueryString.append(" INNER JOIN team.owners owner ");
-
     newQueryString.append("WHERE ");
     newQueryString.append("     wi.dayInfo.date >= :from AND ");
     newQueryString.append("     wi.dayInfo.date <= :until AND ");
@@ -345,9 +343,7 @@ public class ReportServiceSeam implements IReportServiceLocal
     newQueryString.append(" INNER JOIN wi.dayInfo.person.memberOf team ");
     newQueryString.append(" INNER JOIN team.owners owner ");
     newQueryString.append("WHERE ");
-    //    if (mainProjectId != null) {
     newQueryString.append(" wi.task.project.id = :projectId AND ");
-    //    }
     newQueryString.append(" wi.dayInfo.date >= :from AND ");
     newQueryString.append(" wi.dayInfo.date <= :until AND ");
     newQueryString.append(" (owner.id = :userId OR wi.dayInfo.person.id = :userId) ");
@@ -356,9 +352,7 @@ public class ReportServiceSeam implements IReportServiceLocal
     newQueryString.append("     wi.task");
 
     final Query query = m_manager.createQuery(newQueryString.toString());
-    //    if (mainProjectId != null) {
     query.setParameter("projectId", mainProjectId);
-    //    }
     query.setParameter("from", from);
     query.setParameter("until", until);
     query.setParameter("userId", userAccount.getPerson().getId());
