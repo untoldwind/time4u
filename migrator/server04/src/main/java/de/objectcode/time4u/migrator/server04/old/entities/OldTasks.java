@@ -26,7 +26,6 @@ public class OldTasks  implements java.io.Serializable {
      private Long projectId;
      private String description;
      private boolean generic;
-     private Long revision;
 
     public OldTasks() {
     }
@@ -38,14 +37,13 @@ public class OldTasks  implements java.io.Serializable {
         this.deleted = deleted;
         this.generic = generic;
     }
-    public OldTasks(String name, boolean active, boolean deleted, Long projectId, String description, boolean generic, Long revision) {
+    public OldTasks(String name, boolean active, boolean deleted, Long projectId, String description, boolean generic) {
        this.name = name;
        this.active = active;
        this.deleted = deleted;
        this.projectId = projectId;
        this.description = description;
        this.generic = generic;
-       this.revision = revision;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -112,19 +110,6 @@ public class OldTasks  implements java.io.Serializable {
     public void setGeneric(boolean generic) {
         this.generic = generic;
     }
-    
-    @Column(name="revision")
-    public Long getRevision() {
-        return this.revision;
-    }
-    
-    public void setRevision(Long revision) {
-        this.revision = revision;
-    }
-
-
-
-
 }
 
 

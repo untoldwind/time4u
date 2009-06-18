@@ -30,7 +30,6 @@ public class OldPersons  implements java.io.Serializable {
      private String hashedPassword;
      private String email;
      private Date lastSynchronize;
-     private Long revision;
 
     public OldPersons() {
     }
@@ -41,13 +40,12 @@ public class OldPersons  implements java.io.Serializable {
         this.userId = userId;
         this.hashedPassword = hashedPassword;
     }
-    public OldPersons(String name, String userId, String hashedPassword, String email, Date lastSynchronize, Long revision) {
+    public OldPersons(String name, String userId, String hashedPassword, String email, Date lastSynchronize) {
        this.name = name;
        this.userId = userId;
        this.hashedPassword = hashedPassword;
        this.email = email;
        this.lastSynchronize = lastSynchronize;
-       this.revision = revision;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -105,18 +103,6 @@ public class OldPersons  implements java.io.Serializable {
     public void setLastSynchronize(Date lastSynchronize) {
         this.lastSynchronize = lastSynchronize;
     }
-    
-    @Column(name="revision")
-    public Long getRevision() {
-        return this.revision;
-    }
-    
-    public void setRevision(Long revision) {
-        this.revision = revision;
-    }
-
-
-
 
 }
 

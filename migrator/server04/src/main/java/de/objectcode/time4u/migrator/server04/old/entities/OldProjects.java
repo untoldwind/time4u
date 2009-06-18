@@ -25,8 +25,6 @@ public class OldProjects  implements java.io.Serializable {
      private boolean deleted;
      private Long parentId;
      private String description;
-     private Long revision;
-     private String parentKey;
 
     public OldProjects() {
     }
@@ -37,14 +35,12 @@ public class OldProjects  implements java.io.Serializable {
         this.active = active;
         this.deleted = deleted;
     }
-    public OldProjects(String name, boolean active, boolean deleted, Long parentId, String description, Long revision, String parentKey) {
+    public OldProjects(String name, boolean active, boolean deleted, Long parentId, String description) {
        this.name = name;
        this.active = active;
        this.deleted = deleted;
        this.parentId = parentId;
        this.description = description;
-       this.revision = revision;
-       this.parentKey = parentKey;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -102,28 +98,6 @@ public class OldProjects  implements java.io.Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    @Column(name="revision")
-    public Long getRevision() {
-        return this.revision;
-    }
-    
-    public void setRevision(Long revision) {
-        this.revision = revision;
-    }
-    
-    @Column(name="parentKey", length=65535)
-    public String getParentKey() {
-        return this.parentKey;
-    }
-    
-    public void setParentKey(String parentKey) {
-        this.parentKey = parentKey;
-    }
-
-
-
-
 }
 
 

@@ -22,7 +22,6 @@ public class OldTeams  implements java.io.Serializable {
      private Long id;
      private String name;
      private long ownerId;
-     private Long revision;
 
     public OldTeams() {
     }
@@ -31,11 +30,6 @@ public class OldTeams  implements java.io.Serializable {
     public OldTeams(String name, long ownerId) {
         this.name = name;
         this.ownerId = ownerId;
-    }
-    public OldTeams(String name, long ownerId, Long revision) {
-       this.name = name;
-       this.ownerId = ownerId;
-       this.revision = revision;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -66,19 +60,6 @@ public class OldTeams  implements java.io.Serializable {
     public void setOwnerId(long ownerId) {
         this.ownerId = ownerId;
     }
-    
-    @Column(name="revision")
-    public Long getRevision() {
-        return this.revision;
-    }
-    
-    public void setRevision(Long revision) {
-        this.revision = revision;
-    }
-
-
-
-
 }
 
 
