@@ -13,6 +13,7 @@
   <modules>
   	<module>server-ear</module>
   	<module>server-deploy</module>
+        <module>server-rpm</module>
   	<module>client-mac</module>
   	<module>client-win32</module>
   	<module>client-linux-x86</module>
