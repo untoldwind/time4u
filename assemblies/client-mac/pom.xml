@@ -137,7 +137,16 @@
 			<artifactId>icu</artifactId>
 		</dependency>
 	</dependencies>
+	<properties>
+		<osgi.instance.area.default>@user.home/Library/Application Support/Time4UTest</osgi.instance.area.default>
+	</properties>		
 	<profiles>
+		<profile>
+			<id>release</id>
+			<properties>
+				<osgi.instance.area.default>@user.home/Library/Application Support/Time4UBeta</osgi.instance.area.default>
+			</properties>		
+		</profile>
 		<profile>
 			<id>MacOS</id>
 			<activation>

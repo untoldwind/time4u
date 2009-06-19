@@ -137,7 +137,16 @@
 			<artifactId>icu</artifactId>
 		</dependency>
 	</dependencies>
+	<properties>
+		<osgi.instance.area.default>@user.home/.time4uTest</osgi.instance.area.default>
+	</properties>		
 	<profiles>
+		<profile>
+			<id>release</id>
+			<properties>
+				<osgi.instance.area.default>@user.home/.time4u</osgi.instance.area.default>
+			</properties>		
+		</profile>
 		<profile>
 			<id>linux-x86_64</id>
 			<activation>

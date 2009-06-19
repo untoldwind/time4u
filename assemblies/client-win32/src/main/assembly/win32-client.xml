@@ -7,8 +7,18 @@
 		<fileSet>
 			<directory>src/main/launcher</directory>
 			<outputDirectory></outputDirectory>
+			<excludes>
+				<exclude>configuration/config.ini</exclude>
+			</excludes>
 		</fileSet>
 	</fileSets>
+	<files>
+		<file>
+			<source>src/main/launcher/configuration/config.ini</source>
+			<outputDirectory>configuration</outputDirectory>
+			<filtered>true</filtered>
+		</file>
+	</files>
 	<dependencySets>
 		<dependencySet>
 			<outputFileNameMapping>

@@ -7,7 +7,10 @@
 		<fileSet>
 			<directory>src/main/launcher</directory>
 			<outputDirectory></outputDirectory>
-			<excludes><exclude>Time4U.app/Contents/MacOS/Time4U</exclude></excludes>
+			<excludes>
+				<exclude>Time4U.app/Contents/MacOS/Time4U</exclude>
+				<exclude>Time4U.app/Contents/Resources/Java/configuration/config.ini</exclude>
+			</excludes>
 		</fileSet>
 	</fileSets>
 	<files>
@@ -15,6 +18,11 @@
 			<source>src/main/launcher/Time4U.app/Contents/MacOS/Time4U</source>
 			<outputDirectory>Time4U.app/Contents/MacOS</outputDirectory>
 			<fileMode>755</fileMode>
+		</file>
+		<file>
+			<source>src/main/launcher/Time4U.app/Contents/Resources/Java/configuration/config.ini</source>
+			<outputDirectory>Time4U.app/Contents/Resources/Java/configuration</outputDirectory>
+			<filtered>true</filtered>
 		</file>
 	</files>
 	<dependencySets>
