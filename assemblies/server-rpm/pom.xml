@@ -19,7 +19,7 @@
 	</dependencies>
 	<properties>
 		<rpm.version>0.9.9</rpm.version>
-		<rpm.release>1</rpm.release>
+		<rpm.release>${env.SVN_REVISION}</rpm.release>
 	</properties>
 	<build>
 		<outputDirectory>target</outputDirectory>
