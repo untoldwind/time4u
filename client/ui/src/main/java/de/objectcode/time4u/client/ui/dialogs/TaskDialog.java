@@ -63,6 +63,7 @@ public class TaskDialog extends Dialog
       m_task = new Task();
       m_task.setActive(true);
       m_task.setName("");
+      m_task.setTimeContingent(TimeContingent.WORKTIME);
       m_create = true;
     } else {
       m_task = task;
