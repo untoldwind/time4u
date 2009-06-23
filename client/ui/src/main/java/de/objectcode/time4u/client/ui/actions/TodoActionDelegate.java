@@ -1,5 +1,6 @@
 package de.objectcode.time4u.client.ui.actions;
 
+import java.util.Collection;
 import java.util.Date;
 
 import org.eclipse.core.runtime.IAdaptable;
@@ -34,6 +35,7 @@ import de.objectcode.time4u.server.api.data.TodoAssignment;
 import de.objectcode.time4u.server.api.data.TodoGroup;
 import de.objectcode.time4u.server.api.data.TodoState;
 import de.objectcode.time4u.server.api.data.TodoSummary;
+import de.objectcode.time4u.server.api.filter.TodoFilter;
 
 public class TodoActionDelegate implements IWorkbenchWindowActionDelegate, IViewActionDelegate
 {
@@ -123,16 +125,31 @@ public class TodoActionDelegate implements IWorkbenchWindowActionDelegate, IView
       final TodoSummary selection = (TodoSummary) m_selection.getAdapter(TodoSummary.class);
 
       if (selection != null) {
-        final IPreferenceStore store = UIPlugin.getDefault().getPreferenceStore();
-
-        if (store.getBoolean(PreferenceConstants.UI_CONFIRM_TODO_DELETE)) {
-          if (!MessageDialog.openQuestion(m_shellProvider.getShell(), "Todo delete", "Delete Todo '"
-              + selection.getHeader() + "'")) {
-            return;
-          }
-        }
-
         try {
+          if (selection.isGroup()) {
+            final TodoFilter filter = new TodoFilter();
+            filter.setDeleted(false);
+            filter.setGroupId(selection.getId());
+
+            final Collection<TodoSummary> todos = RepositoryFactory.getRepository().getTodoRepository()
+                .getTodoSummaries(filter, false);
+
+            if (todos != null && todos.size() > 0) {
+              MessageDialog.openInformation(m_shellProvider.getShell(), "Todo delete",
+                  "Can't delete todo groups with children");
+
+              return;
+            }
+          }
+          final IPreferenceStore store = UIPlugin.getDefault().getPreferenceStore();
+
+          if (store.getBoolean(PreferenceConstants.UI_CONFIRM_TODO_DELETE)) {
+            if (!MessageDialog.openQuestion(m_shellProvider.getShell(), "Todo delete", "Delete Todo '"
+                + selection.getHeader() + "'")) {
+              return;
+            }
+          }
+
           RepositoryFactory.getRepository().getTodoRepository().deleteTodo(selection);
         } catch (final Exception e) {
           UIPlugin.getDefault().log(e);

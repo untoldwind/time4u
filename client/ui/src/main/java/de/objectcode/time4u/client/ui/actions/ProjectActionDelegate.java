@@ -29,6 +29,7 @@ import de.objectcode.time4u.client.ui.views.ProjectTreeView;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.data.Task;
+import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.filter.ProjectFilter;
 import de.objectcode.time4u.server.api.filter.TaskFilter;
 
@@ -131,7 +132,8 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
           final TaskFilter filter = new TaskFilter();
           filter.setDeleted(false);
           filter.setProject(selectedProject.getId());
-          final Collection<Task> tasks = RepositoryFactory.getRepository().getTaskRepository().getTasks(filter);
+          final Collection<TaskSummary> tasks = RepositoryFactory.getRepository().getTaskRepository().getTaskSummaries(
+              filter);
 
           if (tasks != null && tasks.size() > 0) {
             MessageDialog.openInformation(m_shellProvider.getShell(), "Project delete",
