@@ -26,6 +26,7 @@
 		<file>
 			<source>plugin.properties</source>
 			<outputDirectory>/</outputDirectory>
+			<filtered>true</filtered>
 		</file>
 		<file>
 			<source>product_lg.gif</source>

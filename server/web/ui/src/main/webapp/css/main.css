@@ -173,3 +173,11 @@ tr.reportOdd {
 tr.reportFooter {
 	background-color:#F1F1F1;
 }
+
+#footer {
+	border-top:1px solid #BBBBBB;
+	font-size:8pt;
+	margin-top:10px;
+	padding:10px;
+	text-align:right;
+}

@@ -1,7 +1,7 @@
 Summary: Time4U server Postgres backend
 Name: time4u-server-postgres
-Version: ${rpm.version}
-Release: ${rpm.release}
+Version: ${time4u.version}
+Release: ${buildNumber}
 License: MIT
 Group: Productivity/Networking/Web/Servers
 Source: https://sourceforge.net/projects/time4u/

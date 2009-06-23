@@ -17,10 +17,6 @@
 			<type>tar.bz2</type>
 		</dependency>
 	</dependencies>
-	<properties>
-		<rpm.version>0.9.9</rpm.version>
-		<rpm.release>${env.SVN_REVISION}</rpm.release>
-	</properties>
 	<build>
 		<outputDirectory>target</outputDirectory>
 		<resources>
@@ -41,6 +37,18 @@
 			</resource>
 		</resources>
 		<plugins>
+      		<plugin>
+        		<groupId>org.codehaus.mojo</groupId>
+		        <artifactId>buildnumber-maven-plugin</artifactId>
+		        <executions>
+        			<execution>
+	            		<phase>validate</phase>
+	            		<goals>
+			            	<goal>create</goal>
+	            		</goals>
+          			</execution>
+        		</executions>
+      		</plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>

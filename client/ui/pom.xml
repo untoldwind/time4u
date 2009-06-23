@@ -42,6 +42,18 @@
 	</dependencies>
 	<build>
 		<plugins>
+      		<plugin>
+        		<groupId>org.codehaus.mojo</groupId>
+		        <artifactId>buildnumber-maven-plugin</artifactId>
+		        <executions>
+        			<execution>
+	            		<phase>validate</phase>
+	            		<goals>
+			            	<goal>create</goal>
+	            		</goals>
+          			</execution>
+        		</executions>
+      		</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>

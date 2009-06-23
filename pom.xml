@@ -64,6 +64,9 @@
 			<url>http://download.java.net/maven/2/</url>
 		</repository>
 	</repositories>
+	<properties>
+		<time4u.version>0.9.RC1</time4u.version>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>

@@ -82,4 +82,29 @@
 				<artifactId>freemarker</artifactId>
 				</dependency>
 	</dependencies>
+	<properties>
+		<time4u.release>${env.SVN_REVISION}</time4u.release>
+	</properties>
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+      		<plugin>
+        		<groupId>org.codehaus.mojo</groupId>
+		        <artifactId>buildnumber-maven-plugin</artifactId>
+		        <executions>
+        			<execution>
+	            		<phase>validate</phase>
+	            		<goals>
+			            	<goal>create</goal>
+	            		</goals>
+          			</execution>
+        		</executions>
+      		</plugin>
+    	</plugins>
+	</build>
 </project>
