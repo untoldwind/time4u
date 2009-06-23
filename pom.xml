@@ -22,7 +22,7 @@
 			<name>Sourceforge web site</name>
 			<!--
 				url>sftp://web.sourceforge.net/home/groups/t/ti/time4u/htdocs</url -->
-			<url>file:///Users/junglas/workspaces/w3/time4u-site</url>
+			<url>file:///srv/www/htdocs/time4u-site</url>
 		</site>
 	</distributionManagement>
 	<url>http://time4u.sourceforge.net</url>
@@ -65,7 +65,7 @@
 		</repository>
 	</repositories>
 	<properties>
-		<time4u.version>0.9.RC1</time4u.version>
+		<time4u.version>0.9.9.RC1</time4u.version>
 	</properties>
 	<build>
 		<plugins>
