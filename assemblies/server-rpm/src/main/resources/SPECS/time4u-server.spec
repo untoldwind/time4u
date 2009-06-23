@@ -29,6 +29,7 @@ rm -rf time4u-with-jboss/docs
 tar xjf $RPM_SOURCE_DIR/time4u-assemblies-deploy.tar.bz2
 mv time4u-assemblies-deploy-*/ear/time4u-assemblies-ear.ear time4u-with-jboss/server/time4u/deploy
 mv time4u-assemblies-deploy-*/run-time4u.conf time4u-with-jboss/bin
+cp $RPM_SOURCE_DIR/mail-service.xml time4u-with-jboss/server/time4u/deploy
 mkdir time4u-with-jboss/log
 touch time4u-with-jboss/log/jboss.log
 

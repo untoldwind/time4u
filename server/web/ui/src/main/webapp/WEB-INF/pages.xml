@@ -12,7 +12,7 @@
             </rule>
         </navigation>
     </page>
-    
+        
     <page view-id="/user/*" login-required="true">
     </page>
 

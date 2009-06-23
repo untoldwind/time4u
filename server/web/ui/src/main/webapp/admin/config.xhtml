@@ -15,6 +15,12 @@
 					<h:selectBooleanCheckbox
 						value="#{admin.configuration.autoRegistrationEnabled}" />
 				</s:decorate>
+				<s:decorate template="../templates/decorateTableField.xhtml">
+					<ui:define name="label">Server url/name:
+					</ui:define>
+					<h:inputText
+						value="#{admin.configuration.serverUrl}" />
+				</s:decorate>
 			</table>
 			<tr>
 				<td colspan="3">

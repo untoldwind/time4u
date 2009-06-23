@@ -12,6 +12,8 @@ public interface IAccountServiceLocal
 
   UserAccountEntity getUserAccount(String userId);
 
+  List<UserAccountEntity> findUserAccountsByEmail(final String email);
+
   void changePassword(String hashedPassword);
 
   void changePassword(String userId, String hashedPassword);

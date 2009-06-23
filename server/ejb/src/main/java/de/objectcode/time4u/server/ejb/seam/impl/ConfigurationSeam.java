@@ -2,6 +2,7 @@ package de.objectcode.time4u.server.ejb.seam.impl;
 
 import static de.objectcode.time4u.server.ejb.config.IConfigurationKeys.CONTEXT_SERVER;
 import static de.objectcode.time4u.server.ejb.config.IConfigurationKeys.LOGIN_AUTOREGISTRATION_ENABLED;
+import static de.objectcode.time4u.server.ejb.config.IConfigurationKeys.SERVER_URL;
 
 import javax.ejb.EJB;
 import javax.ejb.Local;
@@ -29,13 +30,13 @@ public class ConfigurationSeam implements IConfigurationLocal
   @EJB
   IConfigurationServiceLocal m_configurationService;
 
-  @Restrict("#{s:hasRole('admin')}")
   public ConfigurationData getConfiguration()
   {
     final ConfigurationData configuration = new ConfigurationData();
 
     configuration.setAutoRegistrationEnabled(m_configurationService.getBooleanValue(CONTEXT_SERVER,
         LOGIN_AUTOREGISTRATION_ENABLED, true));
+    configuration.setServerUrl(m_configurationService.getStringValue(CONTEXT_SERVER, SERVER_URL, "http://localhost"));
 
     return configuration;
   }
@@ -45,5 +46,6 @@ public class ConfigurationSeam implements IConfigurationLocal
   {
     m_configurationService.setBooleanValue(CONTEXT_SERVER, LOGIN_AUTOREGISTRATION_ENABLED, configuration
         .isAutoRegistrationEnabled());
+    m_configurationService.setStringValue(CONTEXT_SERVER, SERVER_URL, configuration.getServerUrl());
   }
 }

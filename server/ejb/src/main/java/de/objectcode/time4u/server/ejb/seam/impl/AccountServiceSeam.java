@@ -75,10 +75,20 @@ public class AccountServiceSeam implements IAccountServiceLocal
     m_userRoles = query.getResultList();
   }
 
-  @Restrict("#{s:hasRole('admin')}")
   public UserAccountEntity getUserAccount(final String userId)
   {
     return m_manager.find(UserAccountEntity.class, userId);
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<UserAccountEntity> findUserAccountsByEmail(final String email)
+  {
+    final Query query = m_manager.createQuery("from " + UserAccountEntity.class.getName()
+        + " a where a.person.email = :email");
+
+    query.setParameter("email", email);
+
+    return query.getResultList();
   }
 
   @Restrict("#{s:hasRole('user')}")
