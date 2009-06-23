@@ -2,7 +2,6 @@ package de.objectcode.time4u.server.web.ui.admin;
 
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Begin;
-import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
@@ -19,14 +18,8 @@ public class ConfigurationController
   @In("Configuration")
   IConfigurationLocal m_configuration;
 
-  @In("admin.configuration")
+  @In("user.configuration")
   ConfigurationData m_configurationData;
-
-  @Factory(autoCreate = true, value = "admin.configuration")
-  public ConfigurationData initConfiguration()
-  {
-    return m_configuration.getConfiguration();
-  }
 
   @Begin(join = true)
   public String enter()

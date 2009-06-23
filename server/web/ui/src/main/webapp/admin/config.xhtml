@@ -13,13 +13,19 @@
 					<ui:define name="label">Enable automatic registration
 					</ui:define>
 					<h:selectBooleanCheckbox
-						value="#{admin.configuration.autoRegistrationEnabled}" />
+						value="#{user.configuration.autoRegistrationEnabled}" />
+				</s:decorate>
+				<s:decorate template="../templates/decorateTableField.xhtml">
+					<ui:define name="label">Enable self reset password
+					</ui:define>
+					<h:selectBooleanCheckbox
+						value="#{user.configuration.selfResetPasswordEnabled}" />
 				</s:decorate>
 				<s:decorate template="../templates/decorateTableField.xhtml">
 					<ui:define name="label">Server url/name:
 					</ui:define>
 					<h:inputText
-						value="#{admin.configuration.serverUrl}" />
+						value="#{user.configuration.serverUrl}" />
 				</s:decorate>
 			</table>
 			<tr>

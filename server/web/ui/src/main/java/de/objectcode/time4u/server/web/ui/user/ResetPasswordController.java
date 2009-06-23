@@ -17,8 +17,8 @@ import org.jboss.seam.annotations.web.RequestParameter;
 import org.jboss.seam.faces.Renderer;
 import org.jboss.seam.international.StatusMessages;
 
+import de.objectcode.time4u.server.ejb.seam.api.ConfigurationData;
 import de.objectcode.time4u.server.ejb.seam.api.IAccountServiceLocal;
-import de.objectcode.time4u.server.ejb.seam.api.IConfigurationLocal;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 import de.objectcode.time4u.server.utils.Base64;
@@ -35,8 +35,8 @@ public class ResetPasswordController
 
   private static final RequestValidator REQUEST_VALIDATOR = new RequestValidator();
 
-  @In("Configuration")
-  IConfigurationLocal m_configuration;
+  @In("user.configuration")
+  ConfigurationData m_configurationData;
 
   @In("AccountService")
   IAccountServiceLocal m_accountService;
@@ -141,7 +141,7 @@ public class ResetPasswordController
     m_person = accounts.get(0).getPerson();
     m_accounts = new ArrayList<AccountResetData>();
 
-    final String serverUrl = m_configuration.getConfiguration().getServerUrl();
+    final String serverUrl = m_configurationData.getServerUrl();
 
     for (final UserAccountEntity account : accounts) {
       try {

@@ -7,7 +7,7 @@ public class ConfigurationData implements Serializable
   private static final long serialVersionUID = -9175728017978463204L;
 
   boolean autoRegistrationEnabled;
-  boolean passwordResetEnabled;
+  boolean selfResetPasswordEnabled;
   String serverUrl;
 
   public boolean isAutoRegistrationEnabled()
@@ -18,6 +18,16 @@ public class ConfigurationData implements Serializable
   public void setAutoRegistrationEnabled(final boolean autoRegistrationEnabled)
   {
     this.autoRegistrationEnabled = autoRegistrationEnabled;
+  }
+
+  public boolean isSelfResetPasswordEnabled()
+  {
+    return selfResetPasswordEnabled;
+  }
+
+  public void setSelfResetPasswordEnabled(final boolean selfResetPasswordEnabled)
+  {
+    this.selfResetPasswordEnabled = selfResetPasswordEnabled;
   }
 
   public String getServerUrl()

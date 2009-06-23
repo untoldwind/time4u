@@ -27,7 +27,7 @@
 					<tr>
 						<td colspan="2" align="right">
 							<h:commandButton value="Login" action="#{identity.login}" />
-							<h:commandButton value="Reset password" action="#{user.resetPasswordController.enter}"/> 
+							<h:commandButton value="Reset password" action="#{user.resetPasswordController.enter}" rendered="#{user.configuration.selfResetPasswordEnabled}"/> 
 						</td>
 					</tr>
 				</table>
