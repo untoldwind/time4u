@@ -108,11 +108,10 @@ public class TaskActionDelegate implements IWorkbenchWindowActionDelegate, IView
         } else {
           final IPreferenceStore store = UIPlugin.getDefault().getPreferenceStore();
 
-          if (store.getBoolean(PreferenceConstants.UI_CONFIRM_TASK_DELETE)) {
-            if (!MessageDialog.openQuestion(m_shellProvider.getShell(), "Task delete", "Delete Task '"
-                + selectedTask.getName() + "'")) {
-              return;
-            }
+          if (store.getBoolean(PreferenceConstants.UI_CONFIRM_TASK_DELETE)
+              && !MessageDialog.openQuestion(m_shellProvider.getShell(), "Task delete", "Delete Task '"
+                  + selectedTask.getName() + "'")) {
+            return;
           }
         }
 
@@ -122,10 +121,8 @@ public class TaskActionDelegate implements IWorkbenchWindowActionDelegate, IView
           UIPlugin.getDefault().log(e);
         }
       }
-    } else if ("de.objectcode.time4u.client.task.ui.onlyActive".equals(id)) {
-      if (m_view != null) {
-        m_view.setShowOnlyActive(action.isChecked());
-      }
+    } else if ("de.objectcode.time4u.client.task.ui.onlyActive".equals(id) && m_view != null) {
+      m_view.setShowOnlyActive(action.isChecked());
     }
   }
 
@@ -144,10 +141,8 @@ public class TaskActionDelegate implements IWorkbenchWindowActionDelegate, IView
       }
     }
 
-    if ("de.objectcode.time4u.client.task.ui.onlyActive".equals(action.getId())) {
-      if (m_view != null) {
-        action.setChecked(m_view.isShowOnlyActive());
-      }
+    if ("de.objectcode.time4u.client.task.ui.onlyActive".equals(action.getId()) && m_view != null) {
+      action.setChecked(m_view.isShowOnlyActive());
     }
   }
 }

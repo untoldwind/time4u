@@ -32,6 +32,11 @@ public interface IPersonService
    * 
    * Note: It is okay if there is already a client with the same id for the current user (reregister), but it is not
    * okay if there is already the same client id for a different person.
+   * 
+   * @param clientId
+   *          The identifier of the client
+   * 
+   * @return <tt>true</tt> if registration of the client was successful
    */
   @WebMethod
   boolean registerClient(long clientId);
@@ -42,8 +47,6 @@ public interface IPersonService
    * @param filter
    *          The filter condition
    * @return A tasks matching <tt>filter</tt>
-   * @throws RepositoryException
-   *           on error
    */
   @WebMethod
   FilterResult<Person> getPersons(PersonFilter filter);
@@ -54,14 +57,12 @@ public interface IPersonService
    * @param filter
    *          The filter condition
    * @return A tasks matching <tt>filter</tt>
-   * @throws RepositoryException
-   *           on error
    */
   @WebMethod
   FilterResult<PersonSummary> getPersonSummaries(PersonFilter filter);
 
   /**
-   * Get a person by its identifier
+   * Get a person by its identifier.
    * 
    * @param personId
    *          The identifier of the person

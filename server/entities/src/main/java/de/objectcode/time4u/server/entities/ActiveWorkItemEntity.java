@@ -12,15 +12,20 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+/**
+ * Stores the currently active workitem of a person.
+ * 
+ * @author junglas
+ */
 @Entity
 @Table(name = "T4U_ACTIVE_WORKITEMS")
 public class ActiveWorkItemEntity
 {
   /** Primary key. */
   private String m_id;
-  /** Revision number (increased every time something has changed) */
+  /** Revision number (increased every time something has changed). */
   private long m_revision;
-  /** Client id of the last modification */
+  /** Client id of the last modification. */
   private long m_lastModifiedByClient;
   private PersonEntity m_person;
   private WorkItemEntity m_workItem;
@@ -32,6 +37,16 @@ public class ActiveWorkItemEntity
   {
   }
 
+  /**
+   * Standard constructor.
+   * 
+   * @param revision
+   *          The revision number
+   * @param person
+   *          The person the active workitem belongs to
+   * @param workItem
+   *          The active workitem
+   */
   public ActiveWorkItemEntity(final long revision, final PersonEntity person, final WorkItemEntity workItem)
   {
     m_person = person;
@@ -41,7 +56,9 @@ public class ActiveWorkItemEntity
 
   @Id
   @GeneratedValue(generator = "PERSON_ID")
-  @GenericGenerator(name = "PERSON_ID", strategy = "foreign", parameters = { @Parameter(name = "property", value = "person") })
+  @GenericGenerator(name = "PERSON_ID", strategy = "foreign", parameters = {
+    @Parameter(name = "property", value = "person")
+  })
   public String getId()
   {
     return m_id;

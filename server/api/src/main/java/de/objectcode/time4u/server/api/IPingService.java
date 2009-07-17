@@ -22,8 +22,6 @@ public interface IPingService
    * Ping the server.
    * 
    * @return Some basic information about the server.
-   * @throws ServiceException
-   *           on error
    */
   @WebMethod
   PingResult ping();

@@ -154,11 +154,10 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
         } else {
           final IPreferenceStore store = UIPlugin.getDefault().getPreferenceStore();
 
-          if (store.getBoolean(PreferenceConstants.UI_CONFIRM_PROJECT_DELETE)) {
-            if (!MessageDialog.openQuestion(m_shellProvider.getShell(), "Project delete", "Delete Project '"
-                + selectedProject.getName() + "'")) {
-              return;
-            }
+          if (store.getBoolean(PreferenceConstants.UI_CONFIRM_PROJECT_DELETE)
+              && !MessageDialog.openQuestion(m_shellProvider.getShell(), "Project delete", "Delete Project '"
+                  + selectedProject.getName() + "'")) {
+            return;
           }
         }
 
@@ -168,10 +167,8 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
           UIPlugin.getDefault().log(e);
         }
       }
-    } else if ("de.objectcode.time4u.client.ui.project.onlyActive".equals(id)) {
-      if (m_view != null) {
-        m_view.setShowOnlyActive(action.isChecked());
-      }
+    } else if ("de.objectcode.time4u.client.ui.project.onlyActive".equals(id) && m_view != null) {
+      m_view.setShowOnlyActive(action.isChecked());
     }
   }
 
@@ -190,10 +187,8 @@ public class ProjectActionDelegate implements IWorkbenchWindowActionDelegate, IV
       }
     }
 
-    if ("de.objectcode.time4u.client.ui.project.onlyActive".equals(action.getId())) {
-      if (m_view != null) {
-        action.setChecked(m_view.isShowOnlyActive());
-      }
+    if ("de.objectcode.time4u.client.ui.project.onlyActive".equals(action.getId()) && m_view != null) {
+      action.setChecked(m_view.isShowOnlyActive());
     }
   }
 

@@ -35,14 +35,14 @@ import de.objectcode.time4u.server.api.data.TodoSummary;
 import de.objectcode.time4u.server.api.data.WorkItem;
 
 /**
- * The activator class controls the plug-in life cycle
+ * The activator class controls the plug-in life cycle.
  */
 public class UIPlugin extends AbstractUIPlugin
 {
-  /** The plug-in ID */
+  /** The plug-in ID. */
   public static final String PLUGIN_ID = "de.objectcode.time4u.client.ui";
 
-  /** The shared instance */
+  /** The shared instance. */
   private static UIPlugin plugin;
 
   private ResourceBundle m_resourceBundle;
@@ -53,13 +53,15 @@ public class UIPlugin extends AbstractUIPlugin
   private ActiveWorkItemJob m_activeWorkItemJob;
 
   /**
-   * The constructor
+   * The constructor.
    */
   public UIPlugin()
   {
   }
 
   /**
+   * {@inheritDoc}
+   * 
    * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
    */
   @Override
@@ -73,6 +75,8 @@ public class UIPlugin extends AbstractUIPlugin
   }
 
   /**
+   * {@inheritDoc}
+   * 
    * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
    */
   @Override

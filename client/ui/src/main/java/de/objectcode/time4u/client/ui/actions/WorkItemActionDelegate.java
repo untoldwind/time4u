@@ -106,12 +106,11 @@ public class WorkItemActionDelegate implements IWorkbenchWindowActionDelegate, I
       if (selectedWorkItem != null) {
         final IPreferenceStore store = UIPlugin.getDefault().getPreferenceStore();
 
-        if (store.getBoolean(PreferenceConstants.UI_CONFIRM_WORKITEM_DELETE)) {
-          if (!MessageDialog.openQuestion(m_view.getSite().getShell(), "WorkItem delete", "Delete WorkItem "
-              + DateFormat.format(selectedWorkItem.getDay()) + " " + TimeFormat.format(selectedWorkItem.getBegin())
-              + " - " + TimeFormat.format(selectedWorkItem.getEnd()) + " '" + selectedWorkItem.getComment() + "'")) {
-            return;
-          }
+        if (store.getBoolean(PreferenceConstants.UI_CONFIRM_WORKITEM_DELETE)
+            && !MessageDialog.openQuestion(m_view.getSite().getShell(), "WorkItem delete", "Delete WorkItem "
+                + DateFormat.format(selectedWorkItem.getDay()) + " " + TimeFormat.format(selectedWorkItem.getBegin())
+                + " - " + TimeFormat.format(selectedWorkItem.getEnd()) + " '" + selectedWorkItem.getComment() + "'")) {
+          return;
         }
         try {
           RepositoryFactory.getRepository().getWorkItemRepository().deleteWorkItem(selectedWorkItem, true);

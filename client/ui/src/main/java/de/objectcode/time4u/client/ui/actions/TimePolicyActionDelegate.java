@@ -56,15 +56,13 @@ public class TimePolicyActionDelegate implements IWorkbenchWindowActionDelegate,
       final TimePolicyDialog dialog = new TimePolicyDialog(m_shellProvider, RepositoryFactory.getRepository()
           .getWorkItemRepository());
 
-      if (dialog.open() == TimePolicyDialog.OK) {
-      }
+      dialog.open();
     } else if ("de.objectcode.time4u.client.ui.timepolicy.override".equals(id)) {
       if (selectedDay != null) {
         final TimePolicyOverrideDialog dialog = new TimePolicyOverrideDialog(m_shellProvider, RepositoryFactory
             .getRepository().getWorkItemRepository(), selectedDay);
 
-        if (dialog.open() == TimePolicyOverrideDialog.OK) {
-        }
+        dialog.open();
       }
     } else if ("de.objectcode.time4u.client.ui.timepolicy.markregular".equals(id)) {
       if (selectedDay != null) {

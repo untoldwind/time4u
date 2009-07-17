@@ -143,11 +143,10 @@ public class TodoActionDelegate implements IWorkbenchWindowActionDelegate, IView
           }
           final IPreferenceStore store = UIPlugin.getDefault().getPreferenceStore();
 
-          if (store.getBoolean(PreferenceConstants.UI_CONFIRM_TODO_DELETE)) {
-            if (!MessageDialog.openQuestion(m_shellProvider.getShell(), "Todo delete", "Delete Todo '"
-                + selection.getHeader() + "'")) {
-              return;
-            }
+          if (store.getBoolean(PreferenceConstants.UI_CONFIRM_TODO_DELETE)
+              && !MessageDialog.openQuestion(m_shellProvider.getShell(), "Todo delete", "Delete Todo '"
+                  + selection.getHeader() + "'")) {
+            return;
           }
 
           RepositoryFactory.getRepository().getTodoRepository().deleteTodo(selection);

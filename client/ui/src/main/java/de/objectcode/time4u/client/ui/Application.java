@@ -10,12 +10,14 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * This class controls all aspects of the application's execution
+ * This class controls all aspects of the application's execution.
  */
 public class Application implements IApplication
 {
 
   /**
+   * {@inheritDoc}
+   * 
    * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
    */
   public Object start(final IApplicationContext context) throws Exception
@@ -42,6 +44,8 @@ public class Application implements IApplication
   }
 
   /**
+   * {@inheritDoc}
+   * 
    * @see org.eclipse.equinox.app.IApplication#stop()
    */
   public void stop()
