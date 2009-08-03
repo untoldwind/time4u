@@ -34,16 +34,34 @@ import de.objectcode.time4u.server.web.ui.converter.TimestampConverter;
 @Scope(ScopeType.CONVERSATION)
 public class InteractiveReportController implements Serializable
 {
-  private enum ReportColumnType
+  private enum ReportColumnType 
   {
-    PROJECT,
-    TASK;
+    PROJECT("Project"),
+    TASK("Task");
+    
+    private String label;
+    private ReportColumnType(String label) {
+      this.label = label;
+    }
+    
+    private String getLabel() {
+      return label;
+    }
   }
 
   private enum ReportRowType
   {
-    TEAM,
-    PERSON;
+    TEAM("Team"),
+    PERSON("Person");
+    
+    private String label;
+    private ReportRowType(String label) {
+      this.label = label;
+    }
+    
+    private String getLabel() {
+      return label;
+    }
   }
 
   private static final long serialVersionUID = -7166535296179928941L;
@@ -232,6 +250,14 @@ public class InteractiveReportController implements Serializable
   public boolean isColumnHeaderLinkVisible()
   {
     return m_columnType == ReportColumnType.PROJECT;
+  }
+  
+  public String getColumnTypeLabel() {
+    return m_columnType.getLabel();
+  }
+  
+  public String getRowTypeLabel() {
+    return m_rowType.getLabel();
   }
 
 }

@@ -22,8 +22,14 @@
 					<a4j:commandButton value="1 month &gt;&gt;" action="#{user.interactiveReportController.forward1Month}"/>
 				</h:panelGrid>
 				<h:panelGrid columns="2">
-					<a4j:commandButton value="Switch Project/Task View" action="#{user.interactiveReportController.switchColumnType}"/>
-					<a4j:commandButton value="Switch Team/Person View" action="#{user.interactiveReportController.switchRowType}"/>
+					<s:div>
+						<h:outputText value="Columns: #{user.interactiveReportController.columnTypeLabel}" />
+						<a4j:commandButton value="switch" action="#{user.interactiveReportController.switchColumnType}"/>
+					</s:div>
+					<s:div>
+						<h:outputText value="Rows: #{user.interactiveReportController.rowTypeLabel}" />
+						<a4j:commandButton value="switch" action="#{user.interactiveReportController.switchRowType}"/>
+					</s:div>
 				</h:panelGrid>
 				<h:panelGrid columns="2" rendered="#{user.interactiveFilter.projectStack.size() > 0}">
 					<h:outputLabel value="Project:"/>
