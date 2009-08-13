@@ -1,9 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.objectcode.time4u</groupId>
 	<artifactId>time4u</artifactId>
-	<version>0.9.9-SNAPSHOT</version>
+	<version>0.9.9.rc1</version>
 	<packaging>pom</packaging>
 	<name>time4u</name>
 	<modules>
@@ -13,17 +12,16 @@
 		<module>migrator</module>
 	</modules>
 	<scm>
-		<connection>scm:svn:https://time4u.svn.sourceforge.net/svnroot/time4u/trunk</connection>
-		<developerConnection>scm:svn:https://time4u.svn.sourceforge.net/svnroot/time4u/trunk</developerConnection>
-		<url>http://time4u.svn.sourceforge.net/viewvc/time4u/trunk</url>
+		<connection>scm:svn:https://time4u.svn.sourceforge.net/svnroot/time4u/tags/time4u-0.9.9.rc1</connection>
+		<developerConnection>scm:svn:https://time4u.svn.sourceforge.net/svnroot/time4u/tags/time4u-0.9.9.rc1</developerConnection>
+		<url>http://time4u.svn.sourceforge.net/viewvc/time4u/tags/time4u-0.9.9.rc1</url>
 	</scm>
 	<distributionManagement>
 		<site>
 			<id>time4u-sourceforge</id>
 			<name>Sourceforge web site</name>
 			<!--
-				url>sftp://web.sourceforge.net/home/groups/t/ti/time4u/htdocs</url
-			-->
+				url>sftp://web.sourceforge.net/home/groups/t/ti/time4u/htdocs</url -->
 			<url>file:///srv/www/htdocs/time4u-site</url>
 		</site>
 	</distributionManagement>
