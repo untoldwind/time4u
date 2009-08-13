@@ -64,7 +64,7 @@
    </plugins>
 
    <features>
-      <feature id="de.objectcode.time4u.client.feature" version="0.9.9"/>
+      <feature id="de.objectcode.time4u.client.feature" version="0.9.9.rc2"/>
       <feature id="org.eclipse.rcp" version="3.4.200.R342_v20090122-989JESTEbig-SVaL8UJHcYBr4A63"/>
    </features>
 
