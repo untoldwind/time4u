@@ -17,6 +17,12 @@ server to create billings, performance reports etc.
  Please note: Time4U is NOT intended to spy on employees! Every user is responsible to track the correct times with the client and can change (or manipulate) his/her data in any way.
 The intention of this software is to get rid of cumbersome time sheets (either on paper or electronically) or at least help to create them automatically.
 
+* Wiki / Bugtracker / Feature Requests / ...
+
+ Since Sourceforge eventually offers a hosted Trac we are migrating all Tickets to it.
+ 
+ Please use: {{{http://sourceforge.net/apps/trac/time4u/}Time4U Trac}} for all bug reports, feature requests and additional information.
+
 * Sourceforge
 
  This project is hosted on Sourceforge.net

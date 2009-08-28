@@ -12,7 +12,7 @@
 			<item name="Client Installation" href="/install/client.html"/>
 			<item name="Server Installation" href="/install/server.html"/>
 		</item>
-		<item name="Wiki" href="http://apps.sourceforge.net/mediawiki/time4u"/>
+		<item name="Wiki/Trac" href="http://sourceforge.net/apps/trac/time4u"/>
     </menu>
     <menu name="Development">
     	<item name="Getting started (win32)" href="/development/gettingstarted_win32.html"/>    	
