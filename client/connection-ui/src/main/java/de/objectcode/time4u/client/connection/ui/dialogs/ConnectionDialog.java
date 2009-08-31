@@ -4,6 +4,9 @@ import java.util.HashMap;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -20,19 +23,27 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 
+import de.objectcode.time4u.client.connection.ui.ConnectionUIPlugin;
+import de.objectcode.time4u.client.store.api.RepositoryException;
+import de.objectcode.time4u.client.store.api.RepositoryFactory;
+import de.objectcode.time4u.client.ui.controls.ComboTreeViewer;
+import de.objectcode.time4u.client.ui.provider.ProjectContentProvider;
+import de.objectcode.time4u.client.ui.provider.ProjectLabelProvider;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.data.ServerConnection;
 
 public class ConnectionDialog extends Dialog
 {
-  Text m_nameText;
-  Text m_urlText;
-  Text m_userIdText;
-  Text m_passwordText;
-  Text m_passwordConfirmText;
-  Spinner m_synchronizeItervalSpinner;
+  private Text m_nameText;
+  private Text m_urlText;
+  private Text m_userIdText;
+  private Text m_passwordText;
+  private Text m_passwordConfirmText;
+  private Spinner m_synchronizeItervalSpinner;
+  private ComboTreeViewer m_rootProjectTreeViewer;
 
-  ServerConnection m_serverConnection;
-  boolean m_create;
+  private ServerConnection m_serverConnection;
+  private boolean m_create;
 
   public ConnectionDialog(final IShellProvider shellProvider)
   {
@@ -161,6 +172,22 @@ public class ConnectionDialog extends Dialog
     m_synchronizeItervalSpinner.setIncrement(30);
     m_synchronizeItervalSpinner.setValues(m_serverConnection.getSynchronizeInterval() / 60, 0, 120, 0, 1, 5);
 
+    final Label rootProjectLabel = new Label(root, SWT.NONE);
+    rootProjectLabel.setText("Root project");
+    m_rootProjectTreeViewer = new ComboTreeViewer(root, SWT.BORDER | SWT.DROP_DOWN);
+    m_rootProjectTreeViewer.setContentProvider(new ProjectContentProvider(RepositoryFactory.getRepository()
+        .getProjectRepository(), false, true));
+    m_rootProjectTreeViewer.setLabelProvider(new ProjectLabelProvider());
+    m_rootProjectTreeViewer.setInput(new Object());
+    m_rootProjectTreeViewer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    try {
+      m_rootProjectTreeViewer.setSelection(new StructuredSelection(
+          m_serverConnection.getRootProjectId() == null ? ProjectContentProvider.ROOT : RepositoryFactory
+              .getRepository().getProjectRepository().getProjectSummary(m_serverConnection.getRootProjectId())));
+    } catch (final RepositoryException e) {
+      ConnectionUIPlugin.getDefault().log(e);
+    }
+
     return composite;
   }
 
@@ -174,6 +201,16 @@ public class ConnectionDialog extends Dialog
       m_serverConnection.getCredentials().put("password", m_passwordText.getText());
     }
     m_serverConnection.setSynchronizeInterval(m_synchronizeItervalSpinner.getSelection() * 60);
+    final ISelection rootProjectSelection = m_rootProjectTreeViewer.getSelection();
+
+    if (rootProjectSelection != null && rootProjectSelection instanceof IStructuredSelection
+        && ((IStructuredSelection) rootProjectSelection).getFirstElement() != null
+        && ((IStructuredSelection) rootProjectSelection).getFirstElement() instanceof ProjectSummary) {
+      m_serverConnection.setRootProjectId(((ProjectSummary) ((IStructuredSelection) rootProjectSelection)
+          .getFirstElement()).getId());
+    } else {
+      m_serverConnection.setRootProjectId(null);
+    }
 
     super.okPressed();
   }

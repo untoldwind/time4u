@@ -20,13 +20,13 @@ import de.objectcode.time4u.server.api.data.TimePolicy;
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "kind", length = 1)
 public abstract class TimePolicyEntity
 {
-  /** Primary key */
+  /** Primary key. */
   private String m_id;
-  /** Revision number (increased every time something has changed) */
+  /** Revision number (increased every time something has changed). */
   private long m_revision;
-  /** Client id of the last modification */
+  /** Client id of the last modification. */
   private long m_lastModifiedByClient;
-  /** Flag if the timepolicy is deleted */
+  /** Flag if the timepolicy is deleted. */
   private boolean m_deleted;
   /** The person the time policy belongs too. */
   private PersonEntity m_person;
@@ -123,6 +123,12 @@ public abstract class TimePolicyEntity
     m_validUntil = validUntil;
   }
 
+  /**
+   * Write data to DTO.
+   * 
+   * @param status
+   *          The DTO.
+   */
   public void toDTO(final TimePolicy timePolicy)
   {
     timePolicy.setId(m_id);

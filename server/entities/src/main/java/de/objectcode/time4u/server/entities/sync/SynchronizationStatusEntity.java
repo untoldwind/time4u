@@ -18,10 +18,11 @@ import de.objectcode.time4u.server.api.data.SynchronizationStatus;
 
 @Entity
 @Table(name = "T4U_SYNCHRONIZATIONSTATUS", uniqueConstraints = @UniqueConstraint(columnNames = {
-    "server_connection_id", "entityType" }))
+    "server_connection_id", "entityType"
+}))
 public class SynchronizationStatusEntity
 {
-  /** Primary key */
+  /** Primary key. */
   private long m_id;
   private ServerConnectionEntity m_serverConnection;
   private EntityType m_entityType;
@@ -30,7 +31,9 @@ public class SynchronizationStatusEntity
 
   @Id
   @GeneratedValue(generator = "SEQ_T4U_SYNCHRONIZATIONSTATUS")
-  @GenericGenerator(name = "SEQ_T4U_SYNCHRONIZATIONSTATUS", strategy = "native", parameters = @Parameter(name = "sequence", value = "SEQ_T4U_SYNCHRONIZATIONSTATUS"))
+  @GenericGenerator(name = "SEQ_T4U_SYNCHRONIZATIONSTATUS", strategy = "native", parameters = {
+    @Parameter(name = "sequence", value = "SEQ_T4U_SYNCHRONIZATIONSTATUS")
+  })
   public long getId()
   {
     return m_id;
@@ -55,7 +58,8 @@ public class SynchronizationStatusEntity
 
   @Type(type = "de.objectcode.time4u.server.entities.util.GenericEnumUserType", parameters = {
       @Parameter(name = "enumClass", value = "de.objectcode.time4u.server.api.data.EntityType"),
-      @Parameter(name = "identifierMethod", value = "getCode"), @Parameter(name = "valueOfMethod", value = "forCode") })
+      @Parameter(name = "identifierMethod", value = "getCode"), @Parameter(name = "valueOfMethod", value = "forCode")
+  })
   @Column(name = "entityType", nullable = false)
   public EntityType getEntityType()
   {
@@ -87,6 +91,12 @@ public class SynchronizationStatusEntity
     m_lastReceivedRevision = lastReceivedRevision;
   }
 
+  /**
+   * Write data to DTO.
+   * 
+   * @param status
+   *          The DTO.
+   */
   public void toDTO(final SynchronizationStatus status)
   {
     status.setEntityType(m_entityType);

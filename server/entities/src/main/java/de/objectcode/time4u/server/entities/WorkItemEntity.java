@@ -28,7 +28,7 @@ public class WorkItemEntity
   private DayInfoEntity m_dayInfo;
   /** Time the workitem begun (in seconds starting from midnight 00:00:00). */
   private int m_begin;
-  /** Time the workitem ended (in seconds starting from midnight 00:00:00) */
+  /** Time the workitem ended (in seconds starting from midnight 00:00:00). */
   private int m_end;
   /** Workitem comment. */
   private String m_comment;
@@ -38,7 +38,7 @@ public class WorkItemEntity
   private ProjectEntity m_project;
   /** The task the workitem belongs to. */
   private TaskEntity m_task;
-  /** The todo the workitem belongs to (optional) */
+  /** The todo the workitem belongs to (optional). */
   private TodoEntity m_todo;
 
   /**
@@ -179,6 +179,12 @@ public class WorkItemEntity
     return m_id.equals(castObj.m_id);
   }
 
+  /**
+   * Write data to DTO.
+   * 
+   * @param status
+   *          The DTO.
+   */
   public void toDTO(final WorkItem workItem)
   {
     workItem.setId(m_id);

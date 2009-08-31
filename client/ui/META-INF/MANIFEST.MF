@@ -11,3 +11,5 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
+Export-Package: de.objectcode.time4u.client.ui.controls,
+ de.objectcode.time4u.client.ui.provider

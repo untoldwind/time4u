@@ -18,8 +18,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import de.objectcode.time4u.server.api.data.ServerConnection;
 import de.objectcode.time4u.server.api.data.EntityType;
+import de.objectcode.time4u.server.api.data.ServerConnection;
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 import de.objectcode.time4u.server.utils.IKeyChainEncoder;
@@ -35,19 +35,19 @@ import de.objectcode.time4u.server.utils.IKeyChainEncoder;
 @Table(name = "T4U_SERVERS")
 public class ServerConnectionEntity
 {
-  /** Primary key */
+  /** Primary key. */
   private long m_id;
-  /** Root project to be synchronized */
+  /** Root project to be synchronized. */
   private ProjectEntity m_rootProject;
-  /** Logical name of the server */
+  /** Logical name of the server. */
   private String m_name;
-  /** Connection url */
+  /** Connection url. */
   private String m_url;
-  /** Server credentials */
+  /** Server credentials. */
   private String m_credentials;
-  /** Timestamp of the last synchronization */
+  /** Timestamp of the last synchronization. */
   private Date m_lastSynchronize;
-  /** Synchronize every x seconds (0 = never) */
+  /** Synchronize every x seconds (0 = never). */
   private int m_synchronizeInterval;
 
   private Map<EntityType, SynchronizationStatusEntity> m_synchronizationStatus;
@@ -142,6 +142,14 @@ public class ServerConnectionEntity
     m_synchronizationStatus = synchronizationStatus;
   }
 
+  /**
+   * Write data to DTO.
+   * 
+   * @param serverConnection
+   *          The DTO.
+   * @param encoder
+   *          The encoder for stored passwords
+   */
   public void toDTO(final ServerConnection serverConnection, final IKeyChainEncoder encoder)
   {
     serverConnection.setId(m_id);

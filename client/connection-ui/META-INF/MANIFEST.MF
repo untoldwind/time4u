@@ -8,7 +8,8 @@ Bundle-Vendor: objectcode.de
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  de.objectcode.time4u.client.store,
- de.objectcode.time4u.client.connection
+ de.objectcode.time4u.client.connection,
+ de.objectcode.time4u.client.ui;bundle-version="0.9.9"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin

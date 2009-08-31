@@ -44,6 +44,11 @@
 			<artifactId>connection</artifactId>
 			<version>${pom.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>de.objectcode.time4u.client</groupId>
+			<artifactId>ui</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

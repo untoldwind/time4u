@@ -20,8 +20,17 @@ public class ProjectContentProvider implements IStructuredContentProvider, ITree
   private final boolean m_onlyActive;
   private final boolean m_includeRoot;
 
-  public final static String ROOT = "[Root]";
+  /** Display string for the non-existent root project. */
+  public static final String ROOT = "[Root]";
 
+  /**
+   * Create a new ProjectContentProvider.
+   * 
+   * @param projectRepository
+   *          The project repository
+   * @param onlyActive
+   *          Show only active projects
+   */
   public ProjectContentProvider(final IProjectRepository projectRepository, final boolean onlyActive)
   {
     m_projectRepository = projectRepository;
@@ -29,6 +38,16 @@ public class ProjectContentProvider implements IStructuredContentProvider, ITree
     m_includeRoot = false;
   }
 
+  /**
+   * Create a new ProjectContentProvider.
+   * 
+   * @param projectRepository
+   *          The project repository
+   * @param onlyActive
+   *          Show only active projects
+   * @param includeRoot
+   *          Also display the root project as allowed selection
+   */
   public ProjectContentProvider(final IProjectRepository projectRepository, final boolean onlyActive,
       final boolean includeRoot)
   {
@@ -97,7 +116,9 @@ public class ProjectContentProvider implements IStructuredContentProvider, ITree
   public Object[] getElements(final Object inputElement)
   {
     if (m_includeRoot) {
-      return new Object[] { ROOT };
+      return new Object[] {
+        ROOT
+      };
     }
     return getChildren(inputElement);
   }
