@@ -15,9 +15,9 @@ public class TodoSummary implements ISynchronizableData
   private String m_id;
   /** Revision number. */
   private long m_revision;
-  /** Client id of the last modification */
+  /** Client id of the last modification. */
   private long m_lastModifiedByClient;
-  /** Flag if the todo is deleted */
+  /** Flag if the todo is deleted. */
   private boolean m_deleted;
   /** Todo header/title. */
   private String m_header;
@@ -27,7 +27,7 @@ public class TodoSummary implements ISynchronizableData
   private String m_reporterId;
   /** Flag if this is a summary of a todo group. */
   private boolean m_group;
-  /** Todo group id */
+  /** Todo group id. */
   private String m_groupdId;
   /** State of the todo. */
   private TodoState m_state;

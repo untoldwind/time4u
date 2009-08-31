@@ -10,6 +10,7 @@ import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.data.Todo;
+import de.objectcode.time4u.server.api.data.TodoAssignment;
 import de.objectcode.time4u.server.api.data.TodoGroup;
 import de.objectcode.time4u.server.api.data.TodoSummary;
 import de.objectcode.time4u.server.api.filter.TodoFilter;
@@ -75,8 +76,52 @@ public class SendTodoChangesCommand extends BaseSendCommand<TodoSummary>
   protected void sendEntity(final SynchronizationContext context, final TodoSummary entity) throws ConnectionException
   {
     if (entity instanceof Todo) {
+      if (context.getMappedPersonId() != null) {
+        final String ownerId = context.getRepository().getOwner().getId();
+
+        if (ownerId.equals(entity.getReporterId())) {
+          entity.setReporterId(context.getMappedPersonId());
+        }
+        final Todo todo = (Todo) entity;
+
+        if (todo.getVisibleToPersonIds() != null) {
+          final int idx = todo.getVisibleToPersonIds().indexOf(ownerId);
+
+          if (idx >= 0) {
+            todo.getVisibleToPersonIds().remove(idx);
+            todo.getVisibleToPersonIds().add(context.getMappedPersonId());
+          }
+        }
+
+        if (todo.getAssignments() != null) {
+          for (final TodoAssignment todoAssignment : todo.getAssignments()) {
+            if (ownerId.equals(todoAssignment.getPersonId())) {
+              todoAssignment.setPersonId(context.getMappedPersonId());
+            }
+          }
+        }
+      }
+
       context.getTodoService().storeTodo((Todo) entity);
     } else if (entity instanceof TodoGroup) {
+      if (context.getMappedPersonId() != null) {
+        final String ownerId = context.getRepository().getOwner().getId();
+
+        if (ownerId.equals(entity.getReporterId())) {
+          entity.setReporterId(context.getMappedPersonId());
+        }
+        final TodoGroup todoGroup = (TodoGroup) entity;
+
+        if (todoGroup.getVisibleToPersonIds() != null) {
+          final int idx = todoGroup.getVisibleToPersonIds().indexOf(ownerId);
+
+          if (idx >= 0) {
+            todoGroup.getVisibleToPersonIds().remove(idx);
+            todoGroup.getVisibleToPersonIds().add(context.getMappedPersonId());
+          }
+        }
+      }
+
       context.getTodoService().storeTodoGroup((TodoGroup) entity);
     }
   }

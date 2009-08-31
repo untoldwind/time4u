@@ -3,7 +3,6 @@ package de.objectcode.time4u.client.connection.ui.wizards;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -168,15 +167,11 @@ public class UserAccountWizardPage extends WizardPage
               break;
             }
           }
-          if (cleanRepository
-              || MessageDialog.openConfirm(getShell(), "Account already exists",
-                  "Account already exists, but person id differs. Associate this client with this account?")) {
+          if (cleanRepository) {
             RepositoryFactory.getRepository().changeOwnerId(person.getId());
+            m_serverConnection.setMappedPersonId(null);
           } else {
-            m_testResultLabel.setText("Existing account");
-            m_testResultLabel.setForeground(getShell().getDisplay().getSystemColor(SWT.COLOR_RED));
-            setPageComplete(false);
-            return;
+            m_serverConnection.setMappedPersonId(person.getId());
           }
         }
 

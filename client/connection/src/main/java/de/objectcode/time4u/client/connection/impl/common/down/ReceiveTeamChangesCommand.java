@@ -31,6 +31,25 @@ public class ReceiveTeamChangesCommand extends BaseReceiveCommand<Team>
   @Override
   protected void storeEntity(final SynchronizationContext context, final Team entity) throws RepositoryException
   {
+    if (context.getMappedPersonId() != null) {
+      if (entity.getOwnerIds() != null) {
+        final int idx = entity.getOwnerIds().indexOf(context.getMappedPersonId());
+
+        if (idx >= 0) {
+          entity.getOwnerIds().remove(idx);
+          entity.getOwnerIds().add(context.getRepository().getOwner().getId());
+        }
+      }
+      if (entity.getMemberIds() != null) {
+        final int idx = entity.getMemberIds().indexOf(context.getMappedPersonId());
+
+        if (idx >= 0) {
+          entity.getMemberIds().remove(idx);
+          entity.getMemberIds().add(context.getRepository().getOwner().getId());
+        }
+      }
+    }
+
     context.getRepository().getTeamRepository().storeTeam(entity, false);
   }
 }

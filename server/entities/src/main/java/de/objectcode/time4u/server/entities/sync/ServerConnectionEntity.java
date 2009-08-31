@@ -49,6 +49,8 @@ public class ServerConnectionEntity
   private Date m_lastSynchronize;
   /** Synchronize every x seconds (0 = never). */
   private int m_synchronizeInterval;
+  /** It might be necessary to map the local person id to a different person id on the server. */
+  private String m_mappedPersonId;
 
   private Map<EntityType, SynchronizationStatusEntity> m_synchronizationStatus;
 
@@ -130,6 +132,17 @@ public class ServerConnectionEntity
     m_name = name;
   }
 
+  @Column(name = "MAPPED_PERSON_ID", length = 36, nullable = true)
+  public String getMappedPersonId()
+  {
+    return m_mappedPersonId;
+  }
+
+  public void setMappedPersonId(final String mappedPersonId)
+  {
+    m_mappedPersonId = mappedPersonId;
+  }
+
   @MapKey(name = "entityType")
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "serverConnection")
   public Map<EntityType, SynchronizationStatusEntity> getSynchronizationStatus()
@@ -159,6 +172,7 @@ public class ServerConnectionEntity
     serverConnection.setLastSynchronize(m_lastSynchronize);
     serverConnection.setSynchronizeInterval(m_synchronizeInterval);
     serverConnection.setName(m_name);
+    serverConnection.setMappedPersonId(m_mappedPersonId);
   }
 
   public void fromDTO(final IPersistenceContext context, final ServerConnection serverConnection,
@@ -170,5 +184,6 @@ public class ServerConnectionEntity
     m_credentials = encoder.encrypt(serverConnection.getCredentials());
     m_synchronizeInterval = serverConnection.getSynchronizeInterval();
     m_name = serverConnection.getName();
+    m_mappedPersonId = serverConnection.getMappedPersonId();
   }
 }

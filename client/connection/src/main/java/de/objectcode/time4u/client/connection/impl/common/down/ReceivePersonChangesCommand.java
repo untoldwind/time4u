@@ -31,6 +31,12 @@ public class ReceivePersonChangesCommand extends BaseReceiveCommand<Person>
   @Override
   protected void storeEntity(final SynchronizationContext context, final Person entity) throws RepositoryException
   {
+    if (context.getMappedPersonId() != null) {
+      if (context.getMappedPersonId().equals(entity.getId())) {
+        entity.setId(context.getRepository().getOwner().getId());
+      }
+    }
+
     context.getRepository().getPersonRepository().storePerson(entity, false);
   }
 }

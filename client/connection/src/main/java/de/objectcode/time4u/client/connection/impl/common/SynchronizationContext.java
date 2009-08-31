@@ -40,6 +40,7 @@ public class SynchronizationContext
   private final ITeamService m_teamService;
   private final ITodoService m_todoService;
   private final ProjectSummary m_rootProject;
+  private final String m_mappedPersonId;
 
   public SynchronizationContext(final IRepository repository, final ServerConnection serverConnection,
       final IRevisionService revisionService, final IProjectService projectService, final ITaskService taskService,
@@ -55,6 +56,7 @@ public class SynchronizationContext
     m_personService = personService;
     m_teamService = teamService;
     m_todoService = todoService;
+    m_mappedPersonId = serverConnection.getMappedPersonId();
 
     if (serverConnection.getRootProjectId() == null) {
       m_rootProject = null;
@@ -131,6 +133,11 @@ public class SynchronizationContext
   public ITodoService getTodoService()
   {
     return m_todoService;
+  }
+
+  public String getMappedPersonId()
+  {
+    return m_mappedPersonId;
   }
 
   public ProjectSummary getRootProject()

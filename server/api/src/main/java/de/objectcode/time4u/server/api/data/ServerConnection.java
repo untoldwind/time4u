@@ -4,24 +4,33 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * Server connection DTO.
+ * 
+ * Contains all relevant information of a connection to a remote server.
+ * 
+ * @author junglas
+ */
 public class ServerConnection implements Serializable
 {
   private static final long serialVersionUID = 524152758167415304L;
 
-  /** Primary key */
+  /** Primary key. */
   private long m_id;
-  /** Root project to be synchronized */
+  /** Root project to be synchronized. */
   private String m_rootProjectId;
-  /** Logical name of the server */
+  /** Logical name of the server. */
   private String m_name;
-  /** Connection url */
+  /** Connection url. */
   private String m_url;
-  /** Server credentials */
+  /** Server credentials. */
   private Map<String, String> m_credentials;
-  /** Timestamp of the last synchronization */
+  /** Timestamp of the last synchronization. */
   private Date m_lastSynchronize;
-  /** Synchronize every x seconds (0 = never) */
+  /** Synchronize every x seconds (0 = never). */
   private int m_synchronizeInterval;
+  /** It might be necessary to map the local person id to a different person id on the server. */
+  private String m_mappedPersonId;
 
   public long getId()
   {
@@ -91,5 +100,15 @@ public class ServerConnection implements Serializable
   public void setName(final String name)
   {
     m_name = name;
+  }
+
+  public String getMappedPersonId()
+  {
+    return m_mappedPersonId;
+  }
+
+  public void setMappedPersonId(final String mappedPersonId)
+  {
+    m_mappedPersonId = mappedPersonId;
   }
 }
