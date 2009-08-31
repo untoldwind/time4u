@@ -1,5 +1,6 @@
 package de.objectcode.time4u.client.connection.impl.common.up;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.objectcode.time4u.client.connection.api.ConnectionException;
@@ -7,6 +8,7 @@ import de.objectcode.time4u.client.connection.impl.common.SynchronizationContext
 import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.api.data.Project;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.filter.ProjectFilter;
 
 /**
@@ -32,7 +34,41 @@ public class SendProjectChangesCommand extends BaseSendCommand<Project>
     filter.setMaxRevision(maxRevision);
     filter.setOrder(ProjectFilter.Order.ID);
 
-    return context.getRepository().getProjectRepository().getProjects(filter);
+    final List<Project> projects = context.getRepository().getProjectRepository().getProjects(filter);
+
+    if (context.getRootProject() != null) {
+      final List<Project> filteredProjects = new ArrayList<Project>();
+      final String rootProjectId = context.getRootProject().getId();
+
+      for (final Project project : projects) {
+        if (project.getParentId() == null) {
+          continue;
+        }
+
+        if (rootProjectId.equals(project.getParentId())) {
+          project.setParentId(null);
+          filteredProjects.add(project);
+          continue;
+        }
+
+        ProjectSummary current = project;
+
+        while (current != null && !rootProjectId.equals(current.getParentId())) {
+          if (current.getParentId() == null) {
+            current = null;
+          } else {
+            current = context.getRepository().getProjectRepository().getProjectSummary(current.getParentId());
+          }
+        }
+        if (current != null) {
+          filteredProjects.add(project);
+        }
+      }
+
+      return filteredProjects;
+    }
+
+    return projects;
   }
 
   @Override

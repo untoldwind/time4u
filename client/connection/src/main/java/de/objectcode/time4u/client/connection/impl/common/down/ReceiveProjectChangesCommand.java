@@ -36,6 +36,10 @@ public class ReceiveProjectChangesCommand extends BaseReceiveCommand<Project>
   @Override
   protected void storeEntity(final SynchronizationContext context, final Project entity) throws RepositoryException
   {
+    if (entity.getParentId() == null && context.getRootProject() != null) {
+      entity.setParentId(context.getRootProject().getId());
+    }
+
     context.getRepository().getProjectRepository().storeProject(entity, false);
   }
 }

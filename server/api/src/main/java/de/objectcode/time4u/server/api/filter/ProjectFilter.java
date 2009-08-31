@@ -15,25 +15,44 @@ public class ProjectFilter implements Serializable
   private static final long serialVersionUID = 4840094656452995441L;
 
   /** Condition for the parent project (optional, "" = root project). */
-  String m_parentProject;
+  private String m_parentProject;
   /** Condition for the active flag (optional). */
-  Boolean m_active;
+  private Boolean m_active;
   /** Condition for the delete flag (optional). */
-  Boolean m_deleted;
+  private Boolean m_deleted;
   /** Minimum (inclusive) revision number (i.e. only revisions greater or equals are returned). */
-  Long m_minRevision;
+  private Long m_minRevision;
   /** Maximum (inclusive) revision number (i.e. only revisions less or equals are returned). */
-  Long m_maxRevision;
-  /** Client id of the last modification */
-  Long m_lastModifiedByClient;
-  /** Desired order */
-  Order m_order;
+  private Long m_maxRevision;
+  /** Client id of the last modification. */
+  private Long m_lastModifiedByClient;
+  /** Desired order. */
+  private Order m_order;
 
+  /**
+   * Create a new ProjectFilter.
+   */
   public ProjectFilter()
   {
     m_order = Order.ID;
   }
 
+  /**
+   * Create a new ProjectFilter.
+   * 
+   * @param active
+   *          ondition for the active flag (optional)
+   * @param deleted
+   *          Condition for the delete flag (optional)
+   * @param minRevision
+   *          Minimum (inclusive) revision number (i.e. only revisions greater or equals are returned)
+   * @param maxRevision
+   *          Maximum (inclusive) revision number (i.e. only revisions less or equals are returned)
+   * @param parentProject
+   *          Condition for the parent project (optional, "" = root project)
+   * @param order
+   *          Desired order
+   */
   public ProjectFilter(final Boolean active, final Boolean deleted, final Long minRevision, final Long maxRevision,
       final String parentProject, final Order order)
   {
@@ -115,6 +134,9 @@ public class ProjectFilter implements Serializable
     m_order = order;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public String toString()
   {
@@ -157,9 +179,14 @@ public class ProjectFilter implements Serializable
     return new ProjectFilter(onlyActive ? true : null, false, null, null, parentProjectId, Order.NAME);
   }
 
+  /**
+   * Order enumeration.
+   */
   public static enum Order
   {
+    /** Order by internal id. */
     ID,
+    /** Order by project name. */
     NAME
   }
 }

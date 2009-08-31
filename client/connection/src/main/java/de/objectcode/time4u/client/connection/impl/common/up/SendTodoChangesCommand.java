@@ -1,11 +1,14 @@
 package de.objectcode.time4u.client.connection.impl.common.up;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.objectcode.time4u.client.connection.api.ConnectionException;
 import de.objectcode.time4u.client.connection.impl.common.SynchronizationContext;
 import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.server.api.data.EntityType;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
+import de.objectcode.time4u.server.api.data.TaskSummary;
 import de.objectcode.time4u.server.api.data.Todo;
 import de.objectcode.time4u.server.api.data.TodoGroup;
 import de.objectcode.time4u.server.api.data.TodoSummary;
@@ -30,7 +33,42 @@ public class SendTodoChangesCommand extends BaseSendCommand<TodoSummary>
     filter.setMaxRevision(maxRevision);
     filter.setOrder(TodoFilter.Order.ID);
 
-    return context.getRepository().getTodoRepository().getTodos(filter, false);
+    final List<TodoSummary> todos = context.getRepository().getTodoRepository().getTodos(filter, false);
+
+    if (context.getRootProject() != null) {
+      final List<TodoSummary> filteredTodos = new ArrayList<TodoSummary>();
+      final String rootProjectId = context.getRootProject().getId();
+
+      for (final TodoSummary todoSummary : todos) {
+        if (todoSummary.isGroup()) {
+          filteredTodos.add(todoSummary);
+          continue;
+        }
+
+        if (((Todo) todoSummary).getTaskId() == null) {
+          filteredTodos.add(todoSummary);
+          continue;
+        }
+
+        final TaskSummary task = context.getRepository().getTaskRepository().getTaskSummary(
+            ((Todo) todoSummary).getTaskId());
+        ProjectSummary current = context.getRepository().getProjectRepository().getProjectSummary(task.getProjectId());
+
+        while (current != null && !rootProjectId.equals(current.getParentId())) {
+          if (current.getParentId() == null) {
+            current = null;
+          } else {
+            current = context.getRepository().getProjectRepository().getProjectSummary(current.getParentId());
+          }
+        }
+        if (current != null) {
+          filteredTodos.add(todoSummary);
+        }
+      }
+      return filteredTodos;
+    }
+
+    return todos;
   }
 
   @Override

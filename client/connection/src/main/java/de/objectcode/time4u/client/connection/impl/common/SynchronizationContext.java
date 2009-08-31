@@ -14,6 +14,8 @@ import de.objectcode.time4u.server.api.ITeamService;
 import de.objectcode.time4u.server.api.ITodoService;
 import de.objectcode.time4u.server.api.IWorkItemService;
 import de.objectcode.time4u.server.api.data.EntityType;
+import de.objectcode.time4u.server.api.data.ProjectSummary;
+import de.objectcode.time4u.server.api.data.ServerConnection;
 import de.objectcode.time4u.server.api.data.SynchronizationStatus;
 
 /**
@@ -37,14 +39,15 @@ public class SynchronizationContext
   private final IPersonService m_personService;
   private final ITeamService m_teamService;
   private final ITodoService m_todoService;
+  private final ProjectSummary m_rootProject;
 
-  public SynchronizationContext(final IRepository repository, final long serverConnectionId,
+  public SynchronizationContext(final IRepository repository, final ServerConnection serverConnection,
       final IRevisionService revisionService, final IProjectService projectService, final ITaskService taskService,
       final IWorkItemService workItemService, final IPersonService personService, final ITeamService teamService,
       final ITodoService todoService) throws RepositoryException
   {
     m_repository = repository;
-    m_serverConnectionId = serverConnectionId;
+    m_serverConnectionId = serverConnection.getId();
     m_revisionService = revisionService;
     m_projectService = projectService;
     m_taskService = taskService;
@@ -52,6 +55,12 @@ public class SynchronizationContext
     m_personService = personService;
     m_teamService = teamService;
     m_todoService = todoService;
+
+    if (serverConnection.getRootProjectId() == null) {
+      m_rootProject = null;
+    } else {
+      m_rootProject = m_repository.getProjectRepository().getProjectSummary(serverConnection.getRootProjectId());
+    }
 
     m_synchronizationStatus = m_repository.getServerConnectionRepository().getSynchronizationStatus(
         m_serverConnectionId);
@@ -122,5 +131,10 @@ public class SynchronizationContext
   public ITodoService getTodoService()
   {
     return m_todoService;
+  }
+
+  public ProjectSummary getRootProject()
+  {
+    return m_rootProject;
   }
 }

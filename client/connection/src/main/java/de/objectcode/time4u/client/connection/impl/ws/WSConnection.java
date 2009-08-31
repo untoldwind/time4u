@@ -203,8 +203,8 @@ public class WSConnection implements IConnection
 
     try {
       final SynchronizationContext context = new SynchronizationContext(RepositoryFactory.getRepository(),
-          m_serverConnection.getId(), m_revisionService, m_projectService, m_taskService, m_workItemService,
-          m_personService, m_teamService, m_todoService);
+          m_serverConnection, m_revisionService, m_projectService, m_taskService, m_workItemService, m_personService,
+          m_teamService, m_todoService);
 
       for (final ISynchronizationCommand command : m_synchronizationCommands) {
         if (monitor.isCanceled()) {

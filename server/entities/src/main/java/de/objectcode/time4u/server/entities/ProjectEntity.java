@@ -28,23 +28,23 @@ import de.objectcode.time4u.server.entities.context.IPersistenceContext;
 @Table(name = "T4U_PROJECTS")
 public class ProjectEntity implements IdAndNameAwareEntity
 {
-  /** Primary key */
+  /** Primary key. */
   private String m_id;
-  /** Project name */
+  /** Project name. */
   private String m_name;
-  /** Project description */
+  /** Project description. */
   private String m_description;
-  /** Flag if the project is active */
+  /** Flag if the project is active. */
   private boolean m_active;
-  /** Flag if the project is deleted (it might be still referenced somewhere) */
+  /** Flag if the project is deleted (it might be still referenced somewhere). */
   private boolean m_deleted;
-  /** Parent project */
+  /** Parent project. */
   private ProjectEntity m_parent;
-  /** Meta properties of the project */
+  /** Meta properties of the project. */
   private Map<String, ProjectMetaPropertyEntity> m_metaProperties;
-  /** Revision number (increased every time something has changed) */
+  /** Revision number (increased every time something has changed). */
   private long m_revision;
-  /** Client id of the last modification */
+  /** Client id of the last modification. */
   private long m_lastModifiedByClient;
   /** Helper string containing all primary keys of all parent projects (useful for querying all sub-projects. */
   private String m_parentKey;
