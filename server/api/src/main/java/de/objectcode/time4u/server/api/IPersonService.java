@@ -5,6 +5,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
+import de.objectcode.time4u.server.api.data.ClientIdList;
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Person;
 import de.objectcode.time4u.server.api.data.PersonSummary;
@@ -40,6 +41,14 @@ public interface IPersonService
    */
   @WebMethod
   boolean registerClient(long clientId);
+
+  /**
+   * Retrieve a list of all registered clients to this server.
+   * 
+   * @return List of all registered client ids.
+   */
+  @WebMethod
+  ClientIdList getRegisteredClients();
 
   /**
    * Get all persons matching a filter condition.

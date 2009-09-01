@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import de.objectcode.time4u.server.api.IPersonService;
+import de.objectcode.time4u.server.api.data.ClientIdList;
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Person;
 import de.objectcode.time4u.server.api.data.PersonSummary;
@@ -42,6 +43,14 @@ public class PersonServiceWS implements IPersonService
       LOG.info("registerClient: " + clientId);
     }
     return m_personService.registerClient(clientId);
+  }
+
+  public ClientIdList getRegisteredClients()
+  {
+    if (LOG.isInfoEnabled()) {
+      LOG.info("getRegisteredClients");
+    }
+    return m_personService.getRegisteredClients();
   }
 
   public FilterResult<Person> getPersons(final PersonFilter filter)

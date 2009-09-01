@@ -16,6 +16,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import de.objectcode.time4u.server.api.IPersonService;
+import de.objectcode.time4u.server.api.data.ClientIdList;
 import de.objectcode.time4u.server.api.data.FilterResult;
 import de.objectcode.time4u.server.api.data.Person;
 import de.objectcode.time4u.server.api.data.PersonSummary;
@@ -76,6 +77,19 @@ public class PersonServiceImpl implements IPersonService
     m_manager.persist(clientEntity);
 
     return true;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @SuppressWarnings("unchecked")
+  @RolesAllowed("user")
+  public ClientIdList getRegisteredClients()
+  {
+    final Query query = m_manager.createQuery("select c.clientId from " + ClientEntity.class.getName() + " c");
+    final List<Long> result = query.getResultList();
+
+    return new ClientIdList(result);
   }
 
   /**
