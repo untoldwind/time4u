@@ -50,6 +50,7 @@ public class SendTaskChangesCommand extends BaseSendCommand<Task>
 
       for (final Task task : tasks) {
         if (task.getProjectId() != null) {
+          // There might be some remains of a very old release (generic tasks)
           ProjectSummary current = context.getRepository().getProjectRepository()
               .getProjectSummary(task.getProjectId());
 
@@ -63,8 +64,6 @@ public class SendTaskChangesCommand extends BaseSendCommand<Task>
           if (current != null) {
             filteredTasks.add(task);
           }
-        } else {
-          System.out.println(">>>>>>>>>>>>>>>>> " + task.getId() + " " + task.getName());
         }
       }
 
@@ -88,6 +87,7 @@ public class SendTaskChangesCommand extends BaseSendCommand<Task>
     for (final Task task : tasks) {
       if (selfClientId == task.getLastModifiedByClient()
           || !registeredClientIds.contains(task.getLastModifiedByClient())) {
+        // Simulate a change by self (i.e. client is man in the middle)
         task.setLastModifiedByClient(selfClientId);
         filteredTasks.add(task);
       }

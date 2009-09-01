@@ -92,6 +92,7 @@ public class SendProjectChangesCommand extends BaseSendCommand<Project>
     for (final Project project : projects) {
       if (selfClientId == project.getLastModifiedByClient()
           || !registeredClientIds.contains(project.getLastModifiedByClient())) {
+        // Simulate a change by self (i.e. client is man in the middle)
         project.setLastModifiedByClient(selfClientId);
         filteredProjects.add(project);
       }

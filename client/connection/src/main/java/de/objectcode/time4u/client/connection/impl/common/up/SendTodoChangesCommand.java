@@ -140,6 +140,7 @@ public class SendTodoChangesCommand extends BaseSendCommand<TodoSummary>
     for (final TodoSummary todo : todos) {
       if (selfClientId == todo.getLastModifiedByClient()
           || !registeredClientIds.contains(todo.getLastModifiedByClient())) {
+        // Simulate a change by self (i.e. client is man in the middle)
         todo.setLastModifiedByClient(selfClientId);
         filteredTodos.add(todo);
       }
