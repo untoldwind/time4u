@@ -196,15 +196,24 @@ public class WSConnection implements IConnection
 
   public void sychronizeNow(final IProgressMonitor monitor) throws ConnectionException
   {
-    if (!testConnection()) {
+    PingResult pingResult;
+    try {
+      pingResult = m_pingService.ping();
+    } catch (final Exception e) {
+      ConnectionPlugin.getDefault().log(e);
+      throw new ConnectionException(e.toString(), e);
+    }
+
+    if (pingResult.getApiVersionMajor() != IConstants.API_VERSION_MAJOR) {
       throw new ConnectionException("API Version differs");
     }
+
     monitor.beginTask("Synchronize", m_synchronizationCommands.size());
 
     try {
       final SynchronizationContext context = new SynchronizationContext(RepositoryFactory.getRepository(),
           m_serverConnection, m_revisionService, m_projectService, m_taskService, m_workItemService, m_personService,
-          m_teamService, m_todoService);
+          m_teamService, m_todoService, pingResult.getApiVersionMinor());
 
       for (final ISynchronizationCommand command : m_synchronizationCommands) {
         if (monitor.isCanceled()) {

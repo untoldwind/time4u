@@ -3,6 +3,7 @@ package de.objectcode.time4u.client.connection.impl.common.up;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import de.objectcode.time4u.client.connection.api.ConnectionException;
 import de.objectcode.time4u.client.connection.impl.common.SynchronizationContext;
@@ -30,12 +31,18 @@ public class SendDayInfoChangesCommand extends BaseSendCommand<DayInfo>
       final long maxRevision) throws RepositoryException
   {
     final DayInfoFilter filter = new DayInfoFilter();
-    // Only send changes made by myself
-    filter.setLastModifiedByClient(context.getRepository().getClientId());
+    // Only send changes made by myself or by clients not know to the server
+    if (context.getRegisteredClientIds() == null) {
+      filter.setLastModifiedByClient(context.getRepository().getClientId());
+    }
     filter.setMinRevision(minRevision);
     filter.setMaxRevision(maxRevision);
 
-    final List<DayInfo> dayInfos = context.getRepository().getWorkItemRepository().getDayInfos(filter);
+    List<DayInfo> dayInfos = context.getRepository().getWorkItemRepository().getDayInfos(filter);
+
+    if (context.getRegisteredClientIds() != null) {
+      dayInfos = filterByClientId(dayInfos, context.getRepository().getClientId(), context.getRegisteredClientIds());
+    }
 
     if (context.getRootProject() != null) {
       final List<DayInfo> filteredDayInfos = new ArrayList<DayInfo>();
@@ -75,4 +82,17 @@ public class SendDayInfoChangesCommand extends BaseSendCommand<DayInfo>
     context.getWorkItemService().storeDayInfo(entity);
   }
 
+  private List<DayInfo> filterByClientId(final List<DayInfo> dayInfos, final long selfClientId,
+      final Set<Long> registeredClientIds)
+  {
+    final List<DayInfo> filteredDayInfos = new ArrayList<DayInfo>();
+
+    for (final DayInfo dayInfo : dayInfos) {
+      if (selfClientId == dayInfo.getLastModifiedByClient()
+          || !registeredClientIds.contains(dayInfo.getLastModifiedByClient())) {
+        filteredDayInfos.add(dayInfo);
+      }
+    }
+    return filteredDayInfos;
+  }
 }

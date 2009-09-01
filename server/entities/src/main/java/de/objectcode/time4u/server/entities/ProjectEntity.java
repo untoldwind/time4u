@@ -56,12 +56,25 @@ public class ProjectEntity implements IdAndNameAwareEntity
   {
   }
 
+  /**
+   * Create a new project entity.
+   * 
+   * @param id
+   *          The primary key
+   * @param revsion
+   *          The (initial) revision number
+   * @param lastModifiedByClient
+   *          Client id of the last modification
+   * @param name
+   *          The name of the project
+   */
   public ProjectEntity(final String id, final long revsion, final long lastModifiedByClient, final String name)
   {
     m_id = id;
     m_revision = revsion;
     m_lastModifiedByClient = lastModifiedByClient;
     m_name = name;
+    m_parentKey = m_id;
   }
 
   @Id
@@ -142,6 +155,13 @@ public class ProjectEntity implements IdAndNameAwareEntity
     m_metaProperties = metaProperties;
   }
 
+  /**
+   * Check if a projects inherits from another project.
+   * 
+   * @param masterProject
+   *          The parent project
+   * @return <tt>true</tt> if this project inherits from <tt>masterProject</tt>
+   */
   public boolean inheritsFrom(final ProjectEntity masterProject)
   {
     if (m_parent != null) {
@@ -186,6 +206,11 @@ public class ProjectEntity implements IdAndNameAwareEntity
     m_parentKey = parentKey;
   }
 
+  /**
+   * Update the parent key of the project.
+   * 
+   * This might be necessary if a project is move to a new parent.
+   */
   public void updateParentKey()
   {
     if (m_parent == null) {
@@ -198,6 +223,18 @@ public class ProjectEntity implements IdAndNameAwareEntity
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public int hashCode()
+  {
+    return m_id.hashCode();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean equals(final Object obj)
   {
@@ -214,6 +251,12 @@ public class ProjectEntity implements IdAndNameAwareEntity
     return m_id == castObj.m_id;
   }
 
+  /**
+   * Write data to summary DTO.
+   * 
+   * @param project
+   *          The summary DTO
+   */
   public void toSummaryDTO(final ProjectSummary project)
   {
     project.setId(m_id);
@@ -225,6 +268,12 @@ public class ProjectEntity implements IdAndNameAwareEntity
     project.setParentId(m_parent != null ? m_parent.getId() : null);
   }
 
+  /**
+   * Write data to DTO.
+   * 
+   * @param project
+   *          The DTO
+   */
   public void toDTO(final Project project)
   {
     toSummaryDTO(project);
@@ -237,6 +286,14 @@ public class ProjectEntity implements IdAndNameAwareEntity
     }
   }
 
+  /**
+   * Read data from DTO.
+   * 
+   * @param context
+   *          The persistent context
+   * @param project
+   *          The DTO
+   */
   public void fromDTO(final IPersistenceContext context, final Project project)
   {
     m_lastModifiedByClient = project.getLastModifiedByClient();

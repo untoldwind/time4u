@@ -2,6 +2,7 @@ package de.objectcode.time4u.client.connection.impl.common.up;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import de.objectcode.time4u.client.connection.api.ConnectionException;
 import de.objectcode.time4u.client.connection.impl.common.SynchronizationContext;
@@ -28,13 +29,19 @@ public class SendProjectChangesCommand extends BaseSendCommand<Project>
       final long maxRevision) throws RepositoryException
   {
     final ProjectFilter filter = new ProjectFilter();
-    // Only send changes made by myself
-    filter.setLastModifiedByClient(context.getRepository().getClientId());
+    // Only send changes made by myself or by clients not known to the server
+    if (context.getRegisteredClientIds() == null) {
+      filter.setLastModifiedByClient(context.getRepository().getClientId());
+    }
     filter.setMinRevision(minRevision);
     filter.setMaxRevision(maxRevision);
     filter.setOrder(ProjectFilter.Order.ID);
 
-    final List<Project> projects = context.getRepository().getProjectRepository().getProjects(filter);
+    List<Project> projects = context.getRepository().getProjectRepository().getProjects(filter);
+
+    if (context.getRegisteredClientIds() != null) {
+      projects = filterByClientId(projects, context.getRepository().getClientId(), context.getRegisteredClientIds());
+    }
 
     if (context.getRootProject() != null) {
       final List<Project> filteredProjects = new ArrayList<Project>();
@@ -75,5 +82,19 @@ public class SendProjectChangesCommand extends BaseSendCommand<Project>
   protected void sendEntity(final SynchronizationContext context, final Project entity) throws ConnectionException
   {
     context.getProjectService().storeProject(entity);
+  }
+
+  private List<Project> filterByClientId(final List<Project> projects, final long selfClientId,
+      final Set<Long> registeredClientIds)
+  {
+    final List<Project> filteredProjects = new ArrayList<Project>();
+
+    for (final Project project : projects) {
+      if (selfClientId == project.getLastModifiedByClient()
+          || !registeredClientIds.contains(project.getLastModifiedByClient())) {
+        filteredProjects.add(project);
+      }
+    }
+    return filteredProjects;
   }
 }

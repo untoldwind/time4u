@@ -48,6 +48,14 @@ public class WorkItemEntity
   {
   }
 
+  /**
+   * Create a new WorkItem entity.
+   * 
+   * @param id
+   *          The primary key
+   * @param dayInfo
+   *          The day info entity the workitem belongs to
+   */
   public WorkItemEntity(final String id, final DayInfoEntity dayInfo)
   {
     m_id = id;
@@ -163,6 +171,18 @@ public class WorkItemEntity
     m_todo = todo;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public int hashCode()
+  {
+    return m_id.hashCode();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean equals(final Object obj)
   {
@@ -182,7 +202,7 @@ public class WorkItemEntity
   /**
    * Write data to DTO.
    * 
-   * @param status
+   * @param workItem
    *          The DTO.
    */
   public void toDTO(final WorkItem workItem)
@@ -203,6 +223,16 @@ public class WorkItemEntity
     }
   }
 
+  /**
+   * Read data from DTO.
+   * 
+   * @param context
+   *          The persistent context
+   * @param workItem
+   *          The DTO
+   * @param clientId
+   *          The client id
+   */
   public void fromDTO(final IPersistenceContext context, final WorkItem workItem, final long clientId)
   {
     m_begin = workItem.getBegin();

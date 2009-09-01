@@ -1,8 +1,10 @@
 package de.objectcode.time4u.client.connection.impl.common;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import de.objectcode.time4u.client.store.api.IRepository;
 import de.objectcode.time4u.client.store.api.RepositoryException;
@@ -41,11 +43,12 @@ public class SynchronizationContext
   private final ITodoService m_todoService;
   private final ProjectSummary m_rootProject;
   private final String m_mappedPersonId;
+  private final Set<Long> m_registeredClientIds;
 
   public SynchronizationContext(final IRepository repository, final ServerConnection serverConnection,
       final IRevisionService revisionService, final IProjectService projectService, final ITaskService taskService,
       final IWorkItemService workItemService, final IPersonService personService, final ITeamService teamService,
-      final ITodoService todoService) throws RepositoryException
+      final ITodoService todoService, final int apiMinorVersion) throws RepositoryException
   {
     m_repository = repository;
     m_serverConnectionId = serverConnection.getId();
@@ -62,6 +65,15 @@ public class SynchronizationContext
       m_rootProject = null;
     } else {
       m_rootProject = m_repository.getProjectRepository().getProjectSummary(serverConnection.getRootProjectId());
+    }
+
+    if (apiMinorVersion >= 1 && repository.getServerConnectionRepository().getServerConnections().size() > 1) {
+      // We only need this set if there are multiple server connections
+      m_registeredClientIds = new HashSet<Long>();
+
+      m_registeredClientIds.addAll(m_personService.getRegisteredClients().getResults());
+    } else {
+      m_registeredClientIds = null;
     }
 
     m_synchronizationStatus = m_repository.getServerConnectionRepository().getSynchronizationStatus(
@@ -143,5 +155,10 @@ public class SynchronizationContext
   public ProjectSummary getRootProject()
   {
     return m_rootProject;
+  }
+
+  public Set<Long> getRegisteredClientIds()
+  {
+    return m_registeredClientIds;
   }
 }

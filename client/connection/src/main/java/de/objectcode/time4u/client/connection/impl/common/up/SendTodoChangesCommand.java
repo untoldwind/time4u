@@ -2,6 +2,7 @@ package de.objectcode.time4u.client.connection.impl.common.up;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import de.objectcode.time4u.client.connection.api.ConnectionException;
 import de.objectcode.time4u.client.connection.impl.common.SynchronizationContext;
@@ -27,14 +28,19 @@ public class SendTodoChangesCommand extends BaseSendCommand<TodoSummary>
       final long maxRevision) throws RepositoryException
   {
     final TodoFilter filter = new TodoFilter();
-    // Only send changes made by myself
-    filter.setLastModifiedByClient(context.getRepository().getClientId());
-
+    // Only send changes made by myself or by clients not known to the server
+    if (context.getRegisteredClientIds() == null) {
+      filter.setLastModifiedByClient(context.getRepository().getClientId());
+    }
     filter.setMinRevision(minRevision);
     filter.setMaxRevision(maxRevision);
     filter.setOrder(TodoFilter.Order.ID);
 
-    final List<TodoSummary> todos = context.getRepository().getTodoRepository().getTodos(filter, false);
+    List<TodoSummary> todos = context.getRepository().getTodoRepository().getTodos(filter, false);
+
+    if (context.getRegisteredClientIds() != null) {
+      todos = filterByClientId(todos, context.getRepository().getClientId(), context.getRegisteredClientIds());
+    }
 
     if (context.getRootProject() != null) {
       final List<TodoSummary> filteredTodos = new ArrayList<TodoSummary>();
@@ -124,5 +130,19 @@ public class SendTodoChangesCommand extends BaseSendCommand<TodoSummary>
 
       context.getTodoService().storeTodoGroup((TodoGroup) entity);
     }
+  }
+
+  private List<TodoSummary> filterByClientId(final List<TodoSummary> todos, final long selfClientId,
+      final Set<Long> registeredClientIds)
+  {
+    final List<TodoSummary> filteredTodos = new ArrayList<TodoSummary>();
+
+    for (final TodoSummary todo : todos) {
+      if (selfClientId == todo.getLastModifiedByClient()
+          || !registeredClientIds.contains(todo.getLastModifiedByClient())) {
+        filteredTodos.add(todo);
+      }
+    }
+    return filteredTodos;
   }
 }
