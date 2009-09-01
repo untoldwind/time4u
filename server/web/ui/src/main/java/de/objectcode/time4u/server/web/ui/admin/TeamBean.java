@@ -18,11 +18,15 @@ public class TeamBean
     m_team = team;
     m_owners = new ArrayList<String>();
     for (final PersonEntity owner : m_team.getOwners()) {
-      m_owners.add(owner.getId());
+      if (!owner.isDeleted() && (owner.getActive() == null || owner.getActive())) {
+        m_owners.add(owner.getId());
+      }
     }
     m_members = new ArrayList<String>();
     for (final PersonEntity member : m_team.getMembers()) {
-      m_members.add(member.getId());
+      if (!member.isDeleted() && (member.getActive() == null || member.getActive())) {
+        m_members.add(member.getId());
+      }
     }
   }
 
