@@ -80,6 +80,13 @@ public class SynchronizationContext
         m_serverConnectionId);
     m_clientRevisionStatus = m_repository.getRevisionStatus();
     m_serverRevisionStatus = revisionService.getRevisionStatus().getLatestRevisions();
+
+    System.out.println(">>>>>>>>>>>>>>>>" + serverConnection);
+    System.out.println(">>>>>>>>>>>>>>>>" + m_serverConnectionId);
+    System.out.println(">>>>>>>>>>>>>>>>" + m_synchronizationStatus);
+    System.out.println(">>>>>>>>>>>>>>>>" + m_clientRevisionStatus);
+    System.out.println(">>>>>>>>>>>>>>>>" + m_serverRevisionStatus);
+
   }
 
   public long getServerConnectionId()

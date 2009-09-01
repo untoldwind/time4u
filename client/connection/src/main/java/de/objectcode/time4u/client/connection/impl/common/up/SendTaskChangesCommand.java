@@ -29,7 +29,7 @@ public class SendTaskChangesCommand extends BaseSendCommand<Task>
       final long maxRevision) throws RepositoryException
   {
     final TaskFilter filter = new TaskFilter();
-    // Only send changes made by myself  or by clients not known to the server
+    // Only send changes made by myself or by clients not known to the server
     if (context.getRegisteredClientIds() == null) {
       filter.setLastModifiedByClient(context.getRepository().getClientId());
     }
@@ -49,17 +49,22 @@ public class SendTaskChangesCommand extends BaseSendCommand<Task>
       final String rootProjectId = context.getRootProject().getId();
 
       for (final Task task : tasks) {
-        ProjectSummary current = context.getRepository().getProjectRepository().getProjectSummary(task.getProjectId());
+        if (task.getProjectId() != null) {
+          ProjectSummary current = context.getRepository().getProjectRepository()
+              .getProjectSummary(task.getProjectId());
 
-        while (current != null && !rootProjectId.equals(current.getParentId())) {
-          if (current.getParentId() == null) {
-            current = null;
-          } else {
-            current = context.getRepository().getProjectRepository().getProjectSummary(current.getParentId());
+          while (current != null && !rootProjectId.equals(current.getParentId())) {
+            if (current.getParentId() == null) {
+              current = null;
+            } else {
+              current = context.getRepository().getProjectRepository().getProjectSummary(current.getParentId());
+            }
           }
-        }
-        if (current != null) {
-          filteredTasks.add(task);
+          if (current != null) {
+            filteredTasks.add(task);
+          }
+        } else {
+          System.out.println(">>>>>>>>>>>>>>>>> " + task.getId() + " " + task.getName());
         }
       }
 
@@ -83,6 +88,7 @@ public class SendTaskChangesCommand extends BaseSendCommand<Task>
     for (final Task task : tasks) {
       if (selfClientId == task.getLastModifiedByClient()
           || !registeredClientIds.contains(task.getLastModifiedByClient())) {
+        task.setLastModifiedByClient(selfClientId);
         filteredTasks.add(task);
       }
     }

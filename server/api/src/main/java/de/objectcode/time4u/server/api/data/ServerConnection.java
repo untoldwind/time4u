@@ -111,4 +111,23 @@ public class ServerConnection implements Serializable
   {
     m_mappedPersonId = mappedPersonId;
   }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String toString()
+  {
+    final StringBuffer buffer = new StringBuffer("ServerConnection(");
+    buffer.append("id=").append(m_id);
+    buffer.append(", rootProjectId=").append(m_rootProjectId);
+    buffer.append(", name=").append(m_name);
+    buffer.append(", url=").append(m_url);
+    buffer.append(", lastSynchronize=").append(m_lastSynchronize);
+    buffer.append(", synchronizeInterval=").append(m_synchronizeInterval);
+    buffer.append(", mappedPersonId=").append(m_mappedPersonId);
+    buffer.append(")");
+
+    return buffer.toString();
+  }
 }
