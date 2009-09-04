@@ -25,6 +25,7 @@ import de.objectcode.time4u.server.ejb.seam.api.report.CrossTableResult.CrossTab
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.BaseParameterValue;
 import de.objectcode.time4u.server.web.ui.converter.DateConverter;
 import de.objectcode.time4u.server.web.ui.converter.IntegerConverter;
+import de.objectcode.time4u.server.web.ui.converter.ManDayConverter;
 import de.objectcode.time4u.server.web.ui.converter.StringArrayConverter;
 import de.objectcode.time4u.server.web.ui.converter.StringConverter;
 import de.objectcode.time4u.server.web.ui.converter.TimeConverter;
@@ -63,6 +64,28 @@ public class InteractiveReportController implements Serializable
       return label;
     }
   }
+  
+  private enum ReportValueFormat
+  {
+    HOURS_AND_MINUTES("hh:mm", new TimeConverter()),
+    MAN_DAYS("Man days", new ManDayConverter());
+    
+    private String label;
+    private Converter converter;
+    
+    private ReportValueFormat(String label, Converter converter) {
+      this.label = label;
+      this.converter = converter;
+    }
+
+    public String getLabel() {
+      return label;
+    }
+    
+    public Converter getConverter() {
+      return converter;
+    }
+  }
 
   private static final long serialVersionUID = -7166535296179928941L;
 
@@ -86,6 +109,7 @@ public class InteractiveReportController implements Serializable
 
   private ReportColumnType m_columnType = ReportColumnType.PROJECT;
   private ReportRowType m_rowType = ReportRowType.TEAM;
+  private ReportValueFormat m_valueFormat = ReportValueFormat.HOURS_AND_MINUTES;
 
   public InteractiveReportController()
   {
@@ -185,6 +209,17 @@ public class InteractiveReportController implements Serializable
 
     return refresh();
   }
+  
+  public String switchValueFormat()
+  {
+    if (m_valueFormat == ReportValueFormat.HOURS_AND_MINUTES) {
+      m_valueFormat = ReportValueFormat.MAN_DAYS;
+    } else {
+      m_valueFormat = ReportValueFormat.HOURS_AND_MINUTES;
+    }
+    
+    return refresh();
+  }
 
   public String setFilterProject(final ValueLabelPair project)
   {
@@ -258,6 +293,14 @@ public class InteractiveReportController implements Serializable
   
   public String getRowTypeLabel() {
     return m_rowType.getLabel();
+  }
+  
+  public String getValueFormatLabel() {
+    return m_valueFormat.getLabel();
+  }
+  
+  public Converter getValueConverter() {
+    return m_valueFormat.getConverter();
   }
 
 }

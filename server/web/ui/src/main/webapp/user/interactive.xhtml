@@ -21,7 +21,7 @@
 					<a4j:commandButton value="Refresh" action="#{user.interactiveReportController.refresh}"/>
 					<a4j:commandButton value="1 month &gt;&gt;" action="#{user.interactiveReportController.forward1Month}"/>
 				</h:panelGrid>
-				<h:panelGrid columns="2">
+				<h:panelGrid columns="3">
 					<s:div>
 						<h:outputText value="Columns: #{user.interactiveReportController.columnTypeLabel}" />
 						<a4j:commandButton value="switch" action="#{user.interactiveReportController.switchColumnType}"/>
@@ -29,6 +29,10 @@
 					<s:div>
 						<h:outputText value="Rows: #{user.interactiveReportController.rowTypeLabel}" />
 						<a4j:commandButton value="switch" action="#{user.interactiveReportController.switchRowType}"/>
+					</s:div>
+					<s:div>
+						<h:outputText value="Format: #{user.interactiveReportController.valueFormatLabel}" />
+						<a4j:commandButton value="switch" action="#{user.interactiveReportController.switchValueFormat}"/>
 					</s:div>
 				</h:panelGrid>
 				<h:panelGrid columns="2" rendered="#{user.interactiveFilter.projectStack.size() > 0}">
@@ -84,17 +88,17 @@
 									value="#{row.data}"
 									var="cell">
 									<td class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
-										<h:outputText value="#{cell}" converter="timeConverter"/>
+										<h:outputText value="#{cell}" converter="#{user.interactiveReportController.valueConverter}"/>
 									</td>
 								</ui:repeat>
 								<td class="report #{row.index % 2 == 0 ? 'reportEven' : 'reportOdd'}">
 									<c:if test="#{user.interactiveReportController.rowHeaderLinkVisible}">
 										<a4j:commandLink action="#{user.interactiveReportController.setFilterPerson(row.rowHeader)}">
-										<h:outputText value="#{row.rowAggregate}" converter="timeConverter"/>
+										<h:outputText value="#{row.rowAggregate}" converter="#{user.interactiveReportController.valueConverter}"/>
 									</a4j:commandLink>
 									</c:if>
 									<c:if test="#{not user.interactiveReportController.rowHeaderLinkVisible}">
-										<h:outputText value="#{row.rowAggregate}" converter="timeConverter"/>
+										<h:outputText value="#{row.rowAggregate}" converter="#{user.interactiveReportController.valueConverter}"/>
 									</c:if>
 								</td>
 							</tr>
@@ -105,11 +109,11 @@
 								value="#{user.interactiveCrossTable.columnAggregates}"
 								var="cell">
 								<td class="report">
-									<h:outputText value="#{cell}" converter="timeConverter"/>
+									<h:outputText value="#{cell}" converter="#{user.interactiveReportController.valueConverter}"/>
 								</td>
 							</ui:repeat>
 							<td class="report">
-									<h:outputText value="#{user.interactiveCrossTable.totalAggregate}" converter="timeConverter"/>
+									<h:outputText value="#{user.interactiveCrossTable.totalAggregate}" converter="#{user.interactiveReportController.valueConverter}"/>
 							</td>
 						</tr>
 					</tbody>
