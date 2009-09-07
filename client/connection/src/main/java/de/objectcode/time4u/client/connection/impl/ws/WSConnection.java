@@ -189,6 +189,7 @@ public class WSConnection implements IConnection
       bp.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, credentials.get("userId"));
       bp.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, credentials.get("password"));
     }
+    bp.getRequestContext().put("com.sun.xml.internal.ws.transport.https.client.SSLSocketFactory", m_sslSocketFactory);
     bp.getRequestContext().put("com.sun.xml.ws.transport.https.client.SSLSocketFactory", m_sslSocketFactory);
 
     return port;
