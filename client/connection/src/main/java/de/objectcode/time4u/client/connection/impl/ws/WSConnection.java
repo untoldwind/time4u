@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSocketFactory;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
@@ -32,6 +33,7 @@ import de.objectcode.time4u.client.connection.impl.common.up.SendSynchronization
 import de.objectcode.time4u.client.connection.impl.common.up.SendTaskChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.up.SendTimePolicyChangesCommand;
 import de.objectcode.time4u.client.connection.impl.common.up.SendTodoChangesCommand;
+import de.objectcode.time4u.client.connection.util.NaiveHostnameVerifier;
 import de.objectcode.time4u.client.connection.util.NaiveTrustManager;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
 import de.objectcode.time4u.server.api.IConstants;
@@ -57,6 +59,7 @@ public class WSConnection implements IConnection
   private final List<ISynchronizationCommand> m_synchronizationCommands;
 
   private final SSLSocketFactory m_sslSocketFactory;
+  private final HostnameVerifier m_hostnameVerifier;
 
   private final ServerConnection m_serverConnection;
   private final IPingService m_pingService;
@@ -72,6 +75,7 @@ public class WSConnection implements IConnection
   public WSConnection(final ServerConnection serverConnection) throws ConnectionException
   {
     m_sslSocketFactory = NaiveTrustManager.getSSLSocketFactory();
+    m_hostnameVerifier = new NaiveHostnameVerifier();
 
     // TODO: This may either be static or configurable
     m_synchronizationCommands = new ArrayList<ISynchronizationCommand>();
@@ -189,6 +193,8 @@ public class WSConnection implements IConnection
       bp.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, credentials.get("userId"));
       bp.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, credentials.get("password"));
     }
+    bp.getRequestContext().put("com.sun.xml.internal.ws.transport.https.client.hostname.verifier", m_hostnameVerifier);
+    bp.getRequestContext().put("com.sun.xml.ws.transport.https.client.hostname.verifier", m_hostnameVerifier);
     bp.getRequestContext().put("com.sun.xml.internal.ws.transport.https.client.SSLSocketFactory", m_sslSocketFactory);
     bp.getRequestContext().put("com.sun.xml.ws.transport.https.client.SSLSocketFactory", m_sslSocketFactory);
 
