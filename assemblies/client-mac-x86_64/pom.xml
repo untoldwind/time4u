@@ -157,16 +157,16 @@
 			</properties>		
 		</profile>
 		<profile>
-			<id>MacOS_x86_64</id>
+			<id>MacOS</id>
 			<activation>
 				<os>
-					<name>Mac OS X x86_64</name>
+					<name>Mac OS X</name>
 				</os>
 			</activation>
 			<dependencies>
 				<dependency>
 					<groupId>org.eclipse.ui</groupId>
-					<artifactId>carbon</artifactId>
+					<artifactId>cocoa</artifactId>
 				</dependency>
 				<dependency>
 					<groupId>org.eclipse.equinox.launcher.cocoa.macosx</groupId>

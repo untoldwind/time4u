@@ -88,8 +88,8 @@
 				<include>org.eclipse.equinox:registry</include>
 				<include>org.eclipse.equinox:simpleconfigurator</include>
 				<include>org.eclipse.ui:workbench</include>
-				<include>org.eclipse.ui:carbon</include>
-				<include>org.eclipse.swt.carbon:macosx</include>
+				<include>org.eclipse.ui:cocoa</include>
+				<include>org.eclipse.swt.cocoa.macosx:x86_64</include>
 				<include>org.eclipse.update:configurator</include>
 			</includes>
 		</dependencySet>
