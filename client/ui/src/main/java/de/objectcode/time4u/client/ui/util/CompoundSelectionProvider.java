@@ -23,17 +23,17 @@ import de.objectcode.time4u.server.api.data.CalendarDay;
 
 public class CompoundSelectionProvider implements IPostSelectionProvider, ISelectionListener
 {
-  CompoundSelection m_selection;
+  private CompoundSelection m_selection;
 
   /**
    * Registered selection changed listeners (element type: <code>ISelectionChangedListener</code>).
    */
-  private final ListenerList listeners = new ListenerList();
+  private final ListenerList m_listeners = new ListenerList();
 
   /**
    * Registered post selection changed listeners.
    */
-  private final ListenerList postListeners = new ListenerList();
+  private final ListenerList m_postListeners = new ListenerList();
 
   private final Map<CompoundSelectionEntityType, List<ISelectionProvider>> m_selectionProviders = new HashMap<CompoundSelectionEntityType, List<ISelectionProvider>>();
 
@@ -47,7 +47,7 @@ public class CompoundSelectionProvider implements IPostSelectionProvider, ISelec
    */
   public void addSelectionChangedListener(final ISelectionChangedListener listener)
   {
-    listeners.add(listener);
+    m_listeners.add(listener);
   }
 
   /**
@@ -59,36 +59,31 @@ public class CompoundSelectionProvider implements IPostSelectionProvider, ISelec
    */
   public void addPostSelectionChangedListener(final ISelectionChangedListener listener)
   {
-    postListeners.add(listener);
+    m_postListeners.add(listener);
   }
 
   /**
    * Notifies all registered selection changed listeners that the editor's selection has changed. Only listeners
    * registered at the time this method is called are notified.
-   * 
-   * @param event
-   *          the selection changed event
    */
   public void fireSelectionChanged()
   {
     final SelectionChangedEvent event = new SelectionChangedEvent(this, m_selection);
 
-    final Object[] listeners = this.listeners.getListeners();
+    final Object[] listeners = m_listeners.getListeners();
     fireEventChange(event, listeners);
   }
 
   /**
    * Notifies all post selection changed listeners that the editor's selection has changed.
    * 
-   * @param event
-   *          the event to propogate.
    * @since 3.2
    */
   public void firePostSelectionChanged()
   {
     final SelectionChangedEvent event = new SelectionChangedEvent(this, m_selection);
 
-    final Object[] listeners = postListeners.getListeners();
+    final Object[] listeners = m_postListeners.getListeners();
     fireEventChange(event, listeners);
   }
 
@@ -130,7 +125,7 @@ public class CompoundSelectionProvider implements IPostSelectionProvider, ISelec
    */
   public void removeSelectionChangedListener(final ISelectionChangedListener listener)
   {
-    listeners.remove(listener);
+    m_listeners.remove(listener);
   }
 
   /**
@@ -142,7 +137,7 @@ public class CompoundSelectionProvider implements IPostSelectionProvider, ISelec
    */
   public void removePostSelectionChangedListener(final ISelectionChangedListener listener)
   {
-    postListeners.remove(listener);
+    m_postListeners.remove(listener);
   }
 
   /**

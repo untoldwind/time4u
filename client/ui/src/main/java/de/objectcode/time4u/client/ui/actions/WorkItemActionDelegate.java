@@ -28,10 +28,10 @@ import de.objectcode.time4u.server.api.data.WorkItem;
 
 public class WorkItemActionDelegate implements IWorkbenchWindowActionDelegate, IViewActionDelegate
 {
-  IShellProvider m_shellProvider;
-  WorkItemView m_view;
+  private IShellProvider m_shellProvider;
+  private WorkItemView m_view;
 
-  IAdaptable m_selection;
+  private IAdaptable m_selection;
 
   /**
    * {@inheritDoc}
@@ -129,6 +129,7 @@ public class WorkItemActionDelegate implements IWorkbenchWindowActionDelegate, I
               selectedWorkItem.getProjectId());
           final TaskSummary task = RepositoryFactory.getRepository().getTaskRepository().getTaskSummary(
               selectedWorkItem.getTaskId());
+
           TodoSummary todo = null;
           if (selectedWorkItem.getTodoId() != null) {
             todo = RepositoryFactory.getRepository().getTodoRepository().getTodoSummary(selectedWorkItem.getTodoId());

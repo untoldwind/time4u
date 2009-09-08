@@ -7,6 +7,7 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
@@ -44,6 +45,7 @@ import de.objectcode.time4u.client.ui.util.CompoundSelectionProvider;
 import de.objectcode.time4u.client.ui.util.SelectionServiceAdapter;
 import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
+import de.objectcode.time4u.server.api.data.WorkItem;
 
 public class ProjectTreeView extends ViewPart implements IRepositoryListener
 {
@@ -102,8 +104,9 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
         }
       }
     });
-    m_viewer.addDragSupport(DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_DEFAULT, new Transfer[] { ProjectTransfer
-        .getInstance() }, new DragSourceAdapter() {
+    m_viewer.addDragSupport(DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_DEFAULT, new Transfer[] {
+      ProjectTransfer.getInstance()
+    }, new DragSourceAdapter() {
       @Override
       public void dragSetData(final DragSourceEvent event)
       {
@@ -111,8 +114,9 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
         event.data = selection.getFirstElement();
       }
     });
-    m_viewer.addDropSupport(DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_DEFAULT, new Transfer[] { ProjectTransfer
-        .getInstance() }, new DropTargetAdapter() {
+    m_viewer.addDropSupport(DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_DEFAULT, new Transfer[] {
+      ProjectTransfer.getInstance()
+    }, new DropTargetAdapter() {
       @Override
       public void drop(final DropTargetEvent event)
       {
@@ -183,6 +187,7 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
     });
 
     RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.PROJECT, this);
+    RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.ACTIVE_WORKITEM, this);
 
     final IContextService contextService = (IContextService) getSite().getService(IContextService.class);
     m_contextActivation = contextService.activateContext(CONTEXT_ID);
@@ -218,6 +223,7 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
     contextService.deactivateContext(m_contextActivation);
 
     RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.PROJECT, this);
+    RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.ACTIVE_WORKITEM, this);
 
     super.dispose();
   }
@@ -294,6 +300,23 @@ public class ProjectTreeView extends ViewPart implements IRepositoryListener
           }
         });
 
+        break;
+      case ACTIVE_WORKITEM:
+        try {
+          final WorkItem activeWorkItem = RepositoryFactory.getRepository().getWorkItemRepository().getActiveWorkItem();
+
+          if (activeWorkItem != null) {
+            final ProjectSummary project = RepositoryFactory.getRepository().getProjectRepository().getProjectSummary(
+                activeWorkItem.getProjectId());
+
+            m_viewer.setSelection(new StructuredSelection(project));
+          }
+        } catch (final Exception e) {
+          UIPlugin.getDefault().log(e);
+        }
+
+        break;
+      default:
         break;
     }
   }

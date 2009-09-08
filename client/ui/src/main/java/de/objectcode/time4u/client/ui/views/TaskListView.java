@@ -8,6 +8,7 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
@@ -44,6 +45,7 @@ import de.objectcode.time4u.server.api.data.Project;
 import de.objectcode.time4u.server.api.data.ProjectSummary;
 import de.objectcode.time4u.server.api.data.Task;
 import de.objectcode.time4u.server.api.data.TaskSummary;
+import de.objectcode.time4u.server.api.data.WorkItem;
 
 public class TaskListView extends ViewPart implements IRepositoryListener, ISelectionListener
 {
@@ -72,8 +74,9 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
     m_viewer.setContentProvider(new TaskContentProvider(m_taskRepository, m_showOnlyActive));
     m_viewer.setLabelProvider(new TaskLabelProvider());
     m_viewer.setInput(null);
-    m_viewer.addDragSupport(DND.DROP_COPY | DND.DROP_MOVE | DND.DROP_DEFAULT, new Transfer[] { TaskTransfer
-        .getInstance() }, new DragSourceAdapter() {
+    m_viewer.addDragSupport(DND.DROP_COPY | DND.DROP_MOVE | DND.DROP_DEFAULT, new Transfer[] {
+      TaskTransfer.getInstance()
+    }, new DragSourceAdapter() {
       @Override
       public void dragSetData(final DragSourceEvent event)
       {
@@ -118,6 +121,7 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
     });
 
     RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.TASK, this);
+    RepositoryFactory.getRepository().addRepositoryListener(RepositoryEventType.ACTIVE_WORKITEM, this);
 
     getSite().getPage().addSelectionListener(ProjectTreeView.ID, this);
 
@@ -167,6 +171,9 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
 
     getSite().getPage().removeSelectionListener(ProjectTreeView.ID, this);
 
+    RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.TASK, this);
+    RepositoryFactory.getRepository().removeRepositoryListener(RepositoryEventType.ACTIVE_WORKITEM, this);
+
     super.dispose();
   }
 
@@ -199,11 +206,30 @@ public class TaskListView extends ViewPart implements IRepositoryListener, ISele
           }
         });
         break;
+      case ACTIVE_WORKITEM:
+        try {
+          final WorkItem activeWorkItem = RepositoryFactory.getRepository().getWorkItemRepository().getActiveWorkItem();
+
+          if (activeWorkItem != null) {
+            final ProjectSummary project = RepositoryFactory.getRepository().getProjectRepository().getProjectSummary(
+                activeWorkItem.getProjectId());
+            final TaskSummary task = RepositoryFactory.getRepository().getTaskRepository().getTaskSummary(
+                activeWorkItem.getTaskId());
+
+            m_viewer.setInput(project);
+            m_viewer.setSelection(new StructuredSelection(task));
+          }
+        } catch (final Exception e) {
+          UIPlugin.getDefault().log(e);
+        }
+        break;
+      default:
+        break;
     }
   }
 
-  /*
-   * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
+  /**
+   * {@inheritDoc}
    */
   @Override
   public void setFocus()
