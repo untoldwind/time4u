@@ -1,6 +1,7 @@
 package de.objectcode.time4u.client.ui.views;
 
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -75,7 +76,12 @@ public class PunchView extends ViewPart implements ISelectionListener, IReposito
     taskLabel.setText(UIPlugin.getDefault().getString("task.label"));
     m_taskLabel = new Label(top, SWT.LEFT | SWT.BORDER);
     m_taskLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    m_punchButton = new Button(top, SWT.TOGGLE);
+    // TODO: This workaround will hopefully become obsolete with 3.5.1
+    if (Platform.OS_MACOSX.equals(Platform.getOS()) && Platform.ARCH_X86_64.equals(Platform.getOSArch())) {
+      m_punchButton = new Button(top, SWT.FLAT | SWT.TOGGLE);
+    } else {
+      m_punchButton = new Button(top, SWT.TOGGLE);
+    }
 
     final IPreferenceStore store = UIPlugin.getDefault().getPreferenceStore();
 

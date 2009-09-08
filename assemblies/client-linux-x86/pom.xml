@@ -89,6 +89,14 @@
 			<artifactId>beans</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.core.databinding</groupId>
+			<artifactId>observable</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core.databinding</groupId>
+			<artifactId>property</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.eclipse.equinox</groupId>
 			<artifactId>app</artifactId>
 		</dependency>

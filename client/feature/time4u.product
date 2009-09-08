@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?pde version="3.4"?>
+<?pde version="3.5"?>
 
-<product name="Time4U" id="de.objectcode.time4u.client.ui.product" application="de.objectcode.time4u.client.ui.application" version="0.9.2" useFeatures="true">
+<product name="Time4U" id="de.objectcode.time4u.client.ui.product" application="de.objectcode.time4u.client.ui.application" version="0.9.2" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="product_lg.gif"/>
@@ -33,14 +33,13 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
 
    <plugins>
       <plugin id="com.ibm.icu"/>
-      <plugin id="de.objectcode.time4u.store"/>
-      <plugin id="de.objectcode.time4u.ui"/>
+      <plugin id="de.objectcode.time4u.store" fragment=""/>
+      <plugin id="de.objectcode.time4u.ui" fragment=""/>
       <plugin id="org.eclipse.core.commands"/>
       <plugin id="org.eclipse.core.contenttype"/>
       <plugin id="org.eclipse.core.databinding"/>
@@ -65,7 +64,8 @@
 
    <features>
       <feature id="de.objectcode.time4u.client.feature" version="0.9.9.rc2"/>
-      <feature id="org.eclipse.rcp" version="3.4.200.R342_v20090122-989JESTEbig-SVaL8UJHcYBr4A63"/>
+      <feature id="org.eclipse.rcp" version="3.5.1.R35x_v20090811-9SA0FxVFqE70O2K3UarekO6e7BA6"/>
    </features>
+
 
 </product>

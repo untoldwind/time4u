@@ -67,6 +67,8 @@
 				<include>org.eclipse.core:contenttype</include>
 				<include>org.eclipse.core:databinding</include>
 				<include>org.eclipse.core.databinding:beans</include>
+				<include>org.eclipse.core.databinding:observable</include>
+				<include>org.eclipse.core.databinding:property</include>
 				<include>org.eclipse.core:expressions</include>
 				<include>org.eclipse.core:jobs</include>
 				<include>org.eclipse.equinox:app</include>
