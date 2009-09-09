@@ -24,6 +24,11 @@
 			<version>${pom.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>de.objectcode.time4u.client</groupId>
+			<artifactId>store-backend</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>javax.activation</groupId>
 			<artifactId>activation</artifactId>
 		</dependency>
@@ -91,6 +96,24 @@
 	</dependencies>
 	<build>
 		<plugins>
+		   <plugin>
+		       <groupId>org.apache.maven.plugins</groupId>
+		       <artifactId>maven-jar-plugin</artifactId>
+		       <executions>
+		         <execution>
+		           <goals>
+		             <goal>test-jar</goal>
+		           </goals>
+		         </execution>
+		       </executions>
+		    </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+				    <skip>true</skip>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -103,7 +126,7 @@
 						</goals>
 						<configuration>
 							<stripVersion>true</stripVersion>
-							<includeGroupIds>javax.activation,javax.jws,commons-logging,commons-collections,org.apache.derby,javax.transaction,javax.persistence,javax.xml.bind,org.hibernate,antlr,dom4j,cglib,asm,com.sun.xml.bind,de.objectcode.time4u.server,org.testng,javax.xml.soap,javax.xml.ws,javax.xml.stream,org.jvnet.staxex,com.sun.org.apache.xml.internal,com.sun.xml.ws,com.sun.xml.stream,com.sun.xml.stream.buffer,com.sun.xml.messaging.saaj</includeGroupIds>
+							<includeGroupIds>javax.activation,javax.jws,commons-logging,commons-collections,javax.transaction,javax.persistence,javax.xml.bind,org.hibernate,antlr,dom4j,cglib,asm,com.sun.xml.bind,de.objectcode.time4u.server,org.testng,javax.xml.soap,javax.xml.ws,javax.xml.stream,org.jvnet.staxex,com.sun.org.apache.xml.internal,com.sun.xml.ws,com.sun.xml.stream,com.sun.xml.stream.buffer,com.sun.xml.messaging.saaj</includeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

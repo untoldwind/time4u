@@ -6,6 +6,8 @@ import org.osgi.framework.BundleContext;
 
 import de.objectcode.time4u.client.store.api.IRepository;
 import de.objectcode.time4u.client.store.api.meta.MetaRepository;
+import de.objectcode.time4u.client.store.backend.IDatabaseBackend;
+import de.objectcode.time4u.client.store.backend.StoreBackendPlugin;
 import de.objectcode.time4u.client.store.impl.hibernate.HibernateRepository;
 
 /**
@@ -38,8 +40,11 @@ public class StorePlugin extends Plugin
   {
     super.start(context);
     plugin = this;
+    final IDatabaseBackend databaseBackend = StoreBackendPlugin.getDefault().getDatabaseBackend();
 
-    m_repository = new HibernateRepository(getStateLocation().toFile());
+    System.out.println(">>> " + databaseBackend);
+
+    m_repository = new HibernateRepository(databaseBackend, getStateLocation().toFile());
     m_metaRepository = new MetaRepository();
   }
 

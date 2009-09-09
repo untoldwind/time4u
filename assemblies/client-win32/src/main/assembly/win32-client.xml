@@ -28,6 +28,10 @@
 			<includes>
 				<include>de.objectcode.time4u.client:store:jar:plugin
 				</include>
+				<include>de.objectcode.time4u.client:store-backend:jar:plugin
+				</include>
+				<include>de.objectcode.time4u.client:store-derby:jar:plugin
+				</include>
 				<include>de.objectcode.time4u.client:connection:jar:plugin
 				</include>
 				<include>de.objectcode.time4u.client:connection-ui:jar:plugin

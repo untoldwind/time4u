@@ -12,6 +12,8 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>store</module>
+		<module>store-backend</module>
+		<module>store-derby</module>
 		<module>connection</module>
 		<module>connection-ui</module>
 		<module>ui</module>

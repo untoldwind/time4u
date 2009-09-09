@@ -5,11 +5,12 @@ Bundle-SymbolicName: de.objectcode.time4u.client.store;singleton:=true
 Bundle-Version: 0.9.9.rc2
 Bundle-Activator: de.objectcode.time4u.client.store.StorePlugin
 Bundle-Vendor: objectcode.de
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ de.objectcode.time4u.client.store.backend;bundle-version="0.9.9",
+ de.objectcode.time4u.client.store.derby;bundle-version="0.9.9";resolution:=optional
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
- target/dependency/derby.jar,
  target/dependency/time4u-server-api.jar,
  target/dependency/time4u-server-entities.jar,
  target/dependency/hibernate-annotations.jar,

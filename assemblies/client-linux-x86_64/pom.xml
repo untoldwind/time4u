@@ -18,6 +18,18 @@
 		</dependency>
 		<dependency>
 			<groupId>de.objectcode.time4u.client</groupId>
+			<artifactId>store-backend</artifactId>
+			<version>${pom.version}</version>
+			<classifier>plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>de.objectcode.time4u.client</groupId>
+			<artifactId>store-derby</artifactId>
+			<version>${pom.version}</version>
+			<classifier>plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>de.objectcode.time4u.client</groupId>
 			<artifactId>connection</artifactId>
 			<version>${pom.version}</version>
 			<classifier>plugin</classifier>

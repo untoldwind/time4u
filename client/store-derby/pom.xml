@@ -12,8 +12,14 @@
 	<dependencies>
 		<dependency>
 			<groupId>de.objectcode.time4u.client</groupId>
+			<artifactId>store-backend</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>de.objectcode.time4u.client</groupId>
 			<artifactId>store</artifactId>
 			<version>${pom.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>de.objectcode.time4u.client</groupId>
@@ -55,6 +61,12 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
+					<systemProperties>
+						<property>
+							<name>test.databaseBackend</name>
+							<value>de.objectcode.time4u.client.store.derby.DerbyBackend</value>
+						</property>
+					</systemProperties>
 					<suiteXmlFiles>
 						<suiteXmlFile>
 							src/test/resources/testng.xml

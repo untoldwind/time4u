@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.derby.jdbc.EmbeddedDriver;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -17,7 +16,6 @@ import org.hibernate.cache.HashtableCacheProvider;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.dialect.DerbyDialect;
 
 import de.objectcode.time4u.client.store.StorePlugin;
 import de.objectcode.time4u.client.store.api.IPersonRepository;
@@ -33,6 +31,7 @@ import de.objectcode.time4u.client.store.api.RepositoryException;
 import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
 import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
+import de.objectcode.time4u.client.store.backend.IDatabaseBackend;
 import de.objectcode.time4u.client.store.impl.hibernate.entities.ClientDataEntity;
 import de.objectcode.time4u.client.store.impl.util.MonitoringProxy;
 import de.objectcode.time4u.server.api.data.EntityType;
@@ -97,9 +96,9 @@ public class HibernateRepository implements IRepository
 
   private final Map<RepositoryEventType, List<IRepositoryListener>> m_listeners = new HashMap<RepositoryEventType, List<IRepositoryListener>>();
 
-  public HibernateRepository(final File directory) throws RepositoryException
+  public HibernateRepository(final IDatabaseBackend databaseBackend, final File directory) throws RepositoryException
   {
-    m_hibernateTemplate = new HibernateTemplate(buildSessionFactory(directory));
+    m_hibernateTemplate = new HibernateTemplate(buildSessionFactory(databaseBackend, directory));
     m_keyChainEncoder = new DefaultKeyChainEncoder();
 
     initialize();
@@ -294,7 +293,9 @@ public class HibernateRepository implements IRepository
       public Map<EntityType, Long> perform(final Session session)
       {
         final Criteria criteria = session.createCriteria(RevisionEntity.class);
-        criteria.add(Restrictions.in("id.part", new Object[] { "<default>", m_owner.getId() }));
+        criteria.add(Restrictions.in("id.part", new Object[] {
+            "<default>", m_owner.getId()
+        }));
 
         final Map<EntityType, Long> result = new HashMap<EntityType, Long>();
 
@@ -389,21 +390,19 @@ public class HibernateRepository implements IRepository
     });
   }
 
-  private SessionFactory buildSessionFactory(final File directory)
+  private SessionFactory buildSessionFactory(final IDatabaseBackend databaseBackend, final File directory)
   {
     try {
-      System.setProperty("derby.system.home", directory.getAbsolutePath());
-
       final AnnotationConfiguration cfg = new AnnotationConfiguration();
 
-      cfg.setProperty(Environment.DRIVER, EmbeddedDriver.class.getName());
-      cfg.setProperty(Environment.URL, "jdbc:derby:" + directory.getAbsolutePath() + "/time4u;create=true");
-      cfg.setProperty(Environment.USER, "sa");
-      cfg.setProperty(Environment.PASS, "");
+      cfg.setProperty(Environment.DRIVER, databaseBackend.getJdbcDriver());
+      cfg.setProperty(Environment.URL, databaseBackend.getJdbcUrl(directory));
+      cfg.setProperty(Environment.USER, databaseBackend.getJdbcUserName());
+      cfg.setProperty(Environment.PASS, databaseBackend.getJdbcPassword());
       cfg.setProperty(Environment.POOL_SIZE, "5");
       cfg.setProperty(Environment.AUTOCOMMIT, "false");
       cfg.setProperty(Environment.ISOLATION, "2");
-      cfg.setProperty(Environment.DIALECT, DerbyDialect.class.getName());
+      cfg.setProperty(Environment.DIALECT, databaseBackend.getHibernateDialect());
       cfg.setProperty(Environment.HBM2DDL_AUTO, "update");
       cfg.setProperty(Environment.SHOW_SQL, "false");
       cfg.setProperty(Environment.CACHE_PROVIDER, HashtableCacheProvider.class.getName());

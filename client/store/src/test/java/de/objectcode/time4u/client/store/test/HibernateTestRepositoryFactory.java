@@ -6,6 +6,7 @@ import java.util.Map;
 
 import de.objectcode.time4u.client.store.api.IRepository;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
+import de.objectcode.time4u.client.store.backend.IDatabaseBackend;
 import de.objectcode.time4u.client.store.impl.hibernate.HibernateRepository;
 
 public class HibernateTestRepositoryFactory
@@ -17,7 +18,10 @@ public class HibernateTestRepositoryFactory
   public static synchronized IRepository getInstance() throws Exception
   {
     if (repositoryInstance == null) {
-      repositoryInstance = new HibernateRepository(new File("./target/test"));
+      final Class<?> databaseBackendClass = Class.forName(System.getProperty("test.databaseBackend"));
+      final IDatabaseBackend databaseBackend = (IDatabaseBackend) databaseBackendClass.newInstance();
+
+      repositoryInstance = new HibernateRepository(databaseBackend, new File("./target/test"));
 
       eventCollectors = new HashMap<RepositoryEventType, RepositoryEventCollector>();
 
