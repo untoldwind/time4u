@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Time4U Store Backend
+Bundle-SymbolicName: de.objectcode.time4u.client.store.backend;singleton:=true
+Bundle-Version: 0.9.9.rc2
+Bundle-Activator: de.objectcode.time4u.client.store.backend.StoreBackendPlugin
+Bundle-Vendor: objectcode.de
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
+Export-Package: de.objectcode.time4u.client.store.backend
