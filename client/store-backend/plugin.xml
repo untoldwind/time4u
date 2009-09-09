@@ -8,5 +8,13 @@
             class="de.objectcode.time4u.client.store.backend.preferences.PreferencesInitializer">
       </initializer>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="de.objectcode.time4u.client.store.backend.preferences.StoreBackendPreferencesPage"
+            id="de.objectcode.time4u.client.store.backend.preferences.StoreBackendPreferencesPage"
+            name="Store">
+      </page>
+   </extension>
 
 </plugin>

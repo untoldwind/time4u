@@ -42,8 +42,6 @@ public class StorePlugin extends Plugin
     plugin = this;
     final IDatabaseBackend databaseBackend = StoreBackendPlugin.getDefault().getDatabaseBackend();
 
-    System.out.println(">>> " + databaseBackend);
-
     m_repository = new HibernateRepository(databaseBackend, getStateLocation().toFile());
     m_metaRepository = new MetaRepository();
   }

@@ -50,7 +50,6 @@ public class StoreBackendPlugin extends AbstractUIPlugin
 
   public IDatabaseBackend getDatabaseBackend() throws Exception
   {
-
     final IExtensionRegistry registry = Platform.getExtensionRegistry();
     final IExtensionPoint extensionPoint = registry
         .getExtensionPoint("de.objectcode.time4u.client.store.backend.backend");

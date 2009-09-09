@@ -7,7 +7,8 @@ Bundle-Activator: de.objectcode.time4u.client.store.StorePlugin
 Bundle-Vendor: objectcode.de
 Require-Bundle: org.eclipse.core.runtime,
  de.objectcode.time4u.client.store.backend;bundle-version="0.9.9",
- de.objectcode.time4u.client.store.derby;bundle-version="0.9.9";resolution:=optional
+ de.objectcode.time4u.client.store.derby;bundle-version="0.9.9";resolution:=optional,
+ de.objectcode.time4u.client.store.h2;bundle-version="0.9.9";resolution:=optional
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
