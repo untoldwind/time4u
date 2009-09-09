@@ -27,6 +27,10 @@ public class CompactPerspective implements IPerspectiveFactory
     layout.addStandaloneView(WorkItemView.ID, false, IPageLayout.TOP, 0.7f, editorArea);
     layout.addStandaloneView(StatisticsView.ID, false, IPageLayout.BOTTOM, 0.3f, editorArea);
     layout.addStandaloneView(PunchView.ID, false, IPageLayout.RIGHT, 0.7f, StatisticsView.ID);
+    layout.addStandaloneViewPlaceholder("de.objectcode.time4u.client.ui.view.todoTree", IPageLayout.RIGHT, 0.3f,
+        editorArea, false);
+    layout.addStandaloneViewPlaceholder("de.objectcode.time4u.client.connection.ui.syncrhonizeView", IPageLayout.RIGHT,
+        0.7f, PunchView.ID, false);
 
     layout.getViewLayout(ProjectTreeView.ID).setCloseable(false);
     layout.getViewLayout(TaskListView.ID).setCloseable(false);
