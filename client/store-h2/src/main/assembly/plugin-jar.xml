@@ -1,0 +1,31 @@
+<assembly>
+	<id>plugin</id>
+	<formats>
+		<format>jar</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<fileSets>
+		<fileSet>
+			<directory>schema</directory>
+			<outputDirectory>/schema</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>target/classes</directory>
+			<outputDirectory>/</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>target/dependency</directory>
+			<outputDirectory>/target/dependency
+			</outputDirectory>
+			<excludes>
+				<exclude>testng-jdk15</exclude>
+			</excludes>
+		</fileSet>
+	</fileSets>
+	<files>
+		<file>
+			<source>plugin.xml</source>
+			<outputDirectory>/</outputDirectory>
+		</file>
+	</files>
+</assembly>

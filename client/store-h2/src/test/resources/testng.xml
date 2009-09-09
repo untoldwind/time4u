@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="RepositoryTestsuite" verbose="1">
+	<test name="HibernateRepositoryTests">
+ 		<packages>
+ 		    <package name="de.objectcode.time4u.client.store.derby.test"/>
+ 			<package name="de.objectcode.time4u.client.store.test" />
+		</packages> 
+	</test>
+</suite>

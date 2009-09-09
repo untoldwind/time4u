@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Time4U Store H2 Backend
+Bundle-SymbolicName: de.objectcode.time4u.client.store.h2;singleton:=true
+Bundle-Version: 0.9.9.rc2
+Bundle-Vendor: objectcode.de
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ClassPath: .,
+ target/dependency/h2.jar
+Export-Package: de.objectcode.time4u.client.store.h2,
+ org.h2
+Bundle-ActivationPolicy: lazy
+Require-Bundle: de.objectcode.time4u.client.store.backend;bundle-version="0.9.9"
