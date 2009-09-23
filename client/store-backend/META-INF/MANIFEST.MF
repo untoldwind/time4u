@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Time4U Store Backend
 Bundle-SymbolicName: de.objectcode.time4u.client.store.backend;singleton:=true
-Bundle-Version: 0.9.9.rc2
+Bundle-Version: 1.0.0
 Bundle-Activator: de.objectcode.time4u.client.store.backend.StoreBackendPlugin
 Bundle-Vendor: objectcode.de
 Require-Bundle: org.eclipse.ui,

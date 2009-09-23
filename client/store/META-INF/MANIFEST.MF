@@ -2,13 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Time4U store plugin
 Bundle-SymbolicName: de.objectcode.time4u.client.store;singleton:=true
-Bundle-Version: 0.9.9.rc2
+Bundle-Version: 1.0.0
 Bundle-Activator: de.objectcode.time4u.client.store.StorePlugin
 Bundle-Vendor: objectcode.de
 Require-Bundle: org.eclipse.core.runtime,
- de.objectcode.time4u.client.store.backend;bundle-version="0.9.9",
- de.objectcode.time4u.client.store.derby;bundle-version="0.9.9";resolution:=optional,
- de.objectcode.time4u.client.store.h2;bundle-version="0.9.9";resolution:=optional
+ de.objectcode.time4u.client.store.backend;bundle-version="1.0.0",
+ de.objectcode.time4u.client.store.derby;bundle-version="1.0.0";resolution:=optional,
+ de.objectcode.time4u.client.store.h2;bundle-version="1.0.0";resolution:=optional
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
