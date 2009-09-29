@@ -79,7 +79,8 @@ public class ReportServiceSeam implements IReportServiceLocal
       case DAYINFO:
         queryStr.append("select distinct d from ");
         queryStr.append(DayInfoEntity.class.getName());
-        queryStr.append(" d left outer join fetch d.tags left outer join fetch d.workItems join fetch d.person where d.person.id in (:allowedPersons)");
+        queryStr
+            .append(" d left outer join fetch d.tags left outer join fetch d.workItems join fetch d.person where d.person.id in (:allowedPersons)");
         orderStr = " order by d.date asc";
         if (reportDefinition.isFill()) {
           rowDataIterator = new DayInfoRowDataIteratorWithFill();
@@ -197,7 +198,7 @@ public class ReportServiceSeam implements IReportServiceLocal
     newQueryString.append(" INNER JOIN team.owners owner ");
     newQueryString.append("WHERE ");
     newQueryString.append("     wi.dayInfo.date >= :from AND ");
-    newQueryString.append("     wi.dayInfo.date <= :until AND ");
+    newQueryString.append("     wi.dayInfo.date < :until AND ");
     newQueryString.append(" (owner.id = :userId OR wi.dayInfo.person.id = :userId) ");
     newQueryString.append("GROUP BY ");
     newQueryString.append("     wi.dayInfo.person, ");
@@ -247,7 +248,7 @@ public class ReportServiceSeam implements IReportServiceLocal
     newQueryString.append(" INNER JOIN team.owners owner ");
     newQueryString.append("WHERE ");
     newQueryString.append(" wi.dayInfo.date >= :from AND ");
-    newQueryString.append(" wi.dayInfo.date <= :until AND ");
+    newQueryString.append(" wi.dayInfo.date < :until AND ");
     newQueryString.append(" (owner.id = :userId OR wi.dayInfo.person.id = :userId) ");
     newQueryString.append("GROUP BY ");
     newQueryString.append("     team, ");
@@ -298,7 +299,7 @@ public class ReportServiceSeam implements IReportServiceLocal
     newQueryString.append("WHERE ");
     newQueryString.append(" wi.task.project.id = :projectId AND ");
     newQueryString.append(" wi.dayInfo.date >= :from AND ");
-    newQueryString.append(" wi.dayInfo.date <= :until AND ");
+    newQueryString.append(" wi.dayInfo.date < :until AND ");
     newQueryString.append(" (owner.id = :userId OR wi.dayInfo.person.id = :userId) ");
     newQueryString.append("GROUP BY ");
     newQueryString.append("     team, ");
@@ -345,7 +346,7 @@ public class ReportServiceSeam implements IReportServiceLocal
     newQueryString.append("WHERE ");
     newQueryString.append(" wi.task.project.id = :projectId AND ");
     newQueryString.append(" wi.dayInfo.date >= :from AND ");
-    newQueryString.append(" wi.dayInfo.date <= :until AND ");
+    newQueryString.append(" wi.dayInfo.date < :until AND ");
     newQueryString.append(" (owner.id = :userId OR wi.dayInfo.person.id = :userId) ");
     newQueryString.append("GROUP BY ");
     newQueryString.append("     wi.dayInfo.person, ");
