@@ -51,6 +51,15 @@ public enum PersonProjection implements IProjection
       }
       return "";
     }
+  },
+  LAST_SYNCHRONIZED(ColumnType.DATE, "Last synchronize") {
+    public Object project(final IRowDataAdapter rowData)
+    {
+      if (rowData.getPerson() != null) {
+        return rowData.getPerson().getLastSynchronize();
+      }
+      return null;
+    }
   };
 
   ColumnType m_columnType;
