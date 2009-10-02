@@ -50,9 +50,12 @@
 	            		<phase>validate</phase>
 	            		<goals>
 			            	<goal>create</goal>
-	            		</goals>
+	            		</goals>	            		
           			</execution>
         		</executions>
+        		<configuration>
+        			<revisionOnScmFailure>non-svn</revisionOnScmFailure>
+        		</configuration>
       		</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
