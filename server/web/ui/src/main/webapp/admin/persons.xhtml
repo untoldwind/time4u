@@ -36,6 +36,10 @@
 							#{person.email}
 						</rich:column>
 						<rich:column>
+							<f:facet name="header">Last synchronize</f:facet>
+							#{person.lastSynchronize}
+						</rich:column>
+						<rich:column>
 							<f:facet name="header">Active</f:facet>
 							<h:outputText value="*"
 								rendered="#{person.active}" />
