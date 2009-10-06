@@ -199,7 +199,7 @@
 			<dependency>
 				<groupId>org.eclipse.equinox.launcher.carbon</groupId>
 				<artifactId>macosx</artifactId>
-				<version>1.0.101</version>
+				<version>1.0.200</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.equinox.launcher.cocoa.macosx</groupId>
