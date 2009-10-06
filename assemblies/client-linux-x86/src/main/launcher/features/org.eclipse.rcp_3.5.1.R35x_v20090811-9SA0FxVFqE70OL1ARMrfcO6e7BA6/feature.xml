@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.rcp"
       label="%featureName"
-      version="3.5.1.R35x_v20090811-9SA0FxVFqE70O2K3UarekO6e7BA6"
+      version="3.5.1.R35x_v20090811-9SA0FxVFqE70OL1ARMrfcO6e7BA6"
       provider-name="%providerName"
       plugin="org.eclipse.rcp"
       image="eclipse_update_120.jpg">
@@ -27,7 +27,7 @@
          id="com.ibm.icu"
          download-size="0"
          install-size="0"
-         version="4.0.1.v20090415"
+         version="4.0.1.v20090822"
          unpack="false"/>
 
    <plugin
@@ -48,7 +48,7 @@
          id="org.eclipse.core.databinding.observable"
          download-size="0"
          install-size="0"
-         version="1.2.0.M20090819-0800"
+         version="1.2.0.M20090902-0800"
          unpack="false"/>       
              
   <plugin
@@ -118,7 +118,7 @@
          id="org.eclipse.swt"
          download-size="0"
          install-size="0"
-         version="3.5.1.v3554b"
+         version="3.5.1.v3555a"
          unpack="false"/>
 
    <plugin
@@ -139,7 +139,7 @@
          id="org.eclipse.ui"
          download-size="0"
          install-size="0"
-         version="3.5.1.M20090826-0800"
+         version="3.5.1.M20090902-1000"
          unpack="false"/>
 
    <plugin
@@ -190,7 +190,7 @@
          arch="x86"
          download-size="0"
          install-size="0"
-         version="3.5.1.v3554b"
+         version="3.5.1.v3555a"
          fragment="true"
          unpack="false"/>
 
@@ -201,7 +201,7 @@
          arch="x86_64"
          download-size="0"
          install-size="0"
-         version="3.5.1.v3554b"
+         version="3.5.1.v3555a"
          fragment="true"
          unpack="false"/>
 
@@ -212,7 +212,7 @@
          arch="x86"
          download-size="0"
          install-size="0"
-         version="3.5.1.v3554b"
+         version="3.5.1.v3555a"
          fragment="true"
          unpack="false"/>
 
@@ -223,7 +223,7 @@
          arch="x86"
          download-size="0"
          install-size="0"
-         version="3.5.1.v3554b"
+         version="3.5.1.v3555a"
          fragment="true"
          unpack="false"/>
 
@@ -256,7 +256,7 @@
          arch="sparc"
          download-size="0"
          install-size="0"
-         version="3.5.1.v3554b"
+         version="3.5.1.v3555a"
          fragment="true"
          unpack="false"/>
          
@@ -267,7 +267,7 @@
          arch="x86"
          download-size="0"
          install-size="0"
-         version="3.5.1.v3554b"
+         version="3.5.1.v3555a"
          fragment="true"
          unpack="false"/>
 
@@ -278,7 +278,7 @@
          arch="ppc"
          download-size="0"
          install-size="0"
-         version="3.5.1.v3554b"
+         version="3.5.1.v3555a"
          fragment="true"
          unpack="false"/>
 
@@ -289,7 +289,7 @@
          arch="x86_64"
          download-size="0"
          install-size="0"
-         version="3.5.1.v3554b"
+         version="3.5.1.v3555a"
          fragment="true"
          unpack="false"/>
 
@@ -300,7 +300,7 @@
          arch="ppc"
          download-size="0"
          install-size="0"
-         version="3.5.1.v3554b"
+         version="3.5.1.v3555a"
          fragment="true"
          unpack="false"/>
          
@@ -311,7 +311,7 @@
          arch="x86"
          download-size="0"
          install-size="0"
-         version="3.5.1.v3554b"
+         version="3.5.1.v3555a"
          fragment="true"
          unpack="false"/>
          
@@ -322,7 +322,7 @@
          arch="ppc"
          download-size="0"
          install-size="0"
-         version="3.5.1.v3554b"
+         version="3.5.1.v3555a"
          fragment="true"
          unpack="false"/>
          
@@ -333,7 +333,7 @@
          arch="x86"
          download-size="0"
          install-size="0"
-         version="3.5.1.v3554b"
+         version="3.5.1.v3555a"
          fragment="true"
          unpack="false"/>
          
@@ -344,7 +344,7 @@
          arch="x86_64"
          download-size="0"
          install-size="0"
-         version="3.5.1.v3554b"
+         version="3.5.1.v3555a"
          fragment="true"
          unpack="false"/>           
 
@@ -355,7 +355,7 @@
          arch="ppc"
          download-size="0"
          install-size="0"
-         version="3.5.1.v3554b"
+         version="3.5.1.v3555a"
          fragment="true"
          unpack="false"/>
 
@@ -377,7 +377,7 @@
          arch="ia64_32"
          download-size="0"
          install-size="0"
-         version="3.5.1.v3554b"
+         version="3.5.1.v3555a"
          fragment="true"
          unpack="false"/>
 
@@ -388,7 +388,7 @@
          arch="x86"
          download-size="0"
          install-size="0"
-         version="3.5.1.v3554b"
+         version="3.5.1.v3555a"
          fragment="true"
          unpack="false"/>   
 
@@ -399,7 +399,7 @@
          arch="sparc"
          download-size="0"
          install-size="0"
-         version="3.5.1.v3554b"
+         version="3.5.1.v3555a"
          fragment="true"
          unpack="false"/>
 
@@ -410,7 +410,7 @@
          arch="x86"
          download-size="0"
          install-size="0"
-         version="3.5.1.v3554b"
+         version="3.5.1.v3555a"
          fragment="true"
          unpack="false"/>
 
@@ -418,7 +418,7 @@
          id="org.eclipse.rcp"
          download-size="0"
          install-size="0"
-         version="3.5.0.v200908280800"
+         version="3.5.0.v200909170800"
          unpack="false"/>
 
    <plugin
