@@ -1,11 +1,8 @@
-/*
- * Base64.java Created on 7. März 2002, 17:26
- */
 package de.objectcode.time4u.server.utils;
 
 /**
  * @author Bodo Junglas
- * @created 7. März 2002
+ * @created 7. March 2002
  * @version $Id: Base64.java,v 1.1 2003/03/14 23:37:20 junglas Exp $
  */
 public class Base64
