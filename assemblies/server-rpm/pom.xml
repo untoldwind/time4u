@@ -48,6 +48,9 @@
 	            		</goals>
           			</execution>
         		</executions>
+        		<configuration>
+        			<revisionOnScmFailure>non-svn</revisionOnScmFailure>
+        		</configuration>
       		</plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>

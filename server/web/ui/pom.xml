@@ -108,6 +108,9 @@
 	            		</goals>
           			</execution>
         		</executions>
+        		<configuration>
+        			<revisionOnScmFailure>non-svn</revisionOnScmFailure>
+        		</configuration>
       		</plugin>
     	</plugins>
 	</build>

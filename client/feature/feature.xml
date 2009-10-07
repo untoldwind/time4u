@@ -46,4 +46,18 @@
          version="0.9.9.rc2"
          unpack="false"/>
 
+   <plugin
+         id="de.objectcode.time4u.client.store.backend"
+         download-size="0"
+         install-size="0"
+         version="0.9.9.rc2"
+         unpack="false"/>
+
+   <plugin
+         id="de.objectcode.time4u.client.store.derby"
+         download-size="0"
+         install-size="0"
+         version="0.9.9.rc2"
+         unpack="false"/>
+
 </feature>
