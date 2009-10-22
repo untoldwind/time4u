@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.commands.NotEnabledException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
@@ -134,7 +135,9 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
     final TableColumn commentColumn = new TableColumn(m_tableViewer.getTable(), SWT.LEFT);
     commentColumn.setText("Comment");
     commentColumn.setMoveable(true);
-    m_tableViewer.setColumnProperties(new String[] { "begin", "end", "duration", "project", "task", "comment" });
+    m_tableViewer.setColumnProperties(new String[] {
+        "begin", "end", "duration", "project", "task", "comment"
+    });
     m_tableViewer.setContentProvider(new WorkItemTableContentProvider(RepositoryFactory.getRepository()
         .getWorkItemRepository()));
     m_tableViewer.setLabelProvider(new WorkItemTableLabelProvider(RepositoryFactory.getRepository(), false));
@@ -148,11 +151,13 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
         null,
         null,
         new ComboViewerCellEditor(m_tableViewer.getTable(), new TaskContentProvider(RepositoryFactory.getRepository()
-            .getTaskRepository(), false), new TaskLabelProvider()), new TextCellEditor(m_tableViewer.getTable()) });
+            .getTaskRepository(), false), new TaskLabelProvider()), new TextCellEditor(m_tableViewer.getTable())
+    });
 
     m_tableViewer.setCellModifier(new WorkItemTableCellModifier());
-    m_tableViewer.addDropSupport(DND.DROP_COPY | DND.DROP_MOVE | DND.DROP_DEFAULT, new Transfer[] { TaskTransfer
-        .getInstance() }, new DropTargetAdapter() {
+    m_tableViewer.addDropSupport(DND.DROP_COPY | DND.DROP_MOVE | DND.DROP_DEFAULT, new Transfer[] {
+      TaskTransfer.getInstance()
+    }, new DropTargetAdapter() {
       @Override
       public void drop(final DropTargetEvent event)
       {
@@ -162,8 +167,9 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
         doDropTask((TaskTransfer.ProjectTask) event.data);
       }
     });
-    m_tableViewer.addDragSupport(DND.DROP_COPY | DND.DROP_MOVE | DND.DROP_DEFAULT, new Transfer[] { TextTransfer
-        .getInstance() }, new DragSourceAdapter() {
+    m_tableViewer.addDragSupport(DND.DROP_COPY | DND.DROP_MOVE | DND.DROP_DEFAULT, new Transfer[] {
+      TextTransfer.getInstance()
+    }, new DragSourceAdapter() {
       @Override
       public void dragSetData(final DragSourceEvent event)
       {
@@ -208,6 +214,8 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
               .getService(IHandlerService.class);
 
           handlerService.executeCommand(ICommandIds.CMD_WORKITEM_EDIT, null);
+        } catch (final NotEnabledException e) {
+          // ignore this
         } catch (final Exception e) {
           UIPlugin.getDefault().log(e);
         }
@@ -332,8 +340,9 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
                 if (!m_tableViewer.isCellEditorActive()) {
                   if (((WorkItemRepositoryEvent) event).getWorkItems() != null) {
                     for (final WorkItem workItem : ((WorkItemRepositoryEvent) event).getWorkItems()) {
-                      m_tableViewer.update(workItem, new String[] { "begin", "end", "duration", "project", "task",
-                          "comment" });
+                      m_tableViewer.update(workItem, new String[] {
+                          "begin", "end", "duration", "project", "task", "comment"
+                      });
                     }
                   }
 
@@ -451,7 +460,11 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
         out.flush();
         out.close();
 
-        m_clipboard.setContents(new Object[] { writer.toString() }, new Transfer[] { TextTransfer.getInstance() });
+        m_clipboard.setContents(new Object[] {
+          writer.toString()
+        }, new Transfer[] {
+          TextTransfer.getInstance()
+        });
       }
     } catch (final Exception e) {
       UIPlugin.getDefault().log(e);
