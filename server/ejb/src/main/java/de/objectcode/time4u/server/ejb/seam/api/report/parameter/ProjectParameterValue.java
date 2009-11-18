@@ -35,6 +35,21 @@ public class ProjectParameterValue extends BaseParameterValue
     return null;
   }
 
+  public String getProjectPath()
+  {
+    final StringBuffer path = new StringBuffer();
+    boolean first = true;
+
+    for (final String projectId : m_projectStack) {
+      if (!first) {
+        path.append(":");
+      }
+      path.append(projectId);
+      first = false;
+    }
+    return path.toString();
+  }
+
   public void setProjectId(final String projectId)
   {
     if ("parent".equals(projectId)) {
