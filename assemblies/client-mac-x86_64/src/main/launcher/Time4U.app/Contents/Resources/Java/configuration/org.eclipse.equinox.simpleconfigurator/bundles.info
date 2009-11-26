@@ -1,11 +1,11 @@
 #version=1
 com.ibm.icu,4.0.1.v20090822,plugins/com.ibm.icu_4.0.1.jar,4,false
-de.objectcode.time4u.client.connection,1.0.0,plugins/de.objectcode.time4u.client.connection_1.0.0.jar,4,false
-de.objectcode.time4u.client.connection.ui,1.0.0,plugins/de.objectcode.time4u.client.connection-ui_1.0.0-SNAPSHOT.jar,4,false
-de.objectcode.time4u.client.store,1.0.0,plugins/de.objectcode.time4u.client.store_1.0.0-SNAPSHOT.jar,4,false
-de.objectcode.time4u.client.store.backend,1.0.0,plugins/de.objectcode.time4u.client.store-backend_1.0.0-SNAPSHOT.jar,4,false
-de.objectcode.time4u.client.store.derby,1.0.0,plugins/de.objectcode.time4u.client.store-derby_1.0.0-SNAPSHOT.jar,4,false
-de.objectcode.time4u.client.ui,1.0.0,plugins/de.objectcode.time4u.client.ui_1.0.0-SNAPSHOT.jar,4,false
+de.objectcode.time4u.client.connection,1.0.0,plugins/de.objectcode.time4u.client.connection_${pom.version}.jar,4,false
+de.objectcode.time4u.client.connection.ui,1.0.0,plugins/de.objectcode.time4u.client.connection-ui_${pom.version}.jar,4,false
+de.objectcode.time4u.client.store,1.0.0,plugins/de.objectcode.time4u.client.store_${pom.version}.jar,4,false
+de.objectcode.time4u.client.store.backend,1.0.0,plugins/de.objectcode.time4u.client.store-backend_${pom.version}.jar,4,false
+de.objectcode.time4u.client.store.derby,1.0.0,plugins/de.objectcode.time4u.client.store-derby_${pom.version}.jar,4,false
+de.objectcode.time4u.client.ui,1.0.0,plugins/de.objectcode.time4u.client.ui_${pom.version}.jar,4,false
 org.eclipse.core.commands,3.5.0.I20090525-2000,plugins/org.eclipse.core.commands_3.5.0.jar,4,false
 org.eclipse.core.contenttype,3.4.1.R35x_v20090826-0451,plugins/org.eclipse.core.contenttype_3.4.1.jar,4,false
 org.eclipse.core.databinding,1.2.0.M20090819-0800,plugins/org.eclipse.core.databinding_1.2.0.jar,4,false
