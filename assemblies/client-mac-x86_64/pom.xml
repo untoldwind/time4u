@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>de.objectcode.time4u.assemblies</groupId>
 		<artifactId>assemblies</artifactId>
@@ -171,14 +172,16 @@
 		</dependency>
 	</dependencies>
 	<properties>
-		<osgi.instance.area.default>@user.home/Library/Application Support/Time4UTest</osgi.instance.area.default>
-	</properties>		
+		<osgi.instance.area.default>@user.home/Library/Application
+			Support/Time4UTest</osgi.instance.area.default>
+	</properties>
 	<profiles>
 		<profile>
 			<id>release</id>
 			<properties>
-				<osgi.instance.area.default>@user.home/Library/Application Support/Time4UBeta</osgi.instance.area.default>
-			</properties>		
+				<osgi.instance.area.default>@user.home/Library/Application
+					Support/Time4UBeta</osgi.instance.area.default>
+			</properties>
 		</profile>
 		<profile>
 			<id>MacOS</id>
@@ -203,6 +206,22 @@
 			</dependencies>
 			<build>
 				<plugins>
+					<plugin>
+						<groupId>org.codehaus.groovy.maven</groupId>
+						<artifactId>gmaven-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<source>${pom.basedir}/src/main/groovy/genbundles.groovy
+									</source>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 					<plugin>
 						<artifactId>maven-assembly-plugin</artifactId>
 						<executions>
