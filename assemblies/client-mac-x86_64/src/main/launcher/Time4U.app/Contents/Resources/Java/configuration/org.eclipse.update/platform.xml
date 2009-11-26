@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config transient="false">
+	<site enabled="true" updateable="true" policy="USER-EXCLUDE" url="platform:/base/">
+		<feature id="de.objectcode.time4u.client.feature" plugin-identifier="de.objectcode.time4u.client.ui" url="features/de.objectcode.time4u.client.feature_1.0.0/" version="1.0.0">
+		</feature>
+		<feature id="org.eclipse.rcp" url="features/org.eclipse.rcp_3.5.1.R35x_v20090811-9SA0FxVFqE70OL1ARMrfcO6e7BA6/" version="3.5.1.R35x_v20090811-9SA0FxVFqE70OL1ARMrfcO6e7BA6">
+		</feature>
+	</site>
+</config>

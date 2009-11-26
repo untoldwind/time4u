@@ -30,10 +30,6 @@
 				<string>-vm</string><string>/System/Library/Frameworks/JavaVM.framework/Versions/1.4.2/Commands/java</string>
 				<string>-vm</string><string>/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/Commands/java</string>
 			-->
-<string>-startup</string>
-<string>$APP_PACKAGE/Contents/Resources/Java/plugins/org.eclipse.equinox.launcher_1.0.201.jar</string>
-<string>--launcher.library</string>
-<string>$APP_PACKAGE/Contents/Resources/Java/plugins/org.eclipse.equinox.launcher.cocoa.macosx.x86_64_1.0.1.R35x_v20090707/eclipse_1207.so</string>
 			<string>-keyring</string><string>~/.eclipse_keyring</string>
 			<string>-showlocation</string>
 			<!-- WARNING:

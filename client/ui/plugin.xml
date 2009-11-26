@@ -284,20 +284,24 @@
             application="de.objectcode.time4u.client.ui.application"
             name="Time4U">
          <property
-               name="aboutText"
-               value="Time4U client 1.0.0">
+               name="appName"
+               value="Time4U">
          </property>
          <property
-               name="windowImages"
-               value="icons/Time4U.gif,icons/Time4U_32.gif,icons/Time4U_48.gif,icons/Time4U_64.gif,icons/Time4U_128.gif">
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
          </property>
          <property
                name="aboutImage"
                value="product_lg.gif">
          </property>
          <property
-               name="appName"
-               value="Time4U">
+               name="aboutText"
+               value="Time4U client 1.0.0">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/Time4U.gif,icons/Time4U_32.gif,icons/Time4U_48.gif,icons/Time4U_64.gif,icons/Time4U_128.gif">
          </property>
          <property
                name="startupForegroundColor"
@@ -310,10 +314,6 @@
          <property
                name="startupProgressRect"
                value="285,5,160,15">
-         </property>
-         <property
-               name="preferenceCustomization"
-               value="plugin_customization.ini">
          </property>
       </product>
    </extension>
