@@ -1,13 +1,13 @@
 package de.objectcode.time4u.server.web.ui.user;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -63,7 +63,7 @@ public class CSVReportResource extends AbstractResource
         response.setContentType("text/csv");
         response.setCharacterEncoding("UTF-8");
 
-        final ServletOutputStream out = response.getOutputStream();
+        final PrintWriter out = response.getWriter();
 
         boolean first = true;
 
@@ -102,7 +102,7 @@ public class CSVReportResource extends AbstractResource
     return "/csvreport";
   }
 
-  private void writeReportRow(final ReportRow row, final List<ColumnDefinition> columns, final ServletOutputStream out)
+  private void writeReportRow(final ReportRow row, final List<ColumnDefinition> columns, final PrintWriter out)
       throws IOException
   {
     boolean first = true;
@@ -116,7 +116,7 @@ public class CSVReportResource extends AbstractResource
     out.println();
   }
 
-  private void writeReportGroup(final int depth, final ReportResultGroup group, final ServletOutputStream out)
+  private void writeReportGroup(final int depth, final ReportResultGroup group, final PrintWriter out)
       throws IOException
   {
     for (int i = 0; i < depth; i++) {
@@ -138,8 +138,7 @@ public class CSVReportResource extends AbstractResource
     }
   }
 
-  private void writeValue(final Object value, final ColumnType columnType, final ServletOutputStream out)
-      throws IOException
+  private void writeValue(final Object value, final ColumnType columnType, final PrintWriter out) throws IOException
   {
     switch (columnType) {
       case NAME:
