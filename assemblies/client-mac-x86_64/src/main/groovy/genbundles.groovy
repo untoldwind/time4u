@@ -20,11 +20,17 @@ for (bundle in bundles.dependencySet.bundle ) {
 	def autoStart = bundle.'@auto-start' != null ? bundle.'@auto-start' : false;
 	def file = dependencyMap[bundle.text()].file;
 	def manifest = new JarFile(file).manifest;
-	def fullVersion = manifest.mainAttributes.getValue("Bundle-Version");
-	def id = manifest.mainAttributes.getValue("Bundle-SymbolicName");
+	def bundleVersion = manifest.mainAttributes.getValue("Bundle-Version");
+	def bundleId = manifest.mainAttributes.getValue("Bundle-SymbolicName");
+	def id = dependencyMap[bundle.text()].groupId + "." + dependencyMap[bundle.text()].artifactId;
 	def version = dependencyMap[bundle.text()].version;
-	
-	lines.add(id + "," + fullVersion + ",plugins/" + id + "_" + version + ".jar," + startLevel + "," + autoStart);
+	def idx = bundleId.indexOf(';');
+
+    if ( idx >= 0 ) {
+      bundleId = bundleId.substring(0,idx);
+    }
+    
+	lines.add(bundleId + "," + bundleVersion + ",plugins/" + id + "_" + version + ".jar," + startLevel + "," + autoStart);
 }
 
 for (bundle in bundles.manual.bundle ) {

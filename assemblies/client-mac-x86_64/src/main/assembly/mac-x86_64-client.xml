@@ -10,13 +10,12 @@
 			<excludes>
 				<exclude>Time4U.app/Contents/MacOS/Time4U</exclude>
 				<exclude>Time4U.app/Contents/Resources/Java/configuration/config.ini</exclude>
-				<exclude>Time4U.app/Contents/Resources/Java/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info</exclude>
 			</excludes>
 		</fileSet>
-		<!-- fileSet>
+		<fileSet>
 			<directory>target/gen</directory>
 			<outputDirectory>Time4U.app/Contents/Resources/Java</outputDirectory>
-		</fileSet -->
+		</fileSet>
 	</fileSets>
 	<files>
 		<file>
@@ -27,11 +26,6 @@
 		<file>
 			<source>src/main/launcher/Time4U.app/Contents/Resources/Java/configuration/config.ini</source>
 			<outputDirectory>Time4U.app/Contents/Resources/Java/configuration</outputDirectory>
-			<filtered>true</filtered>
-		</file>
-		<file>
-			<source>src/main/launcher/Time4U.app/Contents/Resources/Java/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info</source>
-			<outputDirectory>Time4U.app/Contents/Resources/Java/configuration/org.eclipse.equinox.simpleconfigurator</outputDirectory>
 			<filtered>true</filtered>
 		</file>
 	</files>
