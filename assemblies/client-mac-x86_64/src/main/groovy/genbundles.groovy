@@ -1,4 +1,4 @@
-println "Hallo"
+import java.util.jar.JarFile;
 
 def dir = new File(project.basedir, "target/gen/configuration/org.eclipse.equinox.simpleconfigurator")
 
@@ -6,7 +6,7 @@ ant.mkdir(dir: dir);
 
 def dependencyMap = new HashMap();
 
-for ( dep in project.dependencies ) {  
+for ( dep in project.artifacts ) {  
   dependencyMap.put(dep.groupId + ":" + dep.artifactId + (dep.classifier == null ? "" : ":jar:" + dep.classifier), 
     dep);
 }
@@ -18,10 +18,13 @@ def lines = new ArrayList();
 for (bundle in bundles.dependencySet.bundle ) {
 	def startLevel = bundle.'@start-level' != null ? bundle.'@start-level' : 4;
 	def autoStart = bundle.'@auto-start' != null ? bundle.'@auto-start' : false;
+	def file = dependencyMap[bundle.text()].file;
+	def manifest = new JarFile(file).manifest;
+	def fullVersion = manifest.mainAttributes.getValue("Bundle-Version");
 	def id = dependencyMap[bundle.text()].groupId + "." + dependencyMap[bundle.text()].artifactId;
 	def version = dependencyMap[bundle.text()].version;
 	
-	lines.add(id + "," + version + ",plugins/" + id + "_" + version + ".jar," + startLevel + "," + autoStart);
+	lines.add(id + "," + fullVersion + ",plugins/" + id + "_" + version + ".jar," + startLevel + "," + autoStart);
 }
 
 for (bundle in bundles.manual.bundle ) {

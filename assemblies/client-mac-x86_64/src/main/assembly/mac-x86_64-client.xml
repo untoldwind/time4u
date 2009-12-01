@@ -13,6 +13,10 @@
 				<exclude>Time4U.app/Contents/Resources/Java/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info</exclude>
 			</excludes>
 		</fileSet>
+		<!-- fileSet>
+			<directory>target/gen</directory>
+			<outputDirectory>Time4U.app/Contents/Resources/Java</outputDirectory>
+		</fileSet -->
 	</fileSets>
 	<files>
 		<file>
