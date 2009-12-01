@@ -57,6 +57,10 @@
 			<artifactId>osgi</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.osgi</groupId>
+			<artifactId>services</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.eclipse</groupId>
 			<artifactId>ui</artifactId>
 		</dependency>
@@ -130,6 +134,14 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>ds</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>util</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
 			<artifactId>simpleconfigurator</artifactId>
 		</dependency>
 		<dependency>
@@ -183,6 +195,22 @@
 			</dependencies>
 			<build>
 				<plugins>
+					<plugin>
+						<groupId>org.codehaus.groovy.maven</groupId>
+						<artifactId>gmaven-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<source>${pom.basedir}/src/main/groovy/genbundles.groovy
+									</source>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 					<plugin>
 						<artifactId>maven-assembly-plugin</artifactId>
 						<executions>
