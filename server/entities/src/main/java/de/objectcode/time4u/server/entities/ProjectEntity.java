@@ -328,4 +328,12 @@ public class ProjectEntity implements IdAndNameAwareEntity
       }
     }
   }
+
+  @Override
+  public String toString()
+  {
+    return "ProjectEntity [m_id=" + m_id + ", m_active=" + m_active + ", m_deleted=" + m_deleted
+        + ", m_lastModifiedByClient=" + m_lastModifiedByClient + ", m_name=" + m_name + ", m_parentKey=" + m_parentKey
+        + ", m_revision=" + m_revision + "]";
+  }
 }
