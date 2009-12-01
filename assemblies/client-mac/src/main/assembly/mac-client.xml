@@ -12,6 +12,10 @@
 				<exclude>Time4U.app/Contents/Resources/Java/configuration/config.ini</exclude>
 			</excludes>
 		</fileSet>
+		<fileSet>
+			<directory>target/gen</directory>
+			<outputDirectory>Time4U.app/Contents/Resources/Java</outputDirectory>
+		</fileSet>
 	</fileSets>
 	<files>
 		<file>
@@ -69,6 +73,7 @@
 			<includes>
 				<include>com.ibm:icu</include>
 				<include>org.eclipse:osgi</include>
+				<include>org.eclipse.osgi:services</include>
 				<include>org.eclipse:rcp</include>
 				<include>org.eclipse:ui</include>
 				<include>org.eclipse:help</include>
@@ -91,6 +96,8 @@
 				<include>org.eclipse.equinox:preferences</include>
 				<include>org.eclipse.equinox:registry</include>
 				<include>org.eclipse.equinox:simpleconfigurator</include>
+				<include>org.eclipse.equinox:ds</include>
+				<include>org.eclipse.equinox:util</include>
 				<include>org.eclipse.ui:workbench</include>
 				<include>org.eclipse.ui:carbon</include>
 				<include>org.eclipse.swt.carbon:macosx</include>
