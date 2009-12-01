@@ -21,7 +21,7 @@ for (bundle in bundles.dependencySet.bundle ) {
 	def file = dependencyMap[bundle.text()].file;
 	def manifest = new JarFile(file).manifest;
 	def fullVersion = manifest.mainAttributes.getValue("Bundle-Version");
-	def id = dependencyMap[bundle.text()].groupId + "." + dependencyMap[bundle.text()].artifactId;
+	def id = manifest.mainAttributes.getValue("Bundle-SymbolicName");
 	def version = dependencyMap[bundle.text()].version;
 	
 	lines.add(id + "," + fullVersion + ",plugins/" + id + "_" + version + ".jar," + startLevel + "," + autoStart);
