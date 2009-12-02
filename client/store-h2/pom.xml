@@ -6,24 +6,24 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>store-h2</artifactId>
+	<artifactId>de.objectcode.time4u.client.store.h2</artifactId>
 	<packaging>jar</packaging>
 	<name>time4u-client-store-h2</name>
 	<dependencies>
 		<dependency>
 			<groupId>de.objectcode.time4u.client</groupId>
-			<artifactId>store-backend</artifactId>
+			<artifactId>de.objectcode.time4u.client.store.backend</artifactId>
 			<version>${pom.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>de.objectcode.time4u.client</groupId>
-			<artifactId>store</artifactId>
+			<artifactId>de.objectcode.time4u.client.store</artifactId>
 			<version>${pom.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>de.objectcode.time4u.client</groupId>
-			<artifactId>store</artifactId>
+			<artifactId>de.objectcode.time4u.client.store</artifactId>
 			<version>${pom.version}</version>
 			<classifier>tests</classifier>
 			<scope>test</scope>

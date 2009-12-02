@@ -32,72 +32,72 @@
 	<dependencySets>
 		<dependencySet>
 			<outputFileNameMapping>
-				${artifact.groupId}.${artifact.artifactId}_${artifact.version}.${artifact.extension}
+				${artifact.artifactId}_${artifact.version}.${artifact.extension}
 			</outputFileNameMapping>
 			<outputDirectory>plugins</outputDirectory>
 			<includes>
-				<include>de.objectcode.time4u.client:store:jar:plugin
+				<include>de.objectcode.time4u.client:de.objectcode.time4u.client.store:jar:plugin
 				</include>
-				<include>de.objectcode.time4u.client:store-backend:jar:plugin
+				<include>de.objectcode.time4u.client:de.objectcode.time4u.client.store.backend:jar:plugin
 				</include>
-				<include>de.objectcode.time4u.client:store-derby:jar:plugin
+				<include>de.objectcode.time4u.client:de.objectcode.time4u.client.store.derby:jar:plugin
 				</include>
-				<include>de.objectcode.time4u.client:connection:jar:plugin
+				<include>de.objectcode.time4u.client:de.objectcode.time4u.client.connection:jar:plugin
 				</include>
-				<include>de.objectcode.time4u.client:connection-ui:jar:plugin
+				<include>de.objectcode.time4u.client:de.objectcode.time4u.client.connection.ui:jar:plugin
 				</include>
-				<include>de.objectcode.time4u.client:ui:jar:plugin
+				<include>de.objectcode.time4u.client:de.objectcode.time4u.client.ui:jar:plugin
 				</include>
 			</includes>
 		</dependencySet>
 		<dependencySet>
 			<outputFileNameMapping>
-				${artifact.groupId}.${artifact.artifactId}_${artifact.version}.${artifact.extension}
+				${artifact.artifactId}_${artifact.version}.${artifact.extension}
 			</outputFileNameMapping>
 			<outputDirectory>features/de.objectcode.time4u.client.feature_${pom.version}
 			</outputDirectory>
 			<unpack>true</unpack>
 			<includes>
-				<include>de.objectcode.time4u.client:feature:jar:feature
+				<include>de.objectcode.time4u.client:de.objectcode.time4u.client.feature:jar:feature
 				</include>
 			</includes>
 		</dependencySet>
 		<dependencySet>
 			<outputFileNameMapping>
-				${artifact.groupId}.${artifact.artifactId}_${artifact.version}.${artifact.extension}
+				${artifact.artifactId}_${artifact.version}.${artifact.extension}
 			</outputFileNameMapping>
 			<outputDirectory>plugins</outputDirectory>
 			<includes>
 				<include>com.ibm:icu</include>
-				<include>org.eclipse:osgi</include>
-				<include>org.eclipse.osgi:services</include>
-				<include>org.eclipse:rcp</include>
-				<include>org.eclipse:ui</include>
-				<include>org.eclipse:help</include>
-				<include>org.eclipse:jface</include>
-				<include>org.eclipse.jface:databinding</include>
-				<include>org.eclipse:swt</include>
-				<include>org.eclipse.core:runtime</include>
-				<include>org.eclipse.core.runtime.compatibility:auth</include>
-				<include>org.eclipse.core:commands</include>
-				<include>org.eclipse.core:contenttype</include>
-				<include>org.eclipse.core:databinding</include>
-				<include>org.eclipse.core.databinding:beans</include>
-				<include>org.eclipse.core.databinding:observable</include>
-				<include>org.eclipse.core.databinding:property</include>
-				<include>org.eclipse.core:expressions</include>
-				<include>org.eclipse.core:jobs</include>
-				<include>org.eclipse.equinox:app</include>
-				<include>org.eclipse.equinox:common</include>
-				<include>org.eclipse.equinox:launcher</include>
-				<include>org.eclipse.equinox:preferences</include>
-				<include>org.eclipse.equinox:registry</include>
-				<include>org.eclipse.equinox:simpleconfigurator</include>
-				<include>org.eclipse.equinox:ds</include>
-				<include>org.eclipse.equinox:util</include>
-				<include>org.eclipse.ui:workbench</include>
-				<include>org.eclipse.swt.gtk.linux:x86</include>
-				<include>org.eclipse.update:configurator</include>
+				<include>org.eclipse.osgi:org.eclipse.osgi</include>
+				<include>org.eclipse.osgi:org.eclipse.osgi.services</include>
+				<include>org.eclipse.rcp:org.eclipse.rcp</include>
+				<include>org.eclipse.ui:org.eclipse.ui</include>
+				<include>org.eclipse.help:org.eclipse.help</include>
+				<include>org.eclipse.jface:org.eclipse.jface</include>
+				<include>org.eclipse.jface:org.eclipse.jface.databinding</include>
+				<include>org.eclipse.swt:org.eclipse.swt</include>
+				<include>org.eclipse.core:org.eclipse.core.runtime</include>
+				<include>org.eclipse.core:org.eclipse.core.runtime.compatibility.auth</include>
+				<include>org.eclipse.core:org.eclipse.core.commands</include>
+				<include>org.eclipse.core:org.eclipse.core.contenttype</include>
+				<include>org.eclipse.core:org.eclipse.core.databinding</include>
+				<include>org.eclipse.core:org.eclipse.core.databinding.beans</include>
+				<include>org.eclipse.core:org.eclipse.core.databinding.observable</include>
+				<include>org.eclipse.core:org.eclipse.core.databinding.property</include>
+				<include>org.eclipse.core:org.eclipse.core.expressions</include>
+				<include>org.eclipse.core:org.eclipse.core.jobs</include>
+				<include>org.eclipse.equinox:org.eclipse.equinox.app</include>
+				<include>org.eclipse.equinox:org.eclipse.equinox.common</include>
+				<include>org.eclipse.equinox:org.eclipse.equinox.launcher</include>
+				<include>org.eclipse.equinox:org.eclipse.equinox.preferences</include>
+				<include>org.eclipse.equinox:org.eclipse.equinox.registry</include>
+				<include>org.eclipse.equinox:org.eclipse.equinox.simpleconfigurator</include>
+				<include>org.eclipse.equinox:org.eclipse.equinox.ds</include>
+				<include>org.eclipse.equinox:org.eclipse.equinox.util</include>
+				<include>org.eclipse.ui:org.eclipse.ui.workbench</include>
+				<include>org.eclipse.swt:org.eclipse.swt.gtk.linux.x86</include>
+				<include>org.eclipse.update:org.eclipse.update.configurator</include>
 			</includes>
 		</dependencySet>
 		<!--  dependencySet>

@@ -26,7 +26,7 @@ for (bundle in bundles.dependencySet.bundle ) {
 	def manifest = new JarFile(file).manifest;
 	def bundleVersion = manifest.mainAttributes.getValue("Bundle-Version");
 	def bundleId = manifest.mainAttributes.getValue("Bundle-SymbolicName");
-	def id = dependencyMap[bundle.text()].groupId + "." + dependencyMap[bundle.text()].artifactId;
+	def id = dependencyMap[bundle.text()].artifactId;
 	def version = dependencyMap[bundle.text()].version;
 	def idx = bundleId.indexOf(';');
 

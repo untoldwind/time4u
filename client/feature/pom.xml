@@ -6,7 +6,7 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>feature</artifactId>
+	<artifactId>de.objectcode.time4u.client.feature</artifactId>
 	<packaging>pom</packaging>
 	<name>time4u-client-feature</name>
 	<dependencies>

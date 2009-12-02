@@ -97,194 +97,195 @@
 			<!-- Client -->
 			<!-- Eclipse -->
 			<dependency>
-				<groupId>org.eclipse</groupId>
-				<artifactId>osgi</artifactId>
-				<version>3.5.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.osgi</groupId>
-				<artifactId>services</artifactId>
-				<version>3.2.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse</groupId>
-				<artifactId>ui</artifactId>
-				<version>3.5.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse</groupId>
-				<artifactId>rcp</artifactId>
-				<version>3.5.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse</groupId>
-				<artifactId>help</artifactId>
-				<version>3.4.1</version>
+				<groupId>com.ibm</groupId>
+				<artifactId>icu</artifactId>
+				<version>4.0.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.core</groupId>
-				<artifactId>runtime</artifactId>
+				<artifactId>org.eclipse.core.commands</artifactId>
 				<version>3.5.0</version>
 			</dependency>
 			<dependency>
-				<groupId>org.eclipse.core.runtime.compatibility</groupId>
-				<artifactId>auth</artifactId>
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.contenttype</artifactId>
+				<version>3.4.100</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.databinding.beans</artifactId>
+				<version>1.2.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.databinding.observable</artifactId>
+				<version>1.3.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.databinding.property</artifactId>
+				<version>1.2.100</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.databinding</artifactId>
+				<version>1.3.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.expressions</artifactId>
+				<version>3.4.100</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.jobs</artifactId>
+				<version>3.4.200</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>org.eclipse.core.runtime.compatibility.auth</artifactId>
 				<version>3.2.100</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.core</groupId>
-				<artifactId>commands</artifactId>
+				<artifactId>org.eclipse.core.runtime</artifactId>
+				<version>3.6.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>org.eclipse.equinox.app</artifactId>
+				<version>1.2.100</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>org.eclipse.equinox.common</artifactId>
+				<version>3.5.100</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>org.eclipse.equinox.ds</artifactId>
+				<version>1.1.100</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>org.eclipse.equinox.launcher</artifactId>
+				<version>1.1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>org.eclipse.equinox.preferences</artifactId>
+				<version>3.3.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>org.eclipse.equinox.registry</artifactId>
 				<version>3.5.0</version>
 			</dependency>
 			<dependency>
-				<groupId>org.eclipse.core</groupId>
-				<artifactId>contenttype</artifactId>
-				<version>3.4.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.core</groupId>
-				<artifactId>databinding</artifactId>
-				<version>1.2.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.core</groupId>
-				<artifactId>expressions</artifactId>
-				<version>3.4.100</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.core</groupId>
-				<artifactId>jobs</artifactId>
-				<version>3.4.100</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.core.databinding</groupId>
-				<artifactId>beans</artifactId>
-				<version>1.2.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.core.databinding</groupId>
-				<artifactId>observable</artifactId>
-				<version>1.2.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.core.databinding</groupId>
-				<artifactId>property</artifactId>
-				<version>1.2.0</version>
-			</dependency>
-			<dependency>
 				<groupId>org.eclipse.equinox</groupId>
-				<artifactId>app</artifactId>
-				<version>1.2.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.equinox</groupId>
-				<artifactId>common</artifactId>
-				<version>3.5.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.equinox</groupId>
-				<artifactId>launcher</artifactId>
-				<version>1.0.201</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.equinox</groupId>
-				<artifactId>preferences</artifactId>
-				<version>3.2.300</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.equinox</groupId>
-				<artifactId>registry</artifactId>
-				<version>3.4.100</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.equinox</groupId>
-				<artifactId>simpleconfigurator</artifactId>
-				<version>1.0.101</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.equinox</groupId>
-				<artifactId>ds</artifactId>
-				<version>1.1.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.equinox</groupId>
-				<artifactId>util</artifactId>
-				<version>1.0.100</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.equinox.launcher.carbon</groupId>
-				<artifactId>macosx</artifactId>
+				<artifactId>org.eclipse.equinox.simpleconfigurator</artifactId>
 				<version>1.0.200</version>
 			</dependency>
 			<dependency>
-				<groupId>org.eclipse.equinox.launcher.cocoa.macosx</groupId>
-				<artifactId>x86_64</artifactId>
-				<version>1.0.1</version>
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>org.eclipse.equinox.util</artifactId>
+				<version>1.0.100</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jface</groupId>
+				<artifactId>org.eclipse.jface.databinding</artifactId>
+				<version>1.3.100</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jface</groupId>
+				<artifactId>org.eclipse.jface</artifactId>
+				<version>3.6.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.osgi</groupId>
+				<artifactId>org.eclipse.osgi.services</artifactId>
+				<version>3.2.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.osgi</groupId>
+				<artifactId>org.eclipse.osgi</artifactId>
+				<version>3.6.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.rcp</groupId>
+				<artifactId>org.eclipse.rcp</artifactId>
+				<version>3.5.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.swt</groupId>
+				<artifactId>org.eclipse.swt</artifactId>
+				<version>3.6.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.ui</groupId>
-				<artifactId>workbench</artifactId>
-				<version>3.5.1</version>
+				<artifactId>org.eclipse.ui.workbench</artifactId>
+				<version>3.6.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.ui</groupId>
-				<artifactId>carbon</artifactId>
+				<artifactId>org.eclipse.ui</artifactId>
+				<version>3.6.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.update</groupId>
+				<artifactId>org.eclipse.update.configurator</artifactId>
+				<version>3.3.100</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.help</groupId>
+				<artifactId>org.eclipse.help</artifactId>
+				<version>3.5.0</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>org.eclipse.equinox.launcher.carbon.macosx</artifactId>
+				<version>1.1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>org.eclipse.equinox.launcher.cocoa.macosx.x86_64</artifactId>
+				<version>1.1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.ui</groupId>
+				<artifactId>org.eclipse.ui.carbon</artifactId>
 				<version>4.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.ui</groupId>
-				<artifactId>cocoa</artifactId>
+				<artifactId>org.eclipse.ui.cocoa</artifactId>
 				<version>1.0.0</version>
 			</dependency>
 			<dependency>
-				<groupId>org.eclipse</groupId>
-				<artifactId>jface</artifactId>
-				<version>3.5.1</version>
+				<groupId>org.eclipse.swt</groupId>
+				<artifactId>org.eclipse.swt.carbon.macosx</artifactId>
+				<version>3.6.0</version>
 			</dependency>
 			<dependency>
-				<groupId>org.eclipse.jface</groupId>
-				<artifactId>databinding</artifactId>
-				<version>1.3.1</version>
+				<groupId>org.eclipse.swt</groupId>
+				<artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
+				<version>3.6.0</version>
 			</dependency>
 			<dependency>
-				<groupId>org.eclipse</groupId>
-				<artifactId>swt</artifactId>
-				<version>3.5.1</version>
+				<groupId>org.eclipse.swt</groupId>
+				<artifactId>org.eclipse.swt.win32.win32.x86</artifactId>
+				<version>3.6.0</version>
 			</dependency>
 			<dependency>
-				<groupId>org.eclipse.swt.carbon</groupId>
-				<artifactId>macosx</artifactId>
-				<version>3.5.1</version>
+				<groupId>org.eclipse.swt</groupId>
+				<artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
+				<version>3.6.0</version>
 			</dependency>
 			<dependency>
-				<groupId>org.eclipse.swt.cocoa.macosx</groupId>
-				<artifactId>x86_64</artifactId>
-				<version>3.5.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.swt.win32.win32</groupId>
-				<artifactId>x86</artifactId>
-				<version>3.5.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.swt.gtk.linux</groupId>
-				<artifactId>x86_64</artifactId>
-				<version>3.5.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.swt.gtk.linux</groupId>
-				<artifactId>x86</artifactId>
-				<version>3.5.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.update</groupId>
-				<artifactId>configurator</artifactId>
-				<version>3.3.0</version>
-			</dependency>
-			<dependency>
-				<groupId>com.ibm</groupId>
-				<artifactId>icu</artifactId>
-				<version>4.0.1</version>
+				<groupId>org.eclipse.swt</groupId>
+				<artifactId>org.eclipse.swt.gtk.linux.x86</artifactId>
+				<version>3.6.0</version>
 			</dependency>
 
 			<!-- jaxws / jaxb -->

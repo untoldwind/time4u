@@ -33,10 +33,8 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
-
 
    <plugins>
       <plugin id="com.ibm.icu"/>
@@ -66,7 +64,7 @@
 
    <features>
       <feature id="de.objectcode.time4u.client.feature" version="1.0.0"/>
-      <feature id="org.eclipse.rcp" version="3.5.1.R35x_v20090811-9SA0FxVFqE70OL1ARMrfcO6e7BA6"/>
+      <feature id="org.eclipse.rcp" version="3.6.0.v20090924-9OAgFO0Ftsd5c2xeiwIpedV"/>
    </features>
 
 

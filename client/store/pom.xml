@@ -6,17 +6,17 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>store</artifactId>
+	<artifactId>de.objectcode.time4u.client.store</artifactId>
 	<packaging>jar</packaging>
 	<name>time4u-client-store</name>
 	<dependencies>
 		<dependency>
-			<groupId>org.eclipse</groupId>
-			<artifactId>osgi</artifactId>
+			<groupId>org.eclipse.osgi</groupId>
+			<artifactId>org.eclipse.osgi</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.core</groupId>
-			<artifactId>runtime</artifactId>
+			<artifactId>org.eclipse.core.runtime</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>de.objectcode.time4u.server</groupId>
@@ -25,7 +25,7 @@
 		</dependency>
 		<dependency>
 			<groupId>de.objectcode.time4u.client</groupId>
-			<artifactId>store-backend</artifactId>
+			<artifactId>de.objectcode.time4u.client.store.backend</artifactId>
 			<version>${pom.version}</version>
 		</dependency>
 		<dependency>
