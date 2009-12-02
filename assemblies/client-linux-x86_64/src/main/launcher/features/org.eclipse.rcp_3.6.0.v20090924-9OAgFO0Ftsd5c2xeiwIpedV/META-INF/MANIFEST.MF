@@ -17,5 +17,5 @@ Name: feature.properties
 SHA1-Digest: YEoJ+rkOBezUldp9Hv+ZHsWAvs4=
 
 Name: feature.xml
-SHA1-Digest: bK4phDPjkpf/zqWkFhZfbCQEuwE=
+SHA1-Digest: 3cy/wJdiapTCCtUOtK0mFg1DICs=
 
