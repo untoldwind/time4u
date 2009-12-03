@@ -33,7 +33,7 @@ public class CalendarDay implements Serializable, Comparable<CalendarDay>
     m_year = year;
   }
 
-  public CalendarDay(final Date date)
+  public CalendarDay(final java.util.Date date)
   {
     final Calendar calendar = Calendar.getInstance();
     calendar.setTime(date);

@@ -1,6 +1,7 @@
 package de.objectcode.time4u.client.ui.views;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +14,11 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetAdapter;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
@@ -22,6 +28,7 @@ import org.eclipse.ui.part.ViewPart;
 import org.vafada.swtcalendar.SWTCalendar;
 import org.vafada.swtcalendar.SWTCalendarEvent;
 import org.vafada.swtcalendar.SWTCalendarListener;
+import org.vafada.swtcalendar.SWTDayChooser.DayControl;
 
 import de.objectcode.time4u.client.store.api.IWorkItemRepository;
 import de.objectcode.time4u.client.store.api.RepositoryFactory;
@@ -29,6 +36,8 @@ import de.objectcode.time4u.client.store.api.event.IRepositoryListener;
 import de.objectcode.time4u.client.store.api.event.RepositoryEvent;
 import de.objectcode.time4u.client.store.api.event.RepositoryEventType;
 import de.objectcode.time4u.client.ui.UIPlugin;
+import de.objectcode.time4u.client.ui.dnd.TaskTransfer;
+import de.objectcode.time4u.client.ui.dnd.WorkItemTransfer;
 import de.objectcode.time4u.client.ui.provider.DayFontColorProvider;
 import de.objectcode.time4u.client.ui.util.CompoundSelectionEntityType;
 import de.objectcode.time4u.client.ui.util.CompoundSelectionProvider;
@@ -36,6 +45,7 @@ import de.objectcode.time4u.client.ui.util.SelectionServiceAdapter;
 import de.objectcode.time4u.server.api.data.CalendarDay;
 import de.objectcode.time4u.server.api.data.DayInfo;
 import de.objectcode.time4u.server.api.data.DayTag;
+import de.objectcode.time4u.server.api.data.WorkItem;
 
 public class CalendarView extends ViewPart implements SWTCalendarListener, IRepositoryListener
 {
@@ -65,6 +75,26 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
 
     m_calendar = new SWTCalendar(parent, SWTCalendar.SHOW_WEEK_NUMBERS);
     m_calendar.addSWTCalendarListener(this);
+    m_calendar.addDropSupport(DND.DROP_COPY | DND.DROP_MOVE | DND.DROP_DEFAULT, new Transfer[] {
+        WorkItemTransfer.getInstance(), TaskTransfer.getInstance()
+    }, new DropTargetAdapter() {
+      @Override
+      public void drop(final DropTargetEvent event)
+      {
+        if (event.data == null) {
+          return;
+        }
+
+        if (event.data instanceof WorkItem) {
+          doDropWorkItem((WorkItem) event.data, ((DayControl) ((DropTarget) event.widget).getControl()).getDate(),
+              (event.detail & DND.DROP_COPY) != 0);
+        } else if (event.data instanceof TaskTransfer.ProjectTask) {
+          doDropTask((TaskTransfer.ProjectTask) event.data, ((DayControl) ((DropTarget) event.widget).getControl())
+              .getDate());
+        }
+      }
+
+    });
 
     final CalendarDay selection = (CalendarDay) m_selectionProvider
         .getSelection(CompoundSelectionEntityType.CALENDARDAY);
@@ -227,6 +257,65 @@ public class CalendarView extends ViewPart implements SWTCalendarListener, IRepo
           }
         });
         break;
+    }
+  }
+
+  private void doDropWorkItem(final WorkItem workItem, final Date date, final boolean copy)
+  {
+    try {
+      if (!copy) {
+        RepositoryFactory.getRepository().getWorkItemRepository().deleteWorkItem(workItem, true);
+      }
+
+      workItem.setId(null);
+      workItem.setDay(new CalendarDay(date));
+
+      RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem, true);
+    } catch (final Exception e) {
+      UIPlugin.getDefault().log(e);
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected void doDropTask(final TaskTransfer.ProjectTask projectTask, final Date date)
+  {
+    try {
+      int maxTime = 0;
+
+      final DayInfo dayInfo = RepositoryFactory.getRepository().getWorkItemRepository().getDayInfo(
+          new CalendarDay(date));
+
+      if (dayInfo != null && dayInfo.getWorkItems() != null) {
+        for (final WorkItem workItem : dayInfo.getWorkItems()) {
+          if (workItem.getBegin() > maxTime) {
+            maxTime = workItem.getBegin();
+          }
+
+          if (workItem.getEnd() > maxTime) {
+            maxTime = workItem.getEnd();
+          }
+        }
+      } else {
+        final Calendar calendar = Calendar.getInstance();
+        final int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        final int minute = calendar.get(Calendar.MINUTE);
+
+        maxTime = hour * 3600 + minute * 60;
+      }
+
+      final WorkItem workItem = new WorkItem();
+      workItem.setProjectId(projectTask.getProject().getId());
+      workItem.setTaskId(projectTask.getTask().getId());
+      workItem.setBegin(maxTime);
+      workItem.setEnd(maxTime);
+      workItem.setDay(new CalendarDay(date));
+      workItem.setComment("");
+
+      RepositoryFactory.getRepository().getWorkItemRepository().storeWorkItem(workItem, true);
+    } catch (final Exception e) {
+      UIPlugin.getDefault().log(e);
     }
   }
 

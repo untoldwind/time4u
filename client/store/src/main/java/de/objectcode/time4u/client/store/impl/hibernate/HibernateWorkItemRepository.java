@@ -56,6 +56,29 @@ public class HibernateWorkItemRepository implements IWorkItemRepository
   /**
    * {@inheritDoc}
    */
+  public WorkItem getWorkItem(final String workItemId) throws RepositoryException
+  {
+    return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<WorkItem>() {
+      public WorkItem perform(final Session session)
+      {
+        final WorkItemEntity workItemEntity = (WorkItemEntity) session.get(WorkItemEntity.class, workItemId);
+
+        if (workItemEntity != null) {
+          final WorkItem workItem = new WorkItem();
+
+          workItemEntity.toDTO(workItem);
+
+          return workItem;
+        }
+
+        return null;
+      }
+    });
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   public DayInfo getDayInfo(final CalendarDay day) throws RepositoryException
   {
     return m_hibernateTemplate.executeInTransaction(new HibernateTemplate.OperationWithResult<DayInfo>() {

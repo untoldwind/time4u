@@ -20,6 +20,17 @@ import de.objectcode.time4u.server.api.filter.TimePolicyFilter;
 public interface IWorkItemRepository
 {
   /**
+   * Get a specific workitem by its id.
+   * 
+   * @param workItemId
+   *          The identifier of the workitem
+   * @return The WorkItem or <tt>null</tt>
+   * @throws RepositoryException
+   *           on error
+   */
+  WorkItem getWorkItem(final String workItemId) throws RepositoryException;
+
+  /**
    * Get the dayinfo of a calendar day.
    * 
    * @param day

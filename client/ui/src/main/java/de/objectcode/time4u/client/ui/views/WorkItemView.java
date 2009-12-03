@@ -53,6 +53,7 @@ import de.objectcode.time4u.client.ui.UIPlugin;
 import de.objectcode.time4u.client.ui.controls.ComboViewerCellEditor;
 import de.objectcode.time4u.client.ui.controls.TimeComboCellEditor;
 import de.objectcode.time4u.client.ui.dnd.TaskTransfer;
+import de.objectcode.time4u.client.ui.dnd.WorkItemTransfer;
 import de.objectcode.time4u.client.ui.provider.TaskContentProvider;
 import de.objectcode.time4u.client.ui.provider.TaskLabelProvider;
 import de.objectcode.time4u.client.ui.provider.WorkItemTableCellModifier;
@@ -168,7 +169,7 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
       }
     });
     m_tableViewer.addDragSupport(DND.DROP_COPY | DND.DROP_MOVE | DND.DROP_DEFAULT, new Transfer[] {
-      TextTransfer.getInstance()
+        TextTransfer.getInstance(), WorkItemTransfer.getInstance()
     }, new DragSourceAdapter() {
       @Override
       public void dragSetData(final DragSourceEvent event)
@@ -177,30 +178,34 @@ public class WorkItemView extends ViewPart implements IRepositoryListener, ISele
           final IStructuredSelection selection = (IStructuredSelection) m_tableViewer.getSelection();
           final WorkItem workItem = (WorkItem) selection.getFirstElement();
 
-          final StringBuffer buffer = new StringBuffer();
-          buffer.append(DateFormat.format(m_currentDay));
-          buffer.append('\t');
-          buffer.append(TimeFormat.format(workItem.getBegin()));
-          buffer.append('\t');
-          buffer.append(TimeFormat.format(workItem.getEnd()));
-          buffer.append('\t');
-          final List<ProjectSummary> projectPath = RepositoryFactory.getRepository().getProjectRepository()
-              .getProjectPath(workItem.getProjectId());
-          final Iterator<ProjectSummary> it = projectPath.iterator();
-          while (it.hasNext()) {
-            buffer.append(it.next().getName());
-            if (it.hasNext()) {
-              buffer.append('.');
+          if (WorkItemTransfer.getInstance().isSupportedType(event.dataType)) {
+            event.data = workItem;
+          } else {
+            final StringBuffer buffer = new StringBuffer();
+            buffer.append(DateFormat.format(m_currentDay));
+            buffer.append('\t');
+            buffer.append(TimeFormat.format(workItem.getBegin()));
+            buffer.append('\t');
+            buffer.append(TimeFormat.format(workItem.getEnd()));
+            buffer.append('\t');
+            final List<ProjectSummary> projectPath = RepositoryFactory.getRepository().getProjectRepository()
+                .getProjectPath(workItem.getProjectId());
+            final Iterator<ProjectSummary> it = projectPath.iterator();
+            while (it.hasNext()) {
+              buffer.append(it.next().getName());
+              if (it.hasNext()) {
+                buffer.append('.');
+              }
             }
-          }
-          buffer.append('\t');
-          final TaskSummary task = RepositoryFactory.getRepository().getTaskRepository().getTaskSummary(
-              workItem.getTaskId());
-          buffer.append(task.getName());
-          buffer.append('\t');
-          buffer.append(workItem.getComment());
+            buffer.append('\t');
+            final TaskSummary task = RepositoryFactory.getRepository().getTaskRepository().getTaskSummary(
+                workItem.getTaskId());
+            buffer.append(task.getName());
+            buffer.append('\t');
+            buffer.append(workItem.getComment());
 
-          event.data = buffer.toString();
+            event.data = buffer.toString();
+          }
         } catch (final Exception e) {
           UIPlugin.getDefault().log(e);
         }
