@@ -14,5 +14,6 @@
 		<module>ui</module>
 		<module>ws</module>
 		<module>rest</module>
+		<module>gwt</module>
 	</modules>
 </project>
