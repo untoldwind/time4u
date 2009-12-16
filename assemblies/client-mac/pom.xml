@@ -177,7 +177,7 @@
 		<profile>
 			<id>release</id>
 			<properties>
-				<osgi.instance.area.default>@user.home/Library/Application Support/Time4UBeta</osgi.instance.area.default>
+				<osgi.instance.area.default>@user.home/Library/Application Support/Time4U</osgi.instance.area.default>
 			</properties>		
 		</profile>
 		<profile>
