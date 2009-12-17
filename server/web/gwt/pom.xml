@@ -95,13 +95,13 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
+			<!--  plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
 					<warSourceDirectory>war</warSourceDirectory>
 				</configuration>
-			</plugin>
+			</plugin -->
 		</plugins>
 	</build>
 </project>
