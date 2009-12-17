@@ -54,6 +54,7 @@ import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
 import de.objectcode.time4u.server.entities.revision.LocalIdEntity;
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
 import de.objectcode.time4u.server.entities.revision.SessionLocalIdGenerator;
+import de.objectcode.time4u.server.entities.sync.ClientSynchronizationStatusEntity;
 import de.objectcode.time4u.server.entities.sync.ServerConnectionEntity;
 import de.objectcode.time4u.server.entities.sync.SynchronizationStatusEntity;
 
@@ -159,6 +160,7 @@ public class Migrator
     cfg.addAnnotatedClass(UserRoleEntity.class);
     cfg.addAnnotatedClass(TimePolicyEntity.class);
     cfg.addAnnotatedClass(WeekTimePolicyEntity.class);
+    cfg.addAnnotatedClass(ClientSynchronizationStatusEntity.class);
 
     return cfg.buildSessionFactory();
   }
