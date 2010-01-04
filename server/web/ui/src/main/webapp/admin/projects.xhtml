@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+	template="../templates/main-template.xhtml">
+
+	<ui:define name="title">Projects</ui:define>
+	<ui:define name="contentDetail">
+		<h:form>
+			<h:panelGrid>
+				<h:panelGroup>
+					<h:selectBooleanCheckbox value="#{admin.projectTreeController.deleted}">
+						<a4j:support event="onchange" reRender="projectTree" />
+					</h:selectBooleanCheckbox>
+					<h:outputText value="Show deleted" />
+					<h:selectBooleanCheckbox
+						value="#{admin.projectTreeController.onlyActive}">
+						<a4j:support event="onchange" reRender="projectTree" />
+					</h:selectBooleanCheckbox>
+					<h:outputText value="Show only active" />
+				</h:panelGroup>
+				<h:panelGrid columns="2" columnClasses="formTop,formTop">
+					<a4j:region renderRegionOnly="true">
+						<rich:tree id="projectTree"
+							adviseNodeOpened="#{admin.projectTreeController.adviseNodeOpened}"
+							switchType="ajax">
+							<rich:recursiveTreeNodesAdaptor
+								id="project" roots="#{admin.projectTreeController.rootProjects}"
+								nodes="#{admin.projectTreeController.getChildProjects(project.id)}"
+								var="project">
+								<rich:treeNode
+									changeExpandListener="#{admin.projectTreeController.changeExpandListener}">
+									<h:outputText value="[I]" rendered="#{!project.active}" />
+									<h:outputText value="[D]" rendered="#{project.deleted}" />
+									<a4j:commandLink
+										action="#{admin.projectTreeController.select(project)}" value="#{project.name}"
+										reRender="projectDetail" />
+								</rich:treeNode>
+							</rich:recursiveTreeNodesAdaptor>
+						</rich:tree>
+					</a4j:region>
+					<h:panelGroup id="projectDetail"
+						rendered="#{admin.projectTreeController.hasSelection}">
+						<table>
+							<tr>
+								<td>Id:</td>
+								<td>#{admin.projectTreeController.selectedProject.id}</td>
+							</tr>
+							<tr>
+								<td>ParentId:</td>
+								<td>#{admin.projectTreeController.selectedProject.parentId}</td>
+							</tr>
+							<tr>
+								<td>Name:</td>
+								<td>#{admin.projectTreeController.selectedProject.name}</td>
+							</tr>
+							<tr>
+								<td>Active:</td>
+								<td>#{admin.projectTreeController.selectedProject.active}</td>
+							</tr>
+							<tr>
+								<td>Deleted:</td>
+								<td>#{admin.projectTreeController.selectedProject.deleted}</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<a4j:commandButton
+										action="#{admin.projectTreeController.confirmDeleteProject}"
+										value="Delete Project"
+										rendered="#{!admin.projectTreeController.selectedProject.deleted}" />
+									<a4j:commandButton
+										action="#{admin.projectTreeController.undeleteProject}"
+										value="Undelete Project"
+										rendered="#{admin.projectTreeController.selectedProject.deleted}" />
+								</td>
+							</tr>
+						</table>
+					</h:panelGroup>
+				</h:panelGrid>
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

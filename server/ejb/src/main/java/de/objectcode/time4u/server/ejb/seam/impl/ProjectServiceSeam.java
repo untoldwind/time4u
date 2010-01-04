@@ -54,23 +54,43 @@ public class ProjectServiceSeam implements IProjectServiceLocal
 
   @SuppressWarnings("unchecked")
   @Restrict("#{s:hasRole('user')}")
-  public List<ProjectEntity> getRootProjects()
+  public List<ProjectEntity> getRootProjects(final boolean deleted, final boolean onlyActive)
   {
-    final Query query = m_manager.createQuery("from " + ProjectEntity.class.getName()
-        + " p where p.parent is null and p.deleted = false order by p.name");
+    final StringBuffer queryString = new StringBuffer("from " + ProjectEntity.class.getName()
+        + " p where p.parent is null");
+
+    if (!deleted) {
+      queryString.append(" and p.deleted = false");
+    }
+    if (onlyActive) {
+      queryString.append(" and p.active = true");
+    }
+    queryString.append(" order by p.name");
+
+    final Query query = m_manager.createQuery(queryString.toString());
 
     return query.getResultList();
   }
 
   @SuppressWarnings("unchecked")
   @Restrict("#{s:hasRole('user')}")
-  public List<ProjectEntity> getChildProjects(final String projectId)
+  public List<ProjectEntity> getChildProjects(final String projectId, final boolean deleted, final boolean onlyActive)
   {
     if (projectId == null || projectId.length() == 0) {
-      return getRootProjects();
+      return getRootProjects(deleted, onlyActive);
     }
-    final Query query = m_manager.createQuery("from " + ProjectEntity.class.getName()
-        + " p where p.parent.id = :projectId and p.deleted = false order by p.name");
+    final StringBuffer queryString = new StringBuffer("from " + ProjectEntity.class.getName()
+        + " p where p.parent.id = :projectId");
+
+    if (!deleted) {
+      queryString.append(" and p.deleted = false");
+    }
+    if (onlyActive) {
+      queryString.append(" and p.active = true");
+    }
+    queryString.append(" order by p.name");
+
+    final Query query = m_manager.createQuery(queryString.toString());
 
     query.setParameter("projectId", projectId);
 
@@ -141,4 +161,73 @@ public class ProjectServiceSeam implements IProjectServiceLocal
       m_manager.clear();
     }
   }
+
+  @Restrict("#{s:hasRole('admin')}")
+  public void deleteProject(final String projectId)
+  {
+    final ProjectEntity project = m_manager.find(ProjectEntity.class, projectId);
+
+    if (project != null) {
+      doDeleteProject(project);
+
+      m_manager.flush();
+      m_manager.clear();
+    }
+
+  }
+
+  @SuppressWarnings("unchecked")
+  private void doDeleteProject(final ProjectEntity project)
+  {
+    final Query childProjectQuery = m_manager.createQuery("from " + ProjectEntity.class.getName()
+        + " p where p.parent = :parent and p.deleted = false");
+    childProjectQuery.setParameter("parent", project);
+
+    final List<ProjectEntity> childProjects = childProjectQuery.getResultList();
+
+    // First delete all not yet deleted child projects
+    for (final ProjectEntity childProject : childProjects) {
+      doDeleteProject(childProject);
+    }
+
+    final Query taskQuery = m_manager.createQuery("from " + TaskEntity.class.getName()
+        + " t where t.project = :project and t.deleted = false");
+    taskQuery.setParameter("project", project);
+
+    final List<TaskEntity> tasks = taskQuery.getResultList();
+
+    // Delete all not yet deleted tasks of the project
+    for (final TaskEntity task : tasks) {
+      final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(EntityType.TASK, null);
+
+      task.setLastModifiedByClient(m_idGenerator.getClientId());
+      task.setRevision(revisionLock.getLatestRevision());
+      task.setDeleted(true);
+    }
+
+    final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(EntityType.PROJECT, null);
+
+    project.setLastModifiedByClient(m_idGenerator.getClientId());
+    project.setRevision(revisionLock.getLatestRevision());
+    project.setDeleted(true);
+
+  }
+
+  @Restrict("#{s:hasRole('admin')}")
+  public void undeleteProject(final String projectId)
+  {
+    final ProjectEntity project = m_manager.find(ProjectEntity.class, projectId);
+
+    if (project != null) {
+      final IRevisionLock revisionLock = m_revisionGenerator.getNextRevision(EntityType.PROJECT, null);
+
+      project.setLastModifiedByClient(m_idGenerator.getClientId());
+      project.setRevision(revisionLock.getLatestRevision());
+      project.setDeleted(false);
+
+      m_manager.flush();
+      m_manager.clear();
+    }
+  }
+
 }

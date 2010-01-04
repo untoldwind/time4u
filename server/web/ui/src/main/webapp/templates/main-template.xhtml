@@ -35,6 +35,9 @@
 					<rich:menuItem submitMode="ajax" value="Teams"
 						action="#{admin.teamListController.enter}" rendered="#{s:hasRole('admin')}" />
 
+					<rich:menuItem submitMode="ajax" value="Projects"
+						action="#{admin.projectTreeController.enter}" rendered="#{s:hasRole('admin')}" />
+						
 					<rich:menuItem submitMode="ajax" value="Move project data"
 						action="#{admin.moveProjectDataController.enter}" rendered="#{s:hasRole('admin')}" />
 						

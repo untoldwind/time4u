@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+	template="../templates/main-template.xhtml">
+
+	<ui:define name="title">Delete Project</ui:define>
+	<ui:define name="contentDetail">
+		<h:form>
+			<table>
+				<tr>
+					<td>Id:</td>
+					<td>#{admin.projectTreeController.selectedProject.id}</td>
+				</tr>
+				<tr>
+					<td>Name:</td>
+					<td>#{admin.projectTreeController.selectedProject.name}</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<a4j:commandButton action="#{admin.projectTreeController.deleteProject}"
+							value="Delete" />
+						<a4j:commandButton action="#{admin.projectTreeController.enter}"
+							value="Cancel" />
+					</td>
+				</tr>
+			</table>
+		</h:form>
+	</ui:define>
+</ui:composition>

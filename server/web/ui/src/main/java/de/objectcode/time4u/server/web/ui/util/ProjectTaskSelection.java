@@ -52,9 +52,9 @@ public class ProjectTaskSelection implements Serializable
       List<ProjectEntity> projects;
 
       if (m_projectStack.isEmpty()) {
-        projects = m_projectService.getRootProjects();
+        projects = m_projectService.getRootProjects(false, false);
       } else {
-        projects = m_projectService.getChildProjects(m_projectStack.getLast().getId());
+        projects = m_projectService.getChildProjects(m_projectStack.getLast().getId(), false, false);
       }
 
       for (final ProjectEntity project : projects) {
