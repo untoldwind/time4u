@@ -12,6 +12,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Tree;
+import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ProjectTree extends Composite {
@@ -34,15 +35,17 @@ public class ProjectTree extends Composite {
 	public ProjectTree(String firstName) {
 		initWidget(uiBinder.createAndBindUi(this));
 		button.setText(firstName);
-		
+
 		projectService.getRootProjects(new AsyncCallback<List<Project>>() {
-			
+
 			public void onSuccess(List<Project> result) {
-				for ( Project project : result ){
-					projectTree.addItem(project.getName());
+				for (Project project : result) {
+					TreeItem item = projectTree.addItem(project.getName());
+
+					item.addItem("");
 				}
 			}
-			
+
 			public void onFailure(Throwable caught) {
 			}
 		});

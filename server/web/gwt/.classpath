@@ -22,5 +22,8 @@
       <attribute value="jar:file:/Users/junglas/.m2/repository/commons-collections/commons-collections/2.1.1/commons-collections-2.1.1-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/net/sf/gwt-widget/gwt-widgets/0.2.0/gwt-widgets-0.2.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/gwt-widget/gwt-widgets-server/0.1.4/gwt-widgets-server-0.1.4.jar"/>
+  <classpathentry kind="var" path="M2_REPO/de/objectcode/time4u/server/time4u-server-api/1.0.1-SNAPSHOT/time4u-server-api-1.0.1-SNAPSHOT.jar"/>
 </classpath>
 

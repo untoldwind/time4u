@@ -13,11 +13,7 @@
   <classpathentry kind="var" path="M2_REPO/asm/asm-util/2.2.3/asm-util-2.2.3.jar"/>
   <classpathentry kind="var" path="M2_REPO/avalon-framework/avalon-framework/4.1.3/avalon-framework-4.1.3.jar"/>
   <classpathentry kind="var" path="M2_REPO/cglib/cglib/2.1_3/cglib-2.1_3.jar" sourcepath="M2_REPO/cglib/cglib/2.1_3/cglib-2.1_3-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/2.1.1/commons-collections-2.1.1.jar" sourcepath="M2_REPO/commons-collections/commons-collections/2.1.1/commons-collections-2.1.1-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/Users/junglas/.m2/repository/commons-collections/commons-collections/2.1.1/commons-collections-2.1.1-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar" sourcepath="M2_REPO/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1/commons-logging-1.1.jar" sourcepath="M2_REPO/commons-logging/commons-logging/1.1/commons-logging-1.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" sourcepath="M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/net/sf/ehcache/ehcache/1.2.3/ehcache-1.2.3.jar" sourcepath="M2_REPO/net/sf/ehcache/ehcache/1.2.3/ehcache-1.2.3-sources.jar">
@@ -29,6 +25,8 @@
   <classpathentry kind="var" path="M2_REPO/org/codehaus/groovy/groovy/1.6.3/groovy-1.6.3.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/google/gwt/gwt-servlet/2.0.0/gwt-servlet-2.0.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/google/gwt/gwt-user/2.0.0/gwt-user-2.0.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/gwt-widget/gwt-widgets/0.2.0/gwt-widgets-0.2.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/gwt-widget/gwt-widgets-server/0.2.0/gwt-widgets-server-0.2.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate/3.2.4.sp1/hibernate-3.2.4.sp1.jar" sourcepath="M2_REPO/org/hibernate/hibernate/3.2.4.sp1/hibernate-3.2.4.sp1-sources.jar">
     <attributes>
       <attribute value="jar:file:/Users/junglas/.m2/repository/org/hibernate/hibernate/3.2.4.sp1/hibernate-3.2.4.sp1-javadoc.jar!/" name="javadoc_location"/>
