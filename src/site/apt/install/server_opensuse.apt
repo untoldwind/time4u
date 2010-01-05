@@ -1,0 +1,270 @@
+  -------------------------------------
+  Time4U server installation (OpenSuSE)
+  -------------------------------------
+  junglas
+  -------------------------------------
+
+Time4U server installation (OpenSuSE)
+
+* Introduction
+
+ * This is a step-by-step guide how to install the Time4U server on an OpenSUSE system (either bare metal or in VM).
+
+ * The guide was tested with the OpenSUSE 11.1 distribution. It might work with other versions (or even other distributions) too, but there is not guarantee.
+
+ * Please note that the RPM installation is still new and might contain some problems I have not encountered so far (please keep me informed).
+
+* Step by step (with MySql backend)
+
+** Base installation
+
+ * Install OpenSUSE 11.1 on your system. An only test-mode server installation is sufficient if you want to spare disc space.
+
+  * If you are installing the inside a VM (VMWare, VirtualBox, Parallels, ...) ensure that the VM has at lease 1 GB memory
+
+ * Install some prelimaries (you can do that with YaST too):
+
+---
+ zypper install java-1_6_0-sun-devel apache2 apache2-mod_jk mysql mysql-connector-java
+---
+
+ * Download the time4u-server rpms (time4u-server-<version>.noarch.rpm, time4u-server-apache-<version>.noarch.rpm, time4u-server-mysql-<version>.noarch.rpm) from http://sourceforge.net/projects/time4u/files
+
+ * Install these rpms:
+
+---
+ rpm -Uvh time4u-server-<version>.noarch.rpm time4u-server-apache-<version>.noarch.rpm time4u-server-mysql-<version>.noarch.rpm
+---
+
+ * Setup the database:
+
+---
+ service mysql start
+ mysql < /srv/time4u-with-jboss/time4u-mysql-init.sql
+---
+
+ * Start the time4u server:
+
+---
+ service time4u start
+---
+
+ * Optional: You might want to check what is going on with:
+
+---
+ tail -f /srv/time4u-with-jboss/log/jboss.log
+---
+
+ * Start the apache server:
+
+---
+ service apache2 start
+---
+
+ The server should be now accessible with:
+
+---
+ http://ip_or_servername/time4u
+---
+
+ For synchronization you should use:
+
+---
+ http://ip_or_servername
+---
+
+** Additional steps
+
+ * You can put everthing to auto-start with:
+
+---
+ chkconfig --add apache2
+ chkconfig --add mysql
+ chkconfig --add time4u
+---
+
+  * If you have security considerations you might want to change the database passwords:
+---
+ mysql
+ > update mysql.user set password = password('<some new super-user password>') where user = 'root';
+ > update mysql.user set password = password('<some new time4u password>') where user = 'time4u';
+ > flush privileges;
+---
+
+ * If doing so you have to edit the '''/srv/time4u-with-jboss/server/time4u/deploy/time4u-ds.xml''' file too. The time4u password has to be entered in clear text, so ensure that this file is only readable by the 'wwwrun' user:
+
+---
+ chown wwwrun:www /srv/time4u-with-jboss/server/time4u/deploy/time4u-ds.xml
+ chmod 600 /srv/time4u-with-jboss/server/time4u/deploy/time4u-ds.xml
+---
+
+* Step by step (with Postgres backend)
+
+** Base installation
+
+ * Install OpenSUSE 11.1 on your system. An only test-mode server installation is sufficient if you want to spare disc space.
+
+  * If you are installing the inside a VM (VMWare, VirtualBox, Parallels, ...) ensure that the VM has at lease 1 GB memory
+
+ * Install some prelimaries (you can do that with YaST too):
+
+---
+ zypper install java-1_6_0-sun-devel apache2 apache2-mod_jk postgresql postgresql-server postgresql-jdbc
+---
+
+ * Download the time4u-server rpms (time4u-server-<version>.noarch.rpm, time4u-server-apache-<version>.noarch.rpm, time4u-server-postgres-<version>.noarch.rpm)
+
+ * Install these rpms:
+
+---
+ rpm -Uvh time4u-server-<version>.noarch.rpm time4u-server-apache-<version>.noarch.rpm time4u-server-postgres-<version>.noarch.rpm
+---
+
+ * Setup the database:
+
+---
+ service postgresql start
+ su postgres -c "psql -f /srv/time4u-with-jboss/time4u-postgres-init.sql"
+---
+
+ * Allow connections to the time4u database via loopback device by editing the '''/var/lib/pgsql/data/pg_hba.conf''' file, which should look something like this:
+
+---
+ # TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+ 
+ # "local" is for Unix domain socket connections only
+ local   all         all                               ident sameuser
+ # IPv4 local connections:
+ '''host    time4u      time4u      127.0.0.1/32          md5'''
+ host    all         all         127.0.0.1/32          ident sameuser
+---
+
+ * Restart database and (optionally) test connectivity:
+
+---
+ service postgresql restart
+ psql -h localhost -U time4u time4u
+  Password will be simply time4u
+  You can leave with \q
+---
+
+ * Start the time4u server:
+
+---
+ service time4u start
+---
+
+ * Optional: You might want to check what is going on with:
+
+---
+ tail -f /srv/time4u-with-jboss/log/jboss.log
+---
+
+ * Start the apache server:
+
+---
+ service apache2 start
+---
+
+ * The server should be now accessible with:
+
+---
+ http://ip_or_servername/time4u
+---
+
+ * For synchronization you should use:
+
+---
+ http://ip_or_servername
+---
+
+** Additional steps
+
+ * You can put everything to auto-start with:
+
+---
+ chkconfig --add apache2
+ chkconfig --add postgresql
+ chkconfig --add time4u
+---
+
+ * If you have security considerations you might want to change the database passwords:
+
+---
+ su postgres -c psql
+ > alter role time4u with encrypted password '<some new time4u password>';
+---
+
+ * If doing so you have to edit the '''/srv/time4u-with-jboss/server/time4u/deploy/time4u-ds.xml''' file too. The time4u password has to be entered in clear text, so ensure that this file is only readable by the 'wwwrun' user:
+
+---
+ chown wwwrun:www /srv/time4u-with-jboss/server/time4u/deploy/time4u-ds.xml
+ chmod 600 /srv/time4u-with-jboss/server/time4u/deploy/time4u-ds.xml
+---
+
+* Fortify installation
+
+ Important notice: The Time4U 0.9.7 will reject all https connection that do not have a certificate in the trust store of the JavaVM. In short: The following steps will most likely not work.
+The upcoming 0.9.8 release will allow https connections with self-signed certificates.
+
+ All the steps below a purely optional and only necessary if you actually want to expose the time4u-server to the internet (which is not recommented anyway, using VPN access for your road-runners is much more secure).
+
+** Prevent JBoss from binding to any interface but loopback
+
+ * Edit the '''/etc/init.d/time4u''':
+
+---
+ JBOSSSH=${JBOSSSH:-"$JBOSS_HOME/bin/run.sh -c time4u -b 127.0.0.1"}
+---
+
+** Setup the firewall using YaST
+
+ * Just allow connections on the following TCP ports: 22 (SSH), 80 (HTTP), 443 (HTTPS)
+
+ * If you just want to allow https (see below), restrict this to: 22 (SSH), 443 (HTTPS)
+
+** Setup https (with self-signed certificate)
+
+ * Create new certificate:
+---
+ /usr/bin/gensslcert
+---
+
+ * Copy vhost-ssl template
+
+---
+ cp /etc/apache2/vhosts.d/vhost-ssl.template /etc/apache2/vhosts.d/vhost-ssl.conf
+---
+
+ * Insert JkMount to the vhost-ssl.conf, i.e. somewhere in the virtual-host section you should have
+
+---
+ <IfModule mod_jk.c>
+ JkMount /time4u ajp13
+ JkMount /time4u/* ajp13
+ JkMount /time4u-ws/* ajp13
+ JkMount /time4u-rest/* ajp13
+ </IfModule>
+---
+
+ * If you want to prevent non-ssl connections to the time4u service, you can remove these lines from the '''/etc/apache2/conf.d/time4u.conf''' file.
+
+ * Activate SSL in '''/etc/sysconfig/apache2''':
+
+---
+ APACHE_SERVER_FLAGS="-D SSL"
+---
+
+ * The time4u server should be now accessible via HTTPS:
+
+---
+ https://ip_or_servername/time4u
+---
+
+ * For synchronization you should use (only with 0.9.8 or above):
+
+---
+ https://ip_or_servername
+---
+
+ 

@@ -11,6 +11,7 @@
 		<item name="Download" href="/install/index.html">
 			<item name="Client Installation" href="/install/client.html"/>
 			<item name="Server Installation" href="/install/server.html"/>
+			<item name="OpenSuSE Server Installation" href="/install/server_opensuse.html"/>
 		</item>
 		<item name="Wiki/Trac" href="http://sourceforge.net/apps/trac/time4u"/>
     </menu>
@@ -18,6 +19,7 @@
     	<item name="Getting started (win32)" href="/development/gettingstarted_win32.html"/>    	
     	<item name="Project layout" href="/development/projectlayout.html"/>
     	<item name="Database model" href="/development/databasemodel.html"/>
+    	<item name="Logomania" href="/misc/logomania.html"/>
     </menu>
     <menu ref="parent" />
     <menu ref="modules" />

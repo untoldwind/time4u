@@ -10,13 +10,11 @@ Time4U client installation
 
 ** Install
 
- The Time4U client needs a Java runtime environment (JRE). Most tests have been done with Java 1.5.0, but the client should run with Java 1.6.0 as well.
+ The Time4U client needs a Java runtime environment (JRE). Most tests have been done with Java 1.5.0 (JDK 5), but the client should runs Java 1.6.0 (JDK 6) as well.
 
  A current java releases can be downloaded here:
 
   * {{{http://java.sun.com/javase/downloads/index.jsp}Current java release}}
-
-  * {{{http://java.sun.com/javase/downloads/index_jdk5.jsp} Java 1.5.0 release}}
 
  After installing the JRE just download the Time4U client zip and unpack it anywhere you like. At the moment there is no installer.
 
@@ -47,8 +45,6 @@ Time4U client installation
  A current java releases can be downloaded here:
 
   * {{{http://java.sun.com/javase/downloads/index.jsp}Current java release}}
-
-  * {{{http://java.sun.com/javase/downloads/index_jdk5.jsp} Java 1.5.0 release}}
 
  After installing the JRE just download the Time4U client tar.bz2 and unpack it anywhere you like. 
 

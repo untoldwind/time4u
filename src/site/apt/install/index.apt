@@ -8,25 +8,37 @@ Time4U Downloads
 
 * Client
 
- Current client version is 0.9.6:
+ Current client version is 1.0.0:
 
-  * {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-client-win32-0.9.6.zip}Windows client (i386)}}
-  
-  * {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-client-mac-0.9.6.zip}Mac client}}
-  
-  * {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-client-linux-x86-0.9.6.tar.bz2}Linux client (x86)}}
-  
-  * {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-client-linux-x86_64-0.9.6.tar.bz2}Linux client (x86_64)}}
+  * {{{http://sourceforge.net/projects/time4u/files/time4u-client/1.0.0/time4u-assemblies-client-win32-1.0.0.zip/download}Windows Client (win32)}}
+
+  * {{{http://sourceforge.net/projects/time4u/files/time4u-client/1.0.0/time4u-assemblies-client-linux-x86-1.0.0.tar.bz2/download}Linux Client 32-bit (gtk)}}
+
+  * {{{http://sourceforge.net/projects/time4u/files/time4u-client/1.0.0/time4u-assemblies-client-linux-x86_64-1.0.0.tar.bz2/download}Linux Client 64-bit (gtk)}}
+
+  * {{{http://sourceforge.net/projects/time4u/files/time4u-client/1.0.0/time4u-assemblies-client-mac-1.0.0b.zip/download}Mac Client 32-bit (Carbon)}}
+
+  * {{{http://sourceforge.net/projects/time4u/files/time4u-client/1.0.0/time4u-assemblies-client-mac-x86_64-1.0.0b.zip/download}Mac Client 64-bit (Cocoa)}}
 
  Also take note of the more detailed installation instructions: {{{/install/client.html}Client installation}}
   
 * Server
 
- Current server version is 0.9.6:
+ Current server version is 1.0.0:
 
-  * {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-deploy-0.9.6.tar.bz2}Server distribution package}}
+  * {{{http://sourceforge.net/projects/time4u/files/time4u-server/1.0.0/time4u-assemblies-deploy-1.0.0.tar.bz2/download}Server distribution package}}
 
-  * {{{http://downloads.sourceforge.net/time4u/time4u-assemblies-ear-0.9.6.ear}Server EAR package}}
+  * {{{http://sourceforge.net/projects/time4u/files/time4u-server/1.0.0/time4u-assemblies-ear-1.0.0.ear/download}Server EAR package}}
+  
+  * OpenSuSE 11 RPM Distribution:
+  
+     * {{{http://sourceforge.net/projects/time4u/files/timeu-server%20%28rpm%20openSUSE%29/1.0.0/time4u-server-1.0.0-480.noarch.rpm/download}Base Package}}}
 
+     * {{{http://sourceforge.net/projects/time4u/files/timeu-server%20%28rpm%20openSUSE%29/1.0.0/time4u-server-mysql-1.0.0-480.noarch.rpm/download}MySQL Connector}}}
+
+     * {{{http://sourceforge.net/projects/time4u/files/timeu-server%20%28rpm%20openSUSE%29/1.0.0/time4u-server-postgres-1.0.0-480.noarch.rpm/download}Postgres Connector (beta)}}}
+
+     * {{{http://sourceforge.net/projects/time4u/files/timeu-server%20%28rpm%20openSUSE%29/1.0.0/time4u-server-apache-1.0.0-480.noarch.rpm/download}Apache Connector (optional)}}}
+     
  Also take note of the more detailed installation instructions: {{{/install/server.html}Server installation}}
  
