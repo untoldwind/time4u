@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>Time4U LogoMania</title>
+		<author>junglas</author>
+	</properties>
+
+	<body>
+		<section name="Time4U LogoMania">
+			<p>Time4U is a quiet old project initiated in 1998 as pure client
+				application to get rid of this ugly spreadsheet application everyone
+				seems to rely on. Obviously there have been quite a lot of changes
+				during that time that can be nicely visualized with the development
+				of the logo.</p>
+			<subsection name="Very first version">
+				<p>Time4U started as C++ pure Windows application with a rather
+					limited set of icons</p>
+				<p>
+					<img border="1" src="/images/Time4U_16.gif" alt="16x16 icon" />
+					<img border="1" src="/images/Time4U_32.gif" alt="32x32 icon" />
+					<img border="1" src="/images/Time4U_48.gif" alt="48x48 icon" />
+				</p>
+			</subsection>
+			<subsection name="Java version">
+				<p>At a certain time it became convientent to reimplement the
+					originial client in Java with a server component. Since RCP
+					applications usually have a splash screen I had to to come up with
+					something and played around with a 3D-renderer.</p>
+				<p>
+					<img border="1" src="/images/splash.png" alt="Splash screen" />
+					<img border="1" src="/images/product_lg.png" alt="Logo in about dialog" />
+				</p>
+				<p>The original icons were easily migrated and reused.</p>
+			</subsection>
+			<subsection name="Mac version">
+				<p>Eventually people started to buy and develop on Mac systems.
+					Seeing the poor icons in the dock I felt obliged to redo the icons
+					from ground up.</p>
+				<p>
+					<img border="1" src="/images/Time4U_64.gif" alt="64x64 icon" />
+					<img border="1" src="/images/Time4U_128.gif" alt="128x128 icon" />
+					<img border="1" src="/images/Time4U_256.gif" alt="256x256 icon" />
+				</p>
+				<p>As for now this is more or less the current Time4U logo on a
+					&quot;I'm not happy with but can live with&quot; basis. Feel free
+					to send me a better suggestion.</p>
+			</subsection>
+			<subsection name="Nonsense">
+				<p>One weekend after reading Terry Pratchett's &quot;Thief of
+					Time&quot; - were the anthropomorphic personification of Time is a
+					woman residing in a palace of glass - I came up with this</p>
+				<p>
+					<img border="1" src="/images/time1.jpg" alt="Time?" />
+				</p>
+				<p>This version has never made it into the software. As side note
+					(before I'm getting planed by Terry Pratchett fans): It's not even
+					correct. In the book Time is a dark-haired.</p>
+			</subsection>
+		</section>
+	</body>
+</document>
