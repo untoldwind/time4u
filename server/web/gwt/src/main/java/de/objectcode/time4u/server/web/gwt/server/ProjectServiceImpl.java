@@ -3,12 +3,13 @@ package de.objectcode.time4u.server.web.gwt.server;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import org.springframework.stereotype.Controller;
 
 import de.objectcode.time4u.server.web.gwt.client.Project;
 import de.objectcode.time4u.server.web.gwt.client.ProjectService;
 
-public class ProjectServiceImpl extends RemoteServiceServlet implements
+@Controller("projectServiceController")
+public class ProjectServiceImpl extends GwtController implements
 		ProjectService {
 
 	private static final long serialVersionUID = 1L;

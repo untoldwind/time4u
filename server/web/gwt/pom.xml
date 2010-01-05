@@ -56,6 +56,18 @@
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
 	</dependencies>
 	<properties>
 		<time4u.release>${env.SVN_REVISION}</time4u.release>
@@ -95,13 +107,12 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--  plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<warSourceDirectory>war</warSourceDirectory>
-				</configuration>
-			</plugin -->
+			<!--
+				plugin> <groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId> <configuration>
+				<warSourceDirectory>war</warSourceDirectory> </configuration>
+				</plugin
+			-->
 		</plugins>
 	</build>
 </project>
