@@ -12,12 +12,6 @@
 	</servlet>
 
 	<servlet>
-		<servlet-name>projectServlet</servlet-name>
-		<servlet-class>
-			de.objectcode.time4u.server.web.gwt.server.ProjectServiceImpl</servlet-class>
-	</servlet>
-
-	<servlet>
 		<servlet-name>gwt-controller</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>2</load-on-startup>

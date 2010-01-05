@@ -4,31 +4,32 @@
     "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
-  
-  <!-- Servlets -->
-  <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>de.objectcode.time4u.server.weg.gwt.test.server.GreetingServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet>
-  	<servlet-name>projectServlet</servlet-name>
-  	<servlet-class> de.objectcode.time4u.server.web.gwt.server.ProjectServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/time4u_server_web_gwt/greet</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-  	<servlet-name>projectServlet</servlet-name>
-  	<url-pattern>/MainUI/project</url-pattern>
-  </servlet-mapping>
-  
-  <!-- Default page to serve -->
-  <welcome-file-list>
-    <welcome-file>Time4u_server_web_gwt.html</welcome-file>
-  </welcome-file-list>
+
+	<!-- Servlets -->
+	<servlet>
+		<servlet-name>greetServlet</servlet-name>
+		<servlet-class>de.objectcode.time4u.server.weg.gwt.test.server.GreetingServiceImpl</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>gwt-controller</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>greetServlet</servlet-name>
+		<url-pattern>/time4u_server_web_gwt/greet</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>gwt-controller</servlet-name>
+		<url-pattern>*.service</url-pattern>
+	</servlet-mapping>
+
+	<!-- Default page to serve -->
+	<welcome-file-list>
+		<welcome-file>Time4u_server_web_gwt.html</welcome-file>
+	</welcome-file-list>
 
 </web-app>
