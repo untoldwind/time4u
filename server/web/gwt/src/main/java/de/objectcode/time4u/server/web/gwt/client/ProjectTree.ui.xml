@@ -1,13 +1,12 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
-	
+
 	<g:HTMLPanel>
-		Hello,
-		<g:Button ui:field="button" />
-		
-		Hu
-		<g:Tree ui:field="projectTree"/>
-		Ha
+		<g:DecoratorPanel>
+			<g:ScrollPanel width="300px" height="300px">			
+				<g:Tree ui:field="projectTree" />
+			</g:ScrollPanel>
+		</g:DecoratorPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 

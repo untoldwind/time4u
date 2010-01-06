@@ -8,6 +8,8 @@ import de.objectcode.time4u.server.web.gwt.client.Project;
 public interface IProjectDao {
 	List<Project> findRootProjectsDTO();
 
+	List<Project> findChildProjectsDTO(String projectId);
+
 	void save(ProjectEntity project);
 
 	void update(ProjectEntity project);

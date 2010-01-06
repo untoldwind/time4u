@@ -11,10 +11,11 @@ public class Project implements IsSerializable {
 	public Project() {
 	}
 
-	public Project(String id, String parentId, String name) {
+	public Project(String id, String parentId, String name, boolean hasChildren) {
 		this.id = id;
 		this.parentId = parentId;
 		this.name = name;
+		this.hasChildren = hasChildren;
 	}
 
 	public String getId() {
@@ -27,6 +28,10 @@ public class Project implements IsSerializable {
 
 	public String getName() {
 		return name;
+	}
+
+	public boolean isHasChildren() {
+		return hasChildren;
 	}
 
 }
