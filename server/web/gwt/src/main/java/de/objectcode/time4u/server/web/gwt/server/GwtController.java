@@ -4,6 +4,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
@@ -29,6 +30,7 @@ public class GwtController extends RemoteServiceServlet implements Controller,
 	 * @throws Exception
 	 *             in case of errors
 	 */
+	@Transactional
 	public ModelAndView handleRequest(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		doPost(request, response);

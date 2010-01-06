@@ -146,7 +146,7 @@
 						</goals>
 						<configuration>
 							<outputDirectory>${basedir}/war/WEB-INF/lib</outputDirectory>
-							<excludeGroupIds>javax.servlet,commons-logging,commons-collections,log4j</excludeGroupIds>
+							<excludeGroupIds>javax.servlet,commons-logging,log4j</excludeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

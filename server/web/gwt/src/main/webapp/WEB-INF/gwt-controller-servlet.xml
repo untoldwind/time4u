@@ -9,6 +9,8 @@
 
     <context:component-scan base-package="de.objectcode.time4u.server.web.gwt.server" />
 
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+
     <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
         <!-- <property name="interceptors" ref="localeChangeInterceptor"/> -->
     </bean>

@@ -9,5 +9,7 @@
 	<classpathentry kind="var" path="M2_REPO/de/objectcode/time4u/server/time4u-server-api/1.0.1-SNAPSHOT/time4u-server-api-1.0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring/2.5.6.SEC01/spring-2.5.6.SEC01.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-webmvc/2.5.6.SEC01/spring-webmvc-2.5.6.SEC01.jar"/>
+	<classpathentry kind="var" path="M2_REPO/de/objectcode/time4u/server/time4u-server-entities/1.0.1-SNAPSHOT/time4u-server-entities-1.0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="var" path="M2_REPO/javax/persistence/persistence-api/1.0/persistence-api-1.0.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
