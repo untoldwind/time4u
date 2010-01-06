@@ -680,6 +680,11 @@
 				<artifactId>asm</artifactId>
 				<version>1.5.3</version>
 			</dependency>
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>5.1.10</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<reporting>

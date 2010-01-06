@@ -116,6 +116,10 @@
 			<artifactId>hsqldb</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>concurrent</groupId>
 			<artifactId>concurrent</artifactId>
 		</dependency>
