@@ -183,7 +183,7 @@ public class WorkItemDialog extends Dialog
     gridData = new GridData(GridData.FILL_HORIZONTAL);
     gridData.horizontalSpan = 3;
     m_projectTreeViewer.setLayoutData(gridData);
-    m_projectTreeViewer.setContentProvider(new ProjectContentProvider(m_projectRepository, false));
+    m_projectTreeViewer.setContentProvider(new ProjectContentProvider(m_projectRepository, m_create));
     m_projectTreeViewer.setLabelProvider(new ProjectLabelProvider());
     m_projectTreeViewer.setInput(new Object());
 
