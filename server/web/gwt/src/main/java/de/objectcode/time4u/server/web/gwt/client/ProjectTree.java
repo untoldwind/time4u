@@ -9,8 +9,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
@@ -29,16 +27,16 @@ public class ProjectTree extends Composite {
 	private final ProjectServiceAsync projectService = GWT
 			.create(ProjectService.class);
 
-	public ProjectTree(String firstName) {
+	public ProjectTree() {
 		initWidget(uiBinder.createAndBindUi(this));
 
 		projectTree.addItem(new LoadingLabel());
-		
+
 		projectService.getRootProjects(new AsyncCallback<List<Project>>() {
 
 			public void onSuccess(List<Project> result) {
 				projectTree.removeItems();
-				
+
 				for (Project project : result) {
 					TreeItem item = projectTree.addItem(project.getName());
 
@@ -61,12 +59,12 @@ public class ProjectTree extends Composite {
 		Project project = (Project) item.getUserObject();
 
 		if (project != null) {
-			
+
 			projectService.getChildProjects(project.getId(),
 					new AsyncCallback<List<Project>>() {
 						public void onSuccess(List<Project> result) {
 							item.removeItems();
-							
+
 							for (Project project : result) {
 								TreeItem subItem = item.addItem(project
 										.getName());

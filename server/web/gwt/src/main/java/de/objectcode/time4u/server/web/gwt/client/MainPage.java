@@ -28,8 +28,8 @@ public class MainPage implements EntryPoint {
 		});
 		RootPanel.get("mainMenu").add(mainMenu);
 
-		ProjectTree projectTree = new ProjectTree("Hurra");
-
-		RootPanel.get("projectTree").add(projectTree);
+		RootPanel.get("projectTree").add(new ProjectTree());
+		
+		RootPanel.get("taskList").add(new TaskList());
 	}
 }
