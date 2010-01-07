@@ -17,18 +17,18 @@ public class ProjectServiceImpl extends GwtController implements ProjectService 
 
 	private static final long serialVersionUID = 1L;
 
-	IProjectDao projectDao;
+	private IProjectDao projectDao;
 
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public List<Project> getRootProjects() {
 		List<Project> result = projectDao.findRootProjectsDTO();
 
 		System.out.println("Call Root");
-		
+
 		return result;
 	}
 
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public List<Project> getChildProjects(String projectId) {
 		List<Project> result = projectDao.findChildProjectsDTO(projectId);
 

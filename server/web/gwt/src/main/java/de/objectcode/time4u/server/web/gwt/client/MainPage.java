@@ -11,6 +11,8 @@ public class MainPage implements EntryPoint {
 	public static final MainClientBundle images = (MainClientBundle) GWT
 			.create(MainClientBundle.class);
 
+	SelectionManager selectionManager = new SelectionManager();
+	
 	public void onModuleLoad() {
 		MenuBar mainMenu = new MenuBar();
 
@@ -28,8 +30,8 @@ public class MainPage implements EntryPoint {
 		});
 		RootPanel.get("mainMenu").add(mainMenu);
 
-		RootPanel.get("projectTree").add(new ProjectTree());
+		RootPanel.get("projectTree").add(new ProjectTree(selectionManager));
 		
-		RootPanel.get("taskList").add(new TaskList());
+		RootPanel.get("taskList").add(new TaskList(selectionManager));
 	}
 }

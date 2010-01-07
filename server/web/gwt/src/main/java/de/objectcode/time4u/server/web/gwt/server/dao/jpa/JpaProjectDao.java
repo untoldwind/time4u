@@ -24,7 +24,7 @@ public class JpaProjectDao extends JpaDaoBase implements IProjectDao {
 						+ ProjectEntity.class.getName()
 						+ " sp where sp.parent = p) from "
 						+ ProjectEntity.class.getName()
-						+ " p where p.parent is null");
+						+ " p where p.parent is null order by p.name asc");
 
 		List<Object[]> result = query.getResultList();
 
@@ -46,7 +46,7 @@ public class JpaProjectDao extends JpaDaoBase implements IProjectDao {
 						+ ProjectEntity.class.getName()
 						+ " sp where sp.parent = p) from "
 						+ ProjectEntity.class.getName()
-						+ " p where p.parent.id = :parentId");
+						+ " p where p.parent.id = :parentId order by p.name asc");
 
 		query.setParameter("parentId", projectId);
 		
