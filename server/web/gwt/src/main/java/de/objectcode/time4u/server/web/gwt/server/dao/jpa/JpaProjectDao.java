@@ -6,11 +6,14 @@ import java.util.List;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.web.gwt.client.Project;
 import de.objectcode.time4u.server.web.gwt.server.dao.IProjectDao;
 
+@Transactional(propagation=Propagation.MANDATORY)
 @Repository("projectDao")
 public class JpaProjectDao extends JpaDaoBase implements IProjectDao {
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import de.objectcode.time4u.server.web.gwt.client.Project;
@@ -18,6 +19,7 @@ public class ProjectServiceImpl extends GwtController implements ProjectService 
 
 	IProjectDao projectDao;
 
+	@Transactional(readOnly=true)
 	public List<Project> getRootProjects() {
 		List<Project> result = projectDao.findRootProjectsDTO();
 
@@ -26,6 +28,7 @@ public class ProjectServiceImpl extends GwtController implements ProjectService 
 		return result;
 	}
 
+	@Transactional(readOnly=true)
 	public List<Project> getChildProjects(String projectId) {
 		List<Project> result = projectDao.findChildProjectsDTO(projectId);
 
