@@ -5,7 +5,7 @@
 	<g:HTMLPanel>
 		<g:DecoratorPanel>
 			<g:ScrollPanel width="300px" height="300px">			
-				<g:FlexTable ui:field="taskList"/>
+				<g:FlexTable ui:field="taskList" width="100%"/>
 			</g:ScrollPanel>
 		</g:DecoratorPanel>
 	</g:HTMLPanel>

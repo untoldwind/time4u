@@ -32,3 +32,12 @@ h1 {
 #closeButton {
   margin: 15px 6px 6px;
 }
+
+.task-Label {
+	cursor: pointer;
+}
+
+.task-Label-selected {
+  background: #93c2f1 url(MainUI/gwt/standard/images/hborder.png) repeat-x 0px -1463px;
+}
+
