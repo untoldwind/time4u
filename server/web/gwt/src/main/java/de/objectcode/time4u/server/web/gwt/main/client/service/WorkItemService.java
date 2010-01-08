@@ -10,4 +10,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface WorkItemService extends RemoteService {
 	List<DayInfoSummary> getDayInfoSummaries(Date start, Date end);
 
+	DayInfo getDayInfo(Date day);
 }

@@ -12,6 +12,7 @@ import de.objectcode.time4u.server.web.gwt.login.client.LoginServiceAsync;
 import de.objectcode.time4u.server.web.gwt.main.client.ui.CalendarView;
 import de.objectcode.time4u.server.web.gwt.main.client.ui.ProjectTree;
 import de.objectcode.time4u.server.web.gwt.main.client.ui.TaskList;
+import de.objectcode.time4u.server.web.gwt.main.client.ui.WorkItemList;
 import de.objectcode.time4u.server.web.gwt.utils.client.Utils;
 
 public class MainPage implements EntryPoint {
@@ -36,6 +37,8 @@ public class MainPage implements EntryPoint {
 				RootPanel.get("taskList").add(new TaskList(selectionManager));
 
 				RootPanel.get("calendarView").add(new CalendarView(selectionManager));
+				
+				RootPanel.get("workItemList").add(new WorkItemList(selectionManager));
 			}
 		});
 		

@@ -1,6 +1,7 @@
 package de.objectcode.time4u.server.web.gwt.main.client;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import de.objectcode.time4u.server.web.gwt.main.client.service.Project;
@@ -11,6 +12,7 @@ public class SelectionManager {
 
 	private Project selectedProject;
 	private Task selectedTask;
+	private Date selectedDay;
 
 	public void addSelectionChangeListener(ISelectionChangeListener listener) {
 		listeners.add(listener);
@@ -34,6 +36,10 @@ public class SelectionManager {
 		return selectedTask;
 	}
 
+	public Date getSelectedDay() {
+		return selectedDay;
+	}
+
 	public void selectProject(Project project) {
 		if (selectedProject != project) {
 			selectedProject = project;
@@ -45,6 +51,13 @@ public class SelectionManager {
 		if (selectedTask != task) {
 			selectedTask = task;
 			fireSelectionChanged(new SelectionChangedEvent(SelectionChangedEvent.Type.TASK));
+		}
+	}
+	
+	public void selectedDate(Date day) {
+		if ( (selectedDay == null && day != null ) || ( selectedDay != null  || !selectedDay.equals(day))) {
+			selectedDay = day;
+			fireSelectionChanged(new SelectionChangedEvent(SelectionChangedEvent.Type.DAY));			
 		}
 	}
 }

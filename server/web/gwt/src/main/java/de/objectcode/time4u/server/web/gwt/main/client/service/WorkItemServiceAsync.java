@@ -12,4 +12,6 @@ public interface WorkItemServiceAsync {
 	void getDayInfoSummaries(Date start, Date end,
 			AsyncCallback<List<DayInfoSummary>> callback);
 
+	void getDayInfo(Date day, AsyncCallback<DayInfo> callback);
+
 }

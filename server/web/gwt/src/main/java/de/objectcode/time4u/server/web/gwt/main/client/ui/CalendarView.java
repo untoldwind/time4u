@@ -3,8 +3,10 @@ package de.objectcode.time4u.server.web.gwt.main.client.ui;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ShowRangeEvent;
 import com.google.gwt.event.logical.shared.ShowRangeHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DatePicker;
@@ -30,11 +32,15 @@ public class CalendarView extends Composite {
 	private final WorkItemServiceAsync workItemService = GWT
 			.create(WorkItemService.class);
 
+	SelectionManager selectionManager;
+	
 	@UiField
 	DatePicker calendar;
 
 	public CalendarView(SelectionManager selectionManager) {
 		initWidget(uiBinder.createAndBindUi(this));
+
+		this.selectionManager = selectionManager;
 
 		calendar.addShowRangeHandlerAndFire(new ShowRangeHandler<Date>() {
 			public void onShowRange(ShowRangeEvent<Date> event) {
@@ -66,5 +72,10 @@ public class CalendarView extends Composite {
 					public void onFailure(Throwable caught) {
 					}
 				});
+	}
+	
+	@UiHandler("calendar")
+	void onCalendarValueChange(ValueChangeEvent<Date> event) {
+		selectionManager.selectedDate(event.getValue());
 	}
 }
