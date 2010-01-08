@@ -1,11 +1,12 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:tu="urn:import:de.objectcode.time4u.server.gwt.utils.client.ui">
 
 	<g:HTMLPanel>
 		<g:DecoratorPanel>
 			<g:ScrollPanel width="300px" height="300px">			
-				<g:FlexTable ui:field="taskList" width="100%"/>
+				<tu:DataTable ui:field="taskList" width="100%"/>
 			</g:ScrollPanel>
 		</g:DecoratorPanel>
 	</g:HTMLPanel>

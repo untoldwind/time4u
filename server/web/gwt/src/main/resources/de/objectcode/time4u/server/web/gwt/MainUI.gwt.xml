@@ -2,10 +2,11 @@
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.0.0//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.0.0/distro-source/core/src/gwt-module.dtd">
 <module rename-to='MainUI'>
 	<inherits name="com.google.gwt.user.User" />
-	  <inherits name='com.google.gwt.user.theme.standard.Standard'/>
-	
+	<inherits name='com.google.gwt.user.theme.standard.Standard' />
+	<inherits name="de.objectcode.time4u.server.gwt.utils.Utils"/>
+
 	<entry-point class="de.objectcode.time4u.server.web.gwt.client.MainPage">
 	</entry-point>
-	
+
 	<source path="client" />
 </module>
