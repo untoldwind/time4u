@@ -1,16 +1,17 @@
 package de.objectcode.time4u.server.web.gwt.main.server.dao.jpa;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.orm.jpa.support.JpaDaoSupport;
 
-public class JpaDaoBase extends JpaDaoSupport {
-	@PersistenceUnit
+public class JpaDaoBase {
+	protected EntityManager entityManager;
+	
+	@PersistenceContext
 	@Required
-	public void setEntityManagerFactoryAuto(EntityManagerFactory enityManagerFactory) {
-		super.setEntityManagerFactory(enityManagerFactory);
+	public void setEntityManagerFactoryAuto(EntityManager entityManager) {
+		this.entityManager = entityManager;
 	}
 
 }

@@ -17,6 +17,8 @@
 	<security:global-method-security
 		secured-annotations="enabled" jsr250-annotations="enabled"/>
 
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
 	<!--
 		context:load-time-weaver
 		weaver-class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/
