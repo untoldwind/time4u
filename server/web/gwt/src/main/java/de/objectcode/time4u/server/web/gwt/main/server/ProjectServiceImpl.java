@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import de.objectcode.time4u.server.web.gwt.main.client.Project;
 import de.objectcode.time4u.server.web.gwt.main.client.ProjectService;
 import de.objectcode.time4u.server.web.gwt.main.server.dao.IProjectDao;
+import de.objectcode.time4u.server.web.gwt.utils.server.GwtController;
 
 @Controller
 @RequestMapping("/MainUI/project.service")

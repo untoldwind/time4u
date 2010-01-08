@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import de.objectcode.time4u.server.web.gwt.main.client.Task;
 import de.objectcode.time4u.server.web.gwt.main.client.TaskService;
 import de.objectcode.time4u.server.web.gwt.main.server.dao.ITaskDao;
+import de.objectcode.time4u.server.web.gwt.utils.server.GwtController;
 
 @Controller
 @RequestMapping("/MainUI/task.service")

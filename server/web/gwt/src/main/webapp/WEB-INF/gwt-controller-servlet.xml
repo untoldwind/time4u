@@ -8,6 +8,8 @@
 
 	<context:component-scan
 		base-package="de.objectcode.time4u.server.web.gwt.main.server" />
+	<context:component-scan
+		base-package="de.objectcode.time4u.server.web.gwt.login.server" />
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 

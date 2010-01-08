@@ -11,6 +11,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PasswordTextBox;
@@ -23,6 +24,9 @@ public class LoginPanel extends Composite {
 
 	interface LoginPanelUiBinder extends UiBinder<Widget, LoginPanel> {
 	}
+
+	private final LoginServiceAsync loginService = GWT
+			.create(LoginService.class);
 
 	@UiField
 	TextBox userId;
@@ -51,7 +55,26 @@ public class LoginPanel extends Composite {
 
 	@UiHandler("login")
 	void onLoginClick(ClickEvent event) {
-		StringBuffer url = new StringBuffer("MainUI.html");
+		loginService.login(userId.getValue(), password.getValue(),
+				new AsyncCallback<Boolean>() {
+					public void onSuccess(Boolean result) {
+						if (result)
+							loginSuccessful();
+						else
+							loginFailed();
+					}
+
+					public void onFailure(Throwable caught) {
+					}
+				});
+	}
+
+	private void loginFailed() {
+		Window.alert("Login failed");
+	}
+
+	private void loginSuccessful() {
+		StringBuffer url = new StringBuffer(GWT.getHostPageBaseURL() + "MainUI.html");
 		boolean first = true;
 
 		for (Map.Entry<String, List<String>> entry : Window.Location
@@ -69,6 +92,7 @@ public class LoginPanel extends Composite {
 			}
 
 		}
+		
 		Window.open(url.toString(), "_self", "");
 	}
 }
