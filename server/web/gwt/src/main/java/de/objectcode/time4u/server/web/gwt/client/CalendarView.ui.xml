@@ -1,13 +1,12 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" 
+	xmlns:gd="urn:import:com.google.gwt.user.datepicker.client"
 	xmlns:tu="urn:import:de.objectcode.time4u.server.gwt.utils.client.ui">
 
 	<g:HTMLPanel>
 		<g:DecoratorPanel>
-			<g:ScrollPanel width="300px" height="200px">			
-				<tu:DataTable ui:field="taskList" width="100%"/>
-			</g:ScrollPanel>
+			<gd:DatePicker ui:field="calendar"/>
 		</g:DecoratorPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

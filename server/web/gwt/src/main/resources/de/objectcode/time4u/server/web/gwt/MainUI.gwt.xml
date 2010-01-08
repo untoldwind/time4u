@@ -3,10 +3,15 @@
 <module rename-to='MainUI'>
 	<inherits name="com.google.gwt.user.User" />
 	<inherits name='com.google.gwt.user.theme.standard.Standard' />
-	<inherits name="de.objectcode.time4u.server.gwt.utils.Utils"/>
+	<inherits name="com.google.gwt.user.datepicker.DatePicker" />
+	<inherits name="de.objectcode.time4u.server.gwt.utils.Utils" />
 
 	<entry-point class="de.objectcode.time4u.server.web.gwt.client.MainPage">
 	</entry-point>
 
 	<source path="client" />
+
+	<!-- Internationalization support. -->
+	<extend-property name="locale" values="en" />
+	<extend-property name="locale" values="de" />
 </module>

@@ -33,5 +33,7 @@ public class MainPage implements EntryPoint {
 		RootPanel.get("projectTree").add(new ProjectTree(selectionManager));
 		
 		RootPanel.get("taskList").add(new TaskList(selectionManager));
+		
+		RootPanel.get("calendarView").add(new CalendarView(selectionManager));
 	}
 }
