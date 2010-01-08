@@ -14,6 +14,8 @@ import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
 
+import de.objectcode.time4u.server.gwt.utils.client.ui.LoadingLabel;
+
 public class ProjectTree extends Composite  {
 
 	private static ProjectTreeUiBinder uiBinder = GWT

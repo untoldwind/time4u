@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.gwt.utils.client.ui.DataTable;
 import de.objectcode.time4u.server.gwt.utils.client.ui.DataTableRow;
+import de.objectcode.time4u.server.gwt.utils.client.ui.LoadingLabel;
 
 public class TaskList extends Composite implements ISelectionChangeListener {
 

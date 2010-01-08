@@ -51,7 +51,7 @@ public class DataTable extends ExtendedFlexTable implements
 				setWidget(rowNum, i, new Label(column.toString()));
 			}
 		}
-		getRowFormatter().setStyleName(rowNum, "dataTable-row");
+		getRowFormatter().setStyleName(rowNum, "utils-dataTable-row");
 	}
 
 	@Override
@@ -68,14 +68,14 @@ public class DataTable extends ExtendedFlexTable implements
 	private void onSelection(DataTableRow row, boolean fireEvents) {
 		if (currentSelection != null) {
 			currentSelection.setSelected(false);
-			getRowFormatter().setStyleName(currentSelection.getRowIndex(), "dataTable-row");
+			getRowFormatter().setStyleName(currentSelection.getRowIndex(), "utils-dataTable-row");
 		}
 		currentSelection = row;
 
 		if (currentSelection != null) {
 			// Select the item and fire the selection event.
 			currentSelection.setSelected(true);
-			getRowFormatter().setStyleName(currentSelection.getRowIndex(), "dataTable-row-selected");
+			getRowFormatter().setStyleName(currentSelection.getRowIndex(), "utils-dataTable-row-selected");
 			if (fireEvents) {
 				SelectionEvent.fire(this, currentSelection);
 			}
