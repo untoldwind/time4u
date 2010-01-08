@@ -9,7 +9,7 @@
 				<tr>
 					<td>UserId:</td>
 					<td>
-						<g:TextBox ui:field="userId" />
+						<g:TextBox ui:field="userId"/>
 					</td>
 				</tr>
 				<tr>

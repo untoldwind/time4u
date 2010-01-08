@@ -131,10 +131,6 @@
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-acl</artifactId>
 			</dependency>
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-web</artifactId>
-			</dependency>
 	</dependencies>
 	<properties>
 		<time4u.release>${env.SVN_REVISION}</time4u.release>
