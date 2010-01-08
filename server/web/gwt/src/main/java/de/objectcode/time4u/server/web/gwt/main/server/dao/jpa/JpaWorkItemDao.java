@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+import org.springframework.orm.jpa.JpaCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,42 +25,56 @@ import de.objectcode.time4u.server.web.gwt.main.server.dao.IWorkItemDao;
 public class JpaWorkItemDao extends JpaDaoBase implements IWorkItemDao {
 
 	@SuppressWarnings("unchecked")
-	public List<DayInfoSummary> findDayInfoDTOSummary(String personId,
-			Date start, Date end) {
-		Query query = entityManager
-				.createQuery("from "
-						+ DayInfoEntity.class.getName()
-						+ " d where d.person.id = :personId and d.date >= :start and d.date <= :end order by d.date asc");
+	public List<DayInfoSummary> findDayInfoDTOSummary(final String personId,
+			final Date start, final Date end) {
+		return getJpaTemplate().executeFind(new JpaCallback() {
 
-		query.setParameter("personId", personId);
-		query.setParameter("start", start);
-		query.setParameter("end", end);
+			public Object doInJpa(EntityManager entityManager)
+					throws PersistenceException {
+				Query query = entityManager
+						.createQuery("from "
+								+ DayInfoEntity.class.getName()
+								+ " d where d.person.id = :personId and d.date >= :start and d.date <= :end order by d.date asc");
 
-		List<DayInfoEntity> result = query.getResultList();
+				query.setParameter("personId", personId);
+				query.setParameter("start", start);
+				query.setParameter("end", end);
 
-		List<DayInfoSummary> ret = new ArrayList<DayInfoSummary>();
+				List<DayInfoEntity> result = query.getResultList();
 
-		for (DayInfoEntity taskEntity : result) {
-			ret.add(toDTOSummary(taskEntity));
-		}
+				List<DayInfoSummary> ret = new ArrayList<DayInfoSummary>();
 
-		return ret;
+				for (DayInfoEntity taskEntity : result) {
+					ret.add(toDTOSummary(taskEntity));
+				}
+
+				return ret;
+			}
+		});
 	}
 
-	public DayInfo findDayInfoDTO(String personId, Date day) {
-		Query query = entityManager.createQuery("from "
-				+ DayInfoEntity.class.getName()
-				+ " d where d.person.id = :personId and d.date >= :day");
+	public DayInfo findDayInfoDTO(final String personId, final Date day) {
+		return (DayInfo) getJpaTemplate().execute(new JpaCallback() {
 
-		query.setParameter("personId", personId);
-		query.setParameter("day", day);
+			public Object doInJpa(EntityManager entityManager)
+					throws PersistenceException {
+				Query query = entityManager
+						.createQuery("from "
+								+ DayInfoEntity.class.getName()
+								+ " d where d.person.id = :personId and d.date = :day");
 
-		DayInfoEntity dayInfoEntity = (DayInfoEntity) query.getSingleResult();
+				query.setParameter("personId", personId);
+				query.setParameter("day", day);
 
-		if (dayInfoEntity != null)
-			return toDTO(dayInfoEntity);
+				DayInfoEntity dayInfoEntity = (DayInfoEntity) query
+						.getSingleResult();
 
-		return null;
+				if (dayInfoEntity != null)
+					return toDTO(dayInfoEntity);
+
+				return null;
+			}
+		});
 	}
 
 	private DayInfoSummary toDTOSummary(DayInfoEntity dayInfoEntity) {
