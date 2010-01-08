@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.main.client;
+package de.objectcode.time4u.server.web.gwt.main.client.service;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 

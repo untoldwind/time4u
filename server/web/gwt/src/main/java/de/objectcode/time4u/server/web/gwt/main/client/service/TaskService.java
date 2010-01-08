@@ -1,9 +1,10 @@
-package de.objectcode.time4u.server.web.gwt.main.client;
+package de.objectcode.time4u.server.web.gwt.main.client.service;
 
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+
 
 @RemoteServiceRelativePath("task.service")
 public interface TaskService extends RemoteService {

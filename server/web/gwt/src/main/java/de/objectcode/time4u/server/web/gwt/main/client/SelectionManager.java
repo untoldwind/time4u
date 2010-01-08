@@ -3,6 +3,9 @@ package de.objectcode.time4u.server.web.gwt.main.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.objectcode.time4u.server.web.gwt.main.client.service.Project;
+import de.objectcode.time4u.server.web.gwt.main.client.service.Task;
+
 public class SelectionManager {
 	List<ISelectionChangeListener> listeners = new ArrayList<ISelectionChangeListener>();
 

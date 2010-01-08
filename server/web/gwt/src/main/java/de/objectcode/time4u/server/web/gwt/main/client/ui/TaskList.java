@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.main.client;
+package de.objectcode.time4u.server.web.gwt.main.client.ui;
 
 import java.util.List;
 
@@ -11,6 +11,13 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
+import de.objectcode.time4u.server.web.gwt.main.client.ISelectionChangeListener;
+import de.objectcode.time4u.server.web.gwt.main.client.SelectionChangedEvent;
+import de.objectcode.time4u.server.web.gwt.main.client.SelectionManager;
+import de.objectcode.time4u.server.web.gwt.main.client.service.Project;
+import de.objectcode.time4u.server.web.gwt.main.client.service.Task;
+import de.objectcode.time4u.server.web.gwt.main.client.service.TaskService;
+import de.objectcode.time4u.server.web.gwt.main.client.service.TaskServiceAsync;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.DataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.DataTableRow;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLabel;

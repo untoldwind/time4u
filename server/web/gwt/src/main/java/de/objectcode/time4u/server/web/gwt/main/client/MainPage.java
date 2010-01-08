@@ -9,6 +9,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 import de.objectcode.time4u.server.web.gwt.login.client.LoginService;
 import de.objectcode.time4u.server.web.gwt.login.client.LoginServiceAsync;
+import de.objectcode.time4u.server.web.gwt.main.client.ui.CalendarView;
+import de.objectcode.time4u.server.web.gwt.main.client.ui.ProjectTree;
+import de.objectcode.time4u.server.web.gwt.main.client.ui.TaskList;
 import de.objectcode.time4u.server.web.gwt.utils.client.Utils;
 
 public class MainPage implements EntryPoint {

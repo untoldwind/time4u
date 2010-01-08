@@ -3,7 +3,7 @@ package de.objectcode.time4u.server.web.gwt.main.server.dao;
 import java.util.List;
 
 import de.objectcode.time4u.server.entities.ProjectEntity;
-import de.objectcode.time4u.server.web.gwt.main.client.Project;
+import de.objectcode.time4u.server.web.gwt.main.client.service.Project;
 
 public interface IProjectDao {
 	List<Project> findRootProjectsDTO();

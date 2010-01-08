@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.main.client;
+package de.objectcode.time4u.server.web.gwt.main.client.ui;
 
 import java.util.Date;
 
@@ -10,6 +10,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DatePicker;
+
+import de.objectcode.time4u.server.web.gwt.main.client.SelectionManager;
 
 public class CalendarView extends Composite {
 	private static CalendarViewUiBinder uiBinder = GWT

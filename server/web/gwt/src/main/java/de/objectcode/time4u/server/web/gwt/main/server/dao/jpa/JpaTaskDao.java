@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.objectcode.time4u.server.entities.TaskEntity;
-import de.objectcode.time4u.server.web.gwt.main.client.Task;
+import de.objectcode.time4u.server.web.gwt.main.client.service.Task;
 import de.objectcode.time4u.server.web.gwt.main.server.dao.ITaskDao;
 
 @Transactional(propagation = Propagation.MANDATORY)
@@ -21,7 +21,7 @@ public class JpaTaskDao extends JpaDaoBase implements ITaskDao {
 	public List<Task> findTasksDTO(String projectId) {
 		Query query = entityManager.createQuery("from "
 				+ TaskEntity.class.getName()
-				+ " t where t.project.id = :projectId order by t.name asc");
+				+ " t where t.project.id = :projectId and t.deleted = false  order by t.name asc");
 		
 		query.setParameter("projectId", projectId);
 		List<TaskEntity> result = query.getResultList();
