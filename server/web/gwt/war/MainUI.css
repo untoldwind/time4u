@@ -32,3 +32,15 @@ h1 {
 #closeButton {
   margin: 15px 6px 6px;
 }
+
+.dayPickerDayIsHasWorkItems {
+	font-weight: bold;
+}
+
+.dayPickerDayIsHasTags {
+	font-style: italic;
+}
+
+.dayPickerDayZeroRegular {
+	color: red;
+}
