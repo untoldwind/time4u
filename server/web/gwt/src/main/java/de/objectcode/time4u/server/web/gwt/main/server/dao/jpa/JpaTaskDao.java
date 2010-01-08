@@ -36,7 +36,7 @@ public class JpaTaskDao extends JpaDaoBase implements ITaskDao {
 				return ret;
 	}
 
-	protected Task toDTO(TaskEntity taskEntity) {
+	static Task toDTO(TaskEntity taskEntity) {
 		return new Task(taskEntity.getId(), taskEntity.getProject().getId(),
 				taskEntity.getName());
 	}

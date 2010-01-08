@@ -6,6 +6,8 @@ import java.util.List;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ExtendedFlexTable extends FlexTable {
@@ -16,6 +18,23 @@ public class ExtendedFlexTable extends FlexTable {
 	public ExtendedFlexTable() {
 	}
 
+	public void setHeaderStyleName(String styleName) {
+		UIObject.setStyleName(tHeadElement.getFirstChildElement(), styleName);
+	}
+	
+	public void setHeaders(Object... headers ) {
+		for (int i = 0; i < headers.length; i++) {
+			Object column = headers[i];
+
+			if (column instanceof Widget) {
+				setHeaderWidget(i, (Widget) column);
+			} else if (column != null) {
+				setHeaderWidget( i, new Label(column.toString()));
+			}
+		}
+		
+	}
+	
 	public void setHeaderWidget(int column, Widget widget) {
 		prepareHeaderCell(column);
 

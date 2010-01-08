@@ -35,6 +35,13 @@ public class DataTable extends ExtendedFlexTable implements
 		});
 	}
 
+	@Override
+	public void setHeaders(Object... headers) {
+		super.setHeaders(headers);
+		
+		setHeaderStyleName("utils-dataTable-header");
+	}
+
 	public void addRow(DataTableRow row) {
 		int rowNum = rows.size();
 		Object[] columns = row.getColumns();

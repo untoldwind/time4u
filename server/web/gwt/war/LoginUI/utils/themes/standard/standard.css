@@ -1,13 +1,19 @@
+.utils-dataTable-header {
+	text-align: left;
+	background: transparent url(images/hborder.png) repeat-x 0px -1463px;
+}
+
 .utils-dataTable-row {
 	cursor: pointer;
 }
 
 .utils-dataTable-row-selected {
-  background: #93c2f1 url(images/hborder.png) repeat-x 0px -1463px;
+	cursor: pointer;
+	background: #93c2f1 url(images/hborder.png) repeat-x 0px -1463px;
 }
 
 .utils-loadingLabel {
-  background-image: url(images/loading.gif);
-  background-repeat: no-repeat;
-  padding-left: 20px;
+	background-image: url(images/loading.gif);
+	background-repeat: no-repeat;
+	padding-left: 20px;
 }

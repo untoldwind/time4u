@@ -71,7 +71,7 @@ public class JpaProjectDao extends JpaDaoBase implements IProjectDao {
 		entityManager.merge(project);
 	}
 
-	protected Project toDTO(ProjectEntity projectEntity, long subProjectCount) {
+	static Project toDTO(ProjectEntity projectEntity, long subProjectCount) {
 		return new Project(projectEntity.getId(),
 				projectEntity.getParent() != null ? projectEntity.getParent()
 						.getId() : null, projectEntity.getName(),

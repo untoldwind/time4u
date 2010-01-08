@@ -41,6 +41,8 @@ public class WorkItemList extends Composite implements ISelectionChangeListener 
 
 		this.selectionManager = selectionManager;
 		this.selectionManager.addSelectionChangeListener(this);
+		
+		workItemList.setHeaders("Begin", "End", "Project", "Task", "Comment");
 	}
 
 	public void selectionChanged(SelectionChangedEvent event) {
@@ -50,15 +52,20 @@ public class WorkItemList extends Composite implements ISelectionChangeListener 
 			workItemList.removeAllRows();
 			workItemList.setWidget(0, 0, new LoadingLabel());
 
-			workItemService.getDayInfo(day, new AsyncCallback<DayInfo>() {				
+			workItemService.getDayInfo(day, new AsyncCallback<DayInfo>() {
 				public void onSuccess(DayInfo result) {
 					workItemList.removeAllRows();
 
-					for (WorkItem workItem : result.getWorkItems()) {
-						workItemList.addRow(new DataTableRow(workItem, workItem.getBegin(), workItem.getEnd(), workItem.getComment()));
-					}
+					if (result != null)
+						for (WorkItem workItem : result.getWorkItems()) {
+							workItemList.addRow(new DataTableRow(workItem,
+									workItem.getBegin(), workItem.getEnd(),
+									workItem.getProject().getName(), workItem
+											.getTask().getName(), workItem
+											.getComment()));
+						}
 				}
-				
+
 				public void onFailure(Throwable caught) {
 				}
 			});

@@ -33,7 +33,7 @@ public class CalendarView extends Composite {
 			.create(WorkItemService.class);
 
 	SelectionManager selectionManager;
-	
+
 	@UiField
 	DatePicker calendar;
 
@@ -42,15 +42,21 @@ public class CalendarView extends Composite {
 
 		this.selectionManager = selectionManager;
 
-		calendar.addShowRangeHandlerAndFire(new ShowRangeHandler<Date>() {
+		calendar.addShowRangeHandler(new ShowRangeHandler<Date>() {
 			public void onShowRange(ShowRangeEvent<Date> event) {
 				onCalendarShowRange(event);
 			}
 		});
+
+		updateCalendar(calendar.getFirstDate(), calendar.getLastDate());
 	}
 
 	void onCalendarShowRange(ShowRangeEvent<Date> event) {
-		workItemService.getDayInfoSummaries(event.getStart(), event.getEnd(),
+		updateCalendar(event.getStart(), event.getEnd());
+	}
+
+	void updateCalendar(Date start, Date end) {
+		workItemService.getDayInfoSummaries(start, end,
 				new AsyncCallback<List<DayInfoSummary>>() {
 					public void onSuccess(List<DayInfoSummary> result) {
 						for (DayInfoSummary dayInfo : result) {
@@ -62,7 +68,7 @@ public class CalendarView extends Composite {
 								calendar.addStyleToDates(
 										"dayPickerDayIsHasTags", dayInfo
 												.getDay());
-							if ( dayInfo.getRegularTime() == 0 )
+							if (dayInfo.getRegularTime() == 0)
 								calendar.addStyleToDates(
 										"dayPickerDayZeroRegular", dayInfo
 												.getDay());
@@ -73,7 +79,7 @@ public class CalendarView extends Composite {
 					}
 				});
 	}
-	
+
 	@UiHandler("calendar")
 	void onCalendarValueChange(ValueChangeEvent<Date> event) {
 		selectionManager.selectedDate(event.getValue());

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
@@ -18,7 +19,7 @@ import de.objectcode.time4u.server.web.gwt.main.client.service.WorkItem;
 import de.objectcode.time4u.server.web.gwt.main.server.dao.IWorkItemDao;
 
 @Repository("workItemDao")
-@Transactional(propagation=Propagation.MANDATORY)
+@Transactional(propagation = Propagation.MANDATORY)
 public class JpaWorkItemDao extends JpaDaoBase implements IWorkItemDao {
 
 	@SuppressWarnings("unchecked")
@@ -52,22 +53,24 @@ public class JpaWorkItemDao extends JpaDaoBase implements IWorkItemDao {
 		query.setParameter("personId", personId);
 		query.setParameter("day", day);
 
-		DayInfoEntity dayInfoEntity = (DayInfoEntity) query.getSingleResult();
+		try {
+			DayInfoEntity dayInfoEntity = (DayInfoEntity) query
+					.getSingleResult();
 
-		if (dayInfoEntity != null)
 			return toDTO(dayInfoEntity);
-
-		return null;
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
-	private DayInfoSummary toDTOSummary(DayInfoEntity dayInfoEntity) {
+	static DayInfoSummary toDTOSummary(DayInfoEntity dayInfoEntity) {
 		return new DayInfoSummary(dayInfoEntity.getId(), dayInfoEntity
 				.getDate(), dayInfoEntity.isHasWorkItems(), dayInfoEntity
 				.isHasInvalidWorkItems(), dayInfoEntity.isHasTags(),
 				dayInfoEntity.getRegularTime());
 	}
 
-	public DayInfo toDTO(DayInfoEntity dayInfoEntity) {
+	static DayInfo toDTO(DayInfoEntity dayInfoEntity) {
 		List<WorkItem> workItems = new ArrayList<WorkItem>();
 
 		for (WorkItemEntity workItem : dayInfoEntity.getWorkItems().values()) {
@@ -80,11 +83,13 @@ public class JpaWorkItemDao extends JpaDaoBase implements IWorkItemDao {
 				dayInfoEntity.getRegularTime(), workItems);
 	}
 
-	private WorkItem toDTO(WorkItemEntity workItemEntity) {
-		return new WorkItem(workItemEntity.getId(), workItemEntity.getProject()
-				.getId(), workItemEntity.getTask().getId(), workItemEntity
-				.getBegin(), workItemEntity.getEnd(), workItemEntity
-				.getComment(), workItemEntity.isValid(), workItemEntity
-				.getTodo() != null ? workItemEntity.getTodo().getId() : null);
+	static WorkItem toDTO(WorkItemEntity workItemEntity) {
+		return new WorkItem(workItemEntity.getId(), JpaProjectDao.toDTO(
+				workItemEntity.getProject(), 0), JpaTaskDao
+				.toDTO(workItemEntity.getTask()), workItemEntity.getBegin(),
+				workItemEntity.getEnd(), workItemEntity.getComment(),
+				workItemEntity.isValid(),
+				workItemEntity.getTodo() != null ? workItemEntity.getTodo()
+						.getId() : null);
 	}
 }

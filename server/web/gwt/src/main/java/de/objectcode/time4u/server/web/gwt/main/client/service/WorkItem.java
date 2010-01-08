@@ -4,8 +4,8 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class WorkItem implements IsSerializable {
 	private String id;
-	private String projectId;
-	private String taskId;
+	private Project project;
+	private Task task;
 	private int begin;
 	private int end;
 	private String comment;
@@ -15,11 +15,11 @@ public class WorkItem implements IsSerializable {
 	public WorkItem() {		
 	}
 	
-	public WorkItem(String id, String projectId, String taskId, int begin,
+	public WorkItem(String id, Project project, Task task, int begin,
 			int end, String comment, boolean valid, String todoId) {
 		this.id = id;
-		this.projectId = projectId;
-		this.taskId = taskId;
+		this.project = project;
+		this.task = task;
 		this.begin = begin;
 		this.end = end;
 		this.comment = comment;
@@ -31,12 +31,12 @@ public class WorkItem implements IsSerializable {
 		return id;
 	}
 
-	public String getProjectId() {
-		return projectId;
+	public Project getProject() {
+		return project;
 	}
 
-	public String getTaskId() {
-		return taskId;
+	public Task getTask() {
+		return task;
 	}
 
 	public int getBegin() {
