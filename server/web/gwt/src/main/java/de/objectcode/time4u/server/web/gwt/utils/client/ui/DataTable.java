@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.gwt.utils.client.ui;
+package de.objectcode.time4u.server.web.gwt.utils.client.ui;
 
 import java.util.ArrayList;
 import java.util.List;

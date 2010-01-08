@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" 
 	xmlns:gd="urn:import:com.google.gwt.user.datepicker.client"
-	xmlns:tu="urn:import:de.objectcode.time4u.server.gwt.utils.client.ui">
+	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
 
 	<g:HTMLPanel>
 		<g:DecoratorPanel>

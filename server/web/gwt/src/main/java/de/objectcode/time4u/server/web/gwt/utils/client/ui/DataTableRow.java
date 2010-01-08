@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.gwt.utils.client.ui;
+package de.objectcode.time4u.server.web.gwt.utils.client.ui;
 
 public class DataTableRow {
 	private Object userObject;
