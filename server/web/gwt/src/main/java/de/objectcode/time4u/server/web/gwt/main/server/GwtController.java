@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.server;
+package de.objectcode.time4u.server.web.gwt.main.server;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;

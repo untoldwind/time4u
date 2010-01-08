@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.server.dao.jpa;
+package de.objectcode.time4u.server.web.gwt.main.server.dao.jpa;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.objectcode.time4u.server.entities.TaskEntity;
-import de.objectcode.time4u.server.web.gwt.client.Task;
-import de.objectcode.time4u.server.web.gwt.server.dao.ITaskDao;
+import de.objectcode.time4u.server.web.gwt.main.client.Task;
+import de.objectcode.time4u.server.web.gwt.main.server.dao.ITaskDao;
 
 @Transactional(propagation = Propagation.MANDATORY)
 @Repository("taskDao")

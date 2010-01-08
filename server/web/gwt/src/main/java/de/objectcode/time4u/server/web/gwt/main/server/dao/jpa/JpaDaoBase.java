@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.server.dao.jpa;
+package de.objectcode.time4u.server.web.gwt.main.server.dao.jpa;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

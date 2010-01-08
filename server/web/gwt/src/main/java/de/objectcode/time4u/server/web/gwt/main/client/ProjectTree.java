@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.client;
+package de.objectcode.time4u.server.web.gwt.main.client;
 
 import java.util.List;
 
