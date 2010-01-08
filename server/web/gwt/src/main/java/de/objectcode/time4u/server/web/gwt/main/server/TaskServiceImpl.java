@@ -2,8 +2,9 @@ package de.objectcode.time4u.server.web.gwt.main.server;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +21,9 @@ public class TaskServiceImpl extends GwtController implements TaskService {
 	private static final long serialVersionUID = 1L;
 
 	private ITaskDao taskDao;
-	
-	@Transactional(readOnly=true)
-	@Secured( "ROLE_USER")
+
+	@Transactional(readOnly = true)
+	@RolesAllowed("ROLE_USER")
 	public List<Task> getTasks(String projectId) {
 		return taskDao.findTasksDTO(projectId);
 	}

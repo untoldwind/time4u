@@ -14,5 +14,6 @@
 	<classpathentry kind="var" path="M2_REPO/org/springframework/security/spring-security-core/2.0.5.RELEASE/spring-security-core-2.0.5.RELEASE.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/security/spring-security-acl/2.0.5.RELEASE/spring-security-acl-2.0.5.RELEASE.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/security/spring-security-core-tiger/2.0.5.RELEASE/spring-security-core-tiger-2.0.5.RELEASE.jar"/>
+	<classpathentry kind="var" path="M2_REPO/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

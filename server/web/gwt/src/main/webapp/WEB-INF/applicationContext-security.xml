@@ -21,7 +21,6 @@
 		<property name="passwordEncoder">
 			<bean class="de.objectcode.time4u.server.utils.DefaultPasswordEncoder" />
 		</property>
-		<property name="allowAnyPassword" value="true"/>
 	</bean>
 	
 		<!--

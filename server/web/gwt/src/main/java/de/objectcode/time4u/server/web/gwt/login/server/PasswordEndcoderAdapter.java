@@ -9,6 +9,7 @@ import de.objectcode.time4u.server.utils.IPasswordEncoder;
 public class PasswordEndcoderAdapter implements PasswordEncoder {
 
 	IPasswordEncoder passwordEncoder;
+	boolean allowAnyPassword = false;
 
 	public String encodePassword(String rawPassword, Object salt)
 			throws DataAccessException {
@@ -17,12 +18,19 @@ public class PasswordEndcoderAdapter implements PasswordEncoder {
 
 	public boolean isPasswordValid(String encPassword, String rawPassword,
 			Object salt) throws DataAccessException {
+		if (allowAnyPassword)
+			return true;
+
 		return passwordEncoder.verify(rawPassword.toCharArray(), encPassword);
 	}
 
 	@Required
 	public void setPasswordEncoder(IPasswordEncoder passwordEncoder) {
 		this.passwordEncoder = passwordEncoder;
+	}
+
+	public void setAllowAnyPassword(boolean allowAnyPassword) {
+		this.allowAnyPassword = allowAnyPassword;
 	}
 
 }

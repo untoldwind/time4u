@@ -139,6 +139,10 @@
 			<groupId>aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>jsr250-api</artifactId>
+		</dependency>
 	</dependencies>
 	<properties>
 		<time4u.release>${env.SVN_REVISION}</time4u.release>

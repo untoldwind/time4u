@@ -21,6 +21,21 @@ public class MainPage implements EntryPoint {
 	SelectionManager selectionManager = new SelectionManager();
 
 	public void onModuleLoad() {
+		loginService.login("junglas", "junglas", new AsyncCallback<Boolean>() {
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void onSuccess(Boolean result) {
+				RootPanel.get("projectTree").add(new ProjectTree(selectionManager));
+
+				RootPanel.get("taskList").add(new TaskList(selectionManager));
+
+				RootPanel.get("calendarView").add(new CalendarView(selectionManager));
+			}
+		});
+		
 		MenuBar mainMenu = new MenuBar();
 
 		MenuBar reportMenu = new MenuBar(true);
@@ -45,10 +60,5 @@ public class MainPage implements EntryPoint {
 		});
 		RootPanel.get("mainMenu").add(mainMenu);
 
-		RootPanel.get("projectTree").add(new ProjectTree(selectionManager));
-
-		RootPanel.get("taskList").add(new TaskList(selectionManager));
-
-		RootPanel.get("calendarView").add(new CalendarView(selectionManager));
 	}
 }

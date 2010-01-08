@@ -1,11 +1,10 @@
 package de.objectcode.time4u.server.web.gwt.main.server;
 
-import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.annotation.Secured;
-import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,13 +23,8 @@ public class ProjectServiceImpl extends GwtController implements ProjectService 
 	private IProjectDao projectDao;
 
 	@Transactional(readOnly = true)
-	@Secured( "ROLE_USER")
+	@RolesAllowed( "ROLE_USER")
 	public List<Project> getRootProjects() {
-		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			System.out.println(">>> "
-					+ Arrays.toString(SecurityContextHolder.getContext()
-							.getAuthentication().getAuthorities()));
-		}
 		List<Project> result = projectDao.findRootProjectsDTO();
 
 		System.out.println("Call Root");
@@ -39,7 +33,7 @@ public class ProjectServiceImpl extends GwtController implements ProjectService 
 	}
 
 	@Transactional(readOnly = true)
-	@Secured( "ROLE_USER")
+	@RolesAllowed( "ROLE_USER")
 	public List<Project> getChildProjects(String projectId) {
 		List<Project> result = projectDao.findChildProjectsDTO(projectId);
 

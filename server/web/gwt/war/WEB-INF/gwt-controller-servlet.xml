@@ -15,7 +15,7 @@
 		base-package="de.objectcode.time4u.server.web.gwt.login.server" />
 
 	<security:global-method-security
-		secured-annotations="enabled" />
+		secured-annotations="enabled" jsr250-annotations="enabled"/>
 
 	<!--
 		context:load-time-weaver
