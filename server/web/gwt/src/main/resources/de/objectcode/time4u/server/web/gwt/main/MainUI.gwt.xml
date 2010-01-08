@@ -5,6 +5,7 @@
 	<inherits name='com.google.gwt.user.theme.standard.Standard' />
 	<inherits name="com.google.gwt.user.datepicker.DatePicker" />
 	<inherits name="de.objectcode.time4u.server.web.gwt.utils.Utils" />
+	<inherits name="de.objectcode.time4u.server.web.gwt.login.Login"/>
 
 	<entry-point class="de.objectcode.time4u.server.web.gwt.main.client.MainPage"/>
 

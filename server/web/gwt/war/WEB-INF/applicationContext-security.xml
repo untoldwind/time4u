@@ -19,22 +19,23 @@
 	<bean id="passwordEncoder"
 		class="de.objectcode.time4u.server.web.gwt.login.server.PasswordEndcoderAdapter">
 		<property name="passwordEncoder">
-			<bean class="de.objectcode.time4u.server.utils.DefaultPasswordEncoder"/>
+			<bean class="de.objectcode.time4u.server.utils.DefaultPasswordEncoder" />
 		</property>
 	</bean>
-		
-	<!--
-		http auto-config="true" realm="Contacts Realm"> <intercept-url
-		pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY" /> <intercept-url
-		pattern="/LoginUI.html" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<intercept-url pattern="/LoginUI/**"
-		access="IS_AUTHENTICATED_ANONYMOUSLY" /> <intercept-url pattern="/**"
-		access="ROLE_USER" /> <logout logout-success-url="/LoginUI.html" />
-		</http
-	-->
+	
+		<!--
+			http auto-config="true" realm="Contacts Realm"> <intercept-url
+			pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY" /> <intercept-url
+			pattern="/LoginUI.html" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+			<intercept-url pattern="/LoginUI/**"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" /> <intercept-url pattern="/**"
+			access="ROLE_USER" /> <logout logout-success-url="/LoginUI.html" />
+			</http
+		-->
 
-	<security:authentication-provider user-service-ref="userDetailsService">
-		<security:password-encoder ref="passwordEncoder"/>
-	</security:authentication-provider>
+		<security:authentication-provider
+			user-service-ref="userDetailsService">
+			<security:password-encoder ref="passwordEncoder" />
+		</security:authentication-provider>
 
 </beans>

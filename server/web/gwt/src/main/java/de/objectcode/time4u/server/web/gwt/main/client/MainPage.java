@@ -3,16 +3,23 @@ package de.objectcode.time4u.server.web.gwt.main.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.RootPanel;
+
+import de.objectcode.time4u.server.web.gwt.login.client.LoginService;
+import de.objectcode.time4u.server.web.gwt.login.client.LoginServiceAsync;
+import de.objectcode.time4u.server.web.gwt.utils.client.Utils;
 
 public class MainPage implements EntryPoint {
 	public static final MainClientBundle images = (MainClientBundle) GWT
 			.create(MainClientBundle.class);
+	
+	private final LoginServiceAsync loginService = GWT
+			.create(LoginService.class);
 
 	SelectionManager selectionManager = new SelectionManager();
-	
+
 	public void onModuleLoad() {
 		MenuBar mainMenu = new MenuBar();
 
@@ -25,15 +32,23 @@ public class MainPage implements EntryPoint {
 		mainMenu.addSeparator();
 		mainMenu.addItem("Logout", new Command() {
 			public void execute() {
-				Window.alert("Logging out");
+				loginService.logout(new AsyncCallback<Void>() {
+					
+					public void onSuccess(Void result) {
+						Utils.redirect("LoginUI.html");
+					}
+					
+					public void onFailure(Throwable caught) {
+					}
+				});
 			}
 		});
 		RootPanel.get("mainMenu").add(mainMenu);
 
 		RootPanel.get("projectTree").add(new ProjectTree(selectionManager));
-		
+
 		RootPanel.get("taskList").add(new TaskList(selectionManager));
-		
+
 		RootPanel.get("calendarView").add(new CalendarView(selectionManager));
 	}
 }

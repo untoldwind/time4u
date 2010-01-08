@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+						   http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.1.xsd
                            http://www.springframework.org/schema/context 
                            http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<context:component-scan base-package="de.objectcode.time4u.server.web.gwt.main.server" />
+	<context:component-scan
+		base-package="de.objectcode.time4u.server.web.gwt.main.server" />
 	<context:component-scan
 		base-package="de.objectcode.time4u.server.web.gwt.login.server" />
-		
-	<!--  context:load-time-weaver weaver-class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/ -->
-		
+
+	<security:global-method-security
+		secured-annotations="enabled" />
+
+	<!--
+		context:load-time-weaver
+		weaver-class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/
+	-->
+
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
 		<!-- <property name="interceptors" ref="localeChangeInterceptor"/> -->

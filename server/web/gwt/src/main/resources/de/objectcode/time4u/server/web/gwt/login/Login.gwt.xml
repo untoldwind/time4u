@@ -5,5 +5,4 @@
 	<inherits name="de.objectcode.time4u.server.web.gwt.utils.Utils" />
 	<inherits name='com.google.gwt.user.theme.standard.Standard' />
 	<source path="client"/>
-	<entry-point class="de.objectcode.time4u.server.web.gwt.login.client.LoginPage"/>
 </module>

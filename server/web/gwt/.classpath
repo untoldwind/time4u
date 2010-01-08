@@ -12,5 +12,7 @@
 	<classpathentry kind="var" path="M2_REPO/de/objectcode/time4u/server/time4u-server-entities/1.0.1-SNAPSHOT/time4u-server-entities-1.0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/persistence/persistence-api/1.0/persistence-api-1.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/security/spring-security-core/2.0.5.RELEASE/spring-security-core-2.0.5.RELEASE.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/security/spring-security-acl/2.0.5.RELEASE/spring-security-acl-2.0.5.RELEASE.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/security/spring-security-core-tiger/2.0.5.RELEASE/spring-security-core-tiger-2.0.5.RELEASE.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
