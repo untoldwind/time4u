@@ -19,6 +19,7 @@ import de.objectcode.time4u.server.web.gwt.main.client.service.WorkItemServiceAs
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.DataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.DataTableRow;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLabel;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.TimeBox;
 
 public class WorkItemList extends Composite implements ISelectionChangeListener {
 
@@ -59,7 +60,7 @@ public class WorkItemList extends Composite implements ISelectionChangeListener 
 					if (result != null)
 						for (WorkItem workItem : result.getWorkItems()) {
 							workItemList.addRow(new DataTableRow(workItem,
-									workItem.getBegin(), workItem.getEnd(),
+									new TimeBox(workItem.getBegin()), new TimeBox(workItem.getEnd()),
 									workItem.getProject().getName(), workItem
 											.getTask().getName(), workItem
 											.getComment()));
