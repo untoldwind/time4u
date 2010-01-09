@@ -3,6 +3,7 @@ package de.objectcode.time4u.server.web.gwt.utils.server;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanNameAware;
@@ -42,6 +43,8 @@ public class GwtController extends RemoteServiceServlet implements Controller,
 	 */
 	public ModelAndView handleRequest(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
+		HttpSession session = request.getSession(false);
+		
 		doPost(request, response);
 		return null; // response handled by GWT RPC over XmlHttpRequest
 	}
