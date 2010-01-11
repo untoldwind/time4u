@@ -46,17 +46,14 @@ public class ProjectTree extends Composite {
 	@UiField
 	PushButton deleteProject;
 
-	SelectionManager selectionManager;
-
 	private final ProjectServiceAsync projectService = GWT
 			.create(ProjectService.class);
 
-	public ProjectTree(SelectionManager selectionManager) {
+	public ProjectTree() {
 		initWidget(uiBinder.createAndBindUi(this));
 
-		this.selectionManager = selectionManager;
-
 		projectTree.addItem(new LoadingLabel());
+		projectTree.setAnimationEnabled(true);
 
 		projectService.getRootProjects(new AsyncCallback<List<Project>>() {
 
@@ -120,7 +117,7 @@ public class ProjectTree extends Composite {
 		final TreeItem item = event.getSelectedItem();
 		Project project = (Project) item.getUserObject();
 
-		selectionManager.selectProject(project);
+		SelectionManager.INSTANCE.selectProject(project);
 		editProject.setEnabled(project != null);
 		deleteProject.setEnabled(project != null);
 	}

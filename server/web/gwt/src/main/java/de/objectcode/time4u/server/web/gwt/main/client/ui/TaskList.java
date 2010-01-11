@@ -49,19 +49,16 @@ public class TaskList extends Composite implements ISelectionChangeListener {
 	@UiField
 	PushButton deleteTask;
 
-	SelectionManager selectionManager;
-
-	public TaskList(SelectionManager selectionManager) {
+	public TaskList() {
 		initWidget(uiBinder.createAndBindUi(this));
 
-		this.selectionManager = selectionManager;
-		this.selectionManager.addSelectionChangeListener(this);
+		SelectionManager.INSTANCE.addSelectionChangeListener(this);
 	}
 
 	public void selectionChanged(SelectionChangedEvent event) {
 
 		if (event.getType() == SelectionChangedEvent.Type.PROJECT) {
-			Project project = selectionManager.getSelectedProject();
+			Project project = SelectionManager.INSTANCE.getSelectedProject();
 
 			taskList.removeAllRows();
 			if (project != null) {
@@ -91,8 +88,8 @@ public class TaskList extends Composite implements ISelectionChangeListener {
 		DataTableRow row = event.getSelectedItem();
 
 		if (row != null)
-			selectionManager.selectTask((Task) row.getUserObject());
+			SelectionManager.INSTANCE.selectTask((Task) row.getUserObject());
 		else
-			selectionManager.selectTask(null);
+			SelectionManager.INSTANCE.selectTask(null);
 	}
 }

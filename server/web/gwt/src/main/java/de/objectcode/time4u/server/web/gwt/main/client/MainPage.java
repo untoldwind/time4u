@@ -2,66 +2,67 @@ package de.objectcode.time4u.server.web.gwt.main.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.MenuBar;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.login.client.LoginService;
 import de.objectcode.time4u.server.web.gwt.login.client.LoginServiceAsync;
-import de.objectcode.time4u.server.web.gwt.main.client.ui.CalendarView;
-import de.objectcode.time4u.server.web.gwt.main.client.ui.ProjectTree;
-import de.objectcode.time4u.server.web.gwt.main.client.ui.TaskList;
-import de.objectcode.time4u.server.web.gwt.main.client.ui.WorkItemList;
 import de.objectcode.time4u.server.web.gwt.utils.client.Utils;
 
 public class MainPage implements EntryPoint {
+	private static MainPageUiBinder uiBinder = GWT
+			.create(MainPageUiBinder.class);
+
+	interface MainPageUiBinder extends UiBinder<Widget, MainPage> {
+	}
+
 	private final LoginServiceAsync loginService = GWT
 			.create(LoginService.class);
 
-	SelectionManager selectionManager = new SelectionManager();
+	@UiField
+	MenuBar mainMenu;
 
 	public void onModuleLoad() {
 		loginService.login("junglas", "junglas", new AsyncCallback<Boolean>() {
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			public void onSuccess(Boolean result) {
-				RootPanel.get("projectTree").add(new ProjectTree(selectionManager));
+				final Widget mainPage = uiBinder.createAndBindUi(MainPage.this);
 
-				RootPanel.get("taskList").add(new TaskList(selectionManager));
+				MenuBar reportMenu = new MenuBar(true);
+				mainMenu.addItem("Report", reportMenu);
 
-				RootPanel.get("calendarView").add(new CalendarView(selectionManager));
-				
-				RootPanel.get("workItemList").add(new WorkItemList(selectionManager));
-			}
-		});
-		
-		MenuBar mainMenu = new MenuBar();
+				MenuBar adminMenu = new MenuBar(true);
+				mainMenu.addItem("Admin", adminMenu);
 
-		MenuBar reportMenu = new MenuBar(true);
-		mainMenu.addItem("Report", reportMenu);
+				mainMenu.addSeparator();
+				mainMenu.addItem("Logout", new Command() {
+					public void execute() {
+						loginService.logout(new AsyncCallback<Void>() {
 
-		MenuBar adminMenu = new MenuBar(true);
-		mainMenu.addItem("Admin", adminMenu);
+							public void onSuccess(Void result) {
+								Utils.redirect("LoginUI.html");
+							}
 
-		mainMenu.addSeparator();
-		mainMenu.addItem("Logout", new Command() {
-			public void execute() {
-				loginService.logout(new AsyncCallback<Void>() {
-					
-					public void onSuccess(Void result) {
-						Utils.redirect("LoginUI.html");
-					}
-					
-					public void onFailure(Throwable caught) {
+							public void onFailure(Throwable caught) {
+							}
+						});
 					}
 				});
+				
+				RootLayoutPanel.get().add(mainPage);
 			}
 		});
-		RootPanel.get("mainMenu").add(mainMenu);
+
+//		RootPanel.get("mainMenu").add(mainMenu);
 
 	}
 }

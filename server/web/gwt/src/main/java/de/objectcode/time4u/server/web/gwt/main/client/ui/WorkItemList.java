@@ -39,20 +39,17 @@ public class WorkItemList extends Composite implements ISelectionChangeListener 
 	@UiField
 	DataTable workItemList;
 
-	SelectionManager selectionManager;
-
-	public WorkItemList(SelectionManager selectionManager) {
+	public WorkItemList() {
 		initWidget(uiBinder.createAndBindUi(this));
 
-		this.selectionManager = selectionManager;
-		this.selectionManager.addSelectionChangeListener(this);
+		SelectionManager.INSTANCE.addSelectionChangeListener(this);
 		
 		workItemList.setHeaders("Begin", "End", "Project", "Task", "Comment");
 	}
 
 	public void selectionChanged(SelectionChangedEvent event) {
 		if (event.getType() == SelectionChangedEvent.Type.DAY) {
-			Date day = selectionManager.getSelectedDay();
+			Date day = SelectionManager.INSTANCE.getSelectedDay();
 
 			workItemList.removeAllRows();
 			workItemList.setWidget(0, 0, new LoadingLabel());

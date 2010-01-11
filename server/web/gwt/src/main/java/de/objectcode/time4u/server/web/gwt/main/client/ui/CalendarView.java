@@ -32,15 +32,11 @@ public class CalendarView extends Composite {
 	private final WorkItemServiceAsync workItemService = GWT
 			.create(WorkItemService.class);
 
-	SelectionManager selectionManager;
-
 	@UiField
 	DatePicker calendar;
 
-	public CalendarView(SelectionManager selectionManager) {
+	public CalendarView() {
 		initWidget(uiBinder.createAndBindUi(this));
-
-		this.selectionManager = selectionManager;
 
 		calendar.addShowRangeHandler(new ShowRangeHandler<Date>() {
 			public void onShowRange(ShowRangeEvent<Date> event) {
@@ -82,6 +78,6 @@ public class CalendarView extends Composite {
 
 	@UiHandler("calendar")
 	void onCalendarValueChange(ValueChangeEvent<Date> event) {
-		selectionManager.selectedDate(event.getValue());
+		SelectionManager.INSTANCE.selectedDate(event.getValue());
 	}
 }

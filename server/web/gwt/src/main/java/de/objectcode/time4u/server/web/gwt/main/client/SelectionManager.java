@@ -8,6 +8,8 @@ import de.objectcode.time4u.server.web.gwt.main.client.service.Project;
 import de.objectcode.time4u.server.web.gwt.main.client.service.Task;
 
 public class SelectionManager {
+	public static SelectionManager INSTANCE = new SelectionManager();
+
 	List<ISelectionChangeListener> listeners = new ArrayList<ISelectionChangeListener>();
 
 	private Project selectedProject;
@@ -43,21 +45,25 @@ public class SelectionManager {
 	public void selectProject(Project project) {
 		if (selectedProject != project) {
 			selectedProject = project;
-			fireSelectionChanged(new SelectionChangedEvent(SelectionChangedEvent.Type.PROJECT));
+			fireSelectionChanged(new SelectionChangedEvent(
+					SelectionChangedEvent.Type.PROJECT));
 		}
 	}
 
 	public void selectTask(Task task) {
 		if (selectedTask != task) {
 			selectedTask = task;
-			fireSelectionChanged(new SelectionChangedEvent(SelectionChangedEvent.Type.TASK));
+			fireSelectionChanged(new SelectionChangedEvent(
+					SelectionChangedEvent.Type.TASK));
 		}
 	}
-	
+
 	public void selectedDate(Date day) {
-		if ( (selectedDay == null && day != null ) || ( selectedDay != null  || !selectedDay.equals(day))) {
+		if ((selectedDay == null && day != null)
+				|| (selectedDay != null || !selectedDay.equals(day))) {
 			selectedDay = day;
-			fireSelectionChanged(new SelectionChangedEvent(SelectionChangedEvent.Type.DAY));			
+			fireSelectionChanged(new SelectionChangedEvent(
+					SelectionChangedEvent.Type.DAY));
 		}
 	}
 }

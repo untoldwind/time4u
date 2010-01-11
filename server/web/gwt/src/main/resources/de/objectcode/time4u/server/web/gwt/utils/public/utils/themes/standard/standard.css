@@ -17,3 +17,16 @@
 	background-repeat: no-repeat;
 	padding-left: 20px;
 }
+
+/* Splitters */
+.gwt-SplitLayoutPanel-HDragger {
+	cursor: col-resize;
+	background-color: #E3E8F3 !important;
+	background: #E3E8F3 url(images/splitPanelThumb.png) no-repeat center !important;
+}
+
+.gwt-SplitLayoutPanel-VDragger {
+	cursor: row-resize;
+	background-color: #E3E8F3 !important;
+	background: #E3E8F3 url(images/splitPanelThumb.png) no-repeat center !important;
+}
