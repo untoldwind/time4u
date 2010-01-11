@@ -1,9 +1,12 @@
 package de.objectcode.time4u.server.web.gwt.main.client.ui;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -47,6 +50,8 @@ public class ProjectTree extends Composite {
 	@UiField
 	PushButton deleteProject;
 
+	Map<String, Project> openedProjects = new HashMap<String, Project>();
+	
 	private final ProjectServiceAsync projectService = GWT
 			.create(ProjectService.class);
 
@@ -65,7 +70,8 @@ public class ProjectTree extends Composite {
 		Project project = (Project) item.getUserObject();
 
 		if (project != null) {
-
+			openedProjects.put(project.getId(), project);
+			
 			projectService.getChildProjects(project.getId(),
 					new AsyncCallback<List<Project>>() {
 						public void onSuccess(List<Project> result) {
@@ -83,6 +89,13 @@ public class ProjectTree extends Composite {
 
 								if (project.isHasChildren())
 									subItem.addItem("");
+
+								if(openedProjects.containsKey(project.getId()))
+									subItem.setState(true, true);
+
+								if ( SelectionManager.INSTANCE.getSelectedProject() != null )
+									if ( project.getId().equals(SelectionManager.INSTANCE.getSelectedProject().getId()))
+										subItem.setSelected(true);
 							}
 						}
 
@@ -90,6 +103,16 @@ public class ProjectTree extends Composite {
 							Window.alert("Server Error: " + caught.toString());
 						}
 					});
+		}
+	}
+	
+	@UiHandler("projectTree")
+	public void onClose(CloseEvent<TreeItem> event) {
+		final TreeItem item = event.getTarget();
+		Project project = (Project) item.getUserObject();
+
+		if (project != null) {
+			openedProjects.remove(project.getId());
 		}
 	}
 
@@ -108,7 +131,11 @@ public class ProjectTree extends Composite {
 		TreeItem item = projectTree.getSelectedItem();
 
 		ProjectDialog dialog = new ProjectDialog(item != null ? (Project) item
-				.getUserObject() : null);
+				.getUserObject() : null, new IDialogCallback() {
+					public void onOk() {
+						refresh();
+					}
+				});
 
 		dialog.center();
 		dialog.show();
@@ -123,7 +150,11 @@ public class ProjectTree extends Composite {
 
 			ProjectDialog dialog = new ProjectDialog(
 					parent != null ? (Project) parent.getUserObject() : null,
-					(Project) item.getUserObject());
+					(Project) item.getUserObject(), new IDialogCallback() {
+						public void onOk() {
+							refresh();
+						}
+					});
 
 			dialog.center();
 			dialog.show();
@@ -143,10 +174,16 @@ public class ProjectTree extends Composite {
 							+ project.getName() + "</span>");
 
 					item.setUserObject(project);
-
 					if (project.isHasChildren()) {
 						item.addItem(new LoadingLabel());
 					}
+					
+					if(openedProjects.containsKey(project.getId()))
+						item.setState(true, true);
+				
+					if ( SelectionManager.INSTANCE.getSelectedProject() != null )
+						if ( project.getId().equals(SelectionManager.INSTANCE.getSelectedProject().getId()))
+							item.setSelected(true);
 				}
 			}
 
