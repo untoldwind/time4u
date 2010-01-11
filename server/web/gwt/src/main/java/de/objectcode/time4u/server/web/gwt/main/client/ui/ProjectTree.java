@@ -3,6 +3,7 @@ package de.objectcode.time4u.server.web.gwt.main.client.ui;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -10,17 +11,19 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
 
+import de.objectcode.time4u.server.web.gwt.main.client.MainClientBundle;
 import de.objectcode.time4u.server.web.gwt.main.client.SelectionManager;
 import de.objectcode.time4u.server.web.gwt.main.client.service.Project;
 import de.objectcode.time4u.server.web.gwt.main.client.service.ProjectService;
 import de.objectcode.time4u.server.web.gwt.main.client.service.ProjectServiceAsync;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLabel;
 
-public class ProjectTree extends Composite  {
+public class ProjectTree extends Composite {
 
 	private static ProjectTreeUiBinder uiBinder = GWT
 			.create(ProjectTreeUiBinder.class);
@@ -28,11 +31,23 @@ public class ProjectTree extends Composite  {
 	interface ProjectTreeUiBinder extends UiBinder<Widget, ProjectTree> {
 	}
 
+	@UiField(provided = true)
+	MainClientBundle resources = MainClientBundle.INSTANCE;
+
 	@UiField
 	Tree projectTree;
 
+	@UiField
+	PushButton newProject;
+
+	@UiField
+	PushButton editProject;
+
+	@UiField
+	PushButton deleteProject;
+
 	SelectionManager selectionManager;
-	
+
 	private final ProjectServiceAsync projectService = GWT
 			.create(ProjectService.class);
 
@@ -40,7 +55,7 @@ public class ProjectTree extends Composite  {
 		initWidget(uiBinder.createAndBindUi(this));
 
 		this.selectionManager = selectionManager;
-		
+
 		projectTree.addItem(new LoadingLabel());
 
 		projectService.getRootProjects(new AsyncCallback<List<Project>>() {
@@ -92,12 +107,20 @@ public class ProjectTree extends Composite  {
 					});
 		}
 	}
-	
+
 	@UiHandler("projectTree")
 	public void onSelection(SelectionEvent<TreeItem> event) {
 		final TreeItem item = event.getSelectedItem();
 		Project project = (Project) item.getUserObject();
 
 		selectionManager.selectProject(project);
+	}
+
+	@UiHandler("newProject")
+	public void onNewProject(ClickEvent event) {
+		ProjectDialog dialog = new ProjectDialog();
+		
+		dialog.center();
+		dialog.show();
 	}
 }

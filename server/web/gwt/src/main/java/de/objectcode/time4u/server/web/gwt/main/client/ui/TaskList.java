@@ -9,9 +9,11 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.main.client.ISelectionChangeListener;
+import de.objectcode.time4u.server.web.gwt.main.client.MainClientBundle;
 import de.objectcode.time4u.server.web.gwt.main.client.SelectionChangedEvent;
 import de.objectcode.time4u.server.web.gwt.main.client.SelectionManager;
 import de.objectcode.time4u.server.web.gwt.main.client.service.Project;
@@ -32,8 +34,20 @@ public class TaskList extends Composite implements ISelectionChangeListener {
 
 	private final TaskServiceAsync taskService = GWT.create(TaskService.class);
 
+	@UiField(provided=true)
+	MainClientBundle resources = MainClientBundle.INSTANCE;
+
 	@UiField
 	DataTable taskList;
+
+	@UiField
+	PushButton newTask;
+	
+	@UiField
+	PushButton editTask;
+	
+	@UiField
+	PushButton deleteTask;
 
 	SelectionManager selectionManager;
 

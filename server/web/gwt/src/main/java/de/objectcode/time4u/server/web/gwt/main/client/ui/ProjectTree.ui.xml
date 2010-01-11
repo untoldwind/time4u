@@ -2,11 +2,27 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-	<g:HTMLPanel>
+	<ui:with field="resources"
+		type="de.objectcode.time4u.server.web.gwt.main.client.MainClientBundle" />
+
+	<g:VerticalPanel>
+		<g:HorizontalPanel>
+			<g:PushButton ui:field="newProject">
+				<g:upFace image="{resources.newProject}" />
+			</g:PushButton>
+			<g:PushButton ui:field="editProject" enabled="false">
+				<g:upFace image="{resources.editProject}" />
+			</g:PushButton>
+			<g:PushButton ui:field="deleteProject" enabled="false">
+				<g:upFace image="{resources.deleteProject}" />
+			</g:PushButton>
+		</g:HorizontalPanel>
 		<g:DecoratorPanel>
-			<g:ScrollPanel width="300px" height="200px">			
-				<g:Tree ui:field="projectTree" width="100%"/>
+			<g:ScrollPanel width="300px" height="200px">
+				<g:Tree ui:field="projectTree" width="100%" />
 			</g:ScrollPanel>
 		</g:DecoratorPanel>
-	</g:HTMLPanel>
-</ui:UiBinder> 
+	</g:VerticalPanel>
+
+</ui:UiBinder>
+ 

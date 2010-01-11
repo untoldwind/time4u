@@ -16,9 +16,6 @@ import de.objectcode.time4u.server.web.gwt.main.client.ui.WorkItemList;
 import de.objectcode.time4u.server.web.gwt.utils.client.Utils;
 
 public class MainPage implements EntryPoint {
-	public static final MainClientBundle images = (MainClientBundle) GWT
-			.create(MainClientBundle.class);
-	
 	private final LoginServiceAsync loginService = GWT
 			.create(LoginService.class);
 

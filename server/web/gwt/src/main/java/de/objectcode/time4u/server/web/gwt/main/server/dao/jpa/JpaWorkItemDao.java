@@ -127,8 +127,7 @@ public class JpaWorkItemDao extends JpaDaoBase implements IWorkItemDao {
 					break;
 			}
 		}
-		System.out.println(">>> " + dayInfoEntity.getDate() + " "
-				+ calculatedRegularTime);
+
 		return new DayInfoSummary(dayInfoEntity.getId(), dayInfoEntity
 				.getDate(), dayInfoEntity.isHasWorkItems(), dayInfoEntity
 				.isHasInvalidWorkItems(), dayInfoEntity.isHasTags(),
