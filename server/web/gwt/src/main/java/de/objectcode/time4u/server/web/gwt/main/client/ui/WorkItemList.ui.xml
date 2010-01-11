@@ -3,11 +3,25 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
 
-	<g:HTMLPanel>
+	<ui:with field="resources"
+		type="de.objectcode.time4u.server.web.gwt.main.client.MainClientBundle" />
+
+	<g:VerticalPanel>
+		<g:HorizontalPanel>
+			<g:PushButton ui:field="newWorkItem">
+				<g:upFace image="{resources.newWorkItem}" />
+			</g:PushButton>
+			<g:PushButton ui:field="editWorkItem" enabled="false">
+				<g:upFace image="{resources.editWorkItem}" />
+			</g:PushButton>
+			<g:PushButton ui:field="deleteWorkItem" enabled="false">
+				<g:upFace image="{resources.deleteWorkItem}" />
+			</g:PushButton>
+		</g:HorizontalPanel>
 		<g:DecoratorPanel>
-			<g:ScrollPanel width="500px" height="400px">
+			<g:ScrollPanel width="500px" height="420px">
 				<tu:DataTable ui:field="workItemList" width="100%" />
 			</g:ScrollPanel>
 		</g:DecoratorPanel>
-	</g:HTMLPanel>
+	</g:VerticalPanel>
 </ui:UiBinder>

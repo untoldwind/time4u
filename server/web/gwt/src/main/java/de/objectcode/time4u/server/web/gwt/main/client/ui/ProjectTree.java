@@ -64,7 +64,10 @@ public class ProjectTree extends Composite {
 				projectTree.removeItems();
 
 				for (Project project : result) {
-					TreeItem item = projectTree.addItem(project.getName());
+					TreeItem item = projectTree.addItem("<span class=\""
+							+ (project.isActive() ? "projectTree-active"
+									: "projectTree-inactive") + "\">"
+							+ project.getName() + "</span>");
 
 					item.setUserObject(project);
 
@@ -92,8 +95,12 @@ public class ProjectTree extends Composite {
 							item.removeItems();
 
 							for (Project project : result) {
-								TreeItem subItem = item.addItem(project
-										.getName());
+								TreeItem subItem = item
+										.addItem("<span class=\""
+												+ (project.isActive() ? "projectTree-active"
+														: "projectTree-inactive")
+												+ "\">" + project.getName()
+												+ "</span>");
 
 								subItem.setUserObject(project);
 
@@ -114,13 +121,34 @@ public class ProjectTree extends Composite {
 		Project project = (Project) item.getUserObject();
 
 		selectionManager.selectProject(project);
+		editProject.setEnabled(project != null);
+		deleteProject.setEnabled(project != null);
 	}
 
 	@UiHandler("newProject")
 	public void onNewProject(ClickEvent event) {
-		ProjectDialog dialog = new ProjectDialog();
-		
+		TreeItem item = projectTree.getSelectedItem();
+
+		ProjectDialog dialog = new ProjectDialog(item != null ? (Project) item
+				.getUserObject() : null);
+
 		dialog.center();
 		dialog.show();
+	}
+
+	@UiHandler("editProject")
+	public void onEditProject(ClickEvent event) {
+		TreeItem item = projectTree.getSelectedItem();
+
+		if (item != null) {
+			TreeItem parent = item.getParentItem();
+
+			ProjectDialog dialog = new ProjectDialog(
+					parent != null ? (Project) parent.getUserObject() : null,
+					(Project) item.getUserObject());
+
+			dialog.center();
+			dialog.show();
+		}
 	}
 }

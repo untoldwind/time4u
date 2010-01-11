@@ -18,4 +18,10 @@ public interface MainClientBundle extends ClientBundle {
 	ImageResource editTask();
 	
 	ImageResource deleteTask();
+
+	ImageResource newWorkItem();
+	
+	ImageResource editWorkItem();
+	
+	ImageResource deleteWorkItem();
 }

@@ -44,3 +44,13 @@ h1 {
 .dayPickerDayZeroRegular {
 	color: red;
 }
+
+.projectTree-active {
+	color: black;
+}
+
+.projectTree-inactive {
+	color: gray;
+}
+
+

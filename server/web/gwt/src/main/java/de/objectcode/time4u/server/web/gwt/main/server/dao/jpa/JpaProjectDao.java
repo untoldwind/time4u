@@ -14,7 +14,7 @@ import de.objectcode.time4u.server.web.gwt.main.client.service.Project;
 import de.objectcode.time4u.server.web.gwt.main.server.dao.IProjectDao;
 
 @Repository("projectDao")
-@Transactional(propagation=Propagation.MANDATORY)
+@Transactional(propagation = Propagation.MANDATORY)
 public class JpaProjectDao extends JpaDaoBase implements IProjectDao {
 
 	@SuppressWarnings("unchecked")
@@ -74,8 +74,7 @@ public class JpaProjectDao extends JpaDaoBase implements IProjectDao {
 	static Project toDTO(ProjectEntity projectEntity, long subProjectCount) {
 		return new Project(projectEntity.getId(),
 				projectEntity.getParent() != null ? projectEntity.getParent()
-						.getId() : null, projectEntity.getName(),
-				subProjectCount > 0);
-
+						.getId() : null, projectEntity.getName(), projectEntity
+						.isActive(), subProjectCount > 0);
 	}
 }

@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.main.client.ISelectionChangeListener;
+import de.objectcode.time4u.server.web.gwt.main.client.MainClientBundle;
 import de.objectcode.time4u.server.web.gwt.main.client.SelectionChangedEvent;
 import de.objectcode.time4u.server.web.gwt.main.client.SelectionManager;
 import de.objectcode.time4u.server.web.gwt.main.client.service.DayInfo;
@@ -31,6 +32,9 @@ public class WorkItemList extends Composite implements ISelectionChangeListener 
 
 	private final WorkItemServiceAsync workItemService = GWT
 			.create(WorkItemService.class);
+
+	@UiField(provided=true)
+	MainClientBundle resources = MainClientBundle.INSTANCE;
 
 	@UiField
 	DataTable workItemList;
