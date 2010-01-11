@@ -68,7 +68,7 @@ public class CalendarView extends Composite {
 								calendar.addStyleToDates(
 										"dayPickerDayIsHasTags", dayInfo
 												.getDay());
-							if (dayInfo.getRegularTime() == 0)
+							if (dayInfo.getCalculatedRegularTime() == 0)
 								calendar.addStyleToDates(
 										"dayPickerDayZeroRegular", dayInfo
 												.getDay());

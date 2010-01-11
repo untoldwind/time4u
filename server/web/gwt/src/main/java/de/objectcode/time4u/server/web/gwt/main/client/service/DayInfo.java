@@ -11,9 +11,9 @@ public class DayInfo extends DayInfoSummary {
 	}
 
 	public DayInfo(String id, Date day, boolean hasWorkItems,
-			boolean hasInvalidWorkItems, boolean hasTags, int regularTime,
+			boolean hasInvalidWorkItems, boolean hasTags, int regularTime, int calculatedRegularTime,
 			List<WorkItem> workItems) {
-		super(id, day, hasWorkItems, hasInvalidWorkItems, hasTags, regularTime);
+		super(id, day, hasWorkItems, hasInvalidWorkItems, hasTags, regularTime, calculatedRegularTime);
 
 		this.workItems = workItems;
 	}
