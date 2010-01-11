@@ -9,6 +9,7 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PushButton;
@@ -55,28 +56,7 @@ public class ProjectTree extends Composite {
 		projectTree.addItem(new LoadingLabel());
 		projectTree.setAnimationEnabled(true);
 
-		projectService.getRootProjects(new AsyncCallback<List<Project>>() {
-
-			public void onSuccess(List<Project> result) {
-				projectTree.removeItems();
-
-				for (Project project : result) {
-					TreeItem item = projectTree.addItem("<span class=\""
-							+ (project.isActive() ? "projectTree-active"
-									: "projectTree-inactive") + "\">"
-							+ project.getName() + "</span>");
-
-					item.setUserObject(project);
-
-					if (project.isHasChildren()) {
-						item.addItem(new LoadingLabel());
-					}
-				}
-			}
-
-			public void onFailure(Throwable caught) {
-			}
-		});
+		refresh();
 	}
 
 	@UiHandler("projectTree")
@@ -107,6 +87,7 @@ public class ProjectTree extends Composite {
 						}
 
 						public void onFailure(Throwable caught) {
+							Window.alert("Server Error: " + caught.toString());
 						}
 					});
 		}
@@ -147,5 +128,31 @@ public class ProjectTree extends Composite {
 			dialog.center();
 			dialog.show();
 		}
+	}
+
+	void refresh() {
+		projectService.getRootProjects(new AsyncCallback<List<Project>>() {
+
+			public void onSuccess(List<Project> result) {
+				projectTree.removeItems();
+
+				for (Project project : result) {
+					TreeItem item = projectTree.addItem("<span class=\""
+							+ (project.isActive() ? "projectTree-active"
+									: "projectTree-inactive") + "\">"
+							+ project.getName() + "</span>");
+
+					item.setUserObject(project);
+
+					if (project.isHasChildren()) {
+						item.addItem(new LoadingLabel());
+					}
+				}
+			}
+
+			public void onFailure(Throwable caught) {
+				Window.alert("Server Error: " + caught.toString());
+			}
+		});
 	}
 }

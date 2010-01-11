@@ -10,6 +10,8 @@ public interface IProjectDao {
 
 	List<Project> findChildProjectsDTO(String projectId);
 
+	void storeProjectDTO(Project project);
+	
 	void save(ProjectEntity project);
 
 	void update(ProjectEntity project);

@@ -9,4 +9,6 @@ public interface ProjectServiceAsync {
 
 	void getChildProjects(String projectId,
 			AsyncCallback<List<Project>> callback);
+
+	void storeProject(Project project, AsyncCallback<Void> callback);
 }

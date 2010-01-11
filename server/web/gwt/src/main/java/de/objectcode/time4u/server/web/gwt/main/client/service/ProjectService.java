@@ -10,4 +10,6 @@ public interface ProjectService extends RemoteService{
 	List<Project> getRootProjects();
 	
 	List<Project> getChildProjects(String projectId);
+
+	void storeProject(Project project);
 }

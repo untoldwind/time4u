@@ -5,11 +5,16 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.ProjectEntity;
+import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
+import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
+import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 import de.objectcode.time4u.server.web.gwt.main.client.service.Project;
 import de.objectcode.time4u.server.web.gwt.main.server.dao.IProjectDao;
 
@@ -17,12 +22,15 @@ import de.objectcode.time4u.server.web.gwt.main.server.dao.IProjectDao;
 @Transactional(propagation = Propagation.MANDATORY)
 public class JpaProjectDao extends JpaDaoBase implements IProjectDao {
 
+	private IRevisionGenerator revisionGenerator;
+	private ILocalIdGenerator localIdGenerator;
+
 	@SuppressWarnings("unchecked")
 	public List<Project> findRootProjectsDTO() {
 		Query query = entityManager
 				.createQuery("select p, (select count(*) from "
 						+ ProjectEntity.class.getName()
-						+ " sp where sp.parent = p) from "
+						+ " sp where sp.parent.id = p.id and sp.deleted = false) from "
 						+ ProjectEntity.class.getName()
 						+ " p where p.parent is null and p.deleted = false order by p.name asc");
 
@@ -44,7 +52,7 @@ public class JpaProjectDao extends JpaDaoBase implements IProjectDao {
 		Query query = entityManager
 				.createQuery("select p, (select count(*) from "
 						+ ProjectEntity.class.getName()
-						+ " sp where sp.parent = p) from "
+						+ " sp where sp.parent.id = p.id and sp.deleted = false) from "
 						+ ProjectEntity.class.getName()
 						+ " p where p.parent.id = :parentId and p.deleted = false  order by p.name asc");
 
@@ -63,6 +71,39 @@ public class JpaProjectDao extends JpaDaoBase implements IProjectDao {
 		return ret;
 	}
 
+	public void storeProjectDTO(Project project) {
+		final IRevisionLock revisionLock = revisionGenerator.getNextRevision(
+				EntityType.PROJECT, null);
+
+		ProjectEntity projectEntity = null;
+
+		if (project.getId() != null) {
+			projectEntity = entityManager.find(ProjectEntity.class, project
+					.getId());
+		} else {
+			project.setId(localIdGenerator.generateLocalId(EntityType.PROJECT));
+		}
+
+		if (projectEntity != null) {
+			projectEntity.setName(project.getName());
+			projectEntity.setActive(project.isActive());
+			projectEntity.setParent(project.getParentId() != null ? entityManager.find(ProjectEntity.class, project.getParentId()) : null);
+			projectEntity.setRevision(revisionLock.getLatestRevision());
+			projectEntity.updateParentKey();
+		} else {
+			projectEntity = new ProjectEntity(project.getId(), revisionLock
+					.getLatestRevision(), localIdGenerator.getClientId(),
+					project.getName());
+
+			projectEntity.setName(project.getName());
+			projectEntity.setActive(project.isActive());
+			projectEntity.setParent(project.getParentId() != null ? entityManager.find(ProjectEntity.class, project.getParentId()) : null);
+			projectEntity.updateParentKey();
+
+			entityManager.persist(projectEntity);
+		}
+	}
+
 	public void save(ProjectEntity project) {
 		entityManager.persist(project);
 	}
@@ -77,4 +118,15 @@ public class JpaProjectDao extends JpaDaoBase implements IProjectDao {
 						.getId() : null, projectEntity.getName(), projectEntity
 						.isActive(), subProjectCount > 0);
 	}
+
+	@Autowired
+	public void setRevisionGenerator(IRevisionGenerator revisionGenerator) {
+		this.revisionGenerator = revisionGenerator;
+	}
+
+	@Autowired
+	public void setLocalIdGenerator(ILocalIdGenerator localIdGenerator) {
+		this.localIdGenerator = localIdGenerator;
+	}
+
 }

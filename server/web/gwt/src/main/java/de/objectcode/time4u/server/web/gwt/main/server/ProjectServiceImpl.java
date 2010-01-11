@@ -23,23 +23,26 @@ public class ProjectServiceImpl extends GwtController implements ProjectService 
 	private IProjectDao projectDao;
 
 	@Transactional(readOnly = true)
-	@RolesAllowed( "ROLE_USER")
+	@RolesAllowed("ROLE_USER")
 	public List<Project> getRootProjects() {
 		List<Project> result = projectDao.findRootProjectsDTO();
-
-		System.out.println("Call Root");
 
 		return result;
 	}
 
 	@Transactional(readOnly = true)
-	@RolesAllowed( "ROLE_USER")
+	@RolesAllowed("ROLE_USER")
 	public List<Project> getChildProjects(String projectId) {
 		List<Project> result = projectDao.findChildProjectsDTO(projectId);
 
-		System.out.println("Call Child");
-
 		return result;
+	}
+
+	@Transactional
+	@RolesAllowed("ROLE_USER")
+	public void storeProject(Project project) {
+
+		projectDao.storeProjectDTO(project);
 	}
 
 	@Autowired

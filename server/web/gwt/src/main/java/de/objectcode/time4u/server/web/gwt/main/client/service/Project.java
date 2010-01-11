@@ -12,7 +12,8 @@ public class Project implements IsSerializable {
 	public Project() {
 	}
 
-	public Project(String id, String parentId, String name, boolean active, boolean hasChildren) {
+	public Project(String id, String parentId, String name, boolean active,
+			boolean hasChildren) {
 		this.id = id;
 		this.parentId = parentId;
 		this.name = name;
@@ -38,6 +39,22 @@ public class Project implements IsSerializable {
 
 	public boolean isHasChildren() {
 		return hasChildren;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 }
