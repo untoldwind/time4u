@@ -24,12 +24,16 @@
 	</bean>
 
 	<security:http realm="Contacts Realm" create-session="always">
-		<security:intercept-url pattern="/LoginUI.*" filters="none"/>
-		<security:intercept-url pattern="/LoginUI/**" filters="none"/>
-		<security:intercept-url pattern="/**"
-			access="ROLE_USER" />
+		<security:intercept-url pattern="/"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/LoginUI.*"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/LoginUI/**"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/**" access="ROLE_USER" />
 		<security:logout logout-success-url="/LoginUI.html" />
-		<security:form-login login-page="/LoginUI.html" authentication-failure-url="/failure" default-target-url="/MainUI.html"/>
+		<security:anonymous/>
+		<security:form-login login-page="/LoginUI.html"/>
 	</security:http>
 
 	<security:authentication-provider
