@@ -402,6 +402,11 @@
 				<artifactId>hibernate-tools</artifactId>
 				<version>3.2.0.ga</version>
 			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>3.0.0.ga</version>
+			</dependency>
 
 			<!-- Server -->
 			<!-- Commons -->
@@ -547,7 +552,7 @@
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
-				<version>5.1.6</version>
+				<version>5.1.10</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.derby</groupId>
@@ -641,6 +646,11 @@
 				<version>2.5.6.SEC01</version>
 			</dependency>
 			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<version>2.5.6.SEC01</version>
+			</dependency>
+			<dependency>
 				<groupId>net.sf.gwt-widget</groupId>
 				<artifactId>gwt-widgets</artifactId>
 				<version>0.2.0</version>
@@ -679,11 +689,6 @@
 				<groupId>asm</groupId>
 				<artifactId>asm</artifactId>
 				<version>1.5.3</version>
-			</dependency>
-			<dependency>
-				<groupId>mysql</groupId>
-				<artifactId>mysql-connector-java</artifactId>
-				<version>5.1.10</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.security</groupId>

@@ -37,6 +37,7 @@
 			<groupId>javax.el</groupId>
 			<artifactId>el-api</artifactId>
 			<version>1.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.persistence</groupId>
@@ -79,6 +80,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
 		</dependency>
 		<dependency>
@@ -106,22 +111,27 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>concurrent</groupId>
 			<artifactId>concurrent</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -142,6 +152,7 @@
 		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>jsr250-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<properties>

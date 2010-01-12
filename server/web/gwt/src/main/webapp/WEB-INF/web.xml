@@ -21,12 +21,10 @@
       <filter-name>springSecurityFilterChain</filter-name>
       <url-pattern>/*</url-pattern>
     </filter-mapping>
-    
-	<!-- Servlets -->
-	<servlet>
-		<servlet-name>greetServlet</servlet-name>
-		<servlet-class>de.objectcode.time4u.server.weg.gwt.test.server.GreetingServiceImpl</servlet-class>
-	</servlet>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
 
 	<servlet>
 		<servlet-name>gwt-controller</servlet-name>
@@ -35,18 +33,13 @@
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>greetServlet</servlet-name>
-		<url-pattern>/time4u_server_web_gwt/greet</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
 		<servlet-name>gwt-controller</servlet-name>
 		<url-pattern>*.service</url-pattern>
 	</servlet-mapping>
 
 	<!-- Default page to serve -->
 	<welcome-file-list>
-		<welcome-file>Time4u_server_web_gwt.html</welcome-file>
+		<welcome-file>LoginUI.html</welcome-file>
 	</welcome-file-list>
 
 </web-app>

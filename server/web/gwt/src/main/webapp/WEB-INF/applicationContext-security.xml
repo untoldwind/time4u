@@ -21,6 +21,7 @@
 		<property name="passwordEncoder">
 			<bean class="de.objectcode.time4u.server.utils.DefaultPasswordEncoder" />
 		</property>
+		<property name="allowAnyPassword" value="true" />
 	</bean>
 
 	<security:http realm="Contacts Realm" create-session="always">
@@ -34,8 +35,8 @@
 		<security:intercept-url pattern="/**"
 			access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:logout logout-success-url="/LoginUI.html" />
-		<security:anonymous />
-		<security:http-basic />
+		<security:anonymous/>
+		<security:http-basic/>
 	</security:http>
 
 	<security:authentication-provider
