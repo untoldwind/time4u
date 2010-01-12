@@ -20,6 +20,7 @@ import de.objectcode.time4u.server.web.gwt.main.client.service.WorkItemServiceAs
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.DataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.DataTableRow;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLabel;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.TableHeader;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.TimeBox;
 
 public class WorkItemList extends Composite implements ISelectionChangeListener {
@@ -33,7 +34,7 @@ public class WorkItemList extends Composite implements ISelectionChangeListener 
 	private final WorkItemServiceAsync workItemService = GWT
 			.create(WorkItemService.class);
 
-	@UiField(provided=true)
+	@UiField(provided = true)
 	MainClientBundle resources = MainClientBundle.INSTANCE;
 
 	@UiField
@@ -43,8 +44,10 @@ public class WorkItemList extends Composite implements ISelectionChangeListener 
 		initWidget(uiBinder.createAndBindUi(this));
 
 		SelectionManager.INSTANCE.addSelectionChangeListener(this);
-		
-		workItemList.setHeaders("Begin", "End", "Project", "Task", "Comment");
+
+		workItemList.setHeaders(new TableHeader("Begin", "4em"),
+				new TableHeader("End", "4em"), new TableHeader("Project", "20%"),
+				new TableHeader("Task", "20%"), new TableHeader("Comment"));
 	}
 
 	public void selectionChanged(SelectionChangedEvent event) {
@@ -61,8 +64,9 @@ public class WorkItemList extends Composite implements ISelectionChangeListener 
 					if (result != null)
 						for (WorkItem workItem : result.getWorkItems()) {
 							workItemList.addRow(new DataTableRow(workItem,
-									new TimeBox(workItem.getBegin()), new TimeBox(workItem.getEnd()),
-									workItem.getProject().getName(), workItem
+									new TimeBox(workItem.getBegin()),
+									new TimeBox(workItem.getEnd()), workItem
+											.getProject().getName(), workItem
 											.getTask().getName(), workItem
 											.getComment()));
 						}

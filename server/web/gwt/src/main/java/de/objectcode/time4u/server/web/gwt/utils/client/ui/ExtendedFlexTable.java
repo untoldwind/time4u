@@ -21,21 +21,17 @@ public class ExtendedFlexTable extends FlexTable {
 	public void setHeaderStyleName(String styleName) {
 		UIObject.setStyleName(tHeadElement.getFirstChildElement(), styleName);
 	}
-	
-	public void setHeaders(Object... headers ) {
-		for (int i = 0; i < headers.length; i++) {
-			Object column = headers[i];
 
-			if (column instanceof Widget) {
-				setHeaderWidget(i, (Widget) column);
-			} else if (column != null) {
-				setHeaderWidget( i, new Label(column.toString()));
-			}
+	public void setHeaders(TableHeader... headers) {
+		for (int i = 0; i < headers.length; i++) {
+			TableHeader column = headers[i];
+
+			setHeaderWidget(i, column.getWidth(), new Label(column.getText()));
 		}
-		
+
 	}
-	
-	public void setHeaderWidget(int column, Widget widget) {
+
+	public void setHeaderWidget(int column, String width, Widget widget) {
 		prepareHeaderCell(column);
 
 		if (widget != null) {
@@ -47,6 +43,9 @@ public class ExtendedFlexTable extends FlexTable {
 
 			// Physical attach.
 			DOM.appendChild(th, widget.getElement());
+
+			if (width != null)
+				DOM.setStyleAttribute(th, "width", width);
 
 			List<Widget> headerWidgets = getHeaderWidgets();
 			if (headerWidgets.size() > column

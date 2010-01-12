@@ -36,7 +36,7 @@ public class DataTable extends ExtendedFlexTable implements
 	}
 
 	@Override
-	public void setHeaders(Object... headers) {
+	public void setHeaders(TableHeader... headers) {
 		super.setHeaders(headers);
 		
 		setHeaderStyleName("utils-dataTable-header");
