@@ -728,7 +728,12 @@
 				<artifactId>aspectjrt</artifactId>
 				<version>1.5.4</version>
 			</dependency>
-		</dependencies>
+			<dependency>
+				<groupId>org.jboss.snowdrop</groupId>
+				<artifactId>snowdrop-vfs</artifactId>
+				<version>1.0.0.CR2</version>
+			</dependency>
+		</dependencies>		
 	</dependencyManagement>
 	<reporting>
 		<plugins>

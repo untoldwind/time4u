@@ -48,6 +48,7 @@
 		<url-pattern>*.service</url-pattern>
 	</servlet-mapping>
 
+
 	<!-- Default page to serve -->
 	<welcome-file-list>
 		<welcome-file>LoginUI.html</welcome-file>

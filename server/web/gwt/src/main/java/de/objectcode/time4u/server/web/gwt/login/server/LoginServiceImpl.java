@@ -13,7 +13,7 @@ import de.objectcode.time4u.server.web.gwt.login.client.LoginService;
 import de.objectcode.time4u.server.web.gwt.utils.server.GwtController;
 
 @Controller
-@RequestMapping({"/LoginUI/login.service", "/MainUI/login.service"})
+@RequestMapping({"/LoginUI/login.service", "/MainUI/login.service", "/time4u-gwt/LoginUI/login.service", "/time4u-gwt/MainUI/login.service"})
 public class LoginServiceImpl extends GwtController implements LoginService {
 
 	private static final long serialVersionUID = 1L;
