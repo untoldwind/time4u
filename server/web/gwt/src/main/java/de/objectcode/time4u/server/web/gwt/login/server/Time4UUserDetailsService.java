@@ -48,11 +48,17 @@ public class Time4UUserDetailsService extends JpaDaoSupport implements
 		private static final long serialVersionUID = 1L;
 
 		String personId;
+		String givenName;
+		String surname;
+		String email;
 		UserAccountEntity userAccountEntity;
 		GrantedAuthority[] grantedAuthorities;
 
 		public Time4UUserDetails(UserAccountEntity userAccountEntity) {
 			this.personId = userAccountEntity.getPerson().getId();
+			this.givenName = userAccountEntity.getPerson().getGivenName();
+			this.surname = userAccountEntity.getPerson().getSurname();
+			this.email = userAccountEntity.getPerson().getEmail();
 			this.userAccountEntity = userAccountEntity;
 			this.grantedAuthorities = new GrantedAuthority[userAccountEntity
 					.getRoles().size()];
@@ -66,6 +72,18 @@ public class Time4UUserDetailsService extends JpaDaoSupport implements
 
 		public String getPersonId() {
 			return personId;
+		}
+
+		public String getGivenName() {
+			return givenName;
+		}
+
+		public String getSurname() {
+			return surname;
+		}
+
+		public String getEmail() {
+			return email;
 		}
 
 		public GrantedAuthority[] getAuthorities() {

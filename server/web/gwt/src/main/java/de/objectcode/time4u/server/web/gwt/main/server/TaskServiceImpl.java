@@ -15,7 +15,7 @@ import de.objectcode.time4u.server.web.gwt.main.server.dao.ITaskDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.GwtController;
 
 @Controller
-@RequestMapping({"/MainUI/task.service", "/time4u-gwt/MainUI/task.service"})
+@RequestMapping({"/MainUI/task.service"})
 public class TaskServiceImpl extends GwtController implements TaskService {
 
 	private static final long serialVersionUID = 1L;

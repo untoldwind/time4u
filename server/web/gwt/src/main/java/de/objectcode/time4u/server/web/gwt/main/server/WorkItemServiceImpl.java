@@ -19,7 +19,7 @@ import de.objectcode.time4u.server.web.gwt.main.server.dao.IWorkItemDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.GwtController;
 
 @Controller
-@RequestMapping({"/MainUI/workItem.service", "/time4u-gwt/MainUI/workItem.service"})
+@RequestMapping({"/MainUI/workItem.service"})
 public class WorkItemServiceImpl extends GwtController implements
 		WorkItemService {
 

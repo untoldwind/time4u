@@ -15,7 +15,7 @@ import de.objectcode.time4u.server.web.gwt.main.server.dao.IProjectDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.GwtController;
 
 @Controller
-@RequestMapping({"/MainUI/project.service", "/time4u-gwt/MainUI/project.service"})
+@RequestMapping({"/MainUI/project.service"})
 public class ProjectServiceImpl extends GwtController implements ProjectService {
 
 	private static final long serialVersionUID = 1L;
