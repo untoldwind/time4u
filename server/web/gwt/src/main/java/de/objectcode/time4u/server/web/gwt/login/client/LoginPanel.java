@@ -4,11 +4,16 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PasswordTextBox;
@@ -44,7 +49,7 @@ public class LoginPanel extends Composite {
 	void onUserIdChange(KeyUpEvent event) {
 		login.setEnabled(userId.getValue().length() > 0
 				&& password.getValue().length() > 0);
-		if ( event.getNativeKeyCode() == KeyCodes.KEY_ENTER ) {
+		if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 			password.setFocus(true);
 		}
 	}
@@ -53,7 +58,7 @@ public class LoginPanel extends Composite {
 	void onPasswordChange(KeyUpEvent event) {
 		login.setEnabled(userId.getValue().length() > 0
 				&& password.getValue().length() > 0);
-		if ( event.getNativeKeyCode() == KeyCodes.KEY_ENTER ) {
+		if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 			login();
 		}
 	}
@@ -64,20 +69,48 @@ public class LoginPanel extends Composite {
 	}
 
 	private void login() {
-		loginService.login(userId.getValue(), password.getValue(),
-				new AsyncCallback<Boolean>() {
-					public void onSuccess(Boolean result) {
-						if (result)
-							loginSuccessful();
-						else
-							loginFailed();
-					}
+		String url = GWT.getHostPageBaseURL() + "j_spring_security_check";
+		StringBuffer data = new StringBuffer();
+		data.append("j_username=");
+		data.append(URL.encode(userId.getValue()));
+		data.append("&j_password=");
+		data.append(URL.encode(password.getValue()));
+		System.out.println(url);
 
-					public void onFailure(Throwable caught) {
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
+
+		builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+
+		try {
+			builder.sendRequest(data.toString(), new RequestCallback() {
+
+				public void onResponseReceived(Request request,
+						Response response) {
+					if (response.getStatusCode() == 200) {
+						loginSuccessful();
+					} else {
+						loginFailed();
 					}
-				});		
+				}
+
+				public void onError(Request request, Throwable exception) {
+					Window.alert("Server error: " + exception);
+				}
+
+			});
+		} catch (RequestException e) {
+			Window.alert("Client error: " + e);
+		}
+
+		/*
+		 * loginService.login(userId.getValue(), password.getValue(), new
+		 * AsyncCallback<Boolean>() { public void onSuccess(Boolean result) { if
+		 * (result) loginSuccessful(); else loginFailed(); }
+		 * 
+		 * public void onFailure(Throwable caught) { } });
+		 */
 	}
-	
+
 	private void loginFailed() {
 		Window.alert("Login failed");
 	}

@@ -36,7 +36,7 @@
 			access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:logout logout-success-url="/LoginUI.html" />
 		<security:anonymous/>
-		<security:http-basic/>
+		<security:form-login login-page="/LoginUI.html" authentication-failure-url="/failure" default-target-url="/MainUI.html"/>
 	</security:http>
 
 	<security:authentication-provider

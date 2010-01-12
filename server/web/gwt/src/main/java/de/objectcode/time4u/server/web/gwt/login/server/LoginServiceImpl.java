@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.Authentication;
 import org.springframework.security.AuthenticationException;
 import org.springframework.security.AuthenticationManager;
+import org.springframework.security.AuthenticationTrustResolver;
+import org.springframework.security.AuthenticationTrustResolverImpl;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.providers.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,8 @@ public class LoginServiceImpl extends GwtController implements LoginService {
 	private static final long serialVersionUID = 1L;
 
 	private AuthenticationManager authenticationManager;
+
+	private AuthenticationTrustResolver authenticationTrustResolver = new AuthenticationTrustResolverImpl();
 
 	public boolean login(String userId, String password) {
 		UsernamePasswordAuthenticationToken tocken = new UsernamePasswordAuthenticationToken(
@@ -47,7 +51,10 @@ public class LoginServiceImpl extends GwtController implements LoginService {
 
 	public UserAccountInfo getAuthenticatedUser() {
 		if (!SecurityContextHolder.getContext().getAuthentication()
-				.isAuthenticated()) {
+				.isAuthenticated()
+				|| authenticationTrustResolver
+						.isAnonymous(SecurityContextHolder.getContext()
+								.getAuthentication())) {
 			// TODO: Remove
 			login("junglas", "junglas");
 		}

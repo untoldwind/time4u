@@ -5,6 +5,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
@@ -12,6 +13,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.login.client.LoginService;
 import de.objectcode.time4u.server.web.gwt.login.client.LoginServiceAsync;
+import de.objectcode.time4u.server.web.gwt.login.client.UserAccountInfo;
 import de.objectcode.time4u.server.web.gwt.utils.client.Utils;
 
 public class MainPage implements EntryPoint {
@@ -28,13 +30,12 @@ public class MainPage implements EntryPoint {
 	MenuBar mainMenu;
 
 	public void onModuleLoad() {
-		loginService.login("junglas", "junglas", new AsyncCallback<Boolean>() {
+		loginService.getAuthenticatedUser(new AsyncCallback<UserAccountInfo>() {
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
+				Window.alert("Server error: " + caught);
 			}
 
-			public void onSuccess(Boolean result) {
+			public void onSuccess(UserAccountInfo result) {
 				final Widget mainPage = uiBinder.createAndBindUi(MainPage.this);
 
 				MenuBar reportMenu = new MenuBar(true);
