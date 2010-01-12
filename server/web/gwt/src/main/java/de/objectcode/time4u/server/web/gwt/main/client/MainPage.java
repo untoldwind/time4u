@@ -7,14 +7,18 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.login.client.LoginService;
 import de.objectcode.time4u.server.web.gwt.login.client.LoginServiceAsync;
 import de.objectcode.time4u.server.web.gwt.login.client.UserAccountInfo;
+import de.objectcode.time4u.server.web.gwt.report.client.ReportModule;
 import de.objectcode.time4u.server.web.gwt.utils.client.Utils;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.IModuleCallback;
 
 public class MainPage implements EntryPoint {
 	private static MainPageUiBinder uiBinder = GWT
@@ -28,6 +32,12 @@ public class MainPage implements EntryPoint {
 
 	@UiField
 	MenuBar mainMenu;
+	
+	@UiField
+	DockLayoutPanel mainDock;
+	
+	@UiField
+	SplitLayoutPanel mainPanel;
 
 	public void onModuleLoad() {
 		loginService.getAuthenticatedUser(new AsyncCallback<UserAccountInfo>() {
@@ -40,6 +50,12 @@ public class MainPage implements EntryPoint {
 
 				MenuBar reportMenu = new MenuBar(true);
 				mainMenu.addItem("Report", reportMenu);
+				reportMenu.addItem("Interactive Report", new Command() {					
+					public void execute() {
+						showInteractiveReport();
+					}
+				});
+				
 
 				MenuBar adminMenu = new MenuBar(true);
 				mainMenu.addItem("Admin", adminMenu);
@@ -66,5 +82,17 @@ public class MainPage implements EntryPoint {
 
 //		RootPanel.get("mainMenu").add(mainMenu);
 
+	}
+	
+	void showInteractiveReport() {
+		ReportModule.createAsync(new IModuleCallback<ReportModule>() {			
+			public void onUnavailable() {
+			}
+			
+			public void onSuccess(ReportModule instance) {
+				mainPanel.removeFromParent();
+				mainDock.add(instance.getInteractiveReportPanel());
+			}
+		});
 	}
 }
