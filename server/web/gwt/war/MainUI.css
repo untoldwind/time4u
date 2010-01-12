@@ -1,36 +1,34 @@
 /** Add css rules here for your application. */
-
-
-/** Example rules used by the template application (remove for your app) */
+	/** Example rules used by the template application (remove for your app) */
 h1 {
-  font-size: 2em;
-  font-weight: bold;
-  color: #777777;
-  margin: 40px 0px 70px;
-  text-align: center;
+	font-size: 2em;
+	font-weight: bold;
+	color: #777777;
+	margin: 40px 0px 70px;
+	text-align: center;
 }
 
 .sendButton {
-  display: block;
-  font-size: 16pt;
+	display: block;
+	font-size: 16pt;
 }
 
 /** Most GWT widgets already have a style name defined */
 .gwt-DialogBox {
-  width: 400px;
+	width: 400px;
 }
 
 .dialogVPanel {
-  margin: 5px;
+	margin: 5px;
 }
 
 .serverResponseLabelError {
-  color: red;
+	color: red;
 }
 
 /** Set ids using widget.getElement().setId("idOfElement") */
 #closeButton {
-  margin: 15px 6px 6px;
+	margin: 15px 6px 6px;
 }
 
 .dayPickerDayIsHasWorkItems {
@@ -53,3 +51,21 @@ h1 {
 	color: gray;
 }
 
+td.mainMenu-userId {
+	width: 100%;
+	text-align: right;
+	padding: 0px 5px;
+	vertical-align: bottom;
+	border-right: 1px solid #888888;
+}
+
+.mainMenu-userId-label {
+	padding: 0px 5px; color : #666666;
+	font-weight: normal;
+	color: #666666;
+}
+
+.mainMenu-userId-value {
+	color: #444444;
+	font-weight: bold;
+}

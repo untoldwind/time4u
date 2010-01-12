@@ -44,7 +44,8 @@ public class MainPage implements EntryPoint {
 				MenuBar adminMenu = new MenuBar(true);
 				mainMenu.addItem("Admin", adminMenu);
 
-				mainMenu.addSeparator();
+				mainMenu.addSeparator(new UserIdMenuItemSeparator(result.getUserId()));
+
 				mainMenu.addItem("Logout", new Command() {
 					public void execute() {
 						loginService.logout(new AsyncCallback<Void>() {

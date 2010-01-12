@@ -53,3 +53,23 @@ h1 {
 	color: gray;
 }
 
+
+td.mainMenu-userId {
+	width: 100%;
+	text-align: right;
+	padding: 0px 5px;
+	vertical-align: bottom;
+	border-right: 1px solid #888888;
+}
+
+.mainMenu-userId-label {
+	padding: 0px 5px; color : #666666;
+	font-weight: normal;
+	color: #666666;
+}
+
+.mainMenu-userId-value {
+	color: #444444;
+	font-weight: bold;
+}
+
