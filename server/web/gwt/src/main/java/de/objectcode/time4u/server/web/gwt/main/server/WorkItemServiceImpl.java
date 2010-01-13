@@ -3,9 +3,10 @@ package de.objectcode.time4u.server.web.gwt.main.server;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.annotation.security.RolesAllowed;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +44,8 @@ public class WorkItemServiceImpl extends GwtController implements
 		return workItemDao.findDayInfoDTO(personId, day);
 	}
 
-	@Autowired
+	@Resource(name="workItemDao")
+	@Required
 	public void setWorkItemDao(IWorkItemDao workItemDao) {
 		this.workItemDao = workItemDao;
 	}

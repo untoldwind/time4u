@@ -2,9 +2,10 @@ package de.objectcode.time4u.server.web.gwt.main.server;
 
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.annotation.security.RolesAllowed;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,8 @@ public class TaskServiceImpl extends GwtController implements TaskService {
 		return taskDao.findTasksDTO(projectId);
 	}
 
-	@Autowired
+	@Resource(name="taskDao")
+	@Required
 	public void setTaskDao(ITaskDao taskDao) {
 		this.taskDao = taskDao;
 	}

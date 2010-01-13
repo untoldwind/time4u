@@ -1,6 +1,8 @@
+
 package de.objectcode.time4u.server.web.gwt.login.server;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
@@ -67,7 +69,7 @@ public class LoginServiceImpl extends GwtController implements LoginService {
 				.getEmail());
 	}
 
-	@Autowired
+	@Resource
 	public void setAuthenticationManager(
 			AuthenticationManager authenticationManager) {
 		this.authenticationManager = authenticationManager;

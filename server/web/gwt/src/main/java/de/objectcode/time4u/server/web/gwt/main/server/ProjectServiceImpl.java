@@ -2,9 +2,10 @@ package de.objectcode.time4u.server.web.gwt.main.server;
 
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.annotation.security.RolesAllowed;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,7 +46,8 @@ public class ProjectServiceImpl extends GwtController implements ProjectService 
 		projectDao.storeProjectDTO(project);
 	}
 
-	@Autowired
+	@Resource(name="projectDao")
+	@Required
 	public void setProjectDao(IProjectDao projectDao) {
 		this.projectDao = projectDao;
 	}
