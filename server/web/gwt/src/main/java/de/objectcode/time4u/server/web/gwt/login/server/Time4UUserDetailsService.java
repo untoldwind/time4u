@@ -1,5 +1,9 @@
 package de.objectcode.time4u.server.web.gwt.login.server;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -7,11 +11,11 @@ import javax.persistence.Query;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.jpa.JpaCallback;
 import org.springframework.orm.jpa.support.JpaDaoSupport;
-import org.springframework.security.GrantedAuthority;
-import org.springframework.security.GrantedAuthorityImpl;
-import org.springframework.security.userdetails.UserDetails;
-import org.springframework.security.userdetails.UserDetailsService;
-import org.springframework.security.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
@@ -23,9 +27,9 @@ public class Time4UUserDetailsService extends JpaDaoSupport implements
 	@Transactional(readOnly = false)
 	public UserDetails loadUserByUsername(final String userId)
 			throws UsernameNotFoundException, DataAccessException {
-		return (UserDetails) getJpaTemplate().execute(new JpaCallback() {
+		return getJpaTemplate().execute(new JpaCallback<UserDetails>() {
 
-			public Object doInJpa(EntityManager entityManager)
+			public UserDetails doInJpa(EntityManager entityManager)
 					throws PersistenceException {
 				Query query = entityManager.createQuery("from "
 						+ UserAccountEntity.class.getName()
@@ -52,7 +56,7 @@ public class Time4UUserDetailsService extends JpaDaoSupport implements
 		String surname;
 		String email;
 		UserAccountEntity userAccountEntity;
-		GrantedAuthority[] grantedAuthorities;
+		List<GrantedAuthority> grantedAuthorities;
 
 		public Time4UUserDetails(UserAccountEntity userAccountEntity) {
 			this.personId = userAccountEntity.getPerson().getId();
@@ -60,13 +64,11 @@ public class Time4UUserDetailsService extends JpaDaoSupport implements
 			this.surname = userAccountEntity.getPerson().getSurname();
 			this.email = userAccountEntity.getPerson().getEmail();
 			this.userAccountEntity = userAccountEntity;
-			this.grantedAuthorities = new GrantedAuthority[userAccountEntity
-					.getRoles().size()];
+			this.grantedAuthorities = new ArrayList<GrantedAuthority>();
 
-			int i = 0;
 			for (UserRoleEntity role : userAccountEntity.getRoles()) {
-				this.grantedAuthorities[i++] = new GrantedAuthorityImpl("ROLE_" + role
-						.getRoleId().toUpperCase());
+				this.grantedAuthorities.add( new GrantedAuthorityImpl("ROLE_" + role
+						.getRoleId().toUpperCase()));
 			}
 		}
 
@@ -86,7 +88,8 @@ public class Time4UUserDetailsService extends JpaDaoSupport implements
 			return email;
 		}
 
-		public GrantedAuthority[] getAuthorities() {
+
+		public Collection<GrantedAuthority> getAuthorities() {
 			return grantedAuthorities;
 		}
 

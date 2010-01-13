@@ -5,9 +5,10 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
-						   http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.1.xsd
+						   http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd
                            http://www.springframework.org/schema/context 
-                           http://www.springframework.org/schema/context/spring-context.xsd">
+                           http://www.springframework.org/schema/context/spring-context.xsd"
+	default-autowire="byName">
 
 	<context:component-scan
 		base-package="de.objectcode.time4u.server.web.gwt.main.server" />
@@ -15,10 +16,10 @@
 		base-package="de.objectcode.time4u.server.web.gwt.login.server" />
 
 	<security:global-method-security
-		secured-annotations="enabled" jsr250-annotations="enabled"/>
+		secured-annotations="enabled" jsr250-annotations="enabled" />
 
-	<tx:annotation-driven transaction-manager="transactionManager"/>
-	
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
 	<!--
 		context:load-time-weaver
 		weaver-class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/

@@ -2,7 +2,7 @@ package de.objectcode.time4u.server.web.gwt.login.server;
 
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.DataAccessException;
-import org.springframework.security.providers.encoding.PasswordEncoder;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 
 import de.objectcode.time4u.server.utils.IPasswordEncoder;
 

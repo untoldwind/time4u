@@ -9,7 +9,8 @@
 <beans xmlns:security="http://www.springframework.org/schema/security"
 	xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.1.xsd">
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd"
+	default-autowire="byName">
 
 	<bean id="userDetailsService"
 		class="de.objectcode.time4u.server.web.gwt.login.server.Time4UUserDetailsService">
@@ -35,13 +36,16 @@
 		<security:intercept-url pattern="/**"
 			access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:logout logout-success-url="/LoginUI.html" />
-		<security:anonymous/>
-		<security:form-login login-page="/LoginUI.html" authentication-failure-url="/failure" default-target-url="/MainUI.html"/>
+		<security:anonymous />
+		<security:form-login login-page="/LoginUI.html"
+			authentication-failure-url="/failure" default-target-url="/MainUI.html" />
 	</security:http>
 
-	<security:authentication-provider
-		user-service-ref="userDetailsService">
-		<security:password-encoder ref="passwordEncoder" />
-	</security:authentication-provider>
+	<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider
+			user-service-ref="userDetailsService">
+			<security:password-encoder ref="passwordEncoder" />
+		</security:authentication-provider>
+	</security:authentication-manager>
 
 </beans>
