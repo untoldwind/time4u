@@ -7,18 +7,18 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.login.client.LoginService;
 import de.objectcode.time4u.server.web.gwt.login.client.LoginServiceAsync;
 import de.objectcode.time4u.server.web.gwt.login.client.UserAccountInfo;
+import de.objectcode.time4u.server.web.gwt.main.client.ui.WebClientPanel;
 import de.objectcode.time4u.server.web.gwt.report.client.ReportModule;
 import de.objectcode.time4u.server.web.gwt.utils.client.Utils;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.IModuleCallback;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.SwitchableLayoutPanel;
 
 public class MainPage implements EntryPoint {
 	private static MainPageUiBinder uiBinder = GWT
@@ -34,10 +34,7 @@ public class MainPage implements EntryPoint {
 	MenuBar mainMenu;
 	
 	@UiField
-	DockLayoutPanel mainDock;
-	
-	@UiField
-	SplitLayoutPanel mainPanel;
+	SwitchableLayoutPanel mainPanel;
 
 	public void onModuleLoad() {
 		loginService.getAuthenticatedUser(new AsyncCallback<UserAccountInfo>() {
@@ -76,12 +73,11 @@ public class MainPage implements EntryPoint {
 					}
 				});
 				
+				mainPanel.setChild(new WebClientPanel());
+				
 				RootLayoutPanel.get().add(mainPage);
 			}
 		});
-
-//		RootPanel.get("mainMenu").add(mainMenu);
-
 	}
 	
 	void showInteractiveReport() {
@@ -90,8 +86,7 @@ public class MainPage implements EntryPoint {
 			}
 			
 			public void onSuccess(ReportModule instance) {
-				mainPanel.removeFromParent();
-				mainDock.add(instance.getInteractiveReportPanel());
+				mainPanel.setChild(instance.getInteractiveReportPanel());
 			}
 		});
 	}

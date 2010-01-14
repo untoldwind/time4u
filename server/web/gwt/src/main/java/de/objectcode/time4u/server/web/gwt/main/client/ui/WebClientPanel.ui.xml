@@ -3,13 +3,22 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:tm="urn:import:de.objectcode.time4u.server.web.gwt.main.client.ui"
 	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
 
-	<g:DockLayoutPanel unit="EM">
-		<g:north size="2">
-			<g:MenuBar ui:field="mainMenu">
-			</g:MenuBar>
-		</g:north>
+	<g:SplitLayoutPanel ui:field="mainPanel">
+		<g:west size="300">
+			<g:SplitLayoutPanel>
+				<g:north size="200">
+					<tm:ProjectTree />
+				</g:north>
+				<g:center>
+					<tm:TaskList />
+				</g:center>
+				<g:south size="200">
+					<tm:CalendarView />
+				</g:south>
+			</g:SplitLayoutPanel>
+		</g:west>
 		<g:center>
-			<tu:SwitchableLayoutPanel ui:field="mainPanel"/>
+			<tm:WorkItemList />
 		</g:center>
-	</g:DockLayoutPanel>
+	</g:SplitLayoutPanel>
 </ui:UiBinder>
