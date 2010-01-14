@@ -17,7 +17,6 @@ import de.objectcode.time4u.server.web.gwt.login.client.LoginServiceAsync;
 import de.objectcode.time4u.server.web.gwt.login.client.UserAccountInfo;
 import de.objectcode.time4u.server.web.gwt.report.client.ReportModule;
 import de.objectcode.time4u.server.web.gwt.utils.client.Utils;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.IModuleCallback;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.SwitchableLayoutPanel;
 import de.objectcode.time4u.server.web.gwt.webclient.client.WebClientModule;
 
@@ -72,7 +71,8 @@ public class MainPage implements EntryPoint {
 			}
 		});
 		
-		WebClientModule.show(mainPanel);
+		AdminModule.showAccountAdminPanel(mainPanel);
+//		WebClientModule.showWebClientPanel(mainPanel);
 		
 		RootLayoutPanel.get().add(mainPage);
 	}

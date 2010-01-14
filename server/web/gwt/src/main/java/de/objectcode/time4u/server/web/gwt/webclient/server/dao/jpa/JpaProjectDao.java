@@ -15,6 +15,7 @@ import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
+import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
 import de.objectcode.time4u.server.web.gwt.webclient.client.service.Project;
 import de.objectcode.time4u.server.web.gwt.webclient.server.dao.IProjectDao;
 

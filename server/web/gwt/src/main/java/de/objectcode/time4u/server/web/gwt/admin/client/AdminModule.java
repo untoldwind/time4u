@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.MenuBar;
 import de.objectcode.time4u.server.web.gwt.admin.client.ui.AccountAdminPanel;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.IModuleCallback;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.SwitchableLayoutPanel;
+import de.objectcode.time4u.server.web.gwt.webclient.client.WebClientModule;
 
 public class AdminModule {
 	private static AdminModule instance = null;
@@ -42,14 +43,18 @@ public class AdminModule {
 		adminMenu.addItem("User accounts", new Command() {
 			
 			public void execute() {
-				createAsync(new IModuleCallback<AdminModule>() {
-					public void onSuccess(AdminModule instance) {
-						mainPanel.setChild(instance.getAccountAdminPanel());
-					}
-				});
+				showAccountAdminPanel(mainPanel);
 			}
 		});
 
 		return adminMenu;
+	}
+
+	public static void showAccountAdminPanel(final SwitchableLayoutPanel mainPanel) {
+		createAsync(new IModuleCallback<AdminModule>() {
+			public void onSuccess(AdminModule instance) {
+				mainPanel.setChild(instance.getAccountAdminPanel());
+			}
+		});
 	}
 }

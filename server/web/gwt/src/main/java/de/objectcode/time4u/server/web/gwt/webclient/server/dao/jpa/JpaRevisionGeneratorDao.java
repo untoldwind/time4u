@@ -12,6 +12,7 @@ import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
 import de.objectcode.time4u.server.entities.revision.RevisionEntityKey;
+import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
 import de.objectcode.time4u.server.web.gwt.webclient.server.dao.IRevisionGeneratorCreatorDao;
 
 @Repository("revisionGenerator")

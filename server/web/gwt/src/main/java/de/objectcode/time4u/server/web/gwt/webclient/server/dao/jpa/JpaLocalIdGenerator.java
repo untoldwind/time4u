@@ -19,6 +19,7 @@ import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.ClientEntity;
 import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
 import de.objectcode.time4u.server.entities.revision.LocalIdEntity;
+import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
 import de.objectcode.time4u.server.web.gwt.webclient.server.dao.ILocalIdDao;
 
 @Repository("localIdGenerator")

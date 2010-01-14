@@ -3,5 +3,6 @@
 <module>
 	<inherits name="com.google.gwt.user.User" />
 	<inherits name="de.objectcode.time4u.server.web.gwt.utils.Utils" />
+    <inherits name='org.gwt.advanced.Grid'/>
 	<source path="client"/>
 </module>

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.revision.LocalIdEntity;
+import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
 import de.objectcode.time4u.server.web.gwt.webclient.server.dao.ILocalIdDao;
 
 @Repository("localIdDao")

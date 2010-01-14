@@ -13,6 +13,8 @@
 		base-package="de.objectcode.time4u.server.web.gwt.webclient.server" />
 	<context:component-scan
 		base-package="de.objectcode.time4u.server.web.gwt.login.server" />
+	<context:component-scan
+		base-package="de.objectcode.time4u.server.web.gwt.admin.server" />
 
 	<security:global-method-security
 		secured-annotations="enabled" jsr250-annotations="enabled"/>

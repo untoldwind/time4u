@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
 import de.objectcode.time4u.server.entities.revision.RevisionEntityKey;
+import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
 import de.objectcode.time4u.server.web.gwt.webclient.server.dao.IRevisionGeneratorCreatorDao;
 
 @Repository("revisionGeneratorCreatorDao")

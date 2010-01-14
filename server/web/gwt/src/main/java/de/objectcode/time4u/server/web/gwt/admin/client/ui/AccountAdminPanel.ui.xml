@@ -1,11 +1,12 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:ac="urn:import:org.gwt.advanced.client.ui.widget"
 	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
 
 	<g:DockLayoutPanel>
 		<g:center>
-			<g:Label>Hurra</g:Label>
+			<ac:GridPanel ui:field="userAccounts"/>
 		</g:center>
 	</g:DockLayoutPanel>
 </ui:UiBinder>

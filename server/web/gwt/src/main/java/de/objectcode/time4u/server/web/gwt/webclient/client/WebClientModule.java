@@ -42,19 +42,14 @@ public class WebClientModule {
 		webClientMenu.addItem("Web client", new Command() {
 
 			public void execute() {
-				createAsync(new IModuleCallback<WebClientModule>() {
-					public void onSuccess(WebClientModule instance) {
-						mainPanel
-								.setChild(instance.getWebClientPanel());
-					}
-				});
+				showWebClientPanel(mainPanel);
 			}
 		});
 
 		return webClientMenu;
 	}
 	
-	public static void show(final SwitchableLayoutPanel mainPanel) {
+	public static void showWebClientPanel(final SwitchableLayoutPanel mainPanel) {
 		createAsync(new IModuleCallback<WebClientModule>() {
 			public void onSuccess(WebClientModule instance) {
 				mainPanel

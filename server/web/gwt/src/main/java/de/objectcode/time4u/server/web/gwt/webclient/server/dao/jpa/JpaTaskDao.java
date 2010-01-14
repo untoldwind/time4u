@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.objectcode.time4u.server.entities.TaskEntity;
+import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
 import de.objectcode.time4u.server.web.gwt.webclient.client.service.Task;
 import de.objectcode.time4u.server.web.gwt.webclient.server.dao.ITaskDao;
 
