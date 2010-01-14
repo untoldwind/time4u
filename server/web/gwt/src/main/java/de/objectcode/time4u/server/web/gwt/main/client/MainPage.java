@@ -52,30 +52,9 @@ public class MainPage implements EntryPoint {
 	void initialize(UserAccountInfo userAccountInfo) {
 		final Widget mainPage = uiBinder.createAndBindUi(MainPage.this);
 
-		MenuBar webClientMenu = new MenuBar(true);
-		mainMenu.addItem("Time4U", webClientMenu);
-		webClientMenu.addItem("Web client", new Command() {
-			public void execute() {
-				showWebClient();
-			}			
-		});
-		
-		MenuBar reportMenu = new MenuBar(true);
-		mainMenu.addItem("Report", reportMenu);
-		reportMenu.addItem("Interactive Report", new Command() {					
-			public void execute() {
-				showInteractiveReport();
-			}
-		});
-		
-
-		MenuBar adminMenu = new MenuBar(true);
-		mainMenu.addItem("Admin", adminMenu);
-		adminMenu.addItem("User accounts", new Command() {
-			public void execute() {
-				showAccountAdmin();
-			}			
-		});
+		mainMenu.addItem("Time4U", WebClientModule.createMenu(mainPanel));
+		mainMenu.addItem("Report", ReportModule.createMenu(mainPanel));
+		mainMenu.addItem("Admin", AdminModule.createMenu(mainPanel));
 		
 		mainMenu.addSeparator(new UserIdMenuItemSeparator(userAccountInfo.getUserId()));
 
@@ -93,41 +72,8 @@ public class MainPage implements EntryPoint {
 			}
 		});
 		
-		showWebClient();
+		WebClientModule.show(mainPanel);
 		
 		RootLayoutPanel.get().add(mainPage);
-	}
-
-	void showWebClient() {
-		WebClientModule.createAsync(new IModuleCallback<WebClientModule>() {
-			public void onSuccess(WebClientModule instance) {
-				mainPanel.setChild(instance.getWebClientPanel());
-			}
-
-			public void onUnavailable() {
-			}
-		});
-	}
-
-	void showAccountAdmin() {
-		AdminModule.createAsync(new IModuleCallback<AdminModule>() {
-			public void onSuccess(AdminModule instance) {
-				mainPanel.setChild(instance.getAccountAdminPanel());
-			}
-
-			public void onUnavailable() {
-			}
-		});
-	}
-	
-	void showInteractiveReport() {
-		ReportModule.createAsync(new IModuleCallback<ReportModule>() {			
-			public void onUnavailable() {
-			}
-			
-			public void onSuccess(ReportModule instance) {
-				mainPanel.setChild(instance.getInteractiveReportPanel());
-			}
-		});
 	}
 }
