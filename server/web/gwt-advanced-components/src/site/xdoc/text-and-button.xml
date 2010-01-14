@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Text &amp; Button Widgets</title>
+    </properties>
+    <body>
+        <section name="Description and Features List">
+            <div class="imageLeft">
+              <p>
+                  <img src="images/date-picker.gif" border="0" alt="Poup calendar simplifies date and time entering"/>
+              </p>
+              <p>
+                  <i>Poup calendar simplifies date and time entering</i>
+              </p>
+            </div>
+            <div class="textRight">
+                <p>
+                    Text and Button Components is a class of GWT widgets which has a text box and a button joined in one component.
+                    The oldest widget of this class is Date Picker. It allows entering date and time using poup calendar panel.
+                    Major features of the Date Picker are:
+
+                    <ul>
+                        <li>Internationalization support</li>
+                        <li>Ability to enter date and time or date only</li>
+                        <li>Popup calendar</li>
+                        <li>Customizable date formatting</li>
+                    </ul>
+                </p>
+            </div>
+            <div class="imageRight">
+                <p>
+                    <img src="images/combo-box.gif" border="0" alt="Combo Box allows entering your own custom value instead of choosing it in the drop down list"/>
+                </p>
+                <p>
+                    <i>Combo Box allows entering your own custom value instead of choosing it in the drop down list</i>
+                </p>
+            </div>
+            <div class="textleft">
+                <p>
+                    Another one widget is ComboBox. You can enter a new value directly in the text field or choosing it
+                    from the drop down list. Key features of this widget listed below:
+
+                    <ul>
+                        <li>Ability to switch on / off custom text entering</li>
+                        <li>Complex drop down list items support, for example, textual objects with icons</li>
+                        <li>Transparent GWT event model support</li>
+                        <li>Data model support (MVP pattern implementation)</li>
+                        <li>Moving selection cursor with keyboard</li>
+                        <li>Data model events</li>
+                        <li>Lazy rendering <span class="new">new</span></li>
+                    </ul>
+                </p>
+            </div>
+            <div class="imageLeft">
+              <p>
+                  <img src="images/suggestion-box.gif" border="0" alt="Displaying complex drop down list items is not a big deal for the Suggestion Box"/>
+              </p>
+              <p>
+                  <i>Displaying complex drop down list items is not a big deal for the Suggestion Box</i>
+              </p>
+            </div>
+            <div class="textRight">
+                <p>
+                    And the last widget is the Suggestion Box. It's an extension of the Combo Box and supports the same
+                    features but has several additional ones:
+
+                    <ul>
+                        <li>Ability to load drop down list items lazily</li>
+                        <li>Customizable expression (text) change handler</li>
+                        <li>Lazy rendering <span class="new">new</span></li>
+                    </ul>
+                </p>
+            </div>
+        </section>
+        <div class="googleAds"><google-ads-horizontal-banner/></div>
+        <section name="Samples">
+            <p>
+                The sample below shows how to use the Date Picker
+            </p>
+<source>
+<pre style="line-height: 110%;font-family:monospace;background-color:#ffffff"><span style="background-color:#ffffff;">DatePicker picker = </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> DatePicker(</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> Date());
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">// swicth off time entering
+</span><span style="background-color:#ffffff;">picker.setTimeVisible(</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">false</span><span style="background-color:#ffffff;">);
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">// display the widget
+</span><span style="background-color:#ffffff;">picker.display();
+</span></pre>
+</source>
+            <p>
+                The next sample demonstrates how to create a new Suggestion Box and make it fill the model on change.
+            </p>
+<source>
+<pre style="line-height: 110%;font-family:monospace;background-color:#ffffff"><span style="color:#808080;background-color:#ffffff;font-style:italic;">//create the model and callback handler
+</span><span style="background-color:#ffffff;">SuggestionBoxDataModel model = </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> SuggestionBoxDataModel(</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> ListCallbackHandler(){
+</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">public</span><span style="background-color:#ffffff;"> </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">void</span><span style="background-color:#ffffff;"> fill(ListDataModel model) {
+    </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">if</span><span style="background-color:#ffffff;"> (</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"John"</span><span style="background-color:#ffffff;">.equals(((SuggestionBoxDataModel)model).getExpression())) {
+        </span><span style="color:#808080;background-color:#ffffff;font-style:italic;">//remove old values
+        </span><span style="background-color:#ffffff;">model.clear();
+
+        </span><span style="color:#808080;background-color:#ffffff;font-style:italic;">//add Johns
+        </span><span style="background-color:#ffffff;">model.add(</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"john1"</span><span style="background-color:#ffffff;">, </span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"John Doe"</span><span style="background-color:#ffffff;">);
+            model.add(</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"john2"</span><span style="background-color:#ffffff;">, </span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"John Parkinson"</span><span style="background-color:#ffffff;">);
+            model.add(</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"john3"</span><span style="background-color:#ffffff;">, </span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"John Todd"</span><span style="background-color:#ffffff;">);
+        } </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">else</span><span style="background-color:#ffffff;"> {
+            </span><span style="color:#808080;background-color:#ffffff;font-style:italic;">//remove old values
+            </span><span style="background-color:#ffffff;">model.clear();
+
+            </span><span style="color:#808080;background-color:#ffffff;font-style:italic;">//add default item
+            </span><span style="background-color:#ffffff;">model.add(</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">""</span><span style="background-color:#ffffff;">, </span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Nobody"</span><span style="background-color:#ffffff;">);
+        }
+    }
+});
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">//initilize the suggestion box
+</span><span style="background-color:#ffffff;">SuggestionBox box = </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> SuggestionBox();
+box.setModel(model);
+box.setMaxLength(</span><span style="color:#0000ff;background-color:#ffffff;">3</span><span style="background-color:#ffffff;">);
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">//display the box
+</span><span style="background-color:#ffffff;">box.display();
+</span></pre>
+</source>
+          <p>
+              The source code for the Combo Box will be similra but note that you can't create callback handlers and
+              will have to fill the model one time before the widget is initialized only.
+          </p>
+        </section>
+        <div class="googleAds"><google-ads-horizontal-banner/></div>
+    </body>
+</document>

@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import de.objectcode.time4u.server.web.gwt.admin.client.AdminModule;
 import de.objectcode.time4u.server.web.gwt.login.client.LoginService;
 import de.objectcode.time4u.server.web.gwt.login.client.LoginServiceAsync;
 import de.objectcode.time4u.server.web.gwt.login.client.UserAccountInfo;
@@ -70,7 +71,12 @@ public class MainPage implements EntryPoint {
 
 		MenuBar adminMenu = new MenuBar(true);
 		mainMenu.addItem("Admin", adminMenu);
-
+		adminMenu.addItem("User accounts", new Command() {
+			public void execute() {
+				showAccountAdmin();
+			}			
+		});
+		
 		mainMenu.addSeparator(new UserIdMenuItemSeparator(userAccountInfo.getUserId()));
 
 		mainMenu.addItem("Logout", new Command() {
@@ -96,6 +102,17 @@ public class MainPage implements EntryPoint {
 		WebClientModule.createAsync(new IModuleCallback<WebClientModule>() {
 			public void onSuccess(WebClientModule instance) {
 				mainPanel.setChild(instance.getWebClientPanel());
+			}
+
+			public void onUnavailable() {
+			}
+		});
+	}
+
+	void showAccountAdmin() {
+		AdminModule.createAsync(new IModuleCallback<AdminModule>() {
+			public void onSuccess(AdminModule instance) {
+				mainPanel.setChild(instance.getAccountAdminPanel());
 			}
 
 			public void onUnavailable() {

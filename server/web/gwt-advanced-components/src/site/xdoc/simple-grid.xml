@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Simple Grid</title>
+    </properties>
+    <body>
+        <section name="Description and Features List">
+            <div class="imageRight">
+              <p>
+<pre style="line-height: 110%;font-family:monospace;background-color:#ffffff"><span style="background-color:#efefef;">&lt;</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">table</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 10px">&lt;</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">tbody</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 20px">&lt;</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">tr</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 30px">&lt;</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">td</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 40px">&lt;</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">table</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 50px">&lt;</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">thead</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 60px">&lt;</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">tr</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 70px">&lt;</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">th</span><span style="background-color:#efefef;">&gt;</span><span style="background-color:#ffffff;">Column 1</span><span style="background-color:#efefef;">&lt;/</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">th</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 70px">&lt;</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">th</span><span style="background-color:#efefef;">&gt;</span><span style="background-color:#ffffff;">Column 2</span><span style="background-color:#efefef;">&lt;/</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">th</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 70px">&lt;</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">th</span><span style="background-color:#efefef;">&gt;</span><span style="background-color:#ffffff;">Column 3</span><span style="background-color:#efefef;">&lt;/</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">th</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 60px">&lt;/</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">tr</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 50px">&lt;/</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">thead</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 40px">&lt;/</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">table</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 30px">&lt;/</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">td</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 20px">&lt;/</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">tr</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 20px">&lt;</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">tr</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 30px">&lt;</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">td</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 40px">&lt;</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">table</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 50px">&lt;</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">tbody</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 60px">&lt;</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">tr</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 70px">&lt;</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">td</span><span style="background-color:#efefef;">&gt;</span><span style="background-color:#ffffff;">Value 1</span><span style="background-color:#efefef;">&lt;/</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">td</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 70px">&lt;</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">td</span><span style="background-color:#efefef;">&gt;</span><span style="background-color:#ffffff;">Value 2</span><span style="background-color:#efefef;">&lt;/</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">td</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 70px">&lt;</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">td</span><span style="background-color:#efefef;">&gt;</span><span style="background-color:#ffffff;">Value 3</span><span style="background-color:#efefef;">&lt;/</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">td</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 60px">&lt;/</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">tr</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 50px">&lt;/</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">tbody</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 40px">&lt;/</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">table</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 30px">&lt;/</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">td</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 20px">&lt;/</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">tr</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef; margin-left: 10px">&lt;/</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">tbody</span><span style="background-color:#efefef;">&gt;
+</span><span style="background-color:#efefef;">&lt;/</span><span style="color:#000080;background-color:#efefef;font-weight:bold;">table</span><span style="background-color:#efefef;">&gt;</span></pre>
+              </p>
+              <p>
+                  <i>The widget generates more complicated HTML than it seems to be at the first glance</i>
+              </p>
+            </div>
+            <div class="textLeft" style="height: 500px;">
+                <p>
+                    Simple Grid extends the <a href="advanced-flex-table.html">Advanced FlextTable</a> but doesn't add
+                    new features. The reason why this component was made is just to improve table usability and avoid
+                    side effects appearing in different browsers during scrolling.
+
+                    Before 1.4.5 all the grids of the Advnaced GWT Components library were inherited from the Advanced
+                    Flex Table and it was a source of numerous problems with look and feel. Simple Grid solves most of
+                    them and makes work with the framework more comfortable.
+                </p>
+                <p>
+                    Simple Grid not only extends the FlexTable but it also encapsulates instances of this class. This
+                    approach allows table body scrolling in browser independent way. And as a result all the grids look
+                    similar in different clients.                
+                </p>
+                <p>
+                    Additionally Simple Grid supports dynamic columns resing. It handles column width changes and
+                    automatically resizes dependent columns. Earlier it was responsibility of the
+                    <a href="editable-grid.html">Editable Grid</a> but now you can develop your own extensions for
+                    simple cases without using this rather complicated and heavy widget.
+
+                    Note that columns resizing with a mouse is still implemented in the <i>HeaderCellImpl</i> class.
+                    And you need this feature you'd better use <a href="editable-grid.html">Editable Grid</a> anyway.
+
+                    Otherwise you can resize columns programmatically like it's shown in the next sample.
+                </p>
+                <p>
+                    The sample demonstrates how to enable vertical scrolling and set column sizes.
+                </p>
+<source>
+<pre style="line-height: 110%;font-family:monospace;background-color:#ffffff"><span style="background-color:#ffffff;">SimpleGrid grid = </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> SimpleGrid();
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">// create headers and put them in the thead tag
+</span><span style="background-color:#ffffff;">grid.setHeaderWidget(</span><span style="color:#0000ff;background-color:#ffffff;">0</span><span style="background-color:#ffffff;">, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> Label(</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"First Name"</span><span style="background-color:#ffffff;">));
+grid.setHeaderWidget(</span><span style="color:#0000ff;background-color:#ffffff;">1</span><span style="background-color:#ffffff;">, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> Label(</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Surname"</span><span style="background-color:#ffffff;">));
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">// enable verticall scrolling
+</span><span style="background-color:#ffffff;">grid.enableVerticalScrolling(</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">true</span><span style="background-color:#ffffff;">);
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">//set column widths in pixels
+</span><span style="background-color:#ffffff;">grid.setColumnWidth(</span><span style="color:#0000ff;background-color:#ffffff;">0</span><span style="background-color:#ffffff;">, </span><span style="color:#0000ff;background-color:#ffffff;">200</span><span style="background-color:#ffffff;">);
+grid.setColumnWidth(</span><span style="color:#0000ff;background-color:#ffffff;">0</span><span style="background-color:#ffffff;">, </span><span style="color:#0000ff;background-color:#ffffff;">100</span><span style="background-color:#ffffff;">);</span></pre>
+</source>
+                <p>
+                    That's all you need and don't worry about browsers!
+                </p>
+            </div>
+        </section>
+        <div class="googleAds"><google-ads-horizontal-banner/></div>
+    </body>
+</document>

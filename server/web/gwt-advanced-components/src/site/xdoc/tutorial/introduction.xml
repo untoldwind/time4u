@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>User Manual - Introduction</title>
+    </properties>
+    <body>
+        <div class="navigator"><a href="index.html">Previous</a> | <a href="index.html">Table of contents</a> | <a href="architecture.html">Next</a></div>
+        <section name="Introduction">
+            <p>
+                GWT is one of most popular currently existing AJAX tools. In most cases it's an ideal solution
+                for those developers who is not familiar with JavaScript and / or don't want to use it. There
+                may be diffrent reasons why people dislike JavaScript. Here is a list of possible problems which
+                may occur when you have a deal with this language:
+                <ul>
+                    <li>poor IDEs and debug tools</li>
+                    <li>all the erros become obvious only in runtime</li>
+                    <li>JavaScript is browser dependent tool (different browsers have different JavaScript implementations)</li>
+                    <li>JavaScript is not OOP language</li>
+                    <li>it's impossible to cover JavaScript code with unit tests</li>
+                    <li>etc</li>
+                </ul>
+            </p>
+            <p>
+                GWT sucessfully solves these disadvantages and does the "lion's share" of work.
+            </p>
+            <p>
+                But unfortunately the standard (or core) GWT library provides just basic functionlity and not very
+                good range of visual components (widgets). Sure GWT team kept in mind that community will have to
+                develop additional widgets to fill the lacks in rich UI functionality.
+            </p>
+            <p>
+                One of such extentions is the Advanced GWT Components library - the set of widgets providing additional
+                features not covered by the standard GWT package.
+                The core and most important widgets are powerful grids but the library also contains other useful and
+                interesting tools.
+            </p>
+            <p>
+                Visit also:
+
+                <ul>
+                    <li><a href="../quickstart.html">Quick Start Guide</a> - just to know how to use it</li>
+                    <li><a href="../faq.html">Project FAQ</a> - find answers and numerous code samples</li>
+                </ul>
+            </p>
+        </section>
+<div class="googleAds"><google-ads-horizontal-banner/></div>
+        <div class="navigator"><a href="index.html">Previous</a> | <a href="index.html">Table of contents</a> | <a href="architecture.html">Next</a></div>
+    </body>
+</document>

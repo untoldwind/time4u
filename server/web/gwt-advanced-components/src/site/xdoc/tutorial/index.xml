@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Tutorial - Table of Contents</title>
+    </properties>
+    <body>
+        <section name="Table of Contents">
+            1. <a href="introduction.html">Introduction</a><br/>
+            2. <a href="architecture.html">Architecture</a><br/>                
+            3. <a href="core.html">Core</a><br/>
+            3.1 <a href="core-modeling-data.html">Modeling Data</a><br/>                
+            3.2 <a href="core-using-widgets.html">Using Widgets</a><br/>                
+            3.3 <a href="core-events-handling.html">Events Handling</a><br/>                
+            3.4 <a href="core-using-themes.html">Using Themes</a><br/>                
+            3.5 <a href="core-widgets-customization.html">Widgets Customization</a><br/>                
+        </section>
+        <div class="googleAds"><google-ads-horizontal-banner/></div>
+    </body>
+</document>

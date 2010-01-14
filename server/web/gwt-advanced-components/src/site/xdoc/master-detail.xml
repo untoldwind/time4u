@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Master-Detail Panel</title>
+    </properties>
+    <body>
+        <section name="Description and Features List">
+            <div class="imageRight">
+              <p>
+                  <img src="images/master-detail.gif" border="0" alt="Master-Detail Panel automatically handles events of the master grid"/>
+              </p>
+              <p>
+                  <i>Master-Detail Panel automatically handles events of the master grid</i>
+              </p>
+            </div>
+            <div class="textLeft" style="height: 500px;">
+                <p>
+                    Master-Detail Panel is a useful widget for those cases when you don't want to use the
+                    <a href="hierarchical-grid.html">Hierarchical Grid</a> due to look &amp; feel reasons or need
+                    more simple structure and model.
+                    Choosing any row in the first grid (master) your users will be able to see dependent rows in the
+                    second grid (detail), i.e. there could be several detail rows for each master row.
+                </p>
+                <p>
+                    Master-Detail Panel can associate unlimited count of detail grids with one master. Each detail
+                    grid can be a master for other nested grids. The widget handles all master events automatically
+                    and you don't have to worry about it.
+                </p>
+                <p>
+                    A sample on how to use this component can be found below.
+                </p>
+<source>
+<pre style="line-height: 100%;font-family:monospace;background-color:#ffffff"><span style="background-color:#ffffff;">MasterDetailPanel panel = </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> MasterDetailPanel();
+
+GridPanel masterPanel = </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> GridPanel();
+panel.addGridPanel(masterPanel, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">null</span><span style="background-color:#ffffff;">, </span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Departments"</span><span style="background-color:#ffffff;">);
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">// initialize the master grid here
+</span><span style="background-color:#ffffff;">
+masterPanel.display();
+
+GridPanel detailPanel = </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> GridPanel();
+panel.addGridPanel(detailPanel, masterPanel, </span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Employees"</span><span style="background-color:#ffffff;">);
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">// initialize the detail grid here
+</span><span style="background-color:#ffffff;">
+detailPanel.display();
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">// apply styles
+</span><span style="background-color:#ffffff;">        panel.display();</span></pre>
+</source>
+                <p>
+                    Note that some steps were skipped to make the sample much clearer.
+                </p>
+            </div>
+        </section>
+        <div class="googleAds"><google-ads-horizontal-banner/></div>
+    </body>
+</document>

@@ -10,6 +10,7 @@
 	<inherits name="de.objectcode.time4u.server.web.gwt.login.Login" />
 	<inherits name="de.objectcode.time4u.server.web.gwt.webclient.WebClient" />
 	<inherits name="de.objectcode.time4u.server.web.gwt.report.Report" />
+	<inherits name="de.objectcode.time4u.server.web.gwt.admin.Admin" />
 
 	<entry-point class="de.objectcode.time4u.server.web.gwt.main.client.MainPage" />
 

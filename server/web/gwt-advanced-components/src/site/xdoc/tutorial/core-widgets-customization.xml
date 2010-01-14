@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Tutorial - Widgets Customization</title>
+    </properties>
+    <body>
+        <div class="navigator"><a href="core-using-themes.html">Previous</a> | <a href="index.html">Table of contents</a></div>
+        <section name="Widgets Customization">
+            <p>
+                <a href="core-using-themes.html">Themes</a> is one of widgets customization options. However you can
+                change look &amp; feel of some components using <i>decorators</i>.
+            </p>
+            <p>
+                Decorator is a class that is executed <i>after</i> a widget was displayed. Currently only grids support
+                decoration feature but it is in plans to extend this approach to other components.
+            </p>
+            <p>
+                If you want to decorate a grid you must implement the <i>GridDecorator</i> interface. Here is one simple
+                sample of such implementation.
+            </p>
+            <source>
+editableGrid.addGridDecorator( new GridDecorator() {
+    public void decorate (EditableGrid grid) {
+        grid.setColumnWidth(0, 500);
+    }
+})
+            </source>
+            <p>
+                Decorators are useful in cases when themes don't help because of CSS restrictions. Note that grid
+                decorators will be invoked in the same order they were added.
+            </p>
+            <p>
+                If you want to change the view totally, you can develop a custom <i>renderer</i>. Renderer is a class
+                that dynamically builds displayable content. Any renderer must implement the <i>GridRenderer</i>
+                interface. Methods of the interface are invoked by a grid widget every time it is going to render
+                headers, table body rows or cells. Currently a grid calls only two methods: <i>drawHeaders()</i> and
+                <i>drawContent()</i>. Other methods might be used by a renderer itself.
+            </p>
+<div class="googleAds"><google-ads-horizontal-banner/></div>
+            <p>
+                The most effective way to develop a renderer is to extend it from one of default implementations:
+            </p>
+            <source>
+editableGrid.setGridRenderer(new DefaultGridRenderer() {
+    public void drawCell(Object value, int row, int column, boolean active) {
+        getGrid().setText(row, column, String.valueOf(value); // always diaplay as a text
+    }
+})
+            </source>
+            <p>
+                The sample above creates a new renderer implementation that always display data model values as
+                texttual string.
+            </p>
+            <p>
+                And finally if decorators and renderers are not enough flexible you can extend a widget class. Note that
+                widgets like the <i>DatePicker</i>, <i>ComboBox</i>, <i>SuggestionBox</i> and <i>SimpleGrid</i> don't
+                support decorators and renderers, so extention might be a good solution.
+            </p>
+            <p>
+                Working on Advanced GWT Components the team kept in mind that users may want to add new features
+                and unexpected functionality to existent widgets. It's a reason why most of methods are <i>public</i>
+                or <i>protected</i>.
+            </p>
+            <p>
+                If you override a protected method note that it may require to override many other methods as well.
+                Investigate an original implementation to know what exactly might be affected. On the other hand you
+                can override public methods without restrictions. The next listing shows how to extend the
+                <i>DatePicker</i> and redefine a default image for the button.
+            </p>
+            <source>
+new DatePicker(new Date()) {
+    protected String getDefaultImageName() {
+        return "mySuperImage.gif";
+    }
+}.diaply()
+            </source>
+            <p>
+                If you run this code you can see that the default button image will be replaces with yours.
+            </p>
+        </section>
+<div class="googleAds"><google-ads-horizontal-banner/></div>
+        <div class="navigator"><a href="core-using-themes.html">Previous</a> | <a href="index.html">Table of contents</a></div>
+    </body>
+</document>

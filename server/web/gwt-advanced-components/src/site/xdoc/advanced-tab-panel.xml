@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Advanced TabPanel</title>
+    </properties>
+    <body>
+        <section name="Description and Features List">
+            <div class="imageRight">
+              <p>
+                  <img src="images/advanced-tab-panel.gif" border="0" alt="Advanced Tab Panel can have left, right, top and bottom side tabs"/>
+              </p>
+              <p>
+                  <i>Advanced Tab Panel can have left, right, top and bottom side tabs</i>
+              </p>
+            </div>
+            <div class="textLeft">
+                <p>
+                    Advanced TabPanel is a widget that renders a GWT panel with tabs band displaying position on the top, bottom,
+                    left or right side of this panel. The main features of the component are:
+
+                    <ul>
+                        <li>tabs position cutomization</li>
+                        <li>custom tabs band rendering</li>
+                        <li>custom contant and tab <a href="borders.html">borders</a> rendering</li>
+                    </ul>
+                </p>
+                <p>
+                    In opposite to other advanced components it doesn't requery <i>display()</i> method
+                    invokation and redraws tabs band every time a new tab added or selected. 
+                </p>
+                <p>
+                    You can find sample of Advanced TabPanel usage below.
+                </p>
+            </div>
+        </section>
+        <div class="googleAds"><google-ads-horizontal-banner/></div>
+        <section name="Sample">
+            <p>
+                The next sample illustrates how to make nested tab panels.
+            </p>
+<source>
+<pre style="color:rgb(0,0,0);font-weight:normal;font-style:normal;padding:5px;font-family:monospace;">
+AdvancedTabPanel panel1 = <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">new</span> AdvancedTabPanel(TabPosition.<span style="color:rgb(102,14,122);font-weight:bold;font-style:italic;">LEFT</span>);
+AdvancedTabPanel panel2 = <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">new</span> AdvancedTabPanel(TabPosition.<span style="color:rgb(102,14,122);font-weight:bold;font-style:italic;">BOTTOM</span>);
+
+panel1.addTab(<span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">new</span> Label(<span style="color:rgb(0,128,0);font-weight:bold;font-style:normal;">&quot;Nested Tabs&quot;</span>), panel2);
+</pre>
+</source>
+            <p>
+                Note that the <i>display()</i> method is not invoked.
+            </p>
+        </section>
+        <div class="googleAds"><google-ads-horizontal-banner/></div>
+    </body>
+</document>

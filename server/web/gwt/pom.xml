@@ -12,6 +12,12 @@
 	<packaging>war</packaging>
 	<dependencies>
 		<dependency>
+			<groupId>org.gwt.advanced</groupId>
+			<artifactId>advanced-components</artifactId>
+			<version>1.5.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>de.objectcode.time4u.server</groupId>
 			<artifactId>time4u-server-entities</artifactId>
 			<version>${pom.version}</version>

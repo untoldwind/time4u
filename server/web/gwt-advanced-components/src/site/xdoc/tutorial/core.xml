@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Tutorial - Core</title>
+    </properties>
+    <body>
+        <div class="navigator"><a href="architecture.html">Previous</a> | <a href="index.html">Table of contents</a> | <a href="core-modeling-data.html">Next</a></div>
+        <section name="Core">
+            <p>
+                This topic covers the features and functionality that are typical for all library components.
+                As any other tool Advanced GWT Components has a basic API that can be extended for custom purposes.
+                To know how this APi works you will have to read topics listed below. If you are familiar with
+                the library and / or experienced in widgets programming you can skip them.
+
+                <ul>
+                    <li><a href="core-modeling-data.html">Modeling Data</a></li>
+                    <li><a href="core-using-widgets.html">Using Widgets</a></li>
+                    <li><a href="core-events-handling.html">Events Handling</a></li>
+                    <li><a href="core-using-themes.html">Using Themes</a></li>
+                    <li><a href="core-widgets-customization.html">Widgets Customization</a></li>
+                </ul>
+            </p>
+        </section>
+        <div class="googleAds"><google-ads-horizontal-banner/></div>
+        <div class="navigator"><a href="architecture.html">Previous</a> | <a href="index.html">Table of contents</a> | <a href="core-modeling-data.html">Next</a></div>
+    </body>
+</document>

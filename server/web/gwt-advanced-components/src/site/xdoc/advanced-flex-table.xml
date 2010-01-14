@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Advanced FlexTable</title>
+    </properties>
+    <body>
+        <section name="Description and Features List">
+            <div class="imageRight">
+              <p>
+                  <img src="images/advanced-flex-table.gif" border="0" alt="Advanced Flextable Widget contains &lt;thead&gt; and &lt;th&gt; tags"/>
+              </p>
+              <p>
+                  <i>Advanced Flextable Widget contains &lt;thead&gt; and &lt;th&gt; tags</i>
+              </p>
+            </div>
+            <div class="textLeft">
+                <p>
+                    Advanced FlexTable is a widget that extends the standard GWT FlexTable. This extension has two
+                    major features:
+
+                    <ul>
+                        <li>&lt;thead&gt; and &lt;th&gt; tags support</li>
+                        <li>vertical scrolling</li>
+                    </ul>
+                </p>
+                <p>
+                    Other functionality is similar to super class.
+                    You can use this widget when you need the features listed above, but note that this component
+                    is too simple, .i.e it doesn't allow editing cell values, sort columns, etc.
+                </p>
+                <p>
+                    Since version 1.4.5 it's strongly recommeneded to use the <a href="simple-grid.html">Simple Grid</a> insted
+                    of this widget because of usability and browser specific look and feel issues. On the other hand
+                    the Advanced FlexTable hasn't been marked as deprecated because it still may be used for simple
+                    tables in those applications where scrolling and dynamic column resing are not critical.  
+                </p>
+                <p>
+                    You can find sample of Advanced FlexTable usage below.
+                </p>
+            </div>
+        </section>
+        <div class="googleAds"><google-ads-horizontal-banner/></div>
+        <section name="Sample">
+            <p>
+                The next sample illustrates how to enable vertical scrolling.
+            </p>
+<source>
+<pre style="line-height: 100%;font-family:monospace;background-color:#ffffff"><span style="background-color:#ffffff;">AdvancedFlexTable table = </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> AdvancedFlexTable();
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">// create headers and put them in the thead tag
+</span><span style="background-color:#ffffff;">table.setHeaderWidget(</span><span style="color:#0000ff;background-color:#ffffff;">0</span><span style="background-color:#ffffff;">, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> Label(</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"First Name"</span><span style="background-color:#ffffff;">));
+table.setHeaderWidget(</span><span style="color:#0000ff;background-color:#ffffff;">1</span><span style="background-color:#ffffff;">, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> Label(</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Surname"</span><span style="background-color:#ffffff;">));
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">// enable verticall scrolling
+</span><span style="background-color:#ffffff;">table.enableVerticalScrolling(</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">true</span><span style="background-color:#ffffff;">);</span></pre>
+</source>
+            <p>
+                Please note that this sample may not work in your browser and / or can produce unexpected side effects 
+                like floating headers (IE) or broken CSS (FireFox).
+            </p>
+        </section>
+        <div class="googleAds"><google-ads-horizontal-banner/></div>
+    </body>
+</document>

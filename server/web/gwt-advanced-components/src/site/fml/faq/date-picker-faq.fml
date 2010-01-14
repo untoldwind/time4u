@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs title="FAQ - Date Picker Questions">
+    <part id="Date Picker Questions">
+        <faq id="how_to_put_date_picker_in_grid_cell">
+            <question>How to put the date picker in a grid cell?</question>
+            <answer>
+                <p>
+                    Just use <i>DateCell</i> class for grid initialization.
+                    See sample in the question <a href="grid-faq.html#what_is_editable_grid">What is the Editable Grid?</a>
+                </p>
+            </answer>
+        </faq>
+        <faq id="how_localize_week_days">
+            <question>How to localize week days?</question>
+            <answer>
+                <p>
+                    The date picker uses the standard GWT i18n mechanism. See referwnce
+                    <a href="http://code.google.com/docreader/#p=google-web-toolkit-doc-1-5&amp;s=google-web-toolkit-doc-1-5&amp;t=DevGuideInternationalization">GWT documentation</a>
+                    for details. Everything you need is just to create a new properties file named
+                    <i>org/gwt/advanced/client/ui/resources/CalendarConstants_XX.properties</i>, where XX means 
+                    ISO encoding name.
+                </p>
+            </answer>
+        </faq>
+        <faq id="how_to_change_start_day">
+            <question>How to change a start day of week?</question>
+            <answer>
+                <p>
+                    Create properties file as it has been explained in the <a href="#how_localize_week_days">previous answer</a>.
+                    Find the <i>firstDayOfWeek</i> property and change the value. <i>0</i> means Sunday,
+                    <i>1</i> - Monday, etc.
+                </p>
+            </answer>
+        </faq>
+        <faq id="how_to_switch_on_time_entering">
+            <question>How to switch on / off time entering?</question>
+            <answer>
+                <p>
+                    The next sample shows how it can be done.
+<pre style="line-height: 110%;font-family:monospace;background-color:#ffffff"><span style="background-color:#ffffff;">DatePicker picker =</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;"> new</span><span style="background-color:#ffffff;"> DatePicker(</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> Date());
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">// swicth off time entering
+</span><span style="background-color:#ffffff;">picker.setTimeVisible(</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">false</span><span style="background-color:#ffffff;">);
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">// display the widget
+</span><span style="background-color:#ffffff;">picker.display();</span></pre>
+                </p>
+                <div class="googleAds"><google-ads-horizontal-banner/></div>
+            </answer>
+        </faq>
+    </part>
+</faqs>

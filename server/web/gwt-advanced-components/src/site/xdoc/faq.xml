@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>FAQ</title>
+    </properties>
+    <body>
+        <section name="Frequently Asked Questions">
+            <p>
+                Please find your question below. If you can't find it ask for help in our
+                <a href="http://advancedgwt.freeforums.org/help-support-f1.html">community forum</a>.
+            </p>
+            <div class="googleAds"><google-ads-horizontal-banner/></div>
+            <section name="Common Questions">
+                <p>
+                    <ul>
+                        <li><a href="faq/common-faq.html#what_is_advanced_gwt_components">What is the Advanced GWT Components library?</a></li>
+                        <li><a href="faq/common-faq.html#is_library_free">Is the library free?</a></li>
+                        <li><a href="faq/common-faq.html#how_does_it_work">How does it work?</a></li>
+                        <li><a href="faq/common-faq.html#what_is_data_model">What is the Data Model?</a></li>
+                        <li><a href="faq/common-faq.html#what_is_advanced_widget">What is the Advanced Widget?</a></li>
+                        <li><a href="faq/common-faq.html#where_can_i_find_library_api">Where can I find library API documents?</a></li>
+                        <li><a href="faq/common-faq.html#what_is_mvp">What is MVP? Why do I need it?</a></li>
+                    </ul>
+                </p>
+            </section>
+            <section name="Data Model Questions">
+                <p>
+                    <ul>
+                        <li><a href="faq/data-model-faq.html#what_kinds_data_model">What kinds of Data Model does the library provide?</a></li>
+                        <li><a href="faq/data-model-faq.html#what_is_simple_data_model">What is the Simple Data Model?</a></li>
+                        <li><a href="faq/data-model-faq.html#what_is_editable_data_model">What is the Editable Data Model?</a></li>
+                        <li><a href="faq/data-model-faq.html#what_is_hierarchical_data_model">What is the Hierarchical Data Model?</a></li>
+                        <li><a href="faq/data-model-faq.html#what_is_tree_data_model">What is the Tree Data Model?</a></li>
+                        <li><a href="faq/data-model-faq.html#what_is_lazy_data_model">What is the Lazy Data Model?</a></li>
+                        <li><a href="faq/data-model-faq.html#how_does_data_synchronization_work">How does data synchronization work?</a></li>
+                        <li><a href="faq/data-model-faq.html#how_develop_custom_callback_handler">How to develop a custom callback handler?</a></li>
+                        <li><a href="faq/data-model-faq.html#what_is_locking">What is locking and why is locking mandatory if I use server side synchronization?</a></li>
+                        <li><a href="faq/data-model-faq.html#what_are_events">What are data model events?</a></li>
+                    </ul>
+                </p>
+            </section>
+            <section name="Grid Questions">
+                <p>
+                    <ul>
+                        <li><a href="faq/grid-faq.html#what_is_advanced_flex_table">What is the Advanced Flex Table?</a></li>
+                        <li><a href="faq/grid-faq.html#what_is_editable_grid">What is the Editable Grid?</a></li>
+                        <li><a href="faq/grid-faq.html#what_is_hierarchical_grid">What is the Hierarchical Grid?</a></li>
+                        <li><a href="faq/grid-faq.html#what_is_tree_grid">What is the Tree Grid?</a></li>
+                        <li><a href="faq/grid-faq.html#what_is_grid_panel">What is the Grid Panel, Toolbar and Pager?</a></li>
+                        <li><a href="faq/grid-faq.html#what_is_master_detal_panel">What is the Master-Detail Panel?</a></li>
+                        <li><a href="faq/grid-faq.html#what_is_locking_panel">What is the Locking Panel?</a></li>
+                        <li><a href="faq/grid-faq.html#how_to_make_grid_load_data_from_server">How to make a grid load data from the server side?</a></li>
+                        <li><a href="faq/grid-faq.html#how_to_enable_client_paging_sorting">How to enable client side paging and sorting?</a></li>
+                        <li><a href="faq/grid-faq.html#how_to_develop_custom_cell">How to develop a custom cell?</a></li>
+                        <li><a href="faq/grid-faq.html#what_is_grid_renderer">What is a grid renderer?</a></li>
+                        <li><a href="faq/grid-faq.html#how_to_implement_server_rendering">How to implement server side rendering?</a></li>
+                        <li><a href="faq/grid-faq.html#client_vs_server_rendering">Client side vs server side rendering. What is preferable?</a></li>
+                        <li><a href="faq/grid-faq.html#how_to_validate_entered_cell_value">How to validate an entred cell value?</a></li>
+                        <li><a href="faq/grid-faq.html#my_grid_doesnt_refresh_content">My grid doesn't refresh content on page change / sorting / saving. What can I do?</a></li>
+                        <li><a href="faq/grid-faq.html#how_to_develop_custom_grid_panel_factory">How to develop a custom grid panel factory?</a></li>
+                        <li><a href="faq/grid-faq.html#how_to_handle_row_selection">How to handle row selection?</a></li>
+                        <li><a href="faq/grid-faq.html#how_to_enable_multiple">How to enable multiple row selection?</a></li>
+                        <li><a href="faq/grid-faq.html#how_to_set_default_row">How to set default row selection?</a></li>
+                        <li><a href="faq/grid-faq.html#how_to_make_column_read_only">How to make a column be read only?</a></li>
+                        <li><a href="faq/grid-faq.html#how_to_make_column_sortable">How to make a column be sortable?</a></li>
+                        <li><a href="faq/grid-faq.html#how_to_make_cell_expandable">How to make a cell expandable in the hierarchcal grid?</a></li>
+                        <li><a href="faq/grid-faq.html#how_many_levels_allowed_in_hierarchical_grid">How many levels allowed in the hierarchical grid?</a></li>
+                        <li><a href="faq/grid-faq.html#can_hierarchical_grid_use_non_hierarchical_model">Can the hierarchical grid use Editable (non-hierarchical) data models?</a></li>
+                        <li><a href="faq/grid-faq.html#can_tree_grid_use_non_tree_model">Can the tree grid use Editable (non-tree) data models?</a></li>
+                        <li><a href="faq/grid-faq.html#how_to_check_rendering">How to check grid content rendering progress, for instance to display a progress bar?</a></li>
+                        <li><a href="faq/grid-faq.html#are_grid_columns_resizable">Are the grid columns resizable?</a></li>
+                        <li><a href="faq/grid-faq.html#do_grids_support_keyboard_events">Do the grids support keyboard events?</a></li>
+                        <li><a href="faq/grid-faq.html#what_is_grid_event_manager">What is a grid event manager? How to customize it?</a></li>
+                        <li><a href="faq/grid-faq.html#how_to_enable_paging_feature_for_subtrees">How to enable the paging feature for subtrees in the TreeGrid?</a></li>
+                        <li><a href="faq/grid-faq.html#how_grids_update_view">How the grids update view on data change?</a></li>
+                    </ul>
+                </p>
+            </section>
+            <section name="Advanced Tab Panel Questions">
+                <p>
+                    <ul>
+                        <li><a href="faq/advanced-tab-panel-faq.html#what_is_advanced_tab_panel">What is AdvancedTabPanel? Why do I need it?</a></li>
+                        <li><a href="faq/advanced-tab-panel-faq.html#how_to_use_advanced_tab_panel">How to use AdvancedTabPanel?</a></li>
+                        <li><a href="faq/advanced-tab-panel-faq.html#how_to_customize_advanced_tab_panel">How to customize AdvancedTabPanel look &amp; feel?</a></li>
+                        <li><a href="faq/advanced-tab-panel-faq.html#how_to_make_my_tabs_band_renderer">How to make my tabs band renderer?</a></li>
+                    </ul>
+                </p>
+            </section>
+            <div class="googleAds"><google-ads-horizontal-banner/></div>
+            <section name="Borders API Questions">
+                <p>
+                    <ul>
+                        <li><a href="faq/borders-faq.html#what_is_borders_api">What is Borders API? What is it for?</a></li>
+                        <li><a href="faq/borders-faq.html#what_kinds_of_borders_provided">What kinds of the borders provided by the library?</a></li>
+                        <li><a href="faq/borders-faq.html#is_roundcornerborder_supported_by_browser">Is the RounCornerBorder supported by all browsers?</a></li>
+                        <li><a href="faq/borders-faq.html#how_to_use_borders">How to use borders?</a></li>
+                        <li><a href="faq/borders-faq.html#how_to_display_shadow">How to display a shadow under the border?</a></li>
+                    </ul>
+                </p>
+            </section>
+            <section name="Date Picker Questions">
+                <p>
+                    <ul>
+                        <li><a href="faq/date-picker-faq.html#how_to_put_date_picker_in_grid_cell">How to put the date picker in a grid cell?</a></li>
+                        <li><a href="faq/date-picker-faq.html#how_localize_week_days">How to localize week days?</a></li>
+                        <li><a href="faq/date-picker-faq.html#how_to_change_start_day">How to change a start day of week?</a></li>
+                        <li><a href="faq/date-picker-faq.html#how_to_switch_on_time_entering">How to switch on / off time entering?</a></li>
+                    </ul>
+                </p>
+            </section>
+            <section name="Combo Box Questions">
+                <p>
+                    <ul>
+                        <li><a href="faq/combo-box-faq.html#what_is_combo_box">What is ComboBox? Why do I need it?</a></li>
+                        <li><a href="faq/combo-box-faq.html#how_to_use_combo">How to use combo boxes?</a></li>
+                        <li><a href="faq/combo-box-faq.html#is_it_possible_to_create_combo_cell">Is it possible to create a grid cell that contains a ComboBox?</a></li>
+                        <li><a href="faq/combo-box-faq.html#does_support_keyboard">Does the ComboBox allow choosing an item using a keyboard?</a></li>
+                    </ul>
+                </p>
+            </section>
+            <section name="Suggestion Box Questions">
+                <p>
+                    <ul>
+                        <li><a href="faq/suggestion-box-faq.html#what_is_suggestion_box">What is Suggestion Box?</a></li>
+                        <li><a href="faq/suggestion-box-faq.html#what_is_difference_between_combo_suggestion_model">What's a difference between ComboBoxDataModel and SuggestionBoxDataModel?</a></li>
+                        <li><a href="faq/suggestion-box-faq.html#can_i_use_combo_model_in_suggestion">Can I use ComboBoxDataModel in SuggestionBoxes?</a></li>
+                        <li><a href="faq/suggestion-box-faq.html#is_it_possible_to_create_suggestion_cell">Is it possible to create a grid cell that contains a SuggestionBox?</a></li>
+                        <li><a href="faq/suggestion-box-faq.html#does_support_keyboard">Does the SuggestionBox allow choosing an item using a keyboard?</a></li>
+                    </ul>
+                </p>
+            </section>
+            <section name="Theme Questions">
+                <p>
+                    <ul>
+                        <li><a href="faq/theme-helper-faq.html#what_is_theme_helper">What is the Theme Helper?</a></li>
+                        <li><a href="faq/theme-helper-faq.html#how_to_create_custom_theme">How to create a custom theme?</a></li>
+                        <li><a href="faq/theme-helper-faq.html#how_to_switch_look_and_feel">How to switch look &amp; feel using themes?</a></li>
+                        <li><a href="faq/theme-helper-faq.html#how_to_change_look_and_feel">How to change look &amp; feel of widgets that is not covered by CSS features?</a></li>
+                    </ul>
+                </p>
+            </section>
+            <section name="Feedback Questions">
+                <p>
+                    <ul>
+                        <li><a href="faq/feedback-faq.html#what_is_theme_helper">Is there commercial support of this library?</a></li>
+                        <li><a href="faq/feedback-faq.html#how_report_about_bugs">If I find a bug how can I report about it?</a></li>
+                        <li><a href="faq/feedback-faq.html#how_to_include_patch">I made a patch / improvement  how to include it in the next release?</a></li>
+                    </ul>
+                </p>
+            </section>
+            <div class="googleAds"><google-ads-horizontal-banner/></div>
+        </section>
+    </body>
+</document>

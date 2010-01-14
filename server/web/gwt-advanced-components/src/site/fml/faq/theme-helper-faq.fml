@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs title="FAQ - Theme Helper Questions">
+    <part id="Theme Helper Questions">
+        <faq id="what_is_theme_helper">
+            <question>What is the Theme Helper?</question>
+            <answer>
+                <p>
+                    Theme Helper is a sigleton class that simplifies themes switching and allows getting the 
+                    current theme name.
+<pre style="line-height: 110%;font-family:monospace;background-color:#ffffff"><span style="background-color:#ffffff;">ThemeHelper helper = ThemeHelper.</span><span style="background-color:#ffffff;font-style:italic;">getInstance(</span><span style="background-color:#ffffff;">);
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">// diaplay a name of the current theme
+</span><span style="background-color:#ffffff;">Window.</span><span style="background-color:#ffffff;font-style:italic;">alert(</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Current theme is "</span><span style="background-color:#ffffff;"> + helper.getThemeName());
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">// change theme to "gray"
+</span><span style="background-color:#ffffff;">helper.setThemeName(</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"gray"</span><span style="background-color:#ffffff;">);
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">// diaplay a name of the current theme again
+</span><span style="background-color:#ffffff;">Window.</span><span style="background-color:#ffffff;font-style:italic;">alert(</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Current theme is "</span><span style="background-color:#ffffff;"> + helper.getThemeName());</span></pre>
+                </p>
+            </answer>
+        </faq>
+        <faq id="how_to_create_custom_theme">
+            <question>How to create a custom theme?</question>
+            <answer>
+                <p>
+                    The simpliest way to create a custom theme is to copy one of existing themes. A new theme must
+                    consist of theme.css file and custom images. The CSS file must be placed in the GWT module
+                    folder <i>public/advaced/themes/&lt;name_of_your_theme&gt;/</i> . For images you should
+                    create any folder you want and use relative paths in the CSS file. Usually all images are placed
+                    in the same folder.
+                </p>
+            </answer>
+        </faq>
+        <faq id="how_to_switch_look_and_feel">
+            <question>How to switch look &amp; feel using themes?</question>
+            <answer>
+                <p>
+                    If you use several themes you can switch look &amp; feel using <i>ThemeHelper</i> API.
+                    See <a href="#what_is_theme_helper">What is the Theme Helper?</a> for details.
+                </p>
+                <div class="googleAds"><google-ads-horizontal-banner/></div>
+            </answer>
+        </faq>
+        <faq id="how_to_change_look_and_feel">
+            <question>How to change look &amp; feel of widgets that is not covered by CSS features?</question>
+            <answer>
+                <p>
+                    Widgets that need this option must implement the <i>ThemeApplicable</i> interface and must be
+                    register in the <i>ThemeHelper</i> with the <i>ThemeHelp.register()</i> method.
+                </p>
+                <p>
+                    Every time when theme is chnaged the helper invokes the <i>apply()</i> method of registered
+                    widgets.
+                </p>
+                <div class="googleAds"><google-ads-horizontal-banner/></div>
+            </answer>
+        </faq>
+    </part>
+</faqs>

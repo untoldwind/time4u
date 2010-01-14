@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Site Search</title>
+    </properties>
+    <body>
+        <section name="Search Results">
+<google-search-results/>
+        </section>
+    </body>
+</document>

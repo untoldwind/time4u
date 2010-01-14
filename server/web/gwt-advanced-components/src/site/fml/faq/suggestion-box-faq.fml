@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs title="FAQ - Suggestion Box Questions">
+    <part id="Suggestion Box Questions">
+        <faq id="what_is_suggestion_box">
+            <question>What is the Suggestion Box?</question>
+            <answer>
+                <p>
+                    The <a href="../text-and-button.html">Suggestion Box</a> is a subcalss of the
+                    <a href="../text-and-button.html">Combo Box</a>. The difference between these two components is
+                    that the suggestion box allows loading data on text change. The similar component exists in
+                    the standard GWT library, but it's rather complicated. So this widget is a simple 
+                    alternative to this widget.
+                </p>
+            </answer>
+        </faq>
+        <faq id="what_is_difference_between_combo_suggestion_model">
+            <question>What's a difference between ComboBoxDataModel and SuggestionBoxDataModel?</question>
+            <answer>
+                <p>
+                    As well as combo boxes the <a href="../text-and-button.html">Suggestion Box widget</a> requires
+                    data model (see also this sample). But to load values for suggestion it needs a special callback
+                    interface that is invoked on text change. This interface is
+                    <i>org.gwt.advanced.client.ui.SuggestionBoxListener</i>. You can implement it and add into the
+                    <a href="../text-and-button.html">Suggestio Box</a>.
+                </p>
+                <p>
+                    But more it's comfortable and effective if you use SuggestionBoxDataModel insted.
+                    This model allows define a custom list callback handler and automatically invokes it if necessary.
+                    The next sample illustrates how it can be done.
+<pre style="padding: 4px; line-height: 110%; font-family: monospace; background-color: rgb(255, 255, 255);">
+<span style="background-color: rgb(255, 255, 255);">SuggestionBoxDataModel model =</span><span style="font-weight: bold; color: rgb(0, 0, 128); background-color: rgb(255, 255, 255);"> new</span><span style="background-color: rgb(255, 255, 255);"> SuggestionBoxDataModel(</span><span style="font-weight: bold; color: rgb(0, 0, 128); background-color: rgb(255, 255, 255);">new</span><span style="background-color: rgb(255, 255, 255);"> MyListCallbackHandler());
+SuggestionBox suggestionBox =</span><span style="font-weight: bold; color: rgb(0, 0, 128); background-color: rgb(255, 255, 255);"> new</span><span style="background-color: rgb(255, 255, 255);"> SuggestionBox(</span><span style="color: rgb(0, 0, 255); background-color: rgb(255, 255, 255);">5</span><span style="background-color: rgb(255, 255, 255);">); </span>
+<span style="color: rgb(128, 128, 128); font-style: italic; background-color: rgb(255, 255, 255);">//minimal number of symbols required to invoke the handler</span>
+<span style="background-color: rgb(255, 255, 255);">suggestionBox.setModel(model); </span><span style="color: rgb(128, 128, 128); font-style: italic; background-color: rgb(255, 255, 255);">// apply the model (the hadler will be invoked automatically</span>
+<span style="background-color: rgb(255, 255, 255);">suggestionBox.display(); </span><span style="color: rgb(128, 128, 128); font-style: italic; background-color: rgb(255, 255, 255);">//display the widget</span></pre>
+                </p>
+                <p>
+                    Note that you don't have to fill the model with values before you apply it.
+                    <i>MyListCallbackHandler</i> will do it when the text field of the widget contains 5 or greater
+                    symbols. <i>MyListCallbackhandler</i> must implement the
+                    <i>org.gwt.advanced.client.datamodel.ListCallbackHandler</i> interface.
+                </p>
+            </answer>
+        </faq>
+        <faq id="can_i_use_combo_model_in_suggestion">
+            <question>Can I use ComboBoxDataModel in SuggestionBoxes?</question>
+            <answer>
+                <p>
+                    Yes, but note that in this case this widget will work as a simple
+                    <a href="../text-and-button.html">Combo Box</a>.
+                </p>
+            </answer>
+        </faq>
+        <faq id="is_it_possible_to_create_suggestion_cell">
+            <question>Is it possible to create a grid cell that contains a SuggestionBox?</question>
+            <answer>
+                <p>
+                    There is no a special cell class for this kind of widgets. You can use <i>ComboBoxCell</i> instead.
+                    See this <a href="combo-box-faq.html#how_to_use_combo">answer</a> for additional details. 
+                </p>
+                <div class="googleAds"><google-ads-horizontal-banner/></div>
+            </answer>
+        </faq>
+        <faq id="does_support_keyboard">
+            <question>Does the SuggestionBox allow choosing an item using a keyboard?</question>
+            <answer>
+                <p>
+                    SuggestionBox extends the ComboBox class and therefore supports all features of the superclass
+                    including keyboard events handling. See <a href="combo-box-faq.html#does_support_keyboard">this topic</a> 
+                    for details.
+                </p>
+                <div class="googleAds"><google-ads-horizontal-banner/></div>
+            </answer>
+        </faq>
+    </part>
+</faqs>

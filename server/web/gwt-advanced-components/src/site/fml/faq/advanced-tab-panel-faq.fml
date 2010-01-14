@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs title="FAQ - Advanced Tab Panel Questions">
+    <part id="Advanced Tab Panel Questions">
+        <faq id="what_is_advanced_tab_panel">
+            <question>What is AdvancedTabPanel? Why do I need it?</question>
+            <answer>
+                <p>
+                    AdvancedTabPanel is a GWT widget that has rather similar functionality with standard TabPanel. But
+                    there are several differences:
+
+                    <ul>
+                        <li>It allows displaying the tabs band on any side of the panel - top, bottom, left and right</li>
+                        <li>It supports themes</li>
+                        <li>It provides API for look &amp; feel customization</li>
+                        <li>It automatically resizes other advanced widgets on tab click (page opening)</li>
+                    </ul>
+                </p>
+                <p>
+                    Taking into account features and restrictions listed above you can make decision whether you need
+                    this component.
+                </p>
+            </answer>
+        </faq>
+        <faq id="how_to_use_advanced_tab_panel">
+            <question>How to use AdvancedTabPanel?</question>
+            <answer>
+                <p>
+                    Everything you need is to create an instance and add tabs:
+<pre style="color:rgb(0,0,0);font-weight:normal;font-style:normal;font-family:monospace;background-color:white">
+AdvancedTabPanel panel1 = <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">new</span> AdvancedTabPanel(TabPosition.<span style="color:rgb(102,14,122);font-weight:bold;font-style:italic;">LEFT</span>);
+AdvancedTabPanel panel2 = <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">new</span> AdvancedTabPanel(TabPosition.<span style="color:rgb(102,14,122);font-weight:bold;font-style:italic;">BOTTOM</span>);
+
+panel1.addTab(<span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">new</span> Label(<span style="color:rgb(0,128,0);font-weight:bold;font-style:normal;">&quot;Nested Tabs&quot;</span>), panel2);
+</pre>
+                </p>
+                <p>
+                    This sample creates two panels and adds one of them into other.
+                </p>
+                <div class="googleAds"><google-ads-horizontal-banner/></div>
+            </answer>
+        </faq>
+        <faq id="how_to_customize_advanced_tab_panel">
+            <question>How to customize AdvancedTabPanel look &amp; feel?</question>
+            <answer>
+                <p>
+                    You can customize:
+                    <ul>
+                        <li>tab borders</li>
+                        <li>content border</li>
+                    </ul>
+                </p>
+                <p>
+                    The sample below illustrates how do all these customizations:
+<pre style="color:rgb(0,0,0);font-weight:normal;font-style:normal;font-family:monospace;background-color:white">
+BorderFactory contentbBorderFactory = <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">new</span> BorderFactory() {
+    <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">public</span> Border create() {
+        <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">return</span> <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">new</span> SingleBorder();
+    }
+};
+
+BorderFactory tabBorderFactory = <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">new</span> BorderFactory() {
+    <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">public</span> Border create() {
+        <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">return</span> <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">new</span> RoundCornerBorder();
+    }
+};
+
+AdvancedTabPanel <span style="color:rgb(128,128,128);font-weight:normal;font-style:normal;">panel</span> = <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">new</span> AdvancedTabPanel(TabPosition.<span style="color:rgb(102,14,122);font-weight:bold;font-style:italic;">TOP</span>, tabBorderFactory, contentbBorderFactory);
+</pre>
+                </p>
+            </answer>
+        </faq>
+        <faq id="how_to_make_my_tabs_band_renderer">
+            <question>How to make my tabs band renderer?</question>
+            <answer>
+                <p>
+                    AdvancedTabPanel provides API that allows to define a custom tabs band renderer. It's not trivial to
+                    use this API but possible. The easiest way is to extends one of existing renderers:
+<pre style="color:rgb(0,0,0);font-weight:normal;font-style:normal;font-family:monospace;background-color:white">
+<span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">public</span> <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">static</span> <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">class</span> MyTabBandRenderer <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">extends</span> TopBandRenderer {
+    <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">public</span> Widget render(AdvancedTabPanel panel) {
+        Widget <span style="color:rgb(0,0,0);font-weight:normal;font-style:normal;">tab</span> = <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">super</span>.render(panel);
+
+        <span style="color:rgb(128,128,128);font-weight:normal;font-style:italic;">//do something specific</span>
+
+        <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">return</span> tab;
+    }
+}
+</pre>
+                </p>
+                <p>
+                    There is no a special method to set the custom renderer. But there is a back door. You will have
+                    to extend the TabPosition class since its constructor has protected access level and requires that
+                    the renderer is passed as a parameter:
+<pre style="color:rgb(0,0,0);font-weight:normal;font-style:normal;font-family:monospace;background-color:white">
+<span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">public</span> <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">static</span> <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">class</span> MyTabPosition <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">extends</span> TabPosition {
+    <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">public</span> <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">static</span> <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">final</span> TabPosition <span style="color:rgb(102,14,122);font-weight:bold;font-style:italic;">CUSTOM</span> = <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">new</span> MyTabPosition(<span style="color:rgb(0,128,0);font-weight:bold;font-style:normal;">&quot;custom&quot;</span>);
+
+    <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">protected</span> MyTabPosition(String name) {
+        <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">super</span>(name, <span style="color:rgb(0,0,128);font-weight:bold;font-style:normal;">new</span> MyTabBandRenderer(), DockPanel.<span style="color:rgb(102,14,122);font-weight:bold;font-style:italic;">NORTH</span>);
+    }
+}
+</pre>
+                </p>
+                <p>
+                    Now pass the CUSTOM tab position in the AdvancedTabPanel constructor. 
+                </p>
+                <div class="googleAds"><google-ads-horizontal-banner/></div>
+            </answer>
+        </faq>
+    </part>
+</faqs>

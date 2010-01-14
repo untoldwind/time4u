@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Tutorial - Using Themes</title>
+    </properties>
+    <body>
+        <div class="navigator"><a href="core-events-handling.html">Previous</a> | <a href="index.html">Table of contents</a> | <a href="core-widgets-customization.html">Next</a></div>
+        <section name="Using Themes">
+            <p>
+                One of important features of the library is themes support. GWT widgets usually have specific styles
+                which may be used style sheets. If the standard style name start from &quot;gwt-&quot;, Advanced GWT
+                Components use another prefix: &quot;advanced-&quot;.
+            </p>
+            <p>
+                Any widget of the library has a least one style. Currently therea are 3 themes included into the package:
+
+                <ul>
+                    <li>default</li>
+                    <li>gray</li>
+                    <li>ascetic</li>
+                </ul>
+
+                Visit the <a href="../demo/index.html">on-line demo</a> to know how they look. 
+            </p>
+            <p>
+                Using themes you can dynamically switch look and feel. To do it use the <i>ThemeHelper</i> class.
+                It's a singleton that stores current theme setting on client side. The sample below shows how you can
+                do it.
+            </p>
+            <source>
+ThemeHelper.getInstance().setThemeName("ascetic");
+            </source>
+            <p>
+                To create your own theme you must place in the <i>public</i> folder the following structure of files:
+            </p>
+            <source>
+- public
+    - advanced
+        - themes
+            - your_theme_name
+                - images
+                  ...
+                theme.css
+            </source>
+            <p>
+                Place your theme images into the <i>images</i> folder.
+            </p>
+            <p>
+                The easiest way to make a custom theme is to copy one of existent structures and change
+                <i>theme.css</i>.
+            </p>
+        </section>
+<div class="googleAds"><google-ads-horizontal-banner/></div>
+        <div class="navigator"><a href="core-events-handling.html">Previous</a> | <a href="index.html">Table of contents</a> | <a href="core-widgets-customization.html">Next</a></div>
+    </body>
+</document>

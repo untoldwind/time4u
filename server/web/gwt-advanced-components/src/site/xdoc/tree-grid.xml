@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Tree Grid</title>
+    </properties>
+    <body>
+        <section name="Description and Features List">
+            <div class="imageLeft">
+              <p>
+                  <img src="images/tree-grid.gif" border="0" alt="TreeGrid allows using  unlimited number of nested subtrees"/>
+              </p>
+              <p>
+                  <i>TreeGrid allows using unlimited number of nested subtrees</i>
+              </p>
+            </div>
+            <div class="textRight" style="height: 350px;">
+                <p>
+                    Tree Grid is an extension of the <a href="editable-grid.html">Editable Grid</a> and displays
+                    tree-like structures. In comparison with the <a href="hierarchical-grid.html">Hierarchcal Grid</a>
+                    this widget restricts data model structures with the same set of columns for all subtrees.
+                </p>
+                <p>
+                    As well as the <a href="editable-grid.html">Editable Grid</a> the component is able to load
+                    data lazily. This option is valid for the main (root) branch of the tree and for child branches
+                    as well.
+                </p>
+                <p>
+                    The main features of the widget listed below:
+
+                    <ul>
+                        <li>all features of the <a href="editable-grid.html">Editable Grid</a></li>
+                        <li>unlimited number of nested subtrees</li>
+                        <li>lazily loadable subtrees</li>
+                        <li>capability to use any column of the grid to mark it as a root</li>
+                        <li>paging support for subtrees</li>
+                    </ul>
+                </p>
+            </div>
+        </section>
+        <div class="googleAds"><google-ads-horizontal-banner/></div>
+        <section name="Sample">
+            <p>
+                The next sample shows how to prepare the tree grid data model and creates the structure of a
+                hypothetical company.
+            </p>
+<source>
+<pre style="line-height: 110%;font-family:monospace;background-color:#ffffff"><span style="color:#808080;background-color:#ffffff;font-style:italic;">//create a new model and add one root item
+</span><span style="background-color:#ffffff;">TreeGridDataModel model = </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> TreeGridDataModel(</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> Object[][]{</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> String[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"President"</span><span style="background-color:#ffffff;">}});
+model.setAscending(</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">false</span><span style="background-color:#ffffff;">);
+model.setPageSize(</span><span style="color:#0000ff;background-color:#ffffff;">3</span><span style="background-color:#ffffff;">);
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">//create second level items
+</span><span style="background-color:#ffffff;">TreeGridRow president = (TreeGridRow) model.getRow(</span><span style="color:#0000ff;background-color:#ffffff;">0</span><span style="background-color:#ffffff;">);
+president.setExpanded(</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">true</span><span style="background-color:#ffffff;">);
+president.setPageSize(</span><span style="color:#0000ff;background-color:#ffffff;">3</span><span style="background-color:#ffffff;">);
+president.setPagerEnabled(</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">true</span><span style="background-color:#ffffff;">);
+model.addRow(president, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> String[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Financial Department Director"</span><span style="background-color:#ffffff;">});
+model.addRow(president, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> String[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Marketing Department Director"</span><span style="background-color:#ffffff;">});
+model.addRow(president, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> String[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Chief Security Officer"</span><span style="background-color:#ffffff;">});
+model.addRow(president, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> String[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Development Department Director"</span><span style="background-color:#ffffff;">});
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">//create third level items for the first department
+</span><span style="background-color:#ffffff;">TreeGridRow financialDirector = model.getRow(president, </span><span style="color:#0000ff;background-color:#ffffff;">0</span><span style="background-color:#ffffff;">);
+model.addRow(financialDirector, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> String[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Accountant"</span><span style="background-color:#ffffff;">});
+model.addRow(financialDirector, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> String[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Financial Manager"</span><span style="background-color:#ffffff;">});
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">//create third level items for the second department
+</span><span style="background-color:#ffffff;">TreeGridRow marketingDirector = model.getRow(president, </span><span style="color:#0000ff;background-color:#ffffff;">0</span><span style="background-color:#ffffff;">);
+model.addRow(marketingDirector, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> String[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Brand Manager"</span><span style="background-color:#ffffff;">});
+model.addRow(marketingDirector, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> String[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Sales manager"</span><span style="background-color:#ffffff;">});
+model.addRow(marketingDirector, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> String[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Promouter"</span><span style="background-color:#ffffff;">});
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">//create third level items for the last department and configure paging
+</span><span style="background-color:#ffffff;">TreeGridRow developmentDirector = model.getRow(president, </span><span style="color:#0000ff;background-color:#ffffff;">0</span><span style="background-color:#ffffff;">);
+president.setPageSize(</span><span style="color:#0000ff;background-color:#ffffff;">3</span><span style="background-color:#ffffff;">);
+president.setPagerEnabled(</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">true</span><span style="background-color:#ffffff;">);
+model.addRow(marketingDirector, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> String[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Database Developer"</span><span style="background-color:#ffffff;">});
+model.addRow(marketingDirector, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> String[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"UI Developer"</span><span style="background-color:#ffffff;">});
+model.addRow(marketingDirector, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> String[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Support Engeneer"</span><span style="background-color:#ffffff;">});
+model.addRow(marketingDirector, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> String[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Tester"</span><span style="background-color:#ffffff;">});</span></pre>
+</source>
+            <p>
+                Now use the created model with the Tree Grid.
+            </p>
+<source>
+<pre style="line-height: 110%;font-family:monospace;background-color:#ffffff"><span style="color:#808080;background-color:#ffffff;font-style:italic;">//create a grid panel
+</span><span style="background-color:#ffffff;">GridPanel panel = </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> GridPanel();
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">//create and put the tree grid in the panel
+</span><span style="background-color:#ffffff;">panel.createEditableGrid(</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> String[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Posts"</span><span style="background-color:#ffffff;">}, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> Class[]{TextBoxCell.</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">class</span><span style="background-color:#ffffff;">}, model);
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">//prepare the grid for diplaying
+</span><span style="background-color:#ffffff;">panel.display();
+
+RootPanel.</span><span style="background-color:#ffffff;font-style:italic;">get(</span><span style="background-color:#ffffff;">).add(panel);</span></pre>
+</source>
+        </section>
+        <div class="googleAds"><google-ads-horizontal-banner/></div>
+    </body>
+</document>

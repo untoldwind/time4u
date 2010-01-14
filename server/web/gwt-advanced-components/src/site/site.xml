@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Advanced GWT Components">
+  <bannerLeft>
+    <name>Advanced GWT Components</name>
+  </bannerLeft>
+  <body>
+    <links>
+      <item name="Home" href="/index.html"/>
+      <item name="News" href="http://sourceforge.net/news/?group_id=216339"/>
+      <item name="Live Demo" href="/demo/index.html"/>
+      <item name="Downloads" href="http://sourceforge.net/project/showfiles.php?group_id=216339&amp;package_id=261233"/>
+      <item name="Quick Start" href="/quickstart.html"/>
+      <item name="FAQ" href="/faq.html"/>
+      <item name="API Documents" href="apidocs/index.html"/>
+      <item name="Forum" href="http://advancedgwt.freeforums.org/"/>
+      <item name="Tracker" href="http://code.google.com/p/advanced-gwt-components/issues/list?can=1&amp;q=&amp;colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&amp;cells=tiles"/>
+    </links>
+    <menu name="Home">
+      <item name="Welcome Page" href="/index.html"/>
+    </menu>
+    <menu name="Downloads">
+      <item name="Free Binary" href="http://sourceforge.net/project/showfiles.php?group_id=216339&amp;package_id=261233"/>
+      <item name="Source Code" href="/source-repository.html"/>
+    </menu>
+    <menu name="Demo">
+      <item name="Live Demo" href="/demo/index.html"/>
+      <item name="Screenshots" href="http://sourceforge.net/project/screenshots.php?group_id=216339"/>
+    </menu>
+    <menu name="Widgets">
+      <item name="Advanced FlexTable" href="/advanced-flex-table.html"/>
+      <item name="Simple Grid" href="/simple-grid.html"/>
+      <item name="Editable Grid" href="/editable-grid.html"/>
+      <item name="Hierarchical Grid" href="/hierarchical-grid.html"/>
+      <item name="Tree Grid" href="/tree-grid.html"/>
+      <item name="Master-Detail Panel" href="/master-detail.html"/>
+      <item name="Grid Panel" href="/grid-panel.html"/>
+      <item name="Grid Toolbar" href="/grid-panel.html"/>
+      <item name="Pager" href="/grid-panel.html"/>
+      <item name="Advanced TabPanel" href="/advanced-tab-panel.html"/>
+      <item name="Single Border" href="/borders.html"/>
+      <item name="Round Corner Border" href="/borders.html"/>
+      <item name="Date Picker" href="/text-and-button.html"/>
+      <item name="Combo Box" href="/text-and-button.html"/>
+      <item name="Suggestion Box" href="/text-and-button.html"/>
+    </menu>
+    <menu name="Documentation">
+      <item name="Quick Start" href="/quickstart.html"/>
+      <item name="Tutorial" href="/tutorial/index.html"/>
+      <item name="FAQ" href="/faq.html"/>
+      <item name="Decision Maker" href="/decision-maker.html"/>
+      <item name="JavaDocs API" href="/apidocs/index.html"/>
+    </menu>
+    <menu name="Support">
+      <item name="Forum" href="http://advancedgwt.freeforums.org/"/>
+      <item name="Tracker" href="http://code.google.com/p/advanced-gwt-components/issues/list?can=1&amp;q=&amp;colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&amp;cells=tiles"/>
+    </menu>
+    ${reports}
+  </body>
+</project>
+

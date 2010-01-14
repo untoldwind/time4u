@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>de.objectcode.time4u.server.web</groupId>
+		<artifactId>time4u-server-web</artifactId>
+		<version>1.0.1-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.gwt.advanced</groupId>
+    <artifactId>advanced-components</artifactId>
+    <packaging>jar</packaging>
+    <name>Advanced GWT Components</name>
+    <version>1.5.0</version>
+    <url>http://advanced-gwt.sourceforge.net</url>
+    <description>The set of useful GWT components</description>
+
+    <inceptionYear>2008</inceptionYear>
+
+    <issueManagement>
+        <system>google</system>
+        <url>http://code.google.com/p/advanced-gwt-components/issues/list</url>
+    </issueManagement>
+
+    <developers>
+        <developer>
+            <id>sskladchikov</id>
+            <name>Sergey Skladchikov</name>
+            <email>sskladchikov@gmail.com</email>
+            <roles>
+                <role>Architect</role>
+                <role>Developer</role>
+            </roles>
+            <timezone>+3</timezone>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <mailingLists>
+        <mailingList>
+            <name>Project News</name>
+            <subscribe>http://lists.sourceforge.net/lists/listinfo/advanced-gwt-news</subscribe>
+            <unsubscribe>http://lists.sourceforge.net/lists/listinfo/advanced-gwt-news</unsubscribe>
+            <post>advanced-gwt-news@lists.sourceforge.net</post>
+            <archive>http://sourceforge.net/mailarchive/forum.php?forum_name=advanced-gwt-news</archive>
+        </mailingList>
+        <mailingList>
+            <name>Project Troubleshooting</name>
+            <subscribe>http://lists.sourceforge.net/lists/listinfo/advanced-gwt-troubleshooting</subscribe>
+            <unsubscribe>http://lists.sourceforge.net/lists/listinfo/advanced-gwt-troubleshooting</unsubscribe>
+            <post>advanced-gwt-troubleshooting@lists.sourceforge.net</post>
+            <archive>http://sourceforge.net/mailarchive/forum.php?forum_name=advanced-gwt-troubleshooting</archive>
+        </mailingList>
+    </mailingLists>
+
+    <build>
+        <defaultGoal>install</defaultGoal>
+
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+        </dependency>
+    </dependencies>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <reportSets>
+                   <reportSet>
+                      <reports>
+                         <report>mailing-list</report>
+                         <report>issue-tracking</report>
+                         <report>license</report>
+                         <report>scm</report>
+                      </reports>
+                   </reportSet>
+                </reportSets>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jxr-maven-plugin</artifactId>
+                <version>2.0-beta-1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-changes-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>changes-report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+                <configuration>
+                    <issueLinkTemplatePerSystem>
+                        <google>%URL%/detail?can=1&amp;id=%ISSUE%</google>
+                    </issueLinkTemplatePerSystem>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>2.0</version>            
+                <configuration>
+                    <templateFile>src/site/resources/META-INF/maven/site.vm</templateFile>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <scm>
+        <connection>scm:svn:https://advanced-gwt.svn.sourceforge.net/svnroot/advanced-gwt/trunk</connection>
+        <developerConnection>scm:svn:https://advanced-gwt.svn.sourceforge.net/svnroot/advanced-gwt/trunk</developerConnection>
+        <url>http://advanced-gwt.svn.sourceforge.net/viewvc/advanced-gwt/</url>
+    </scm>
+</project>

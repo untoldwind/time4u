@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Hierarchical Grid</title>
+    </properties>
+    <body>
+        <section name="Description">
+            <div class="imageLeft">
+              <p>
+                  <img src="images/hierarchical-grid-complexity.gif" border="0" alt="Cells complexity of the grid is unlimited..."/>
+              </p>
+              <p>
+                  <i>Cells complexity of the grid is unlimited...</i>
+              </p>
+            </div>
+            <div class="textRight">
+                <p>
+                    Hierarchical grid is a GWT widget that inherits all <a href="editable-grid.html">Editable Grid</a>
+                    functionality but additionally allows displaying complex hierarchical structures.
+                </p>
+                <p>
+                    Note that in comparison with traditional tree grid solutions this component supports subgrids which
+                    may have different structures and usually linked to particular cells. The idea of the widget is simple:
+                    if you have complex cells, i.e. each cell is an object that consists of fields and related
+                    objects, the hierarchical grid is a best solution for you.
+                </p>
+                <p>
+                    But you need a tree representation of similar objects having the same parent class and / or interface
+                    you should consider applying the <a href="tree-grid.html">Tree Grid</a> component instead.
+
+                    Another alternative is the <a href="master-detail.html">Master-Detail Panel</a> but it takes more
+                    space on the screen.
+                </p>
+                <p>
+                    To understand how it look like proceed to the <a href="/demo/index.html">demo</a>.
+                </p>
+            </div>
+        </section>
+        <div class="googleAds"><google-ads-horizontal-banner/></div>
+        <section name="Features List">
+            <div class="imageRight">
+                <p>
+                    <img src="images/hierarchical-grid-expanded.gif" border="0" alt="You can expand a cell that has a linked subgrid"/>
+                </p>
+                <p>
+                    <i>You can expand a cell that has a linked subgrid</i>
+                </p>
+            </div>
+            <div class="textleft">
+                <p>
+                  Main features of the widget are:
+
+                  <ul>
+                      <li>full <a href="editable-grid.html">Editable Grid</a> features support</li>
+                      <li>lazy subgrid expanding and data loading</li>
+                      <li>nested grid panels customization</li>
+                      <li>ability to link any cell to a subgrid</li>
+                      <li>unlimited number of subgrids nested into each other</li>
+                      <li>themes support</li>
+                  </ul>
+                </p>
+            </div>
+        </section>
+        <div class="googleAds"><google-ads-horizontal-banner/></div>
+        <section name="Sample">
+            <p>
+                The next sample shows how to prepare the hierarchical data model for the grid.
+            </p>
+<source>
+<pre style="line-height: 110%;font-family:monospace;background-color:#ffffff"><span style="color:#808080;background-color:#ffffff;font-style:italic;">//create a new model containing employees
+</span><span style="background-color:#ffffff;">Editable model = </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> EditableGridDataModel(
+    </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> Object[][] {
+        </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> String[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"John"</span><span style="background-color:#ffffff;">, </span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Doe"</span><span style="background-color:#ffffff;">},
+        </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> String[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Piter"</span><span style="background-color:#ffffff;">, </span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Walkman"</span><span style="background-color:#ffffff;">},
+        </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> String[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Rupert"</span><span style="background-color:#ffffff;">, </span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Brown"</span><span style="background-color:#ffffff;">}
+    }
+);
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">//create a new model containing departments
+</span><span style="background-color:#ffffff;">        HierarchicalGridDataModel hierarchicalModel = </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> HierarchicalGridDataModel(
+     </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> Object[][] {
+         </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> Object[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Accountants"</span><span style="background-color:#ffffff;">, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> Integer(</span><span style="color:#0000ff;background-color:#ffffff;">3</span><span style="background-color:#ffffff;">)},
+         </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> Object[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Management"</span><span style="background-color:#ffffff;">, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> Integer(</span><span style="color:#0000ff;background-color:#ffffff;">10</span><span style="background-color:#ffffff;">)},
+         </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> Object[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Development"</span><span style="background-color:#ffffff;">, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> Integer(</span><span style="color:#0000ff;background-color:#ffffff;">100</span><span style="background-color:#ffffff;">)}
+    }
+);
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">//make a relationship between Accountants department and a list of employees
+</span><span style="background-color:#ffffff;">hierarchicalModel.addSubgridModel(</span><span style="color:#0000ff;background-color:#ffffff;">0</span><span style="background-color:#ffffff;">, </span><span style="color:#0000ff;background-color:#ffffff;">0</span><span style="background-color:#ffffff;">, model);</span></pre>
+</source>
+            <p>
+                If the model is ready you can use it with the grid.
+            </p>
+<source>
+<pre style="line-height: 110%;font-family:monospace;background-color:#ffffff"><span style="color:#808080;background-color:#ffffff;font-style:italic;">// create a new grid panel
+</span><span style="background-color:#ffffff;">GridPanel panel = </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> GridPanel();
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">// create a new editable grid and put it into the panel
+</span><span style="background-color:#ffffff;">HierarchicalGrid grid = (HierarchicalGrid) panel.createEditableGrid (
+    </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> String[]{</span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Department"</span><span style="background-color:#ffffff;">, </span><span style="color:#008000;background-color:#ffffff;font-weight:bold;">"Number of Employees"</span><span style="background-color:#ffffff;">},
+    </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> Class[]{LabelCell.</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">class</span><span style="background-color:#ffffff;">, IntegerCell.</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">class</span><span style="background-color:#ffffff;">},
+    hierarchicalModel
+);
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">// add a grid panel factory to the second column
+</span><span style="background-color:#ffffff;">grid.addGridPanelFactory(
+    </span><span style="color:#0000ff;background-color:#ffffff;">1</span><span style="background-color:#ffffff;">, </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> GridPanelFactory() {
+        </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">public</span><span style="background-color:#ffffff;"> GridPanel create(GridDataModel model) {
+            GridPanel panel = </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> GridPanel();
+            </span><span style="color:#808080;background-color:#ffffff;font-style:italic;">// create a new grid here
+            </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">return</span><span style="background-color:#ffffff;"> panel;
+        }
+
+        </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">public</span><span style="background-color:#ffffff;"> GridDataModel create(</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">int</span><span style="background-color:#ffffff;"> parentRow, GridDataModel parentModel) {
+            </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">return</span><span style="background-color:#ffffff;"> </span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> EditableGridDataModel(</span><span style="color:#000080;background-color:#ffffff;font-weight:bold;">new</span><span style="background-color:#ffffff;"> Object[</span><span style="color:#0000ff;background-color:#ffffff;">0</span><span style="background-color:#ffffff;">][</span><span style="color:#0000ff;background-color:#ffffff;">0</span><span style="background-color:#ffffff;">]);
+        }
+    }
+);
+
+</span><span style="color:#808080;background-color:#ffffff;font-style:italic;">// display all
+</span><span style="background-color:#ffffff;">panel.display();
+
+RootPanel.</span><span style="background-color:#ffffff;font-style:italic;">get(</span><span style="background-color:#ffffff;">).add(panel);</span></pre>
+</source>
+            <p>
+                Is it too difficult for you? But imagine you making the same functionality manually!.
+            </p>
+        </section>
+        <div class="googleAds"><google-ads-horizontal-banner/></div>
+    </body>
+</document>

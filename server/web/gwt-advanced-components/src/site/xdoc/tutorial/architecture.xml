@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Tutorial - Architecture</title>
+    </properties>
+    <body>
+        <div class="navigator"><a href="introduction.html">Previous</a> | <a href="index.html">Table of contents</a> | <a href="core.html">Next</a></div>
+        <section name="Architecture">
+            <p>
+                Generally architecture of the library widgets is simple and defined the following types of entities:
+                <ul>
+                    <li>Data Model. It's a class (Java bean) that contains data to be displayed by a widget. The same data models may used by different widgets. However only in particular cases one widget can use different data models.</li>
+                    <li>Component. This is a class that views the model in widget specific way. If the widget is rather complicated it may delegate diplaying to a <i>renderer</i> (see below). In this case Component performs a function of a mediator object. Any Component extends the GWT <i>Widget</i> class.</li>
+                    <li>Renderer. It is an optional part of the components. Some widgets have a rederer and others don't. The main idea of the Renderer is to build a complex view of the widget. Another purpose of the Renderer is to be dynamically assigned to a widget in runtime. The same widget may use different renderers.</li>
+                </ul>
+            </p>
+            <p>
+                The next diagram illustrates all the listed entities and relationships.
+            </p>
+            <p>
+                <img src="../images/architecture.jpg"/> 
+            </p>
+            <p>
+                Each Component is associated with a least one Data Model and 0 or 1 Renderer.
+                You can also see the weak relationship between Renderer and Data Model. It means that Renderer can use the model
+                to get data and display it.
+            </p>
+            <p>
+                There is a default Renderer for each component (if it can use any renderer). And it's just enought to
+                instantiate a widget and specific default Renderer will be instantiated as well. But you have to
+                create and set a model because the widgets don't instantiate them automatically.
+            </p>
+        </section>
+        <div class="googleAds"><google-ads-horizontal-banner/></div>
+        <div class="navigator"><a href="introduction.html">Previous</a> | <a href="index.html">Table of contents</a> | <a href="core.html">Next</a></div>
+    </body>
+</document>

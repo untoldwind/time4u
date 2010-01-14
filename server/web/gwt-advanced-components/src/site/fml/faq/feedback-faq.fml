@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs title="FAQ - Feedback Questions">
+    <part id="Feedback Questions">
+        <faq id="what_is_theme_helper">
+            <question>Is there commercial support of this library?</question>
+            <answer>
+                <p>
+                    Currently no, but you can inform us about bugs you found. If the bug can be reproduced, probably
+                    it will be fixed in the next release. You can also submit feature requests to the
+                    <a href="http://code.google.com/p/advanced-gwt-components/issues/entry">tracker</a>.
+                    If you can't wait for a new release you can try to find a workaround reading our
+                    <a href="http://advancedgwt.freeforums.org/help-support-f1.html">Help forum</a>.
+                </p>
+            </answer>
+        </faq>
+        <faq id="how_report_about_bugs">
+            <question>If I find a bug how can I report about it?</question>
+            <answer>
+                <p>
+                    Just submit the issue to the
+                    <a href="http://code.google.com/p/advanced-gwt-components/issues/entry">tracker</a>.
+                    Don't forget to write detailed description of the bug and 
+                    explain how to reproduce it. We'll include bug fix in one of next releases.
+                </p>
+            </answer>
+        </faq>
+        <faq id="how_to_include_patch">
+            <question>I made a patch / improvement how to include it in the next release?</question>
+            <answer>
+                <p>
+                    If you made a patch and / or improvement for the library, you can submit the source code to the
+                    <a href="http://code.google.com/p/advanced-gwt-components/issues/entry">tracker</a>. We'll
+                    investigate it and include changes in the next release if it's reasonable. Note
+                    that in some cases your source code may be modified to meet the guide line of the project.
+                    It's better if you explain details of your patch in the meail message to avoid misunderstanding.
+                    If you do not allow any modifications of you code simply don't send the patch.
+                </p>
+                <div class="googleAds"><google-ads-horizontal-banner/></div>
+            </answer>
+        </faq>
+    </part>
+</faqs>
