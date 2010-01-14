@@ -15,8 +15,8 @@ import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
-import de.objectcode.time4u.server.web.gwt.main.client.service.Project;
 import de.objectcode.time4u.server.web.gwt.main.server.dao.IProjectDao;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.Project;
 
 @Repository("projectDao")
 @Transactional(propagation = Propagation.MANDATORY)

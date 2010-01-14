@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.main.client;
+package de.objectcode.time4u.server.web.gwt.webclient.client;
 
 public class SelectionChangedEvent {
 	public enum Type {

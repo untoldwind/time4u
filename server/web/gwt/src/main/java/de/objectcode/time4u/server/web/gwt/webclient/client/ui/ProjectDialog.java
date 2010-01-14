@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.main.client.ui;
+package de.objectcode.time4u.server.web.gwt.webclient.client.ui;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -14,9 +14,9 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.objectcode.time4u.server.web.gwt.main.client.service.Project;
-import de.objectcode.time4u.server.web.gwt.main.client.service.ProjectService;
-import de.objectcode.time4u.server.web.gwt.main.client.service.ProjectServiceAsync;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.Project;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.ProjectService;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.ProjectServiceAsync;
 
 public class ProjectDialog extends DialogBox {
 	private static ProjectDialogUiBinder uiBinder = GWT

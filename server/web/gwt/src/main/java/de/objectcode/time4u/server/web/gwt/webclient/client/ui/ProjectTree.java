@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.main.client.ui;
+package de.objectcode.time4u.server.web.gwt.webclient.client.ui;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,12 +20,12 @@ import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.objectcode.time4u.server.web.gwt.main.client.MainClientBundle;
-import de.objectcode.time4u.server.web.gwt.main.client.SelectionManager;
-import de.objectcode.time4u.server.web.gwt.main.client.service.Project;
-import de.objectcode.time4u.server.web.gwt.main.client.service.ProjectService;
-import de.objectcode.time4u.server.web.gwt.main.client.service.ProjectServiceAsync;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLabel;
+import de.objectcode.time4u.server.web.gwt.webclient.client.SelectionManager;
+import de.objectcode.time4u.server.web.gwt.webclient.client.WebClientBundle;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.Project;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.ProjectService;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.ProjectServiceAsync;
 
 public class ProjectTree extends Composite {
 
@@ -36,7 +36,7 @@ public class ProjectTree extends Composite {
 	}
 
 	@UiField(provided = true)
-	MainClientBundle resources = MainClientBundle.INSTANCE;
+	WebClientBundle resources = WebClientBundle.INSTANCE;
 
 	@UiField
 	Tree projectTree;

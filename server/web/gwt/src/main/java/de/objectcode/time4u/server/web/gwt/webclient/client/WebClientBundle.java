@@ -1,11 +1,11 @@
-package de.objectcode.time4u.server.web.gwt.main.client;
+package de.objectcode.time4u.server.web.gwt.webclient.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 
-public interface MainClientBundle extends ClientBundle {
-	public static final MainClientBundle INSTANCE =  GWT.<MainClientBundle>create(MainClientBundle.class);
+public interface WebClientBundle extends ClientBundle {
+	public static final WebClientBundle INSTANCE =  GWT.<WebClientBundle>create(WebClientBundle.class);
 
 	ImageResource newProject();
 	

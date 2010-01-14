@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.main.client.service;
+package de.objectcode.time4u.server.web.gwt.webclient.client.service;
 
 import java.util.Date;
 

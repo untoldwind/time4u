@@ -10,10 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import de.objectcode.time4u.server.web.gwt.main.client.service.Project;
-import de.objectcode.time4u.server.web.gwt.main.client.service.ProjectService;
 import de.objectcode.time4u.server.web.gwt.main.server.dao.IProjectDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.GwtController;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.Project;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.ProjectService;
 
 @Controller
 @RequestMapping({"/MainUI/project.service"})

@@ -13,11 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import de.objectcode.time4u.server.web.gwt.login.server.Time4UUserDetailsService.Time4UUserDetails;
-import de.objectcode.time4u.server.web.gwt.main.client.service.DayInfo;
-import de.objectcode.time4u.server.web.gwt.main.client.service.DayInfoSummary;
-import de.objectcode.time4u.server.web.gwt.main.client.service.WorkItemService;
 import de.objectcode.time4u.server.web.gwt.main.server.dao.IWorkItemDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.GwtController;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.DayInfo;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.DayInfoSummary;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.WorkItemService;
 
 @Controller
 @RequestMapping({"/MainUI/workItem.service"})

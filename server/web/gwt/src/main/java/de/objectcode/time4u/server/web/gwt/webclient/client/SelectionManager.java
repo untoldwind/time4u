@@ -1,11 +1,11 @@
-package de.objectcode.time4u.server.web.gwt.main.client;
+package de.objectcode.time4u.server.web.gwt.webclient.client;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import de.objectcode.time4u.server.web.gwt.main.client.service.Project;
-import de.objectcode.time4u.server.web.gwt.main.client.service.Task;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.Project;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.Task;
 
 public class SelectionManager {
 	public static SelectionManager INSTANCE = new SelectionManager();

@@ -3,7 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
 	<ui:with field="resources"
-		type="de.objectcode.time4u.server.web.gwt.main.client.MainClientBundle" />
+		type="de.objectcode.time4u.server.web.gwt.webclient.client.WebClientBundle" />
 
 	<g:DockLayoutPanel>
 		<g:north size="25">

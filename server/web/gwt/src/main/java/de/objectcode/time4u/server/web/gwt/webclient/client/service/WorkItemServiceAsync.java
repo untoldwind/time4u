@@ -1,11 +1,11 @@
-package de.objectcode.time4u.server.web.gwt.main.client.service;
+package de.objectcode.time4u.server.web.gwt.webclient.client.service;
 
 import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import de.objectcode.time4u.server.web.gwt.main.client.service.DayInfoSummary;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.DayInfoSummary;
 
 public interface WorkItemServiceAsync {
 

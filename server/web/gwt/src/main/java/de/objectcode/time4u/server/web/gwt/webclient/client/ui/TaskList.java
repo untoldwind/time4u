@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.main.client.ui;
+package de.objectcode.time4u.server.web.gwt.webclient.client.ui;
 
 import java.util.List;
 
@@ -12,17 +12,17 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.objectcode.time4u.server.web.gwt.main.client.ISelectionChangeListener;
-import de.objectcode.time4u.server.web.gwt.main.client.MainClientBundle;
-import de.objectcode.time4u.server.web.gwt.main.client.SelectionChangedEvent;
-import de.objectcode.time4u.server.web.gwt.main.client.SelectionManager;
-import de.objectcode.time4u.server.web.gwt.main.client.service.Project;
-import de.objectcode.time4u.server.web.gwt.main.client.service.Task;
-import de.objectcode.time4u.server.web.gwt.main.client.service.TaskService;
-import de.objectcode.time4u.server.web.gwt.main.client.service.TaskServiceAsync;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.DataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.DataTableRow;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLabel;
+import de.objectcode.time4u.server.web.gwt.webclient.client.ISelectionChangeListener;
+import de.objectcode.time4u.server.web.gwt.webclient.client.SelectionChangedEvent;
+import de.objectcode.time4u.server.web.gwt.webclient.client.SelectionManager;
+import de.objectcode.time4u.server.web.gwt.webclient.client.WebClientBundle;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.Project;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.Task;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.TaskService;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.TaskServiceAsync;
 
 public class TaskList extends Composite implements ISelectionChangeListener {
 
@@ -34,8 +34,8 @@ public class TaskList extends Composite implements ISelectionChangeListener {
 
 	private final TaskServiceAsync taskService = GWT.create(TaskService.class);
 
-	@UiField(provided=true)
-	MainClientBundle resources = MainClientBundle.INSTANCE;
+	@UiField(provided = true)
+	WebClientBundle resources = WebClientBundle.INSTANCE;
 
 	@UiField
 	DataTable taskList;

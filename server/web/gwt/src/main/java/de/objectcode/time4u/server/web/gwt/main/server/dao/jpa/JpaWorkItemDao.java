@@ -17,10 +17,10 @@ import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.TimePolicyEntity;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
-import de.objectcode.time4u.server.web.gwt.main.client.service.DayInfo;
-import de.objectcode.time4u.server.web.gwt.main.client.service.DayInfoSummary;
-import de.objectcode.time4u.server.web.gwt.main.client.service.WorkItem;
 import de.objectcode.time4u.server.web.gwt.main.server.dao.IWorkItemDao;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.DayInfo;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.DayInfoSummary;
+import de.objectcode.time4u.server.web.gwt.webclient.client.service.WorkItem;
 
 @Repository("workItemDao")
 @Transactional(propagation = Propagation.MANDATORY)
