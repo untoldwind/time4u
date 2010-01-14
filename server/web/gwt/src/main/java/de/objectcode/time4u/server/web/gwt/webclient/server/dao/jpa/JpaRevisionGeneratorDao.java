@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.main.server.dao.jpa;
+package de.objectcode.time4u.server.web.gwt.webclient.server.dao.jpa;
 
 import javax.persistence.Query;
 
@@ -12,7 +12,7 @@ import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
 import de.objectcode.time4u.server.entities.revision.RevisionEntityKey;
-import de.objectcode.time4u.server.web.gwt.main.server.dao.IRevisionGeneratorCreatorDao;
+import de.objectcode.time4u.server.web.gwt.webclient.server.dao.IRevisionGeneratorCreatorDao;
 
 @Repository("revisionGenerator")
 public class JpaRevisionGeneratorDao extends JpaDaoBase implements

@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.main.server.dao.jpa;
+package de.objectcode.time4u.server.web.gwt.webclient.server.dao.jpa;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +15,8 @@ import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionGenerator;
 import de.objectcode.time4u.server.entities.revision.IRevisionLock;
-import de.objectcode.time4u.server.web.gwt.main.server.dao.IProjectDao;
 import de.objectcode.time4u.server.web.gwt.webclient.client.service.Project;
+import de.objectcode.time4u.server.web.gwt.webclient.server.dao.IProjectDao;
 
 @Repository("projectDao")
 @Transactional(propagation = Propagation.MANDATORY)

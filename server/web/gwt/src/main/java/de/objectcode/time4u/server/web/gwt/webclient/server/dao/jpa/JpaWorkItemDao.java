@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.main.server.dao.jpa;
+package de.objectcode.time4u.server.web.gwt.webclient.server.dao.jpa;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,10 +17,10 @@ import de.objectcode.time4u.server.entities.DayInfoEntity;
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.TimePolicyEntity;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
-import de.objectcode.time4u.server.web.gwt.main.server.dao.IWorkItemDao;
 import de.objectcode.time4u.server.web.gwt.webclient.client.service.DayInfo;
 import de.objectcode.time4u.server.web.gwt.webclient.client.service.DayInfoSummary;
 import de.objectcode.time4u.server.web.gwt.webclient.client.service.WorkItem;
+import de.objectcode.time4u.server.web.gwt.webclient.server.dao.IWorkItemDao;
 
 @Repository("workItemDao")
 @Transactional(propagation = Propagation.MANDATORY)

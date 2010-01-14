@@ -51,6 +51,7 @@ public class Time4UUserDetailsService extends JpaDaoSupport implements
 	public static class Time4UUserDetails implements UserDetails {
 		private static final long serialVersionUID = 1L;
 
+		boolean active;
 		String personId;
 		String givenName;
 		String surname;
@@ -60,6 +61,7 @@ public class Time4UUserDetailsService extends JpaDaoSupport implements
 
 		public Time4UUserDetails(UserAccountEntity userAccountEntity) {
 			this.personId = userAccountEntity.getPerson().getId();
+			this.active = !userAccountEntity.getPerson().isDeleted() && (userAccountEntity.getPerson().getActive() != null ? userAccountEntity.getPerson().getActive() : true);
 			this.givenName = userAccountEntity.getPerson().getGivenName();
 			this.surname = userAccountEntity.getPerson().getSurname();
 			this.email = userAccountEntity.getPerson().getEmail();
@@ -106,7 +108,7 @@ public class Time4UUserDetailsService extends JpaDaoSupport implements
 		}
 
 		public boolean isAccountNonLocked() {
-			return true;
+			return active;
 		}
 
 		public boolean isCredentialsNonExpired() {

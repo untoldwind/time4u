@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.main.server.dao.jpa;
+package de.objectcode.time4u.server.web.gwt.webclient.server.dao.jpa;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import de.objectcode.time4u.server.entities.revision.RevisionEntity;
 import de.objectcode.time4u.server.entities.revision.RevisionEntityKey;
-import de.objectcode.time4u.server.web.gwt.main.server.dao.IRevisionGeneratorCreatorDao;
+import de.objectcode.time4u.server.web.gwt.webclient.server.dao.IRevisionGeneratorCreatorDao;
 
 @Repository("revisionGeneratorCreatorDao")
 public class JpaRevisionGeneratorCreatorDao extends JpaDaoBase implements IRevisionGeneratorCreatorDao {

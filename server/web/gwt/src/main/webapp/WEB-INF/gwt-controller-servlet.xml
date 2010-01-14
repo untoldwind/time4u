@@ -10,7 +10,7 @@
                            http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<context:component-scan
-		base-package="de.objectcode.time4u.server.web.gwt.main.server" />
+		base-package="de.objectcode.time4u.server.web.gwt.webclient.server" />
 	<context:component-scan
 		base-package="de.objectcode.time4u.server.web.gwt.login.server" />
 

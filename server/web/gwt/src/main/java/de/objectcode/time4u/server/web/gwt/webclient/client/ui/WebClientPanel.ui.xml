@@ -3,17 +3,17 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:twc="urn:import:de.objectcode.time4u.server.web.gwt.webclient.client.ui"
 	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
 
-	<g:SplitLayoutPanel ui:field="mainPanel">
+	<g:SplitLayoutPanel>
 		<g:west size="300">
-			<g:SplitLayoutPanel>
+			<g:SplitLayoutPanel ui:field="westPanel">
 				<g:north size="200">
-					<twc:ProjectTree />
+					<twc:ProjectTree ui:field="projectTree"/>
 				</g:north>
 				<g:center>
-					<twc:TaskList />
+					<twc:TaskList ui:field="taskList"/>
 				</g:center>
 				<g:south size="200">
-					<twc:CalendarView />
+					<twc:CalendarView ui:field="calendarView"/>
 				</g:south>
 			</g:SplitLayoutPanel>
 		</g:west>

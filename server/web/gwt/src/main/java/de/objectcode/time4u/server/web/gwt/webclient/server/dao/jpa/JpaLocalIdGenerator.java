@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.main.server.dao.jpa;
+package de.objectcode.time4u.server.web.gwt.webclient.server.dao.jpa;
 
 import java.net.InetAddress;
 import java.util.Collections;
@@ -19,7 +19,7 @@ import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.ClientEntity;
 import de.objectcode.time4u.server.entities.revision.ILocalIdGenerator;
 import de.objectcode.time4u.server.entities.revision.LocalIdEntity;
-import de.objectcode.time4u.server.web.gwt.main.server.dao.ILocalIdDao;
+import de.objectcode.time4u.server.web.gwt.webclient.server.dao.ILocalIdDao;
 
 @Repository("localIdGenerator")
 public class JpaLocalIdGenerator extends JpaDaoBase implements

@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.main.server;
+package de.objectcode.time4u.server.web.gwt.webclient.server;
 
 import java.util.List;
 
@@ -10,10 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import de.objectcode.time4u.server.web.gwt.main.server.dao.ITaskDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.GwtController;
 import de.objectcode.time4u.server.web.gwt.webclient.client.service.Task;
 import de.objectcode.time4u.server.web.gwt.webclient.client.service.TaskService;
+import de.objectcode.time4u.server.web.gwt.webclient.server.dao.ITaskDao;
 
 @Controller
 @RequestMapping({"/MainUI/task.service"})

@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.main.server.dao.jpa;
+package de.objectcode.time4u.server.web.gwt.webclient.server.dao.jpa;
 
 import javax.persistence.Query;
 
@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import de.objectcode.time4u.server.api.data.EntityType;
 import de.objectcode.time4u.server.entities.revision.LocalIdEntity;
-import de.objectcode.time4u.server.web.gwt.main.server.dao.ILocalIdDao;
+import de.objectcode.time4u.server.web.gwt.webclient.server.dao.ILocalIdDao;
 
 @Repository("localIdDao")
 public class JpaLocalIdDao extends JpaDaoBase implements ILocalIdDao,
