@@ -5,18 +5,26 @@ import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ContextMenuEvent;
+import com.google.gwt.event.dom.client.ContextMenuHandler;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.event.dom.client.HasContextMenuHandlers;
+import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 
 public class DataTable<RowClass> extends ExtendedFlexTable implements
-		HasSelectionHandlers<RowClass> {
+		HasSelectionHandlers<RowClass>, HasDoubleClickHandlers,
+		HasContextMenuHandlers {
 
 	DataTableColumn<RowClass>[] columns;
 	List<RowClass> rows = new ArrayList<RowClass>();
 	RowClass currentSelection;
 	int currentSelectionRowIndex;
+	ContextMenu contextMenu;
 
 	public DataTable(DataTableColumn<RowClass>... columns) {
 		this(true, columns);
@@ -25,11 +33,12 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 	public DataTable(boolean showHeader, DataTableColumn<RowClass>... columns) {
 		this.columns = columns;
 
-		if ( showHeader) {
-		super.setHeaders(columns);
-		
-		setHeaderStyleName("utils-dataTable-header");}
-		
+		if (showHeader) {
+			super.setHeaders(columns);
+
+			setHeaderStyleName("utils-dataTable-header");
+		}
+
 		addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				Cell cell = getCellForEvent(event);
@@ -78,6 +87,30 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 		return addHandler(handler, SelectionEvent.getType());
 	}
 
+	public HandlerRegistration addContextMenuHandler(ContextMenuHandler handler) {
+		return addDomHandler(handler, ContextMenuEvent.getType());
+	}
+
+	public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
+		return addDomHandler(handler, DoubleClickEvent.getType());
+	}
+
+	public void setContextMenu(ContextMenu menu) {
+		if ( this.contextMenu == null ) {
+			contextMenu = menu;
+			
+			addContextMenuHandler(new ContextMenuHandler() {			
+				public void onContextMenu(ContextMenuEvent event) {
+					event.preventDefault();
+					final int x = event.getNativeEvent().getClientX();
+					final int y = event.getNativeEvent().getClientY();
+
+					contextMenu.setPopupPosition(x, y);
+					contextMenu.show();
+				}
+			});
+		}
+	}
 	private void onSelection(RowClass row, int rowIndex, boolean fireEvents) {
 		if (currentSelection != null) {
 			getRowFormatter().setStyleName(currentSelectionRowIndex,
