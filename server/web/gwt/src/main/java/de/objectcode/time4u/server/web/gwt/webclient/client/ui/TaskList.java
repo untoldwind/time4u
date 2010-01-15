@@ -7,11 +7,13 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.ContextMenu;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.DataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLabel;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.TextDataTableColumn;
@@ -101,6 +103,21 @@ public class TaskList extends Composite implements ISelectionChangeListener {
 					return row.getName();
 				}
 			});
+			
+			ContextMenu contextMenu = new ContextMenu();
+			
+			contextMenu.addItem("New Task", new Command() {
+				public void execute() {
+					System.out.println(">>> new Task");
+				}
+			});
+			contextMenu.addItem("Edit Task", new Command() {
+				public void execute() {
+					System.out.println(">>> edit Task");
+				}
+			});
+			
+			setContextMenu(contextMenu);
 		}
 	}
 }

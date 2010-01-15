@@ -12,14 +12,16 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
 
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.ContextMenu;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.ExtendedTree;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLabel;
 import de.objectcode.time4u.server.web.gwt.webclient.client.SelectionManager;
 import de.objectcode.time4u.server.web.gwt.webclient.client.WebClientBundle;
@@ -39,7 +41,7 @@ public class ProjectTree extends Composite {
 	WebClientBundle resources = WebClientBundle.INSTANCE;
 
 	@UiField
-	Tree projectTree;
+	ExtendedTree projectTree;
 
 	@UiField
 	PushButton newProject;
@@ -61,6 +63,21 @@ public class ProjectTree extends Composite {
 		projectTree.addItem(new LoadingLabel());
 		projectTree.setAnimationEnabled(true);
 
+		ContextMenu contextMenu = new ContextMenu();
+		
+		contextMenu.addItem("New Project", new Command() {
+			public void execute() {
+				System.out.println(">>> new Project");
+			}
+		});
+		contextMenu.addItem("Edit Project", new Command() {
+			public void execute() {
+				System.out.println(">>> edit Project");
+			}
+		});
+		
+		projectTree.setContextMenu(contextMenu);
+		
 		refresh();
 	}
 
