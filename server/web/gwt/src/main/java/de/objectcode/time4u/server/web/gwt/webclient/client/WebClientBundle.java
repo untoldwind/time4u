@@ -24,4 +24,8 @@ public interface WebClientBundle extends ClientBundle {
 	ImageResource editWorkItem();
 	
 	ImageResource deleteWorkItem();
+	
+	ImageResource punchedInBig();
+	
+	ImageResource punchedOutBig();
 }
