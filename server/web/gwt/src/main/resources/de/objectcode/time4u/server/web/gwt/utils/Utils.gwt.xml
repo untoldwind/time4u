@@ -3,5 +3,6 @@
 <module>
 	<stylesheet src="utils/themes/standard/standard.css"/>
 	<inherits name="com.google.gwt.user.User" />
+	<inherits name="com.google.gwt.user.datepicker.DatePicker" />
 	<source path="client"/>
 </module>

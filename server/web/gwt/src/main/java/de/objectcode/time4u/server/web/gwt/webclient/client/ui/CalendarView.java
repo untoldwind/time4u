@@ -43,7 +43,7 @@ public class CalendarView extends Composite {
 				onCalendarShowRange(event);
 			}
 		});
-
+		
 		updateCalendar(calendar.getFirstDate(), calendar.getLastDate());
 	}
 
