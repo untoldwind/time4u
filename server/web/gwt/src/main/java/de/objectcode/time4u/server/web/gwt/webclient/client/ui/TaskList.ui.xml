@@ -1,6 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:wc="urn:import:de.objectcode.time4u.server.web.gwt.webclient.client.ui"
 	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
 
 	<ui:with field="resources"
@@ -22,7 +23,7 @@
 		</g:north>
 		<g:center>
 			<g:ScrollPanel>
-				<tu:DataTable ui:field="taskList" width="100%" />
+				<wc:TaskList.TaskDataTable ui:field="taskList" width="100%" />
 			</g:ScrollPanel>
 		</g:center>
 	</g:DockLayoutPanel>

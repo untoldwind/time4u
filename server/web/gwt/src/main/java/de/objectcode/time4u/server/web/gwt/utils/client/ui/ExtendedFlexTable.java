@@ -26,7 +26,7 @@ public class ExtendedFlexTable extends FlexTable {
 		for (int i = 0; i < headers.length; i++) {
 			TableHeader column = headers[i];
 
-			setHeaderWidget(i, column.getWidth(), new Label(column.getText()));
+			setHeaderWidget(i, column.getWidth(), new Label(column.getHeader()));
 		}
 
 	}

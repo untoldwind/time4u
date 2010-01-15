@@ -10,9 +10,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.DataTable;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.DataTableRow;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLabel;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.TableHeader;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.TextDataTableColumn;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.TimeBox;
 import de.objectcode.time4u.server.web.gwt.webclient.client.ISelectionChangeListener;
 import de.objectcode.time4u.server.web.gwt.webclient.client.SelectionChangedEvent;
@@ -38,16 +37,13 @@ public class WorkItemList extends Composite implements ISelectionChangeListener 
 	WebClientBundle resources = WebClientBundle.INSTANCE;
 
 	@UiField
-	DataTable workItemList;
+	WorkItemDataTable workItemList;
 
 	public WorkItemList() {
 		initWidget(uiBinder.createAndBindUi(this));
 
 		SelectionManager.INSTANCE.addSelectionChangeListener(this);
 
-		workItemList.setHeaders(new TableHeader("Begin", "4em"),
-				new TableHeader("End", "4em"), new TableHeader("Project", "20%"),
-				new TableHeader("Task", "20%"), new TableHeader("Comment"));
 	}
 
 	public void selectionChanged(SelectionChangedEvent event) {
@@ -63,12 +59,7 @@ public class WorkItemList extends Composite implements ISelectionChangeListener 
 
 					if (result != null)
 						for (WorkItem workItem : result.getWorkItems()) {
-							workItemList.addRow(new DataTableRow(workItem,
-									new TimeBox(workItem.getBegin()),
-									new TimeBox(workItem.getEnd()), workItem
-											.getProject().getName(), workItem
-											.getTask().getName(), workItem
-											.getComment()));
+							workItemList.addRow(workItem);
 						}
 				}
 
@@ -78,4 +69,36 @@ public class WorkItemList extends Composite implements ISelectionChangeListener 
 		}
 	}
 
+	public static class WorkItemDataTable extends DataTable<WorkItem> {
+		@SuppressWarnings("unchecked")
+		public WorkItemDataTable() {
+			super(new TextDataTableColumn<WorkItem>("Begin", "4em") {
+				@Override
+				public String getCellText(WorkItem row) {
+					return TimeBox.TimeFormat.format(row.getBegin());
+				}
+			}, new TextDataTableColumn<WorkItem>("End", "4em") {
+				@Override
+				public String getCellText(WorkItem row) {
+					return TimeBox.TimeFormat.format(row.getEnd());
+				}
+			}, new TextDataTableColumn<WorkItem>("Project", "20%") {
+				@Override
+				public String getCellText(WorkItem row) {
+					return row.getProject().getName();
+				}
+			}, new TextDataTableColumn<WorkItem>("Task", "20%") {
+				@Override
+				public String getCellText(WorkItem row) {
+					return row.getTask().getName();
+				}
+			}, new TextDataTableColumn<WorkItem>("Comment", null) {
+				@Override
+				public String getCellText(WorkItem row) {
+					return row.getComment();
+				}
+			});
+		}
+
+	}
 }

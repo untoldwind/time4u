@@ -1,20 +1,20 @@
 package de.objectcode.time4u.server.web.gwt.utils.client.ui;
 
 public class TableHeader {
-	String text;
+	String header;
 	String width;	
 
-	public TableHeader(String text) {
-		this.text = text;
+	public TableHeader(String header) {
+		this.header = header;
 	}
 
-	public TableHeader(String text, String width) {
-		this.text = text;
+	public TableHeader(String header, String width) {
+		this.header = header;
 		this.width = width;
 	}
 
-	public String getText() {
-		return text;
+	public String getHeader() {
+		return header;
 	}
 
 	public String getWidth() {

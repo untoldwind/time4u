@@ -13,8 +13,8 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.DataTable;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.DataTableRow;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLabel;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.TextDataTableColumn;
 import de.objectcode.time4u.server.web.gwt.webclient.client.ISelectionChangeListener;
 import de.objectcode.time4u.server.web.gwt.webclient.client.SelectionChangedEvent;
 import de.objectcode.time4u.server.web.gwt.webclient.client.SelectionManager;
@@ -38,14 +38,14 @@ public class TaskList extends Composite implements ISelectionChangeListener {
 	WebClientBundle resources = WebClientBundle.INSTANCE;
 
 	@UiField
-	DataTable taskList;
+	TaskDataTable taskList;
 
 	@UiField
 	PushButton newTask;
-	
+
 	@UiField
 	PushButton editTask;
-	
+
 	@UiField
 	PushButton deleteTask;
 
@@ -71,8 +71,7 @@ public class TaskList extends Composite implements ISelectionChangeListener {
 								taskList.removeAllRows();
 
 								for (Task task : result) {
-									taskList.addRow(new DataTableRow(task, task
-											.getName()));
+									taskList.addRow(task);
 								}
 							}
 
@@ -84,12 +83,24 @@ public class TaskList extends Composite implements ISelectionChangeListener {
 	}
 
 	@UiHandler("taskList")
-	void onTableSelection(SelectionEvent<DataTableRow> event) {
-		DataTableRow row = event.getSelectedItem();
+	void onTableSelection(SelectionEvent<Task> event) {
+		Task row = event.getSelectedItem();
 
 		if (row != null)
-			SelectionManager.INSTANCE.selectTask((Task) row.getUserObject());
+			SelectionManager.INSTANCE.selectTask(row);
 		else
 			SelectionManager.INSTANCE.selectTask(null);
+	}
+
+	public static class TaskDataTable extends DataTable<Task> {
+		@SuppressWarnings("unchecked")
+		public TaskDataTable() {
+			super(false, new TextDataTableColumn<Task>("Task", "100%") {
+				@Override
+				public String getCellText(Task row) {
+					return row.getName();
+				}
+			});
+		}
 	}
 }
