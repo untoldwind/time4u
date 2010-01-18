@@ -71,8 +71,8 @@ public class MainPage implements EntryPoint {
 			}
 		});
 		
-//		AdminModule.showAccountAdminPanel(mainPanel);
-		WebClientModule.showWebClientPanel(mainPanel);
+		AdminModule.showAccountAdminPanel(mainPanel);
+//		WebClientModule.showWebClientPanel(mainPanel);
 		
 		RootLayoutPanel.get().add(mainPage);
 	}

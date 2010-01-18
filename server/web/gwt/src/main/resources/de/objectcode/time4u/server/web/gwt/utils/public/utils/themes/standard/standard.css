@@ -99,3 +99,30 @@
 	background: url(images/corner.png) no-repeat -5px -41px;
 	-background: url(images/corner_ie6.png) no-repeat -5px -41px;
 }
+
+.utils-dataPager {
+	background: #E3E8F3 url(images/hborder.png) repeat-x scroll 0 -2003px
+}
+
+a.utils-dataPager-page, 
+a.utils-dataPager-page:visited 
+{
+    color: #666666;
+    text-decoration: none;
+}
+
+a.utils-dataPager-page:hover
+{
+    color: black;
+    text-decoration: none;
+}
+
+a.utils-dataPager-currentPage,
+a.utils-dataPager-currentPage:visited,
+a.utils-dataPager-currentPage:hover
+{
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+}
+
