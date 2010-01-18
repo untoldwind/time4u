@@ -66,7 +66,8 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 			if (column.isWidget()) {
 				WidgetDataTableColumn<RowClass> widgetColumn = (WidgetDataTableColumn<RowClass>) column;
 
-				setWidget(rowNum, i, widgetColumn.createCellWidget(row));
+				setWidget(rowNum, i, widgetColumn.createCellWidget());
+				widgetColumn.updateCellWidget(getWidget(rowNum, i), row);
 			} else {
 				TextDataTableColumn<RowClass> textColumn = (TextDataTableColumn<RowClass>) column;
 
@@ -74,6 +75,71 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 			}
 		}
 		getRowFormatter().setStyleName(rowNum, "utils-dataTable-row");
+		getRowFormatter().addStyleName(
+				rowNum,
+				rowNum % 2 == 0 ? "utils-dataTable-row-even"
+						: "utils-dataTable-row-odd");
+	}
+
+	public void setFixedRowCount(int rowCount) {
+		rows.clear();
+
+		for (int rowNum = 0; rowNum < rowCount; rowNum++) {
+			rows.add(null);
+
+			for (int i = 0; i < columns.length; i++) {
+				DataTableColumn<RowClass> column = columns[i];
+
+				if (column.isWidget()) {
+					WidgetDataTableColumn<RowClass> widgetColumn = (WidgetDataTableColumn<RowClass>) column;
+
+					setWidget(rowNum, i, widgetColumn.createCellWidget());
+				} else {
+					setText(rowNum, i, "");
+				}
+			}
+			getRowFormatter().setStyleName(rowNum, "utils-dataTable-row-empty");
+		}
+	}
+
+	public void setRow(int rowNum, RowClass row) {
+		rows.set(rowNum, row);
+
+		currentSelectionRowIndex = -1;
+
+		for (int i = 0; i < columns.length; i++) {
+			DataTableColumn<RowClass> column = columns[i];
+
+			if (column.isWidget()) {
+				WidgetDataTableColumn<RowClass> widgetColumn = (WidgetDataTableColumn<RowClass>) column;
+
+				widgetColumn.updateCellWidget(getWidget(rowNum, i), row);
+			} else {
+				if (row != null) {
+					TextDataTableColumn<RowClass> textColumn = (TextDataTableColumn<RowClass>) column;
+
+					setText(rowNum, i, textColumn.getCellText(row));
+				} else {
+					setText(rowNum, i, "");
+				}
+			}
+		}
+		getRowFormatter().setStyleName(
+				rowNum,
+				row != null ? "utils-dataTable-row"
+						: "utils-dataTable-row-empty");
+		if (row != null) {
+			if (row.equals(currentSelection)) {
+				getRowFormatter().setStyleName(rowNum,
+						"utils-dataTable-row-selected");
+				currentSelectionRowIndex = rowNum;
+			} else {
+				getRowFormatter().addStyleName(
+						rowNum,
+						rowNum % 2 == 0 ? "utils-dataTable-row-even"
+								: "utils-dataTable-row-odd");
+			}
+		}
 	}
 
 	@Override
@@ -96,10 +162,10 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 	}
 
 	public void setContextMenu(ContextMenu menu) {
-		if ( this.contextMenu == null ) {
+		if (this.contextMenu == null) {
 			contextMenu = menu;
-			
-			addContextMenuHandler(new ContextMenuHandler() {			
+
+			addContextMenuHandler(new ContextMenuHandler() {
 				public void onContextMenu(ContextMenuEvent event) {
 					event.preventDefault();
 					final int x = event.getNativeEvent().getClientX();
@@ -111,10 +177,16 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 			});
 		}
 	}
+
 	private void onSelection(RowClass row, int rowIndex, boolean fireEvents) {
-		if (currentSelection != null) {
+		if (currentSelection != null && currentSelectionRowIndex >= 0) {
 			getRowFormatter().setStyleName(currentSelectionRowIndex,
 					"utils-dataTable-row");
+			getRowFormatter()
+					.addStyleName(
+							currentSelectionRowIndex,
+							currentSelectionRowIndex % 2 == 0 ? "utils-dataTable-row-even"
+									: "utils-dataTable-row-odd");
 		}
 		currentSelection = row;
 		currentSelectionRowIndex = rowIndex;

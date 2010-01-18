@@ -14,14 +14,17 @@ public class WidgetDataTableColumn<RowClass> extends DataTableColumn<RowClass> {
 		return false;
 	}
 
-	public Widget createCellWidget(RowClass row) {
-		return new Label(row.toString());
+	public Widget createCellWidget() {
+		return new Label();
 	}
 
 	public void updateCellWidget(Widget widget, RowClass row) {
 		Label label = (Label) widget;
 
-		label.setText(row.toString());
+		if (row != null)
+			label.setText(row.toString());
+		else
+			label.setText("");
 	}
 
 }

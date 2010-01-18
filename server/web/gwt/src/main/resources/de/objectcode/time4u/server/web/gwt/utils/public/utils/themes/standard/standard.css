@@ -5,11 +5,26 @@
 
 .utils-dataTable-row {
 	cursor: pointer;
+	height: 1.5em;
+}
+
+.utils-dataTable-row-odd {
+	background: #EEEEEE;
+}
+
+.utils-dataTable-row-even {
+	background: white;
 }
 
 .utils-dataTable-row-selected {
 	cursor: pointer;
+	height: 1.5em;
 	background: #93c2f1 url(images/hborder.png) repeat-x 0px -1463px;
+}
+
+.utils-dataTable-row-empty {
+	cursor: default;
+	height: 1.5em;
 }
 
 .utils-loadingLabel {

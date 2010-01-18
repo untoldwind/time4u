@@ -14,8 +14,7 @@ import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonServi
 import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccountPage;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageEvent;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.DataPager;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.DataTable;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.PagedDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.TextDataTableColumn;
 
 public class AccountAdminPanel extends Composite {
@@ -30,9 +29,6 @@ public class AccountAdminPanel extends Composite {
 	@UiField
 	UserAccountTable userAccounts;
 
-	@UiField
-	DataPager userAccountsPager;
-
 	private final AdminPersonServiceAsync adminPersonService = GWT
 			.create(AdminPersonService.class);
 
@@ -42,12 +38,7 @@ public class AccountAdminPanel extends Composite {
 		adminPersonService.getUserAccounts(0, 10,
 				new AsyncCallback<UserAccountPage>() {
 					public void onSuccess(UserAccountPage result) {
-						userAccounts.removeAllRows();
-
-						for (UserAccount userAccount : result.getPageData()) {
-							userAccounts.addRow(userAccount);
-						}
-						userAccountsPager.setDataPage(result);
+						userAccounts.setDataPage(result);
 					}
 
 					public void onFailure(Throwable caught) {
@@ -56,17 +47,12 @@ public class AccountAdminPanel extends Composite {
 				});
 	}
 
-	@UiHandler("userAccountsPager")
+	@UiHandler("userAccounts")
 	protected void onDataPage(DataPageEvent event) {
 		adminPersonService.getUserAccounts(event.getPageNumber(), 10,
 				new AsyncCallback<UserAccountPage>() {
 					public void onSuccess(UserAccountPage result) {
-						userAccounts.removeAllRows();
-
-						for (UserAccount userAccount : result.getPageData()) {
-							userAccounts.addRow(userAccount);
-						}
-						userAccountsPager.setDataPage(result);
+						userAccounts.setDataPage(result);
 					}
 
 					public void onFailure(Throwable caught) {
@@ -75,22 +61,21 @@ public class AccountAdminPanel extends Composite {
 				});
 	}
 
-	public static class UserAccountTable extends DataTable<UserAccount> {
+	public static class UserAccountTable extends PagedDataTable<UserAccount> {
 
 		@SuppressWarnings("unchecked")
 		public UserAccountTable() {
-			super(true,
-					new TextDataTableColumn<UserAccount>("UserId", "100em") {
-						@Override
-						public String getCellText(final UserAccount row) {
-							return row.getUserId();
-						}
-					}, new TextDataTableColumn<UserAccount>("EMail", "100em") {
-						@Override
-						public String getCellText(final UserAccount row) {
-							return row.getPerson().getEmail();
-						}
-					});
+			super(10, new TextDataTableColumn<UserAccount>("UserId", "100em") {
+				@Override
+				public String getCellText(final UserAccount row) {
+					return row.getUserId();
+				}
+			}, new TextDataTableColumn<UserAccount>("EMail", "100em") {
+				@Override
+				public String getCellText(final UserAccount row) {
+					return row.getPerson().getEmail();
+				}
+			});
 		}
 
 	}

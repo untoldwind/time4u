@@ -15,7 +15,7 @@ import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageHandler;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.HasDataPageHandlers;
 import de.objectcode.time4u.server.web.gwt.utils.client.service.IDataPage;
 
-public class DataPager extends Composite implements HasDataPageHandlers{
+public class DataPager extends Composite implements HasDataPageHandlers {
 	private FlexTable controlTable = new FlexTable();
 	private PushButton leftButton;
 	private PushButton rightButton;
@@ -30,14 +30,28 @@ public class DataPager extends Composite implements HasDataPageHandlers{
 
 		leftButton = new PushButton(new Image(UtilsClientBundle.INSTANCE
 				.bulletLeft()));
+		leftButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				if (currentPage > 0) {
+					DataPageEvent.fire(DataPager.this, currentPage - 1);
+				}
+			}
+		});
+
 		rightButton = new PushButton(new Image(UtilsClientBundle.INSTANCE
 				.bulletRight()));
+		rightButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				if (currentPage < numberOfPages - 1) {
+					DataPageEvent.fire(DataPager.this, currentPage + 1);
+				}
+			}
+		});
 
 		updateControls(true);
 	}
 
-	public HandlerRegistration addDataPageHandler(
-			DataPageHandler handler) {
+	public HandlerRegistration addDataPageHandler(DataPageHandler handler) {
 		return addHandler(handler, DataPageEvent.getType());
 	}
 
@@ -51,7 +65,7 @@ public class DataPager extends Composite implements HasDataPageHandlers{
 					/ dataPage.getPageSize() + 1;
 
 		currentPage = dataPage.getPageNumber();
-		
+
 		if (newNumberOfPages != numberOfPages) {
 			numberOfPages = newNumberOfPages;
 			updateControls(true);
@@ -70,7 +84,7 @@ public class DataPager extends Composite implements HasDataPageHandlers{
 				Anchor pageLink = new Anchor(String.valueOf(i + 1), "");
 
 				controlTable.setWidget(0, i + 1, pageLink);
-				
+
 				pageLink.addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
 						event.preventDefault();
@@ -82,8 +96,9 @@ public class DataPager extends Composite implements HasDataPageHandlers{
 			controlTable.setWidget(0, numberOfPages + 1, rightButton);
 		}
 		for (int i = 0; i < numberOfPages; i++) {
-			controlTable.getWidget(0, i + 1)
-					.setStyleName(i == currentPage ? "utils-dataPager-currentPage" : "utils-dataPager-page");
+			controlTable.getWidget(0, i + 1).setStyleName(
+					i == currentPage ? "utils-dataPager-currentPage"
+							: "utils-dataPager-page");
 		}
 	}
 }

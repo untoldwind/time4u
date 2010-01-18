@@ -22,4 +22,28 @@ public class UserAccount implements IsSerializable {
 		return person;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+
+		UserAccount other = (UserAccount) obj;
+
+		if (userId == null) {
+			if (other.userId != null)
+				return false;
+		} else if (!userId.equals(other.userId))
+			return false;
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		return (userId == null) ? 0 : userId.hashCode();
+	}
+
 }

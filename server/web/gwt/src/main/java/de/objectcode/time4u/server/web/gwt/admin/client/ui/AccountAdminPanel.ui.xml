@@ -6,15 +6,8 @@
 
 	<g:DockLayoutPanel>
 		<g:center>
-			<g:DockLayoutPanel>
-				<g:center>
-					<ta:AccountAdminPanel.UserAccountTable
-						ui:field="userAccounts" />
-				</g:center>
-				<g:south size="30">
-					<tu:DataPager ui:field="userAccountsPager"/>
-				</g:south>
-			</g:DockLayoutPanel>
+			<ta:AccountAdminPanel.UserAccountTable
+				ui:field="userAccounts" />
 		</g:center>
 	</g:DockLayoutPanel>
 </ui:UiBinder>
