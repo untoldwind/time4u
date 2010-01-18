@@ -12,12 +12,6 @@
 	<packaging>war</packaging>
 	<dependencies>
 		<dependency>
-			<groupId>org.gwt.advanced</groupId>
-			<artifactId>advanced-components</artifactId>
-			<version>1.5.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>de.objectcode.time4u.server</groupId>
 			<artifactId>time4u-server-entities</artifactId>
 			<version>${pom.version}</version>
@@ -220,7 +214,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>1.2-SNAPSHOT</version>
+				<version>1.2</version>
 				<executions>
 					<execution>
 						<goals>
@@ -245,7 +239,7 @@
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>gwt-maven-plugin</artifactId>
-						<version>1.2-SNAPSHOT</version>
+						<version>1.2</version>
 						<configuration>
 							<skip>true</skip>
 						</configuration>

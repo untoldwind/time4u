@@ -1,93 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0">
-<channel>
-<generator>Easy Feed Editor</generator>
-<title>Advanced GWT Components - Project News</title>
-<description>This RSS feed contains information about latest project changes and released versions.</description>
-<link>http://advanced-gwt.sourceforge.net</link>
-<language>en</language>
-<pubDate>Tue, 05 Jan 2010 15:24:55 GMT</pubDate>
-
-<item>
-<title>Advanced GWT Components 1.5.0 Released</title>
-<description><![CDATA[<P>&nbsp;The&nbsp;new version&nbsp;of the popular GWT library has been released on this week.</P><P>Release includes sevearal bug fixes and totally reworked rendering for widgets with a drop down list (ComboBox and SuggestionBox).</P><P>Now both components allow configuring following rendering options:</P><UL>  <LI>number of items displayed by default</LI>  <LI>index of the first item in the displayed list</LI>  <LI>lazy rendering that draws items on list scroll</LI></UL><P>The new version is available for download. Additional information about the library and docs can be found on <A href="http://advanced-gwt.sourceforge.net/">the offical site of the project</A>.</P>]]></description>
-<author>Sergey Skladchikov</author>
-<pubDate>Tue, 05 Jan 2010 15:24:49 GMT</pubDate>
-</item>
-
-<item>
-<title>Advanced GWT Components 1.4.9 Released</title>
-<description><![CDATA[
-<P>Beta version of the next library release has been published.</P>
-<P>Some critical bug fixes were included as well as new features like data model
-events support in text and button components.</P>
-<P>This feature is a part of the main guide of MVP architecture approach and the next step
-to pure MVP solution.</P>
-<P>The demo application was recompiled under GWT 1.7.1 and available by this link:
-<A
-href="http://advanced-gwt.sourceforge.net/demo">http://advanced-gwt.sourceforge.net/demo</A></P>
-<P>&nbsp;</P>]]></description>
-<author>Sergey Skladchikov</author>
-<pubDate>18 Nov 2009 23:00:00 GMT</pubDate>
-</item>
-
-<item>
-<title>Advanced GWT Components 1.4.8 Released</title>
-<description><![CDATA[
-<P>&nbsp;The new version of the library has been released on this week.</P>
-<P>Build 1.4.8 include numerous bug fixes related to incorrect wokr of the 
-TreeGrid and TreeGridDataModel.</P>
-<P>Another important change is keyboard events support for Text &amp; Button 
-components: ComboBox and SuggestionBox. Now using the arrow keys, enter, and 
-escape buttons you can select a preferable item from the drop down lists.</P>
-<P>See more details: <A 
-href="http://advanced-gwt.sourceforge.net/faq/combo-box-faq.html#does_support_keyboard">http://advanced-gwt.sourceforge.net/faq/combo-box-faq.html#does_support_keyboard</A></P>
-<P>The demo application was recompiled under GWT 1.7 and available by this link: 
-<A 
-href="http://advanced-gwt.sourceforge.net/demo">http://advanced-gwt.sourceforge.net/demo</A></P>
-<P>&nbsp;</P>]]></description>
-<author>Sergey Skladchikov</author>
-<pubDate>29 Sep 2009 00:00:00 GMT</pubDate>
-</item>
-
-<item>
-<title>Advanced GWT Components 1.4.7 Released</title>
-<description><![CDATA[<p>The new version of library has been released on this week.</p><p style="text-align:left;"><img align="top" alt="Advanced GWT Components - Mupltiple row selection" src="http://advanced-gwt.sourceforge.net/images/rss4.gif" /></p><p>This build includes:</p><p>1. Multiple row selection mode support. Now users can select several rows in a grid and apply any available operations using the toolbar. </p><p>2. Data model events listening. In this version complete MVP approach was finished. Listening to data models component views can apply changes and it doesn't require developer efforts anymore. </p><p>3. Numerous bug fixes and improvements were done in order to satisfy developer who is interested in the library. Advanced GWT Components became better and works faster.</p><p>Download the library right now to make your web application much better. </p>]]></description>
-<link>http://advanced-gwt.sourceforge.net/</link>
-<guid  isPermaLink="false">B0E00D3C-665F-4FE2-82AE-28EDA91D4441</guid>
-<pubDate>29 Jun 2009 00:00:00 GMT</pubDate>
-</item>
-
-<item>
-<title>Advanced GWT Components 1.4.6 Released</title>
-<description><![CDATA[<p>The new version of library has been released.</p><p style="text-align:left;"><img align="top" alt="Advanced GWT Components - New Demo" src="http://advanced-gwt.sourceforge.net/images/rss3.png" /></p><p>This revision includes:</p><p>1. Update demo application. Now it displays the source code of showcases. This approach simplifies understanding of API.</p><p>2. Basic borders API and AdvancedTabPanel were implemented.</p><p>3. Numerous bug fixes and improvements were done by users requets posted into the support forum or a bag tracking system.</p>]]></description>
-<link>http://advanced-gwt.sourceforge.net/</link>
-<guid  isPermaLink="false">B0E00D3C-665F-4FE2-82AE-28EDA91D4442</guid>
-<pubDate>12 Mar 2009 00:00:00 GMT</pubDate>
-</item>
-
-<item>
-<title>Advanced GWT Components Tutorial Created</title>
-<description><![CDATA[<p>The new project tutorial was created on the last week.</p><p style="text-align:left;"><img align="top" alt="Advanced GWT Components - Editable Grid" src="http://advanced-gwt.sourceforge.net/images/rss2.jpg" /></p><p>Now it much simpler to use the library and this document gives some additional explanation regarding architecture and core API.</p><p>Visit the tutorial page to know more about it: <a href="http://advanced-gwt.sourceforge.net/tutorial/index.html">http://advanced-gwt.sourceforge.net/tutorial/index.html</a></p>]]></description>
-<link>http://advanced-gwt.sourceforge.net/</link>
-<guid  isPermaLink="false">B0E00D3C-665F-4FE2-82AE-28EDA91D4445</guid>
-<pubDate>05 Jan 2009 00:00:00 GMT</pubDate>
-</item>
-
-<item>
-<title>Demo application has been recompiled with GWT 1.5.3</title>
-<description><![CDATA[<p>The demo application has been recompiled. Now it's absolutely obvious that Advanced GWT Components is 100% compatible with latest GWT versions and doesn't cause any troubles.<br/>Open <a href="http://advanced-gwt.sourceforge.net/demo/index.html">live demo page</a> to make sure it works.</p>]]></description>
-<link>http://advanced-gwt.sourceforge.net/</link>
-<guid  isPermaLink="false">B0E00D3C-665F-4FE2-82AE-28EDA91D4444</guid>
-<pubDate>10 Dec 2008 00:00:00 GMT</pubDate>
-</item>
-
-<item>
-<title>Advanced GWT Components 1.4.5 Released</title>
-<description><![CDATA[<p>The new version of library has been released.</p><p style="text-align:left;"><img align="top" alt="Advanced GWT Components - Editable Grid" src="http://advanced-gwt.sourceforge.net/images/rss.jpg" /></p><p>This revision includes:</p><p>1. Improvements in scrolling / column resizing features. Now your web application will look like desktop one.</p><p>2. Default theme was reworked to exclude ugly yellow colors</p><p>3. Project site was totally reworked to make it more comfortable for getting support and technical information about the library. Visit us at <a href="http://advanced-gwt.sourceforge.net">http://advanced-gwt.sourceforge.net</a> to know more.</p><p>Advanced GWT Components library is <span style="font-weight:bold;">absolutely free</span> and availbale for downloads right now.</p>]]></description>
-<link>http://advanced-gwt.sourceforge.net/</link>
-<guid  isPermaLink="false">B0E00D3C-665F-4FE2-82AE-28EDA91D4443</guid>
-<pubDate>8 Dec 2008 00:00:00 GMT</pubDate>
-</item>
-</channel>
-</rss>

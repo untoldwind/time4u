@@ -13,7 +13,7 @@ import de.objectcode.time4u.server.web.gwt.utils.client.UtilsClientBundle;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageEvent;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageHandler;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.HasDataPageHandlers;
-import de.objectcode.time4u.server.web.gwt.utils.client.service.DataPage;
+import de.objectcode.time4u.server.web.gwt.utils.client.service.IDataPage;
 
 public class DataPager extends Composite implements HasDataPageHandlers{
 	private FlexTable controlTable = new FlexTable();
@@ -41,7 +41,7 @@ public class DataPager extends Composite implements HasDataPageHandlers{
 		return addHandler(handler, DataPageEvent.getType());
 	}
 
-	public void setDataPage(DataPage<?> dataPage) {
+	public void setDataPage(IDataPage<?> dataPage) {
 		int newNumberOfPages;
 
 		if (dataPage.getTotalNumber() <= 0)
