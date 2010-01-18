@@ -1,6 +1,7 @@
 package de.objectcode.time4u.server.web.gwt.admin.client.ui;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -29,6 +30,9 @@ public class AccountAdminPanel extends Composite {
 	@UiField
 	UserAccountTable userAccounts;
 
+	@UiField
+	AccountDetailPanel userAccountDetail;
+	
 	private final AdminPersonServiceAsync adminPersonService = GWT
 			.create(AdminPersonService.class);
 
@@ -47,6 +51,13 @@ public class AccountAdminPanel extends Composite {
 				});
 	}
 
+	@UiHandler("userAccounts")
+	protected void onSelection(SelectionEvent<UserAccount> event)
+	{
+		userAccountDetail.setVisible(true);
+		userAccountDetail.setUserAccount(event.getSelectedItem());
+	}
+	
 	@UiHandler("userAccounts")
 	protected void onDataPage(DataPageEvent event) {
 		adminPersonService.getUserAccounts(event.getPageNumber(), 10,
