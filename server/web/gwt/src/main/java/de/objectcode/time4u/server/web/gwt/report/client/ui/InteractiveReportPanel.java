@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.DataTable;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.TableHeader;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.TextDataTableColumn;
 
 public class InteractiveReportPanel extends Composite {
 	private static InteractiveReportPanelUiBinder uiBinder = GWT
@@ -18,11 +18,23 @@ public class InteractiveReportPanel extends Composite {
 	}
 
 	@UiField
-	DataTable reportTable;
+	InteractiveReportTable reportTable;
 	
 	public InteractiveReportPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
-		
-		reportTable.setHeaders(new TableHeader("Person"), new TableHeader("Project1"), new TableHeader("Project2"));
+	}
+	
+	public static class InteractiveReportTable extends DataTable<ReportRow> {
+
+		@SuppressWarnings("unchecked")
+		public InteractiveReportTable() {
+			super(true, new TextDataTableColumn<ReportRow>("Person", null) {
+			}, new TextDataTableColumn<ReportRow>("Project1", null) {
+				
+			}, new TextDataTableColumn<ReportRow>("Project1", null) {
+			}
+			
+				);
+		}
 	}
 }
