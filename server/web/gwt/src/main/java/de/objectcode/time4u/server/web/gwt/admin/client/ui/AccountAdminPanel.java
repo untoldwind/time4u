@@ -32,35 +32,29 @@ public class AccountAdminPanel extends Composite {
 
 	@UiField
 	AccountDetailPanel userAccountDetail;
-	
+
 	private final AdminPersonServiceAsync adminPersonService = GWT
 			.create(AdminPersonService.class);
 
 	public AccountAdminPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 
-		adminPersonService.getUserAccounts(0, 10,
-				new AsyncCallback<UserAccountPage>() {
-					public void onSuccess(UserAccountPage result) {
-						userAccounts.setDataPage(result);
-					}
-
-					public void onFailure(Throwable caught) {
-						Window.alert("Server error: " + caught);
-					}
-				});
+		updateDataPage(0);
 	}
 
 	@UiHandler("userAccounts")
-	protected void onSelection(SelectionEvent<UserAccount> event)
-	{
+	protected void onSelection(SelectionEvent<UserAccount> event) {
 		userAccountDetail.setVisible(true);
 		userAccountDetail.setUserAccount(event.getSelectedItem());
 	}
-	
+
 	@UiHandler("userAccounts")
 	protected void onDataPage(DataPageEvent event) {
-		adminPersonService.getUserAccounts(event.getPageNumber(), 10,
+		updateDataPage(event.getPageNumber());
+	}
+
+	private void updateDataPage(int pageNumber) {
+		adminPersonService.getUserAccounts(pageNumber, 10,
 				new AsyncCallback<UserAccountPage>() {
 					public void onSuccess(UserAccountPage result) {
 						userAccounts.setDataPage(result);
