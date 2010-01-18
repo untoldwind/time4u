@@ -36,7 +36,8 @@ public class PagedDataTable<RowClass> extends Composite implements
 			dataTable.setRow(i, i < dataPage.getPageData().size() ? dataPage
 					.getPageData().get(i) : null);
 		}
-
+		dataTable.updateSelection();
+		
 		dataPager.setDataPage(dataPage);
 	}
 

@@ -105,8 +105,6 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 	public void setRow(int rowNum, RowClass row) {
 		rows.set(rowNum, row);
 
-		currentSelectionRowIndex = -1;
-
 		for (int i = 0; i < columns.length; i++) {
 			DataTableColumn<RowClass> column = columns[i];
 
@@ -129,15 +127,22 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 				row != null ? "utils-dataTable-row"
 						: "utils-dataTable-row-empty");
 		if (row != null) {
-			if (row.equals(currentSelection)) {
-				getRowFormatter().setStyleName(rowNum,
+			getRowFormatter().addStyleName(
+					rowNum,
+					rowNum % 2 == 0 ? "utils-dataTable-row-even"
+							: "utils-dataTable-row-odd");
+		}
+	}
+
+	public void updateSelection() {
+		currentSelectionRowIndex = -1;
+
+		for (int i = 0; i < rows.size(); i++) {
+			RowClass row = rows.get(i);
+			if (row != null && row.equals(currentSelection)) {
+				getRowFormatter().setStyleName(i,
 						"utils-dataTable-row-selected");
-				currentSelectionRowIndex = rowNum;
-			} else {
-				getRowFormatter().addStyleName(
-						rowNum,
-						rowNum % 2 == 0 ? "utils-dataTable-row-even"
-								: "utils-dataTable-row-odd");
+				currentSelectionRowIndex = i;
 			}
 		}
 	}
