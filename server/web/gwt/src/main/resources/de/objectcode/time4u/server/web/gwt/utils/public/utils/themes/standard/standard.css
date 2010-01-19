@@ -3,6 +3,10 @@
 	background: transparent url(images/hborder.png) repeat-x 0px -1463px;
 }
 
+.utils-dataTable-header-sortable {
+	cursor: pointer;
+}
+
 .utils-dataTable-row {
 	cursor: pointer;
 	height: 1.5em;
@@ -119,25 +123,19 @@
 	background: #E3E8F3 url(images/hborder.png) repeat-x scroll 0 -2003px
 }
 
-a.utils-dataPager-page, 
-a.utils-dataPager-page:visited 
-{
-    color: #666666;
-    text-decoration: none;
+a.utils-dataPager-page,a.utils-dataPager-page:visited {
+	color: #666666;
+	text-decoration: none;
 }
 
-a.utils-dataPager-page:hover
-{
-    color: black;
-    text-decoration: none;
+a.utils-dataPager-page:hover {
+	color: black;
+	text-decoration: none;
 }
 
-a.utils-dataPager-currentPage,
-a.utils-dataPager-currentPage:visited,
-a.utils-dataPager-currentPage:hover
-{
-    color: black;
-    font-weight: bold;
-    text-decoration: none;
+a.utils-dataPager-currentPage,a.utils-dataPager-currentPage:visited,a.utils-dataPager-currentPage:hover
+	{
+	color: black;
+	font-weight: bold;
+	text-decoration: none;
 }
-

@@ -6,12 +6,14 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import de.objectcode.time4u.server.web.gwt.utils.client.event.ColumnSortHandler;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageHandler;
+import de.objectcode.time4u.server.web.gwt.utils.client.event.HasColumnSortHandlers;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.HasDataPageHandlers;
 import de.objectcode.time4u.server.web.gwt.utils.client.service.IDataPage;
 
 public class PagedDataTable<RowClass> extends Composite implements
-		HasDataPageHandlers, HasSelectionHandlers<RowClass> {
+		HasDataPageHandlers, HasSelectionHandlers<RowClass>, HasColumnSortHandlers<RowClass> {
 
 	private DataTable<RowClass> dataTable;
 	private DataPager dataPager;
@@ -48,5 +50,10 @@ public class PagedDataTable<RowClass> extends Composite implements
 	public HandlerRegistration addSelectionHandler(
 			SelectionHandler<RowClass> handler) {
 		return dataTable.addSelectionHandler(handler);
+	}
+
+	public HandlerRegistration addColumnSortHandler(
+			ColumnSortHandler<RowClass> handler) {
+		return dataTable.addColumnSortHandler(handler);
 	}
 }

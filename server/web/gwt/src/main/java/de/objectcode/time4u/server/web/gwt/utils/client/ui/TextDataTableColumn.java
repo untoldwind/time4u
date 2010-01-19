@@ -6,6 +6,10 @@ public class TextDataTableColumn<RowClass> extends DataTableColumn<RowClass> {
 		super(header, width);
 	}
 
+	public TextDataTableColumn(String header, String width, boolean sortable) {
+		super(header, width, sortable);
+	}
+
 	@Override
 	public boolean isWidget() {
 		return false;

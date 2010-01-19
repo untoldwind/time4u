@@ -16,9 +16,13 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 
+import de.objectcode.time4u.server.web.gwt.utils.client.event.ColumnSortEvent;
+import de.objectcode.time4u.server.web.gwt.utils.client.event.ColumnSortHandler;
+import de.objectcode.time4u.server.web.gwt.utils.client.event.HasColumnSortHandlers;
+
 public class DataTable<RowClass> extends ExtendedFlexTable implements
-		HasSelectionHandlers<RowClass>, HasDoubleClickHandlers,
-		HasContextMenuHandlers {
+		HasSelectionHandlers<RowClass>, HasColumnSortHandlers<RowClass>,
+		HasDoubleClickHandlers, HasContextMenuHandlers {
 
 	DataTableColumn<RowClass>[] columns;
 	List<RowClass> rows = new ArrayList<RowClass>();
@@ -37,6 +41,9 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 			super.setHeaders(columns);
 
 			setHeaderStyleName("utils-dataTable-header");
+			for (int i = 0; i < columns.length; i++)
+				if (columns[i].isSortable())
+					setHeaderStyleName(i, "utils-dataTable-header-sortable");
 		}
 
 		addClickHandler(new ClickHandler() {
@@ -45,7 +52,9 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 				if (cell != null) {
 					int rowNum = cell.getRowIndex();
 
-					if (rowNum >= 0 && rowNum < rows.size()) {
+					if (rowNum == -1)
+						onSort(cell.getCellIndex());
+					else if (rowNum >= 0 && rowNum < rows.size()) {
 						RowClass row = rows.get(rowNum);
 
 						onSelection(row, rowNum, true);
@@ -166,6 +175,11 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 		return addDomHandler(handler, DoubleClickEvent.getType());
 	}
 
+	public HandlerRegistration addColumnSortHandler(
+			ColumnSortHandler<RowClass> handler) {
+		return addHandler(handler, ColumnSortEvent.getType());
+	}
+
 	public void setContextMenu(ContextMenu menu) {
 		if (this.contextMenu == null) {
 			contextMenu = menu;
@@ -206,4 +220,9 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 		}
 	}
 
+	private void onSort(int columnIndex) {
+		if (columnIndex >= 0 && columnIndex < columns.length) {
+			ColumnSortEvent.<RowClass> fire(this, columns[columnIndex]);
+		}
+	}
 }

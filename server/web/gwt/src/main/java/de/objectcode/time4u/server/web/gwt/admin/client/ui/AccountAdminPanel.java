@@ -18,6 +18,7 @@ import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonServi
 import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccountPage;
 import de.objectcode.time4u.server.web.gwt.utils.client.UtilsClientBundle;
+import de.objectcode.time4u.server.web.gwt.utils.client.event.ColumnSortEvent;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageEvent;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.PagedDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.TextDataTableColumn;
@@ -58,6 +59,11 @@ public class AccountAdminPanel extends Composite {
 		updateDataPage(event.getPageNumber());
 	}
 
+	@UiHandler("userAccounts")
+	protected void onColumnSort(ColumnSortEvent<UserAccount> event) {
+		System.out.println(">>> " + event.getSortColumn());
+	}
+	
 	private void updateDataPage(int pageNumber) {
 		adminPersonService.getUserAccounts(pageNumber, 10,
 				new AsyncCallback<UserAccountPage>() {
@@ -101,12 +107,12 @@ public class AccountAdminPanel extends Composite {
 								!row.getPerson().isActive());
 					}
 				}
-			}, new TextDataTableColumn<UserAccount>("UserId", "20%") {
+			}, new TextDataTableColumn<UserAccount>("UserId", "20%", true) {
 				@Override
 				public String getCellText(final UserAccount row) {
 					return row.getUserId();
 				}
-			}, new TextDataTableColumn<UserAccount>("Name", "20%") {
+			}, new TextDataTableColumn<UserAccount>("Name", "20%", true) {
 				@Override
 				public String getCellText(final UserAccount row) {
 					return (row.getPerson().getGivenName() != null
@@ -115,12 +121,12 @@ public class AccountAdminPanel extends Composite {
 							: "")
 							+ row.getPerson().getSurname();
 				}
-			}, new TextDataTableColumn<UserAccount>("EMail", "40%") {
+			}, new TextDataTableColumn<UserAccount>("EMail", "40%", true) {
 				@Override
 				public String getCellText(final UserAccount row) {
 					return row.getPerson().getEmail();
 				}
-			}, new TextDataTableColumn<UserAccount>("Last Login", "100em") {
+			}, new TextDataTableColumn<UserAccount>("Last Login", "100em", true) {
 				@Override
 				public String getCellText(final UserAccount row) {
 					if (row.getLastLogin() == null)
