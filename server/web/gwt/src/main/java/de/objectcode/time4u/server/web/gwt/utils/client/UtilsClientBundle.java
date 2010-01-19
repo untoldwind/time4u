@@ -10,4 +10,13 @@ public interface UtilsClientBundle extends ClientBundle {
 	ImageResource bulletLeft();
 
 	ImageResource bulletRight();
+
+	ImageResource left();
+	
+	ImageResource leftDisabled();
+	
+	ImageResource right();
+	
+	ImageResource rightDisabled();
+	
 }

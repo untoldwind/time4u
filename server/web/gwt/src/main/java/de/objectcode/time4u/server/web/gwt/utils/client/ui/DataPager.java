@@ -28,8 +28,10 @@ public class DataPager extends Composite implements HasDataPageHandlers {
 
 		setStyleName("utils-dataPager");
 
-		leftButton = new PushButton(new Image(UtilsClientBundle.INSTANCE
-				.bulletLeft()));
+		leftButton = new PushButton(
+				new Image(UtilsClientBundle.INSTANCE.left()));
+		leftButton.getUpDisabledFace().setImage(
+				new Image(UtilsClientBundle.INSTANCE.leftDisabled()));
 		leftButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if (currentPage > 0) {
@@ -39,7 +41,9 @@ public class DataPager extends Composite implements HasDataPageHandlers {
 		});
 
 		rightButton = new PushButton(new Image(UtilsClientBundle.INSTANCE
-				.bulletRight()));
+				.right()));
+		rightButton.getUpDisabledFace().setImage(
+				new Image(UtilsClientBundle.INSTANCE.rightDisabled()));
 		rightButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if (currentPage < numberOfPages - 1) {
@@ -100,5 +104,7 @@ public class DataPager extends Composite implements HasDataPageHandlers {
 					i == currentPage ? "utils-dataPager-currentPage"
 							: "utils-dataPager-page");
 		}
+		leftButton.setEnabled(currentPage > 0);
+		rightButton.setEnabled(currentPage < numberOfPages - 1);
 	}
 }
