@@ -18,10 +18,9 @@ import com.google.gwt.user.client.ui.Widget;
 import de.objectcode.time4u.server.web.gwt.utils.client.Utils;
 
 public class LoginPanel extends Composite {
-	private static LoginPanelUiBinder uiBinder = GWT
-			.create(LoginPanelUiBinder.class);
+	private static UI uiBinder = GWT.create(UI.class);
 
-	interface LoginPanelUiBinder extends UiBinder<Widget, LoginPanel> {
+	interface UI extends UiBinder<Widget, LoginPanel> {
 	}
 
 	private final LoginServiceAsync loginService = GWT
