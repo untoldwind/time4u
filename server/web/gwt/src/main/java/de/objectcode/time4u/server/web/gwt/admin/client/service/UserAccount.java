@@ -1,17 +1,21 @@
 package de.objectcode.time4u.server.web.gwt.admin.client.service;
 
+import java.util.Date;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class UserAccount implements IsSerializable {
 	private String userId;
 	private Person person;
+	private Date lastLogin;
 
 	public UserAccount() {
 	}
 
-	public UserAccount(String userId, Person person) {
+	public UserAccount(String userId, Person person, Date lastLogin) {
 		this.userId = userId;
 		this.person = person;
+		this.lastLogin = lastLogin;
 	}
 
 	public String getUserId() {
@@ -20,6 +24,10 @@ public class UserAccount implements IsSerializable {
 
 	public Person getPerson() {
 		return person;
+	}
+
+	public Date getLastLogin() {
+		return lastLogin;
 	}
 
 	@Override

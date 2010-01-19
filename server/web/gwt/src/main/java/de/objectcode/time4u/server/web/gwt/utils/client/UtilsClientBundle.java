@@ -7,6 +7,10 @@ import com.google.gwt.resources.client.ImageResource;
 public interface UtilsClientBundle extends ClientBundle {
 	public static final UtilsClientBundle INSTANCE =  GWT.<UtilsClientBundle>create(UtilsClientBundle.class);
 
+	ImageResource active();
+	
+	ImageResource inactive();
+	
 	ImageResource bulletLeft();
 
 	ImageResource bulletRight();

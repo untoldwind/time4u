@@ -25,9 +25,9 @@ public class JpaUserAccountDao extends JpaDaoBase implements IUserAccountDao {
 	public UserAccountPage findUserAccountPage(int pageNumber, int pageSize) {
 		Query countQuery = entityManager.createQuery("select count(*) from "
 				+ UserAccountEntity.class.getName());
-		
-		long count = (Long)countQuery.getSingleResult();
-		
+
+		long count = (Long) countQuery.getSingleResult();
+
 		Query dataQuery = entityManager.createQuery("from "
 				+ UserAccountEntity.class.getName() + " u order by u.id asc");
 
@@ -42,16 +42,19 @@ public class JpaUserAccountDao extends JpaDaoBase implements IUserAccountDao {
 			ret.add(toDTO(userAccountEntity));
 		}
 
-		return new UserAccountPage(pageNumber, pageSize, (int)count, ret);
+		return new UserAccountPage(pageNumber, pageSize, (int) count, ret);
 	}
 
 	static Person toDTO(PersonEntity personEntity) {
-		return new Person(personEntity.getId(), personEntity.getGivenName(),
-				personEntity.getSurname(), personEntity.getEmail());
+		return new Person(personEntity.getId(),
+				personEntity.getActive() == null || personEntity.getActive(),
+				personEntity.getGivenName(), personEntity.getSurname(),
+				personEntity.getEmail(), personEntity.getLastSynchronize());
 	}
 
 	static UserAccount toDTO(UserAccountEntity userAccountEntity) {
 		return new UserAccount(userAccountEntity.getUserId(),
-				toDTO(userAccountEntity.getPerson()));
+				toDTO(userAccountEntity.getPerson()), userAccountEntity
+						.getLastLogin());
 	}
 }

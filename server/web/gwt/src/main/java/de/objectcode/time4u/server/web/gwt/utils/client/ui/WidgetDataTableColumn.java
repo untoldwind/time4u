@@ -11,7 +11,7 @@ public class WidgetDataTableColumn<RowClass> extends DataTableColumn<RowClass> {
 
 	@Override
 	public boolean isWidget() {
-		return false;
+		return true;
 	}
 
 	public Widget createCellWidget() {
