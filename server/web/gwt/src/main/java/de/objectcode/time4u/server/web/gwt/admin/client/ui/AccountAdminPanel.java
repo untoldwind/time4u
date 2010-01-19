@@ -41,7 +41,8 @@ public class AccountAdminPanel extends Composite {
 	@UiField
 	AccountDetailPanel userAccountDetail;
 
-	private UserAccountSorting sorting;
+	private UserAccountSorting sortingColumn;
+	private boolean sortingAscending;
 	
 	private final AdminPersonServiceAsync adminPersonService = GWT
 			.create(AdminPersonService.class);
@@ -49,7 +50,8 @@ public class AccountAdminPanel extends Composite {
 	public AccountAdminPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 
-		sorting = UserAccountSorting.USERID_ASCENDING;
+		sortingColumn = UserAccountSorting.USERID;
+		sortingAscending = true;
 		updateDataPage(0);
 	}
 
@@ -66,27 +68,15 @@ public class AccountAdminPanel extends Composite {
 
 	@UiHandler("userAccounts")
 	protected void onColumnSort(ColumnSortEvent<UserAccount> event) {
-		switch ( event.getColumnIndex() ) {
-		case 1:
-			sorting = event.getSortColumn().getSorting() == ColumnSorting.ASCENDING ? UserAccountSorting.USERID_ASCENDING : UserAccountSorting.USERID_DESCENDING;
-			break;
-		case 2:
-			sorting = event.getSortColumn().getSorting() == ColumnSorting.ASCENDING ? UserAccountSorting.SURNAME_ASCENDING : UserAccountSorting.SURNAME_DESCENDING;
-			break;
-		case 3:
-			sorting = event.getSortColumn().getSorting() == ColumnSorting.ASCENDING ? UserAccountSorting.EMAIL_ASCENDING : UserAccountSorting.EMAIL_DESCENDING;
-			break;
-		case 4:
-			sorting = event.getSortColumn().getSorting() == ColumnSorting.ASCENDING ? UserAccountSorting.LASTLOGIN_ASCENDING : UserAccountSorting.LASTLOGIN_DESCENDING;
-			break;
-		}
+		sortingColumn = (UserAccountSorting)event.getSortColumn().getColumnData();
+		sortingAscending = event.getSortColumn().getSorting() == ColumnSorting.ASCENDING;
 		
 		updateDataPage(userAccounts.getCurrentPage());
 
 	}
 	
 	private void updateDataPage(int pageNumber) {
-		adminPersonService.getUserAccounts(pageNumber, 10, sorting,
+		adminPersonService.getUserAccounts(pageNumber, 10, sortingColumn,sortingAscending,
 				new AsyncCallback<UserAccountPage>() {
 					public void onSuccess(UserAccountPage result) {
 						userAccounts.setDataPage(result);
@@ -133,6 +123,11 @@ public class AccountAdminPanel extends Composite {
 				public String getCellText(final UserAccount row) {
 					return row.getUserId();
 				}
+
+				@Override
+				public Object getColumnData() {
+					return UserAccountSorting.USERID;
+				}
 			}, new TextDataTableColumn<UserAccount>("Name", "20%", true) {
 				@Override
 				public String getCellText(final UserAccount row) {
@@ -142,10 +137,20 @@ public class AccountAdminPanel extends Composite {
 							: "")
 							+ row.getPerson().getSurname();
 				}
+
+				@Override
+				public Object getColumnData() {
+					return UserAccountSorting.SURNAME;
+				}
 			}, new TextDataTableColumn<UserAccount>("EMail", "40%", true) {
 				@Override
 				public String getCellText(final UserAccount row) {
 					return row.getPerson().getEmail();
+				}
+
+				@Override
+				public Object getColumnData() {
+					return UserAccountSorting.EMAIL;
 				}
 			}, new TextDataTableColumn<UserAccount>("Last Login", "100em", true) {
 				@Override
@@ -154,6 +159,11 @@ public class AccountAdminPanel extends Composite {
 						return "";
 					return DateTimeFormat.getMediumDateTimeFormat().format(
 							row.getLastLogin());
+				}
+
+				@Override
+				public Object getColumnData() {
+					return UserAccountSorting.LASTLOGIN;
 				}
 			});
 			

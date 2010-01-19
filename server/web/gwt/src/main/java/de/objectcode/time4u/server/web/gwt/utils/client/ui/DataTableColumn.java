@@ -32,5 +32,9 @@ public abstract class DataTableColumn<RowClass> extends TableHeader {
 		this.sorting = sorting;
 	}
 
+	public Object getColumnData() {
+		return null;
+	}
+
 	public abstract boolean isWidget();
 }

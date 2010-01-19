@@ -24,14 +24,17 @@ public class JpaUserAccountDao extends JpaDaoBase implements IUserAccountDao {
 
 	@SuppressWarnings("unchecked")
 	public UserAccountPage findUserAccountPage(int pageNumber, int pageSize,
-			UserAccountSorting sorting) {
+			UserAccountSorting sorting, boolean ascending) {
 		Query countQuery = entityManager.createQuery("select count(*) from "
 				+ UserAccountEntity.class.getName());
 
 		long count = (Long) countQuery.getSingleResult();
 
 		Query dataQuery = entityManager.createQuery("from "
-				+ UserAccountEntity.class.getName() + " as u left join fetch u.person order by u." + sorting.getQueryString());
+				+ UserAccountEntity.class.getName()
+				+ " as u left join fetch u.person order by u."
+				+ sorting.getColumn() + (ascending ? " asc" : " desc")
+				+ (sorting != UserAccountSorting.USERID ? ", u.id asc" : ""));
 
 		dataQuery.setFirstResult(pageNumber * pageSize);
 		dataQuery.setMaxResults(pageSize);

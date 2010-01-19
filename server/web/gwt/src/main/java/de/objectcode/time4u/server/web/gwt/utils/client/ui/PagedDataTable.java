@@ -13,7 +13,8 @@ import de.objectcode.time4u.server.web.gwt.utils.client.event.HasDataPageHandler
 import de.objectcode.time4u.server.web.gwt.utils.client.service.IDataPage;
 
 public class PagedDataTable<RowClass> extends Composite implements
-		HasDataPageHandlers, HasSelectionHandlers<RowClass>, HasColumnSortHandlers<RowClass> {
+		HasDataPageHandlers, HasSelectionHandlers<RowClass>,
+		HasColumnSortHandlers<RowClass> {
 
 	private DataTable<RowClass> dataTable;
 	private DataPager dataPager;
@@ -36,13 +37,14 @@ public class PagedDataTable<RowClass> extends Composite implements
 	public int getCurrentPage() {
 		return dataPager.getCurrentPage();
 	}
+
 	public void setDataPage(IDataPage<RowClass> dataPage) {
 		for (int i = 0; i < pageSize; i++) {
 			dataTable.setRow(i, i < dataPage.getPageData().size() ? dataPage
 					.getPageData().get(i) : null);
 		}
 		dataTable.updateSelection();
-		
+
 		dataPager.setDataPage(dataPage);
 	}
 

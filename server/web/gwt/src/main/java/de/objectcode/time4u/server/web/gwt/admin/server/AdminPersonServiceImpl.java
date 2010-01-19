@@ -23,8 +23,8 @@ public class AdminPersonServiceImpl extends GwtController implements AdminPerson
 	
 
 	@Transactional(readOnly=true)
-	public UserAccountPage getUserAccounts(int pageNumber, int pageSize, UserAccountSorting sorting) {
-		return userAccountDao.findUserAccountPage(pageNumber, pageSize, sorting);
+	public UserAccountPage getUserAccounts(int pageNumber, int pageSize, UserAccountSorting sorting, boolean ascending) {
+		return userAccountDao.findUserAccountPage(pageNumber, pageSize, sorting, ascending);
 	}
 
 	@Resource(name="userAccountDao")

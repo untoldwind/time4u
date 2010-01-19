@@ -4,7 +4,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface AdminPersonServiceAsync {
 
-	void getUserAccounts(int pageNumber, int pageSize,UserAccountSorting sorting,
+	void getUserAccounts(int pageNumber, int pageSize,UserAccountSorting sorting, boolean ascending,
 			AsyncCallback<UserAccountPage> callback);
 
 
