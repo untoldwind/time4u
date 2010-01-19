@@ -11,7 +11,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonService;
@@ -96,8 +95,10 @@ public class AccountAdminPanel extends Composite {
 						flow.getWidget(0).setVisible(false);
 						flow.getWidget(1).setVisible(false);
 					} else {
-						flow.getWidget(0).setVisible(row.getPerson().isActive());
-						flow.getWidget(1).setVisible(!row.getPerson().isActive());
+						flow.getWidget(0)
+								.setVisible(row.getPerson().isActive());
+						flow.getWidget(1).setVisible(
+								!row.getPerson().isActive());
 					}
 				}
 			}, new TextDataTableColumn<UserAccount>("UserId", "20%") {
