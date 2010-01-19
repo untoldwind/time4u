@@ -3,6 +3,7 @@ package de.objectcode.time4u.server.web.gwt.utils.client.ui;
 public abstract class DataTableColumn<RowClass> extends TableHeader {
 
 	private boolean sortable;
+	private ColumnSorting sorting;
 
 	public DataTableColumn(String header, String width) {
 		this(header, width, false);
@@ -12,6 +13,7 @@ public abstract class DataTableColumn<RowClass> extends TableHeader {
 		super(header, width);
 
 		this.sortable = sortable;
+		this.sorting = ColumnSorting.NONE;
 	}
 
 	public boolean isSortable() {
@@ -20,6 +22,14 @@ public abstract class DataTableColumn<RowClass> extends TableHeader {
 
 	public void setSortable(boolean sortable) {
 		this.sortable = sortable;
+	}
+
+	public ColumnSorting getSorting() {
+		return sorting;
+	}
+
+	public void setSorting(ColumnSorting sorting) {
+		this.sorting = sorting;
 	}
 
 	public abstract boolean isWidget();

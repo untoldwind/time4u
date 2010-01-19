@@ -5,5 +5,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("adminPerson.service")
 public interface AdminPersonService  extends RemoteService {
-	UserAccountPage getUserAccounts(int pageNumber, int pageSize);
+	UserAccountPage getUserAccounts(int pageNumber, int pageSize, UserAccountSorting sorting);
 }

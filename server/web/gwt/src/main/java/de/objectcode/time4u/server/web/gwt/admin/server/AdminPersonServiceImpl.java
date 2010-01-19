@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonService;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccountPage;
+import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccountSorting;
 import de.objectcode.time4u.server.web.gwt.admin.server.dao.IUserAccountDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.GwtController;
 
@@ -22,8 +23,8 @@ public class AdminPersonServiceImpl extends GwtController implements AdminPerson
 	
 
 	@Transactional(readOnly=true)
-	public UserAccountPage getUserAccounts(int pageNumber, int pageSize) {
-		return userAccountDao.findUserAccountPage(pageNumber, pageSize);
+	public UserAccountPage getUserAccounts(int pageNumber, int pageSize, UserAccountSorting sorting) {
+		return userAccountDao.findUserAccountPage(pageNumber, pageSize, sorting);
 	}
 
 	@Resource(name="userAccountDao")

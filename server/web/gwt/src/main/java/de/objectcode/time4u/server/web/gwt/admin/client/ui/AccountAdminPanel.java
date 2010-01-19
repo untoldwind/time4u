@@ -17,9 +17,11 @@ import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonServi
 import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonServiceAsync;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccountPage;
+import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccountSorting;
 import de.objectcode.time4u.server.web.gwt.utils.client.UtilsClientBundle;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.ColumnSortEvent;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageEvent;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.ColumnSorting;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.PagedDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.TextDataTableColumn;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.WidgetDataTableColumn;
@@ -39,12 +41,15 @@ public class AccountAdminPanel extends Composite {
 	@UiField
 	AccountDetailPanel userAccountDetail;
 
+	private UserAccountSorting sorting;
+	
 	private final AdminPersonServiceAsync adminPersonService = GWT
 			.create(AdminPersonService.class);
 
 	public AccountAdminPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 
+		sorting = UserAccountSorting.USERID_ASCENDING;
 		updateDataPage(0);
 	}
 
@@ -61,11 +66,27 @@ public class AccountAdminPanel extends Composite {
 
 	@UiHandler("userAccounts")
 	protected void onColumnSort(ColumnSortEvent<UserAccount> event) {
-		System.out.println(">>> " + event.getSortColumn());
+		switch ( event.getColumnIndex() ) {
+		case 1:
+			sorting = event.getSortColumn().getSorting() == ColumnSorting.ASCENDING ? UserAccountSorting.USERID_ASCENDING : UserAccountSorting.USERID_DESCENDING;
+			break;
+		case 2:
+			sorting = event.getSortColumn().getSorting() == ColumnSorting.ASCENDING ? UserAccountSorting.SURNAME_ASCENDING : UserAccountSorting.SURNAME_DESCENDING;
+			break;
+		case 3:
+			sorting = event.getSortColumn().getSorting() == ColumnSorting.ASCENDING ? UserAccountSorting.EMAIL_ASCENDING : UserAccountSorting.EMAIL_DESCENDING;
+			break;
+		case 4:
+			sorting = event.getSortColumn().getSorting() == ColumnSorting.ASCENDING ? UserAccountSorting.LASTLOGIN_ASCENDING : UserAccountSorting.LASTLOGIN_DESCENDING;
+			break;
+		}
+		
+		updateDataPage(userAccounts.getCurrentPage());
+
 	}
 	
 	private void updateDataPage(int pageNumber) {
-		adminPersonService.getUserAccounts(pageNumber, 10,
+		adminPersonService.getUserAccounts(pageNumber, 10, sorting,
 				new AsyncCallback<UserAccountPage>() {
 					public void onSuccess(UserAccountPage result) {
 						userAccounts.setDataPage(result);
@@ -135,6 +156,8 @@ public class AccountAdminPanel extends Composite {
 							row.getLastLogin());
 				}
 			});
+			
+			setColumnSorting(1, ColumnSorting.ASCENDING, false);
 		}
 
 	}

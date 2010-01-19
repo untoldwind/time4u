@@ -8,7 +8,6 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -29,16 +28,28 @@ public class ExtendedFlexTable extends FlexTable {
 				column);
 		UIObject.setStyleName(th, styleName);
 	}
-	
+
 	public void setHeaders(TableHeader... headers) {
 		for (int i = 0; i < headers.length; i++) {
 			TableHeader column = headers[i];
 
-			setHeaderWidget(i, column.getWidth(), new Label(column.getHeader()));
+			setHeaderText(i, column.getWidth(), column.getHeader());
 		}
-
 	}
 
+	public void setHeaderText(int column, String width, String text) {
+		prepareHeaderCell(column);
+
+		Element th = DOM.getChild(DOM.getFirstChild(getTHeadElement()),
+				column);
+		internalClearCell(th, true);
+		
+		DOM.setInnerText(th, text);
+
+		if (width != null)
+			DOM.setStyleAttribute(th, "width", width);
+	}
+	
 	public void setHeaderWidget(int column, String width, Widget widget) {
 		prepareHeaderCell(column);
 

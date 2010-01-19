@@ -33,6 +33,9 @@ public class PagedDataTable<RowClass> extends Composite implements
 		initWidget(panel);
 	}
 
+	public int getCurrentPage() {
+		return dataPager.getCurrentPage();
+	}
 	public void setDataPage(IDataPage<RowClass> dataPage) {
 		for (int i = 0; i < pageSize; i++) {
 			dataTable.setRow(i, i < dataPage.getPageData().size() ? dataPage
@@ -55,5 +58,10 @@ public class PagedDataTable<RowClass> extends Composite implements
 	public HandlerRegistration addColumnSortHandler(
 			ColumnSortHandler<RowClass> handler) {
 		return dataTable.addColumnSortHandler(handler);
+	}
+
+	public void setColumnSorting(int columnIndex, ColumnSorting columnSorting,
+			boolean fireEvent) {
+		dataTable.setColumnSorting(columnIndex, columnSorting, fireEvent);
 	}
 }

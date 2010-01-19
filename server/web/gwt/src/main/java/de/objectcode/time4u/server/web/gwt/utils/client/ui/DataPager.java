@@ -55,6 +55,14 @@ public class DataPager extends Composite implements HasDataPageHandlers {
 		updateControls(true);
 	}
 
+	public int getNumberOfPages() {
+		return numberOfPages;
+	}
+
+	public int getCurrentPage() {
+		return currentPage;
+	}
+
 	public HandlerRegistration addDataPageHandler(DataPageHandler handler) {
 		return addHandler(handler, DataPageEvent.getType());
 	}

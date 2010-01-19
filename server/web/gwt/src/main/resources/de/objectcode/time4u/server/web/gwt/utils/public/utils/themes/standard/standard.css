@@ -7,6 +7,18 @@
 	cursor: pointer;
 }
 
+.utils-dataTable-header-ascending {
+	cursor: pointer;
+	background: transparent url(images/bulletDown.gif) no-repeat;
+	background-position:center right;
+}
+
+.utils-dataTable-header-descending {
+	cursor: pointer;
+	background: transparent url(images/bulletUp.gif) no-repeat;
+	background-position:center right;
+}
+
 .utils-dataTable-row {
 	cursor: pointer;
 	height: 1.5em;
