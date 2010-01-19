@@ -20,7 +20,7 @@ Time4U Downloads
 
   * {{{http://sourceforge.net/projects/time4u/files/time4u-client/1.0.0/time4u-assemblies-client-mac-x86_64-1.0.0b.zip/download}Mac Client 64-bit (Cocoa)}}
 
- Also take note of the more detailed installation instructions: {{{/install/client.html}Client installation}}
+ Also take note of the more detailed installation instructions: {{{client.html}Client installation}}
   
 * Server
 
@@ -40,5 +40,5 @@ Time4U Downloads
 
      * {{{http://sourceforge.net/projects/time4u/files/timeu-server%20%28rpm%20openSUSE%29/1.0.0/time4u-server-apache-1.0.0-480.noarch.rpm/download}Apache Connector (optional)}}}
      
- Also take note of the more detailed installation instructions: {{{/install/server.html}Server installation}}
+ Also take note of the more detailed installation instructions: {{{server.html}Server installation}}
  

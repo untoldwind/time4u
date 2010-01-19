@@ -1,0 +1,23 @@
+   --------------------
+   Database ER-Diagrams
+   --------------------
+   junglas
+   --------------------
+
+Database ER-Diagrams
+
+* ID generation and synchronization
+
+[../images/db/IDGenAndSync.png] ID generation and synchronization
+
+* User accounts (server login)
+
+[../images/db/UserAccounts.png] User accounts
+
+* Time data
+
+[../images/db/TimeData.png] Time data
+
+* Todos
+
+[../images/db/Todos.png] Todos

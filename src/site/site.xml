@@ -18,6 +18,7 @@
     <menu name="Development">
     	<item name="Getting started (win32)" href="/development/gettingstarted_win32.html"/>    	
     	<item name="Project layout" href="/development/projectlayout.html"/>
+    	<item name="Database ER-Diagrams" href="/development/databaseER.html"/>
     	<item name="Database model" href="/development/databasemodel.html"/>
     	<item name="Logomania" href="/misc/logomania.html"/>
     </menu>
