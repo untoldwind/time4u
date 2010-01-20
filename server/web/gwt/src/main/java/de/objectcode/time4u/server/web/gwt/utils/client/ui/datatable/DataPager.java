@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.utils.client.ui;
+package de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -53,6 +53,14 @@ public class DataPager extends Composite implements HasDataPageHandlers {
 		});
 
 		updateControls(true);
+	}
+
+	public int getNumberOfPages() {
+		return numberOfPages;
+	}
+
+	public int getCurrentPage() {
+		return currentPage;
 	}
 
 	public HandlerRegistration addDataPageHandler(DataPageHandler handler) {

@@ -14,9 +14,9 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.ContextMenu;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.DataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLabel;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.TextDataTableColumn;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.DataTable;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 import de.objectcode.time4u.server.web.gwt.webclient.client.ISelectionChangeListener;
 import de.objectcode.time4u.server.web.gwt.webclient.client.SelectionChangedEvent;
 import de.objectcode.time4u.server.web.gwt.webclient.client.SelectionManager;

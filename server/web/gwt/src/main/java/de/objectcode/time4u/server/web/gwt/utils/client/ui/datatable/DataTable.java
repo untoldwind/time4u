@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.utils.client.ui;
+package de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +16,15 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 
+import de.objectcode.time4u.server.web.gwt.utils.client.event.ColumnSortEvent;
+import de.objectcode.time4u.server.web.gwt.utils.client.event.ColumnSortHandler;
+import de.objectcode.time4u.server.web.gwt.utils.client.event.HasColumnSortHandlers;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.ContextMenu;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.ExtendedFlexTable;
+
 public class DataTable<RowClass> extends ExtendedFlexTable implements
-		HasSelectionHandlers<RowClass>, HasDoubleClickHandlers,
-		HasContextMenuHandlers {
+		HasSelectionHandlers<RowClass>, HasColumnSortHandlers<RowClass>,
+		HasDoubleClickHandlers, HasContextMenuHandlers {
 
 	DataTableColumn<RowClass>[] columns;
 	List<RowClass> rows = new ArrayList<RowClass>();
@@ -39,6 +45,9 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 			super.setHeaders(columns);
 
 			setHeaderStyleName("utils-dataTable-header");
+			for (int i = 0; i < columns.length; i++)
+				if (columns[i].isSortable())
+					setHeaderStyleName(i, "utils-dataTable-header-sortable");
 		}
 
 		addClickHandler(new ClickHandler() {
@@ -47,7 +56,9 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 				if (cell != null) {
 					int rowNum = cell.getRowIndex();
 
-					if (rowNum >= 0 && rowNum < rows.size()) {
+					if (rowNum == -1)
+						onSort(cell.getCellIndex());
+					else if (rowNum >= 0 && rowNum < rows.size()) {
 						RowClass row = rows.get(rowNum);
 
 						onSelection(row, rowNum, true);
@@ -155,6 +166,38 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 		rows.clear();
 	}
 
+	public void setColumnSorting(int columnIndex, ColumnSorting columnSorting,
+			boolean fireEvent) {
+		if (columnIndex >= 0 && columnIndex < columns.length
+				&& columns[columnIndex].isSortable()) {
+			for (int i = 0; i < columns.length; i++) {
+				if (columns[i].isSortable()) {
+					columns[i].setSorting(i == columnIndex ? columnSorting
+							: ColumnSorting.NONE);
+
+					switch (columns[i].getSorting()) {
+					case NONE:
+						setHeaderStyleName(i, "utils-dataTable-header-sortable");
+						break;
+					case ASCENDING:
+						setHeaderStyleName(i,
+								"utils-dataTable-header-ascending");
+						break;
+					case DESCENDING:
+						setHeaderStyleName(i,
+								"utils-dataTable-header-descending");
+						break;
+					}
+				}
+			}
+
+			if (fireEvent)
+				ColumnSortEvent.<RowClass> fire(this, columnIndex,
+						columns[columnIndex]);
+		}
+
+	}
+
 	public HandlerRegistration addSelectionHandler(
 			SelectionHandler<RowClass> handler) {
 		return addHandler(handler, SelectionEvent.getType());
@@ -166,6 +209,11 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 
 	public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
 		return addDomHandler(handler, DoubleClickEvent.getType());
+	}
+
+	public HandlerRegistration addColumnSortHandler(
+			ColumnSortHandler<RowClass> handler) {
+		return addHandler(handler, ColumnSortEvent.getType());
 	}
 
 	public void setContextMenu(ContextMenu menu) {
@@ -208,4 +256,21 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 		}
 	}
 
+	private void onSort(int columnIndex) {
+		if (columnIndex >= 0 && columnIndex < columns.length
+				&& columns[columnIndex].isSortable()) {
+			ColumnSorting columnSorting = ColumnSorting.NONE;
+
+			switch (columns[columnIndex].getSorting()) {
+			case NONE:
+			case DESCENDING:
+				columnSorting = ColumnSorting.ASCENDING;
+				break;
+			case ASCENDING:
+				columnSorting = ColumnSorting.DESCENDING;
+				break;
+			}
+			setColumnSorting(columnIndex, columnSorting, true);
+		}
+	}
 }

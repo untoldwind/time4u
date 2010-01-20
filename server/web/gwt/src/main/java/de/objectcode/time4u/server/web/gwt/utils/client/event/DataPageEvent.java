@@ -15,7 +15,7 @@ public class DataPageEvent extends GwtEvent<DataPageHandler> {
 		return pageNumber;
 	}
 
-	public static <I> void fire(HasDataPageHandlers source, int pageNumber) {
+	public static void fire(HasDataPageHandlers source, int pageNumber) {
 		if (TYPE != null) {
 			DataPageEvent event = new DataPageEvent(pageNumber);
 			source.fireEvent(event);

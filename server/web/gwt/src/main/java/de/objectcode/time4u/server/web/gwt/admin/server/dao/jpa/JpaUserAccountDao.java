@@ -22,14 +22,27 @@ import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
 public class JpaUserAccountDao extends JpaDaoBase implements IUserAccountDao {
 
 	@SuppressWarnings("unchecked")
-	public UserAccountPage findUserAccountPage(int pageNumber, int pageSize) {
+	public UserAccountPage findUserAccountPage(int pageNumber, int pageSize,
+			UserAccount.Projections sorting, boolean ascending) {
 		Query countQuery = entityManager.createQuery("select count(*) from "
 				+ UserAccountEntity.class.getName());
 
 		long count = (Long) countQuery.getSingleResult();
 
-		Query dataQuery = entityManager.createQuery("from "
-				+ UserAccountEntity.class.getName() + " u order by u.id asc");
+		StringBuffer queryString = new StringBuffer("from ");
+		queryString.append(UserAccountEntity.class.getName()).append(
+				" as u left join fetch u.person");
+		queryString.append(" order by");
+
+		if (sorting.isSortable()) {
+			queryString.append(" u.").append(sorting.getColumn()).append(
+					ascending ? " asc" : " desc");
+			if (sorting != UserAccount.Projections.USERID)
+				queryString.append(", u.id asc");
+		} else
+			queryString.append(" u.id asc");
+
+		Query dataQuery = entityManager.createQuery(queryString.toString());
 
 		dataQuery.setFirstResult(pageNumber * pageSize);
 		dataQuery.setMaxResults(pageSize);

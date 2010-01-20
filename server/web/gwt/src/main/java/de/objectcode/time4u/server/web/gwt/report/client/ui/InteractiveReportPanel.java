@@ -6,8 +6,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.DataTable;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.TextDataTableColumn;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.DataTable;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 
 public class InteractiveReportPanel extends Composite {
 	private static InteractiveReportPanelUiBinder uiBinder = GWT

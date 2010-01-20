@@ -9,19 +9,19 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonService;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonServiceAsync;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccountPage;
-import de.objectcode.time4u.server.web.gwt.utils.client.UtilsClientBundle;
+import de.objectcode.time4u.server.web.gwt.utils.client.event.ColumnSortEvent;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageEvent;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.IFormatter;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.PagedDataTable;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.TextDataTableColumn;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.WidgetDataTableColumn;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.BooleanDataTableColumn;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.ColumnSorting;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 
 public class AccountAdminPanel extends Composite {
 
@@ -38,12 +38,17 @@ public class AccountAdminPanel extends Composite {
 	@UiField
 	AccountDetailPanel userAccountDetail;
 
+	private UserAccount.Projections sortingColumn;
+	private boolean sortingAscending;
+
 	private final AdminPersonServiceAsync adminPersonService = GWT
 			.create(AdminPersonService.class);
 
 	public AccountAdminPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 
+		sortingColumn = UserAccount.Projections.USERID;
+		sortingAscending = true;
 		updateDataPage(0);
 	}
 
@@ -58,9 +63,19 @@ public class AccountAdminPanel extends Composite {
 		updateDataPage(event.getPageNumber());
 	}
 
+	@UiHandler("userAccounts")
+	protected void onColumnSort(ColumnSortEvent<UserAccount> event) {
+		sortingColumn = (UserAccount.Projections) event.getSortColumn()
+				.getProjection();
+		sortingAscending = event.getSortColumn().getSorting() == ColumnSorting.ASCENDING;
+
+		updateDataPage(userAccounts.getCurrentPage());
+
+	}
+
 	private void updateDataPage(int pageNumber) {
-		adminPersonService.getUserAccounts(pageNumber, 10,
-				new AsyncCallback<UserAccountPage>() {
+		adminPersonService.getUserAccounts(pageNumber, 10, sortingColumn,
+				sortingAscending, new AsyncCallback<UserAccountPage>() {
 					public void onSuccess(UserAccountPage result) {
 						userAccounts.setDataPage(result);
 					}
@@ -75,60 +90,20 @@ public class AccountAdminPanel extends Composite {
 
 		@SuppressWarnings("unchecked")
 		public UserAccountTable() {
-			super(10, new WidgetDataTableColumn<UserAccount>("Active", "20px") {
-				@Override
-				public Widget createCellWidget() {
-					FlowPanel flow = new FlowPanel();
+			super(10, new BooleanDataTableColumn<UserAccount>("Active", "20px",
+					UserAccount.Projections.ACTIVE),
+					new TextDataTableColumn<UserAccount>("UserId", "20%",
+							UserAccount.Projections.USERID),
+					new TextDataTableColumn<UserAccount>("Name", "20%",
+							UserAccount.Projections.SURNAME),
+					new TextDataTableColumn<UserAccount>("EMail", "40%",
+							UserAccount.Projections.EMAIL),
+					new TextDataTableColumn<UserAccount>("Last Login", "100em",
+							UserAccount.Projections.LASTLOGIN,
+							new IFormatter.DateTimeFormatter(DateTimeFormat
+									.getMediumDateTimeFormat())));
 
-					flow.add(new Image(UtilsClientBundle.INSTANCE.active()));
-					flow.add(new Image(UtilsClientBundle.INSTANCE.inactive()));
-					flow.getWidget(0).setVisible(false);
-					flow.getWidget(1).setVisible(false);
-					return flow;
-				}
-
-				@Override
-				public void updateCellWidget(Widget widget, UserAccount row) {
-					FlowPanel flow = (FlowPanel) widget;
-
-					if (row == null) {
-						flow.getWidget(0).setVisible(false);
-						flow.getWidget(1).setVisible(false);
-					} else {
-						flow.getWidget(0)
-								.setVisible(row.getPerson().isActive());
-						flow.getWidget(1).setVisible(
-								!row.getPerson().isActive());
-					}
-				}
-			}, new TextDataTableColumn<UserAccount>("UserId", "20%") {
-				@Override
-				public String getCellText(final UserAccount row) {
-					return row.getUserId();
-				}
-			}, new TextDataTableColumn<UserAccount>("Name", "20%") {
-				@Override
-				public String getCellText(final UserAccount row) {
-					return (row.getPerson().getGivenName() != null
-							&& row.getPerson().getGivenName().length() > 0 ? (row
-							.getPerson().getGivenName() + " ")
-							: "")
-							+ row.getPerson().getSurname();
-				}
-			}, new TextDataTableColumn<UserAccount>("EMail", "40%") {
-				@Override
-				public String getCellText(final UserAccount row) {
-					return row.getPerson().getEmail();
-				}
-			}, new TextDataTableColumn<UserAccount>("Last Login", "100em") {
-				@Override
-				public String getCellText(final UserAccount row) {
-					if (row.getLastLogin() == null)
-						return "";
-					return DateTimeFormat.getMediumDateTimeFormat().format(
-							row.getLastLogin());
-				}
-			});
+			setColumnSorting(1, ColumnSorting.ASCENDING, false);
 		}
 
 	}
