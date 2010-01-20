@@ -25,7 +25,7 @@
 		</g:north>
 		<g:center>
 			<g:ScrollPanel>
-				<tu:ExtendedTree ui:field="projectTree" width="100%" />
+				<tu:ExtendedTree ui:field="projectTree" width="100%" styleName="gwt-Tree webclient-projectTree"/>
 			</g:ScrollPanel>
 		</g:center>
 	</g:DockLayoutPanel>

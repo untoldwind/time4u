@@ -27,7 +27,7 @@
 		<g:center>
 			<g:ScrollPanel>
 				<wc:TaskList.TaskDataTable ui:field="taskList"
-					width="100%" styleName="utils-dataTable" />
+					width="100%" styleName="util-dataTable webclient-taskListTable" />
 			</g:ScrollPanel>
 		</g:center>
 	</g:DockLayoutPanel>

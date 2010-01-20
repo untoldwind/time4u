@@ -27,7 +27,7 @@
 		<g:center>
 			<g:ScrollPanel>
 				<wc:WorkItemList.WorkItemDataTable
-					ui:field="workItemList" width="100%" />
+					ui:field="workItemList" width="100%" styleName="util-dataTable webclient-workItemTable" />
 			</g:ScrollPanel>
 		</g:center>
 	</g:DockLayoutPanel>
