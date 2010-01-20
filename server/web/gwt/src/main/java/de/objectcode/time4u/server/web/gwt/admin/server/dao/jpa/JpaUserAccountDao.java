@@ -11,18 +11,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
-import de.objectcode.time4u.server.web.gwt.admin.client.service.Person;
+import de.objectcode.time4u.server.web.gwt.admin.client.service.PersonSummary;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
-import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccountPage;
 import de.objectcode.time4u.server.web.gwt.admin.server.dao.IUserAccountDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
 
-@Repository("userAccountDao")
+@Repository("adminUserAccountDao")
 @Transactional(propagation = Propagation.MANDATORY)
 public class JpaUserAccountDao extends JpaDaoBase implements IUserAccountDao {
 
 	@SuppressWarnings("unchecked")
-	public UserAccountPage findUserAccountPage(int pageNumber, int pageSize,
+	public UserAccount.Page findUserAccountPage(int pageNumber, int pageSize,
 			UserAccount.Projections sorting, boolean ascending) {
 		Query countQuery = entityManager.createQuery("select count(*) from "
 				+ UserAccountEntity.class.getName());
@@ -55,11 +54,11 @@ public class JpaUserAccountDao extends JpaDaoBase implements IUserAccountDao {
 			ret.add(toDTO(userAccountEntity));
 		}
 
-		return new UserAccountPage(pageNumber, pageSize, (int) count, ret);
+		return new UserAccount.Page(pageNumber, pageSize, (int) count, ret);
 	}
 
-	static Person toDTO(PersonEntity personEntity) {
-		return new Person(personEntity.getId(),
+	static PersonSummary toDTO(PersonEntity personEntity) {
+		return new PersonSummary(personEntity.getId(),
 				personEntity.getActive() == null || personEntity.getActive(),
 				personEntity.getGivenName(), personEntity.getSurname(),
 				personEntity.getEmail(), personEntity.getLastSynchronize());

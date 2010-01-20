@@ -14,7 +14,6 @@ import com.google.gwt.user.client.ui.Widget;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonService;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonServiceAsync;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
-import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccountPage;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.ColumnSortEvent;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageEvent;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.IFormatter;
@@ -75,8 +74,8 @@ public class AccountAdminPanel extends Composite {
 
 	private void updateDataPage(int pageNumber) {
 		adminPersonService.getUserAccounts(pageNumber, 10, sortingColumn,
-				sortingAscending, new AsyncCallback<UserAccountPage>() {
-					public void onSuccess(UserAccountPage result) {
+				sortingAscending, new AsyncCallback<UserAccount.Page>() {
+					public void onSuccess(UserAccount.Page result) {
 						userAccounts.setDataPage(result);
 					}
 
