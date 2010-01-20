@@ -2,7 +2,7 @@ package de.objectcode.time4u.server.web.gwt.utils.client.event;
 
 import com.google.gwt.event.shared.GwtEvent;
 
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.DataTableColumn;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.DataTableColumn;
 
 public class ColumnSortEvent<RowClass> extends
 		GwtEvent<ColumnSortHandler<RowClass>> {

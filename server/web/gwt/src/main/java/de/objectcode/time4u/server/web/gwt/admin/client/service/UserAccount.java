@@ -4,7 +4,57 @@ import java.util.Date;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+import de.objectcode.time4u.server.web.gwt.utils.client.service.IProjection;
+
 public class UserAccount implements IsSerializable {
+
+	public static enum Projections implements IProjection<UserAccount> {
+		ACTIVE("person.active", false) {
+			public Object project(UserAccount dto) {
+				return dto.getPerson().isActive();
+			}
+		},
+		USERID("id", true) {
+			public Object project(UserAccount dto) {
+				return dto.getUserId();
+			}
+		},
+		SURNAME("person.surname", true) {
+			public Object project(UserAccount dto) {
+				return (dto.getPerson().getGivenName() != null
+						&& dto.getPerson().getGivenName().length() > 0 ? (dto
+						.getPerson().getGivenName() + " ") : "")
+						+ dto.getPerson().getSurname();
+			}
+		},
+		EMAIL("person.email", true) {
+			public Object project(UserAccount dto) {
+				return dto.getPerson().getEmail();
+			}
+		},
+		LASTLOGIN("lastLogin", true) {
+			public Object project(UserAccount dto) {
+				return dto.getLastLogin();
+			}
+		};
+
+		private final String column;
+		private final boolean sortable;
+
+		private Projections(String column, boolean sortable) {
+			this.column = column;
+			this.sortable = sortable;
+		}
+
+		public String getColumn() {
+			return column;
+		}
+
+		public boolean isSortable() {
+			return sortable;
+		}
+	}
+	
 	private String userId;
 	private Person person;
 	private Date lastLogin;

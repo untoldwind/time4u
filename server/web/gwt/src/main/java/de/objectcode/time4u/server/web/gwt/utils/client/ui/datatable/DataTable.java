@@ -1,4 +1,4 @@
-package de.objectcode.time4u.server.web.gwt.utils.client.ui;
+package de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +19,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.ColumnSortEvent;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.ColumnSortHandler;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.HasColumnSortHandlers;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.ContextMenu;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.ExtendedFlexTable;
 
 public class DataTable<RowClass> extends ExtendedFlexTable implements
 		HasSelectionHandlers<RowClass>, HasColumnSortHandlers<RowClass>,

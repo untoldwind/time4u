@@ -11,6 +11,10 @@ import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageHandler;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.HasColumnSortHandlers;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.HasDataPageHandlers;
 import de.objectcode.time4u.server.web.gwt.utils.client.service.IDataPage;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.ColumnSorting;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.DataPager;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.DataTable;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.DataTableColumn;
 
 public class PagedDataTable<RowClass> extends Composite implements
 		HasDataPageHandlers, HasSelectionHandlers<RowClass>,

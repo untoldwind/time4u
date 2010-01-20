@@ -1,12 +1,18 @@
-package de.objectcode.time4u.server.web.gwt.utils.client.ui;
+package de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable;
 
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
+import de.objectcode.time4u.server.web.gwt.utils.client.service.IProjection;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.IFormatter;
+
+
 public class WidgetDataTableColumn<RowClass> extends DataTableColumn<RowClass> {
 
-	public WidgetDataTableColumn(String header, String width) {
-		super(header, width);
+
+	public WidgetDataTableColumn(String header, String width,
+			IProjection<RowClass> projection, IFormatter formatter) {
+		super(header, width, projection, formatter);
 	}
 
 	@Override
