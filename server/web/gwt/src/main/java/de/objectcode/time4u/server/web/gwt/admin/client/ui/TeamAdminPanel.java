@@ -14,7 +14,7 @@ import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonServi
 import de.objectcode.time4u.server.web.gwt.admin.client.service.TeamSummary;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.ColumnSortEvent;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageEvent;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.PagedDataTable;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.PagedDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 
 public class TeamAdminPanel extends Composite {

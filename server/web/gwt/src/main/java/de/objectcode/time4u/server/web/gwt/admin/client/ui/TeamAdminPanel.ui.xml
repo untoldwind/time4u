@@ -5,7 +5,7 @@
 	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
 
 	<g:VerticalPanel width="100%">
-		<ta:TeamAdminPanel.TeamTable
-			ui:field="teams" width="100%"/>
+		<ta:TeamAdminPanel.TeamTable ui:field="teams"
+			width="100%" />
 	</g:VerticalPanel>
 </ui:UiBinder>

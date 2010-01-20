@@ -3,7 +3,14 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
 
-	<g:HTMLPanel width="100%" height="100%">
-		<g:Label>Placeholder</g:Label>
-	</g:HTMLPanel>
+	<g:DockLayoutPanel unit="EM" styleName="webclient-panel">
+		<g:north size="2">
+			<g:Label styleName="webclient-panelTitle">Statistics</g:Label>
+		</g:north>
+		<g:center>
+			<g:HTMLPanel width="100%" height="100%">
+				<g:Label>Placeholder</g:Label>
+			</g:HTMLPanel>
+		</g:center>
+	</g:DockLayoutPanel>
 </ui:UiBinder>
