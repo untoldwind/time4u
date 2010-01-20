@@ -13,17 +13,14 @@ import de.objectcode.time4u.server.web.gwt.webclient.client.ui.WebClientPanel;
 public class WebClientModule {
 	private static WebClientModule instance = null;
 
-	private WebClientPanel webClientPanel;
+	private WebClientPanel webClientPanel = new WebClientPanel();
 	
 	public WebClientPanel getWebClientPanel() {
-		if ( webClientPanel == null )
-			webClientPanel = new WebClientPanel();
-		
 		return webClientPanel;
 	}
 	
 	public static void createAsync(final IModuleCallback<WebClientModule> callback) {
-		GWT.runAsync(new RunAsyncCallback() {
+		GWT.runAsync(WebClientModule.class, new RunAsyncCallback() {
 			public void onFailure(Throwable err) {
 				Window.alert("Client error" + err);
 			}

@@ -15,11 +15,9 @@ public class ReportModule {
 
 	private static ReportModule instance = null;
 
-	private InteractiveReportPanel interactiveReportPanel;
+	private InteractiveReportPanel interactiveReportPanel = new InteractiveReportPanel();
 
 	public Composite getInteractiveReportPanel() {
-		if (interactiveReportPanel == null)
-			interactiveReportPanel = new InteractiveReportPanel();
 		return interactiveReportPanel;
 	}
 

@@ -15,28 +15,19 @@ import de.objectcode.time4u.server.web.gwt.utils.client.ui.SwitchableLayoutPanel
 public class AdminModule {
 	private static AdminModule instance = null;
 
-	private AccountAdminPanel accountAdminPanel;
-	private PersonAdminPanel personAdminPanel;
-	private TeamAdminPanel teamAdminPanel;
+	private AccountAdminPanel accountAdminPanel = new AccountAdminPanel();
+	private PersonAdminPanel personAdminPanel= new PersonAdminPanel();
+	private TeamAdminPanel teamAdminPanel= new TeamAdminPanel();
 
 	public AccountAdminPanel getAccountAdminPanel() {
-		if (accountAdminPanel == null)
-			accountAdminPanel = new AccountAdminPanel();
-
 		return accountAdminPanel;
 	}
 
 	public PersonAdminPanel getPersonAdminPanel() {
-		if (personAdminPanel == null)
-			personAdminPanel = new PersonAdminPanel();
-
 		return personAdminPanel;
 	}
 	
 	public TeamAdminPanel getTeamAdminPanel() {
-		if (teamAdminPanel == null)
-			teamAdminPanel = new TeamAdminPanel();
-
 		return teamAdminPanel;
 	}
 
