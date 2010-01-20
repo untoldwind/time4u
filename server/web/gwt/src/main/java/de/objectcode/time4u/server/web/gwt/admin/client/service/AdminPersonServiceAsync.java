@@ -13,5 +13,7 @@ public interface AdminPersonServiceAsync {
 	void getTeamSummaries(int pageNumber, int pageSize, TeamSummary.Projections sorting,
 			boolean ascending, AsyncCallback<TeamSummary.Page> callback);
 
+	void getPerson(String personId, AsyncCallback<Person> callback);
 
+	void getTeam(String teamId, AsyncCallback<Team> callback);
 }

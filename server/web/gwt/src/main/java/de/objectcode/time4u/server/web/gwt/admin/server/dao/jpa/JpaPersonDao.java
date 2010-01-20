@@ -10,7 +10,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.objectcode.time4u.server.entities.PersonEntity;
+import de.objectcode.time4u.server.entities.TeamEntity;
+import de.objectcode.time4u.server.web.gwt.admin.client.service.Person;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.PersonSummary;
+import de.objectcode.time4u.server.web.gwt.admin.client.service.TeamSummary;
 import de.objectcode.time4u.server.web.gwt.admin.server.dao.IPersonDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
 
@@ -18,9 +21,15 @@ import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
 @Transactional(propagation = Propagation.MANDATORY)
 public class JpaPersonDao extends JpaDaoBase implements IPersonDao {
 
+	public Person findPerson(String personId) {
+PersonEntity personEntity =		entityManager.find(PersonEntity.class, personId);
+
+return toDTO(personEntity);
+	}
+
 	@SuppressWarnings("unchecked")
-	public PersonSummary.Page findPersonSummaryPage(int pageNumber, int pageSize,
-			PersonSummary.Projections sorting, boolean ascending) {
+	public PersonSummary.Page findPersonSummaryPage(int pageNumber,
+			int pageSize, PersonSummary.Projections sorting, boolean ascending) {
 
 		Query countQuery = entityManager.createQuery("select count(*) from "
 				+ PersonEntity.class.getName()
@@ -60,5 +69,23 @@ public class JpaPersonDao extends JpaDaoBase implements IPersonDao {
 				personEntity.getActive() == null || personEntity.getActive(),
 				personEntity.getGivenName(), personEntity.getSurname(),
 				personEntity.getEmail(), personEntity.getLastSynchronize());
+	}
+
+	static Person toDTO(PersonEntity personEntity) {
+		List<TeamSummary> ownerOf = new ArrayList<TeamSummary>();
+		
+		for ( TeamEntity teamEntity : personEntity.getResponsibleFor())
+			ownerOf.add(JpaTeamDao.toDTOSummary(teamEntity));
+		
+		List<TeamSummary> memberOf = new ArrayList<TeamSummary>();
+
+		for ( TeamEntity teamEntity : personEntity.getMemberOf())
+			memberOf.add(JpaTeamDao.toDTOSummary(teamEntity));
+
+		return new Person(personEntity.getId(),
+				personEntity.getActive() == null || personEntity.getActive(),
+				personEntity.getGivenName(), personEntity.getSurname(),
+				personEntity.getEmail(), personEntity.getLastSynchronize(),
+				ownerOf, memberOf);
 	}
 }

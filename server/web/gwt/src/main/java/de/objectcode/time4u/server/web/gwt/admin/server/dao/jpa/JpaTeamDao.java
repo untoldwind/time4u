@@ -9,7 +9,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.TeamEntity;
+import de.objectcode.time4u.server.web.gwt.admin.client.service.PersonSummary;
+import de.objectcode.time4u.server.web.gwt.admin.client.service.Team;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.TeamSummary;
 import de.objectcode.time4u.server.web.gwt.admin.server.dao.ITeamDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
@@ -17,6 +20,12 @@ import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
 @Repository("adminTeamDao")
 @Transactional(propagation = Propagation.MANDATORY)
 public class JpaTeamDao extends JpaDaoBase implements ITeamDao {
+
+	public Team findTeam(String teamId) {
+		TeamEntity teamEntity = entityManager.find(TeamEntity.class, teamId);
+		
+		return toDTO(teamEntity);
+	}
 
 	@SuppressWarnings("unchecked")
 	public TeamSummary.Page findTeamSummaryPage(int pageNumber, int pageSize,
@@ -57,5 +66,20 @@ public class JpaTeamDao extends JpaDaoBase implements ITeamDao {
 	static TeamSummary toDTOSummary(TeamEntity teamEntity) {
 		return new TeamSummary(teamEntity.getId(), teamEntity.getName(),
 				teamEntity.getDescription());
+	}
+
+	static Team toDTO(TeamEntity teamEntity) {
+		List<PersonSummary> owners = new ArrayList<PersonSummary>();
+
+		for (PersonEntity personEntity : teamEntity.getOwners())
+			owners.add(JpaPersonDao.toDTOSummary(personEntity));
+
+		List<PersonSummary> members = new ArrayList<PersonSummary>();
+
+		for (PersonEntity personEntity : teamEntity.getMembers())
+			members.add(JpaPersonDao.toDTOSummary(personEntity));
+		
+		return new Team(teamEntity.getId(), teamEntity.getName(),
+				teamEntity.getDescription(), owners, members);
 	}
 }

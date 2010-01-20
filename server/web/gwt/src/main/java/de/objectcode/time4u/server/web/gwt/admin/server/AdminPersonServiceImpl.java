@@ -8,7 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonService;
+import de.objectcode.time4u.server.web.gwt.admin.client.service.Person;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.PersonSummary;
+import de.objectcode.time4u.server.web.gwt.admin.client.service.Team;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.TeamSummary;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
 import de.objectcode.time4u.server.web.gwt.admin.server.dao.IPersonDao;
@@ -37,13 +39,25 @@ public class AdminPersonServiceImpl extends GwtController implements
 	@Transactional(readOnly = true)
 	public PersonSummary.Page getPersonSummaries(int pageNumber, int pageSize,
 			PersonSummary.Projections sorting, boolean ascending) {
-		return personDao.findPersonSummaryPage(pageNumber, pageSize, sorting, ascending);
+		return personDao.findPersonSummaryPage(pageNumber, pageSize, sorting,
+				ascending);
+	}
+
+	@Transactional(readOnly = true)
+	public Person getPerson(String personId) {
+		return personDao.findPerson(personId);
 	}
 
 	@Transactional(readOnly = true)
 	public TeamSummary.Page getTeamSummaries(int pageNumber, int pageSize,
 			TeamSummary.Projections sorting, boolean ascending) {
-		return teamDao.findTeamSummaryPage(pageNumber, pageSize, sorting, ascending);
+		return teamDao.findTeamSummaryPage(pageNumber, pageSize, sorting,
+				ascending);
+	}
+
+	@Transactional(readOnly = true)
+	public Team getTeam(String teamId) {
+		return teamDao.findTeam(teamId);		
 	}
 
 	@Resource(name = "adminUserAccountDao")
