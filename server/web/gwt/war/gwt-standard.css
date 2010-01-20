@@ -980,9 +980,12 @@ a, a:visited, a:hover {
 .gwt-Tree .gwt-TreeItem {
   padding: 1px 0px;
   margin: 0px;
+  padding-left: 20px;
   white-space: nowrap;
   cursor: hand;
   cursor: pointer;
+  background-image: url(images/project_icon.gif);
+  background-repeat: no-repeat;
 }
 .gwt-Tree .gwt-TreeItem-selected {
   background: #93c2f1 url(images/hborder.png) repeat-x 0px -1463px;

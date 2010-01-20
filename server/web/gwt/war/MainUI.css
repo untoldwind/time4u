@@ -74,7 +74,19 @@ td.mainMenu-userId {
 	background-color: #dddddd;
 }
 table.workItemTable {
-	border:2px solid red;
-	padding:0;
-	margin:0 important;
+	border-spacing:0;
+	color: #333333;
 }
+table.workItemTable th {
+	margin: 3px;
+	font-size: 13px;
+	font-weight: normal;
+	background: #E3E8F3 url(images/hborder.png) repeat-x scroll 0 -2003px;
+	border:1px solid #bbbbbb;
+	border-left: 0;
+}
+
+table.workItemTable tr {
+	border-bottom: 1px solid #666666;	
+}
+
