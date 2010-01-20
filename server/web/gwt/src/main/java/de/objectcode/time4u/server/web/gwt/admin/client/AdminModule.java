@@ -7,6 +7,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.MenuBar;
 
 import de.objectcode.time4u.server.web.gwt.admin.client.ui.AccountAdminPanel;
+import de.objectcode.time4u.server.web.gwt.admin.client.ui.PersonAdminPanel;
+import de.objectcode.time4u.server.web.gwt.admin.client.ui.TeamAdminPanel;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.IModuleCallback;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.SwitchableLayoutPanel;
 
@@ -14,12 +16,28 @@ public class AdminModule {
 	private static AdminModule instance = null;
 
 	private AccountAdminPanel accountAdminPanel;
+	private PersonAdminPanel personAdminPanel;
+	private TeamAdminPanel teamAdminPanel;
 
 	public AccountAdminPanel getAccountAdminPanel() {
 		if (accountAdminPanel == null)
 			accountAdminPanel = new AccountAdminPanel();
 
 		return accountAdminPanel;
+	}
+
+	public PersonAdminPanel getPersonAdminPanel() {
+		if (personAdminPanel == null)
+			personAdminPanel = new PersonAdminPanel();
+
+		return personAdminPanel;
+	}
+	
+	public TeamAdminPanel getTeamAdminPanel() {
+		if (teamAdminPanel == null)
+			teamAdminPanel = new TeamAdminPanel();
+
+		return teamAdminPanel;
 	}
 
 	public static void createAsync(final IModuleCallback<AdminModule> callback) {
@@ -45,6 +63,18 @@ public class AdminModule {
 				showAccountAdminPanel(mainPanel);
 			}
 		});
+		adminMenu.addItem("Persons", new Command() {
+			
+			public void execute() {
+				showPersonAdminPanel(mainPanel);
+			}
+		});
+		adminMenu.addItem("Teams", new Command() {
+			
+			public void execute() {
+				showTeamAdminPanel(mainPanel);
+			}
+		});
 
 		return adminMenu;
 	}
@@ -53,6 +83,22 @@ public class AdminModule {
 		createAsync(new IModuleCallback<AdminModule>() {
 			public void onSuccess(AdminModule instance) {
 				mainPanel.setChild(instance.getAccountAdminPanel());
+			}
+		});
+	}
+
+	public static void showPersonAdminPanel(final SwitchableLayoutPanel mainPanel) {
+		createAsync(new IModuleCallback<AdminModule>() {
+			public void onSuccess(AdminModule instance) {
+				mainPanel.setChild(instance.getPersonAdminPanel());
+			}
+		});
+	}
+
+	public static void showTeamAdminPanel(final SwitchableLayoutPanel mainPanel) {
+		createAsync(new IModuleCallback<AdminModule>() {
+			public void onSuccess(AdminModule instance) {
+				mainPanel.setChild(instance.getTeamAdminPanel());
 			}
 		});
 	}

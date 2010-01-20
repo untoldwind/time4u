@@ -8,28 +8,60 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonService;
+import de.objectcode.time4u.server.web.gwt.admin.client.service.PersonSummary;
+import de.objectcode.time4u.server.web.gwt.admin.client.service.TeamSummary;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
+import de.objectcode.time4u.server.web.gwt.admin.server.dao.IPersonDao;
+import de.objectcode.time4u.server.web.gwt.admin.server.dao.ITeamDao;
 import de.objectcode.time4u.server.web.gwt.admin.server.dao.IUserAccountDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.GwtController;
 
 @Controller
-@RequestMapping({"/MainUI/adminPerson.service"})
-public class AdminPersonServiceImpl extends GwtController implements AdminPersonService{
+@RequestMapping( { "/MainUI/adminPerson.service" })
+public class AdminPersonServiceImpl extends GwtController implements
+		AdminPersonService {
 
 	private static final long serialVersionUID = 1L;
 
 	IUserAccountDao userAccountDao;
-	
+	IPersonDao personDao;
+	ITeamDao teamDao;
 
-	@Transactional(readOnly=true)
-	public UserAccount.Page getUserAccounts(int pageNumber, int pageSize, UserAccount.Projections sorting, boolean ascending) {
-		return userAccountDao.findUserAccountPage(pageNumber, pageSize, sorting, ascending);
+	@Transactional(readOnly = true)
+	public UserAccount.Page getUserAccounts(int pageNumber, int pageSize,
+			UserAccount.Projections sorting, boolean ascending) {
+		return userAccountDao.findUserAccountPage(pageNumber, pageSize,
+				sorting, ascending);
 	}
 
-	@Resource(name="adminUserAccountDao")
+	@Transactional(readOnly = true)
+	public PersonSummary.Page getPersonSummaries(int pageNumber, int pageSize,
+			PersonSummary.Projections sorting, boolean ascending) {
+		return personDao.findPersonSummaryPage(pageNumber, pageSize, sorting, ascending);
+	}
+
+	@Transactional(readOnly = true)
+	public TeamSummary.Page getTeamSummaries(int pageNumber, int pageSize,
+			TeamSummary.Projections sorting, boolean ascending) {
+		return teamDao.findTeamSummaryPage(pageNumber, pageSize, sorting, ascending);
+	}
+
+	@Resource(name = "adminUserAccountDao")
 	@Required
 	public void setUserAccountDao(IUserAccountDao userAccountDao) {
 		this.userAccountDao = userAccountDao;
+	}
+
+	@Resource(name = "adminPersonDao")
+	@Required
+	public void setPersonDao(IPersonDao personDao) {
+		this.personDao = personDao;
+	}
+
+	@Resource(name = "adminTeamDao")
+	@Required
+	public void setTeamDao(ITeamDao teamDao) {
+		this.teamDao = teamDao;
 	}
 
 }
