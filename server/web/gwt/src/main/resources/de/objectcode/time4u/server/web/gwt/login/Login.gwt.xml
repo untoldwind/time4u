@@ -3,6 +3,5 @@
 <module rename-to="LoginUI">
 	<inherits name="com.google.gwt.user.User" />
 	<inherits name="de.objectcode.time4u.server.web.gwt.utils.Utils" />
-	<inherits name='com.google.gwt.user.theme.standard.Standard' />
 	<source path="client"/>
 </module>

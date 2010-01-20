@@ -33,6 +33,8 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 	public DataTable(boolean showHeader, DataTableColumn<RowClass>... columns) {
 		this.columns = columns;
 
+		setStyleName("utils-dataTable");
+		
 		if (showHeader) {
 			super.setHeaders(columns);
 
