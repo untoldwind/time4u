@@ -15,7 +15,6 @@ import de.objectcode.time4u.server.web.gwt.admin.client.service.TeamSummary;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.ColumnSortEvent;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageEvent;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.PagedDataTable;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.ColumnSorting;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 
 public class TeamAdminPanel extends Composite {
@@ -30,14 +29,9 @@ public class TeamAdminPanel extends Composite {
 	@UiField
 	TeamTable teams;
 
-	private TeamSummary.Projections sortingColumn;
-	private boolean sortingAscending;
-
 	public TeamAdminPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
-		
-		sortingColumn = TeamSummary.Projections.NAME;
-		sortingAscending = true;
+
 		updateDataPage(0);
 	}
 
@@ -48,16 +42,14 @@ public class TeamAdminPanel extends Composite {
 
 	@UiHandler("teams")
 	protected void onColumnSort(ColumnSortEvent<TeamSummary> event) {
-		sortingColumn = (TeamSummary.Projections) event.getSortColumn()
-				.getProjection();
-		sortingAscending = event.getSortColumn().getSorting() == ColumnSorting.ASCENDING;
-
 		updateDataPage(teams.getCurrentPage());
 	}
 
 	private void updateDataPage(int pageNumber) {
-		adminPersonService.getTeamSummaries(pageNumber, 10, sortingColumn,
-				sortingAscending, new AsyncCallback<TeamSummary.Page>() {
+		adminPersonService.getTeamSummaries(pageNumber, 10,
+				(TeamSummary.Projections) teams.getCurrentSortingColumn()
+						.getProjection(), teams.isCurrentSortingAscending(),
+				new AsyncCallback<TeamSummary.Page>() {
 					public void onSuccess(TeamSummary.Page result) {
 						teams.setDataPage(result);
 					}
@@ -77,7 +69,7 @@ public class TeamAdminPanel extends Composite {
 					new TextDataTableColumn<TeamSummary>("Given name", "20%",
 							TeamSummary.Projections.DESCRIPTION));
 
-			setColumnSorting(1, ColumnSorting.ASCENDING, false);
+			setColumnSorting(0, true, false);
 		}
 	}
 }

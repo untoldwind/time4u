@@ -18,7 +18,6 @@ import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageEvent;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.IFormatter;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.PagedDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.BooleanDataTableColumn;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.ColumnSorting;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 
 public class PersonAdminPanel extends Composite {
@@ -33,14 +32,9 @@ public class PersonAdminPanel extends Composite {
 	@UiField
 	PersonTable persons;
 
-	private PersonSummary.Projections sortingColumn;
-	private boolean sortingAscending;
-
 	public PersonAdminPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 
-		sortingColumn = PersonSummary.Projections.SURNAME;
-		sortingAscending = true;
 		updateDataPage(0);
 	}
 
@@ -51,16 +45,14 @@ public class PersonAdminPanel extends Composite {
 
 	@UiHandler("persons")
 	protected void onColumnSort(ColumnSortEvent<PersonSummary> event) {
-		sortingColumn = (PersonSummary.Projections) event.getSortColumn()
-				.getProjection();
-		sortingAscending = event.getSortColumn().getSorting() == ColumnSorting.ASCENDING;
-
 		updateDataPage(persons.getCurrentPage());
 	}
 
 	private void updateDataPage(int pageNumber) {
-		adminPersonService.getPersonSummaries(pageNumber, 10, sortingColumn,
-				sortingAscending, new AsyncCallback<PersonSummary.Page>() {
+		adminPersonService.getPersonSummaries(pageNumber, 10,
+				(PersonSummary.Projections) persons.getCurrentSortingColumn()
+						.getProjection(), persons.isCurrentSortingAscending(),
+				new AsyncCallback<PersonSummary.Page>() {
 					public void onSuccess(PersonSummary.Page result) {
 						persons.setDataPage(result);
 					}
@@ -83,13 +75,13 @@ public class PersonAdminPanel extends Composite {
 							PersonSummary.Projections.GIVENNAME),
 					new TextDataTableColumn<PersonSummary>("EMail", "40%",
 							PersonSummary.Projections.EMAIL),
-					new TextDataTableColumn<PersonSummary>("Last Synchronized",
+					new TextDataTableColumn<PersonSummary>("Last Synchronize",
 							"100em",
-							PersonSummary.Projections.LASTSYNCHRONIZED,
+							PersonSummary.Projections.LASTSYNCHRONIZE,
 							new IFormatter.DateTimeFormatter(DateTimeFormat
 									.getMediumDateTimeFormat())));
 
-			setColumnSorting(1, ColumnSorting.ASCENDING, false);
+			setColumnSorting(1, true, false);
 		}
 	}
 }

@@ -32,6 +32,10 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 	int currentSelectionRowIndex;
 	ContextMenu contextMenu;
 
+	int currentSortingIndex;
+	boolean currentSortingAscending;
+	DataTableColumn<RowClass> currentSortingColumn;
+
 	public DataTable(DataTableColumn<RowClass>... columns) {
 		this(true, columns);
 	}
@@ -40,7 +44,7 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 		this.columns = columns;
 
 		setStyleName("utils-dataTable");
-		
+
 		if (showHeader) {
 			super.setHeaders(columns);
 
@@ -166,36 +170,45 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 		rows.clear();
 	}
 
-	public void setColumnSorting(int columnIndex, ColumnSorting columnSorting,
+	public void setColumnSorting(int columnIndex, boolean ascending,
 			boolean fireEvent) {
-		if (columnIndex >= 0 && columnIndex < columns.length
-				&& columns[columnIndex].isSortable()) {
+		currentSortingIndex = columnIndex;
+		currentSortingAscending = ascending;
+
+		if (currentSortingIndex >= 0 && currentSortingIndex < columns.length
+				&& columns[currentSortingIndex].isSortable()) {
+			currentSortingColumn = columns[currentSortingIndex];
+			
 			for (int i = 0; i < columns.length; i++) {
 				if (columns[i].isSortable()) {
-					columns[i].setSorting(i == columnIndex ? columnSorting
-							: ColumnSorting.NONE);
-
-					switch (columns[i].getSorting()) {
-					case NONE:
+					if (i == currentSortingIndex) {
+						setHeaderStyleName(
+								i,
+								currentSortingAscending ? "utils-dataTable-header-ascending"
+										: "utils-dataTable-header-descending");
+					} else {
 						setHeaderStyleName(i, "utils-dataTable-header-sortable");
-						break;
-					case ASCENDING:
-						setHeaderStyleName(i,
-								"utils-dataTable-header-ascending");
-						break;
-					case DESCENDING:
-						setHeaderStyleName(i,
-								"utils-dataTable-header-descending");
-						break;
 					}
 				}
 			}
 
 			if (fireEvent)
-				ColumnSortEvent.<RowClass> fire(this, columnIndex,
-						columns[columnIndex]);
+				ColumnSortEvent.<RowClass> fire(this, currentSortingIndex,
+						currentSortingAscending, currentSortingColumn);
 		}
 
+	}
+
+	public int getCurrentSortingIndex() {
+		return currentSortingIndex;
+	}
+
+	public boolean isCurrentSortingAscending() {
+		return currentSortingAscending;
+	}
+
+	public DataTableColumn<RowClass> getCurrentSortingColumn() {
+		return currentSortingColumn;
 	}
 
 	public HandlerRegistration addSelectionHandler(
@@ -257,20 +270,7 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 	}
 
 	private void onSort(int columnIndex) {
-		if (columnIndex >= 0 && columnIndex < columns.length
-				&& columns[columnIndex].isSortable()) {
-			ColumnSorting columnSorting = ColumnSorting.NONE;
-
-			switch (columns[columnIndex].getSorting()) {
-			case NONE:
-			case DESCENDING:
-				columnSorting = ColumnSorting.ASCENDING;
-				break;
-			case ASCENDING:
-				columnSorting = ColumnSorting.DESCENDING;
-				break;
-			}
-			setColumnSorting(columnIndex, columnSorting, true);
-		}
+		setColumnSorting(columnIndex, currentSortingIndex != columnIndex
+				|| !currentSortingAscending, true);
 	}
 }

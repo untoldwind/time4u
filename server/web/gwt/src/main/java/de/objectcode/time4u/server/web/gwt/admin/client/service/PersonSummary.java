@@ -23,7 +23,7 @@ public class PersonSummary implements IsSerializable {
 		},
 		GIVENNAME("givenName", true) {
 			public Object project(PersonSummary dto) {
-				return dto.getSurname();
+				return dto.getGivenName();
 			}
 		},
 		EMAIL("email", true) {
@@ -31,7 +31,7 @@ public class PersonSummary implements IsSerializable {
 				return dto.getEmail();
 			}
 		},
-		LASTSYNCHRONIZED("lastSynchronized", true) {
+		LASTSYNCHRONIZE("lastSynchronize", true) {
 			public Object project(PersonSummary dto) {
 				return dto.getLastSynchronized();
 			}

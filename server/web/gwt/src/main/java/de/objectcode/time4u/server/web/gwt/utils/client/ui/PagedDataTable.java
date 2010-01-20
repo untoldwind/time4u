@@ -11,7 +11,6 @@ import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageHandler;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.HasColumnSortHandlers;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.HasDataPageHandlers;
 import de.objectcode.time4u.server.web.gwt.utils.client.service.IDataPage;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.ColumnSorting;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.DataPager;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.DataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.DataTableColumn;
@@ -52,6 +51,32 @@ public class PagedDataTable<RowClass> extends Composite implements
 		dataPager.setDataPage(dataPage);
 	}
 
+	public int getCurrentSortingIndex() {
+		return dataTable.getCurrentSortingIndex();
+	}
+
+	@Override
+	public void setStyleName(String style) {
+		super.setStyleName(style);
+
+		dataTable.setStyleName(style);
+	}
+
+	@Override
+	public void setWidth(String width) {
+		super.setWidth(width);
+		
+		dataTable.setWidth(width);
+	}
+
+	public boolean isCurrentSortingAscending() {
+		return dataTable.isCurrentSortingAscending();
+	}
+
+	public DataTableColumn<RowClass> getCurrentSortingColumn() {
+		return dataTable.getCurrentSortingColumn();
+	}
+
 	public HandlerRegistration addDataPageHandler(DataPageHandler handler) {
 		return dataPager.addDataPageHandler(handler);
 	}
@@ -66,8 +91,9 @@ public class PagedDataTable<RowClass> extends Composite implements
 		return dataTable.addColumnSortHandler(handler);
 	}
 
-	public void setColumnSorting(int columnIndex, ColumnSorting columnSorting,
+	public void setColumnSorting(int columnIndex, boolean ascending,
 			boolean fireEvent) {
-		dataTable.setColumnSorting(columnIndex, columnSorting, fireEvent);
+		dataTable.setColumnSorting(columnIndex, ascending, fireEvent);
+
 	}
 }

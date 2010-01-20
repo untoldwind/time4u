@@ -8,11 +8,13 @@ public class ColumnSortEvent<RowClass> extends
 		GwtEvent<ColumnSortHandler<RowClass>> {
 	private static Type<ColumnSortHandler<?>> TYPE;
 
-	private final int columnIndex;
+	private final int columnIndex;	
+	private final boolean ascending;
 	private final DataTableColumn<RowClass> sortColumn;
 
-	protected ColumnSortEvent(int columnIndex, DataTableColumn<RowClass> sortColumn) {
+	protected ColumnSortEvent(int columnIndex, boolean ascending, DataTableColumn<RowClass> sortColumn) {
 		this.columnIndex = columnIndex;
+		this.ascending = ascending;
 		this.sortColumn = sortColumn;
 	}
 	
@@ -20,13 +22,17 @@ public class ColumnSortEvent<RowClass> extends
 		return columnIndex;
 	}
 
+	public boolean isAscending() {
+		return ascending;
+	}
+
 	public DataTableColumn<RowClass> getSortColumn() {
 		return sortColumn;
 	}
 
-	public static <RowClass> void fire(HasColumnSortHandlers<RowClass> source, int columnIndex, DataTableColumn<RowClass> sortColumn) {
+	public static <RowClass> void fire(HasColumnSortHandlers<RowClass> source, int columnIndex, boolean ascending, DataTableColumn<RowClass> sortColumn) {
 		if (TYPE != null) {
-			ColumnSortEvent<RowClass> event = new ColumnSortEvent<RowClass>(columnIndex, sortColumn);
+			ColumnSortEvent<RowClass> event = new ColumnSortEvent<RowClass>(columnIndex, ascending, sortColumn);
 			source.fireEvent(event);
 		}
 	}

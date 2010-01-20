@@ -19,7 +19,6 @@ import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageEvent;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.IFormatter;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.PagedDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.BooleanDataTableColumn;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.ColumnSorting;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 
 public class AccountAdminPanel extends Composite {
@@ -38,14 +37,9 @@ public class AccountAdminPanel extends Composite {
 	@UiField
 	AccountDetailPanel userAccountDetail;
 
-	private UserAccount.Projections sortingColumn;
-	private boolean sortingAscending;
-
 	public AccountAdminPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 
-		sortingColumn = UserAccount.Projections.USERID;
-		sortingAscending = true;
 		updateDataPage(0);
 	}
 
@@ -62,16 +56,15 @@ public class AccountAdminPanel extends Composite {
 
 	@UiHandler("userAccounts")
 	protected void onColumnSort(ColumnSortEvent<UserAccount> event) {
-		sortingColumn = (UserAccount.Projections) event.getSortColumn()
-				.getProjection();
-		sortingAscending = event.getSortColumn().getSorting() == ColumnSorting.ASCENDING;
-
 		updateDataPage(userAccounts.getCurrentPage());
 	}
 
 	private void updateDataPage(int pageNumber) {
-		adminPersonService.getUserAccounts(pageNumber, 10, sortingColumn,
-				sortingAscending, new AsyncCallback<UserAccount.Page>() {
+		adminPersonService.getUserAccounts(pageNumber, 10,
+				(UserAccount.Projections) userAccounts
+						.getCurrentSortingColumn().getProjection(),
+				userAccounts.isCurrentSortingAscending(),
+				new AsyncCallback<UserAccount.Page>() {
 					public void onSuccess(UserAccount.Page result) {
 						userAccounts.setDataPage(result);
 					}
@@ -99,7 +92,7 @@ public class AccountAdminPanel extends Composite {
 							new IFormatter.DateTimeFormatter(DateTimeFormat
 									.getMediumDateTimeFormat())));
 
-			setColumnSorting(1, ColumnSorting.ASCENDING, false);
+			setColumnSorting(1, true, false);
 		}
 
 	}
