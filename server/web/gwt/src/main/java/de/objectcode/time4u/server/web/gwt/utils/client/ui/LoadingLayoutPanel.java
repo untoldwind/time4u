@@ -1,97 +1,47 @@
 package de.objectcode.time4u.server.web.gwt.utils.client.ui;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.ProvidesResize;
-import com.google.gwt.user.client.ui.RequiresResize;
-import com.google.gwt.user.client.ui.Widget;
 
-public class LoadingLayoutPanel extends Composite implements HasWidgets,
-		RequiresResize, ProvidesResize {
+public class LoadingLayoutPanel extends LayoutPanel {
 
-	private LayoutPanel layoutPanel = new LayoutPanel();
 	private Label loadingLabel;
+	private int blockCount = 0;
+	private Timer timer = new Timer() {
+		@Override
+		public void run() {
+			loadingLabel.setStyleName("utils-loadingLabel");
+		}
 
-	private Widget widget;
+	};
 
 	public LoadingLayoutPanel() {
-		initWidget(layoutPanel);
-
 		setStyleName("utils-loadingPanel");
-		
+
 		loadingLabel = new Label();
 		loadingLabel.setStyleName("utils-loadingLabel");
 	}
 
 	public void block() {
-		layoutPanel.add(loadingLabel);
-		layoutPanel.setWidgetLeftRight(loadingLabel, 0, Unit.PX, 0, Unit.PX);
-		layoutPanel.setWidgetTopBottom(loadingLabel, 0, Unit.PX, 0, Unit.PX);
+		if ((blockCount++) == 0) {
+			loadingLabel.setStyleName("utils-loadingLabel-block");
+			add(loadingLabel);
+			setWidgetLeftRight(loadingLabel, 0, Unit.PX, 0, Unit.PX);
+			setWidgetTopBottom(loadingLabel, 0, Unit.PX, 0, Unit.PX);
+
+			timer.schedule(300);
+		}
 	}
 
 	public void unblock() {
-		layoutPanel.remove(loadingLabel);
-	}
-	
-	public void onResize() {
-		layoutPanel.onResize();
-	}
+		if (blockCount == 0)
+			return;
 
-	public Iterator<Widget> iterator() {
-		return new Iterator<Widget>() {
-			boolean hasElement = widget != null;
-			Widget returned = null;
-
-			public boolean hasNext() {
-				return hasElement;
-			}
-
-			public Widget next() {
-				if (!hasElement || (widget == null)) {
-					throw new NoSuchElementException();
-				}
-				hasElement = false;
-				return (returned = widget);
-			}
-
-			public void remove() {
-				if (returned != null) {
-					LoadingLayoutPanel.this.remove(returned);
-				}
-			}
-		};
-	}
-
-	public void add(Widget w) {
-		if (widget != null) {
-			throw new IllegalStateException(
-					"SimplePanel can only contain one child widget");
+		if ((--blockCount) == 0) {
+			timer.cancel();
+			remove(loadingLabel);
 		}
-
-		widget = w;
-		layoutPanel.add(widget);
-		layoutPanel.setWidgetLeftRight(widget, 0, Unit.PX, 0, Unit.PX);
-		layoutPanel.setWidgetTopBottom(widget, 0, Unit.PX, 0, Unit.PX);
-	}
-
-	public void clear() {
-		if ( widget != null )
-			remove(widget);
-	}
-
-	public boolean remove(Widget w) {
-		if ( w != widget)
-			return false;
-
-		layoutPanel.remove(widget);
-		widget = null;
-		
-		return true;
 	}
 }

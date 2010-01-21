@@ -6,33 +6,29 @@
 
 
 	<tu:LoadingLayoutPanel ui:field="loadingPanel">
-		<g:HTMLPanel>
-			<table>
-				<tr>
-					<td>UserId:</td>
-					<td>
-						<g:TextBox ui:field="userId" />
-					</td>
-				</tr>
-				<tr>
-					<td>Given Name:</td>
-					<td>
-						<g:TextBox ui:field="givenName" />
-					</td>
-				</tr>
-				<tr>
-					<td>Surname:</td>
-					<td>
-						<g:TextBox ui:field="surname" />
-					</td>
-				</tr>
-				<tr>
-					<td>Email:</td>
-					<td>
-						<g:TextBox ui:field="email" />
-					</td>
-				</tr>
-			</table>
-		</g:HTMLPanel>
+		<tu:layer>
+			<g:HTMLPanel>
+				<table>
+					<tr>
+						<td>Given Name:</td>
+						<td>
+							<g:TextBox ui:field="givenName" />
+						</td>
+					</tr>
+					<tr>
+						<td>Surname:</td>
+						<td>
+							<g:TextBox ui:field="surname" />
+						</td>
+					</tr>
+					<tr>
+						<td>Email:</td>
+						<td>
+							<g:TextBox ui:field="email" />
+						</td>
+					</tr>
+				</table>
+			</g:HTMLPanel>
+		</tu:layer>
 	</tu:LoadingLayoutPanel>
 </ui:UiBinder>
