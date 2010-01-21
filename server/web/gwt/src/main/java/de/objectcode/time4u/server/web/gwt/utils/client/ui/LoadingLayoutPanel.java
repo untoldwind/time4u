@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.layout.client.Layout;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
@@ -28,14 +27,18 @@ public class LoadingLayoutPanel extends Composite implements HasWidgets,
 		
 		loadingLabel = new Label();
 		loadingLabel.setStyleName("utils-loadingLabel");
-		
+	}
+
+	public void block() {
 		layoutPanel.add(loadingLabel);
 		layoutPanel.setWidgetLeftRight(loadingLabel, 0, Unit.PX, 0, Unit.PX);
 		layoutPanel.setWidgetTopBottom(loadingLabel, 0, Unit.PX, 0, Unit.PX);
-		
-//		loadingLabel.setVisible(false);
 	}
 
+	public void unblock() {
+		layoutPanel.remove(loadingLabel);
+	}
+	
 	public void onResize() {
 		layoutPanel.onResize();
 	}
@@ -72,7 +75,7 @@ public class LoadingLayoutPanel extends Composite implements HasWidgets,
 		}
 
 		widget = w;
-		layoutPanel.insert(widget, 0);
+		layoutPanel.add(widget);
 		layoutPanel.setWidgetLeftRight(widget, 0, Unit.PX, 0, Unit.PX);
 		layoutPanel.setWidgetTopBottom(widget, 0, Unit.PX, 0, Unit.PX);
 	}
@@ -80,8 +83,6 @@ public class LoadingLayoutPanel extends Composite implements HasWidgets,
 	public void clear() {
 		if ( widget != null )
 			remove(widget);
-		// TODO Auto-generated method stub
-
 	}
 
 	public boolean remove(Widget w) {

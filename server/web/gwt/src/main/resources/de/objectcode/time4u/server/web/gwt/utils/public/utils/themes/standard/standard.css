@@ -43,6 +43,11 @@
 	height: 1.5em;
 }
 
+.utils-loadingLabel-block {
+	display: block;
+	cursor: wait;
+}
+
 .utils-loadingLabel {
 	background-color: #000000;
 	background-image: url(images/loading2.gif);

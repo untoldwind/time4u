@@ -50,7 +50,7 @@ public class WebClientModule {
 		createAsync(new IModuleCallback<WebClientModule>() {
 			public void onSuccess(WebClientModule instance) {
 				mainPanel
-						.setChild(instance.getWebClientPanel());
+						.setWidget(instance.getWebClientPanel());
 			}
 		});
 	}

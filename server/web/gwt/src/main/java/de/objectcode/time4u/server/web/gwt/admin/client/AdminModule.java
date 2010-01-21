@@ -73,7 +73,7 @@ public class AdminModule {
 	public static void showAccountAdminPanel(final SwitchableLayoutPanel mainPanel) {
 		createAsync(new IModuleCallback<AdminModule>() {
 			public void onSuccess(AdminModule instance) {
-				mainPanel.setChild(instance.getAccountAdminPanel());
+				mainPanel.setWidget(instance.getAccountAdminPanel());
 			}
 		});
 	}
@@ -81,7 +81,7 @@ public class AdminModule {
 	public static void showPersonAdminPanel(final SwitchableLayoutPanel mainPanel) {
 		createAsync(new IModuleCallback<AdminModule>() {
 			public void onSuccess(AdminModule instance) {
-				mainPanel.setChild(instance.getPersonAdminPanel());
+				mainPanel.setWidget(instance.getPersonAdminPanel());
 			}
 		});
 	}
@@ -89,7 +89,7 @@ public class AdminModule {
 	public static void showTeamAdminPanel(final SwitchableLayoutPanel mainPanel) {
 		createAsync(new IModuleCallback<AdminModule>() {
 			public void onSuccess(AdminModule instance) {
-				mainPanel.setChild(instance.getTeamAdminPanel());
+				mainPanel.setWidget(instance.getTeamAdminPanel());
 			}
 		});
 	}

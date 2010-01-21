@@ -27,11 +27,14 @@ public class SwitchableLayoutPanel extends Panel implements AnimatedLayout,
 
 	public SwitchableLayoutPanel() {
 		setElement(Document.get().createDivElement());
+
+		setStyleName("utils-switchableLayoutPanel");
+
 		layout = new Layout(getElement());
 		layoutCmd = new LayoutCommand(layout);
 	}
 
-	public void setChild(Widget widget) {
+	public void setWidget(Widget widget) {
 		if (child != null) {
 			child.removeFromParent();
 		}

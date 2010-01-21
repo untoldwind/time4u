@@ -44,7 +44,7 @@ public class ReportModule {
 				createAsync(new IModuleCallback<ReportModule>() {
 					public void onSuccess(ReportModule instance) {
 						mainPanel
-								.setChild(instance.getInteractiveReportPanel());
+								.setWidget(instance.getInteractiveReportPanel());
 					}
 				});
 			}

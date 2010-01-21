@@ -5,7 +5,7 @@
 	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
 
 
-	<tu:LoadingLayoutPanel>
+	<tu:LoadingLayoutPanel ui:field="loadingPanel">
 		<g:HTMLPanel>
 			<table>
 				<tr>
