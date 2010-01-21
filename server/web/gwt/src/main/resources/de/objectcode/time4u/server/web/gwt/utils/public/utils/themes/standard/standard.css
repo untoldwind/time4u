@@ -21,7 +21,7 @@
 
 .utils-dataTable-row {
 	cursor: pointer;
-	height: 1.5em;
+	height: 1.2em;
 }
 
 .utils-dataTable-row-odd {
@@ -34,7 +34,7 @@
 
 .utils-dataTable-row-selected {
 	cursor: pointer;
-	height: 1.5em;
+	height: 1.2em;
 	background: #93c2f1 url(images/hborder.png) repeat-x 0px -1463px;
 }
 
@@ -52,16 +52,18 @@
 /* Splitters */
 .gwt-SplitLayoutPanel-HDragger {
 	cursor: col-resize;
-	background-color: #E3E8F3 !important;
-	background: #E3E8F3 url(images/splitPanelThumb.png) no-repeat center
-		!important;
+	background-color: #eeeeee !important;
+	border-left:1px solid #bbbbbb;
+	border-right:1px solid #bbbbbb;
+	width: 6px !important;
 }
 
 .gwt-SplitLayoutPanel-VDragger {
 	cursor: row-resize;
-	background-color: #E3E8F3 !important;
-	background: #E3E8F3 url(images/splitPanelThumb.png) no-repeat center
-		!important;
+	background-color: #eeeeee !important;
+	border-top:1px solid #bbbbbb;
+	border-bottom:1px solid #bbbbbb;
+	height: 6px !important;
 }
 
 .utils-MenuBarPopup {
