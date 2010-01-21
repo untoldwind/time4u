@@ -16,8 +16,6 @@
 
 	<entry-point class="de.objectcode.time4u.server.web.gwt.main.client.MainPage" />
 
-	<stylesheet src="advanced/themes/default/theme.css" />
-	
 	<!-- Internationalization support. -->
 	<extend-property name="locale" values="en" />
 	<extend-property name="locale" values="de" />
