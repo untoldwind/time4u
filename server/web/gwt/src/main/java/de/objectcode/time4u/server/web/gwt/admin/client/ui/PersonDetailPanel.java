@@ -45,19 +45,19 @@ public class PersonDetailPanel extends Composite {
 		adminPersonService.getPerson(personId, new AsyncCallback<Person>() {
 			public void onSuccess(Person result) {
 				try {
-				setPerson(result);
+					setPerson(result);
 				} finally {
-				loadingPanel.unblock();
+					loadingPanel.unblock();
 				}
 			}
-			
+
 			public void onFailure(Throwable caught) {
 				loadingPanel.unblock();
 				Window.alert("Server error: " + caught);
 			}
 		});
 	}
-	
+
 	public void setPerson(Person person) {
 		givenName.setValue(person.getGivenName());
 		surname.setValue(person.getSurname());

@@ -69,3 +69,32 @@ td.mainMenu-userId {
 	color: #444444;
 	font-weight: bold;
 }
+.gwt-Label {
+	color: black;
+}
+table.utils-dataTable {
+	border-spacing:0;
+	color: #333333;
+	padding:5px;
+}
+table.utils-dataTable .utils-dataTable-header th {
+	margin: 5px;
+	font-size: 13px;
+	font-weight: normal;
+	background: #E3E8F3 url(images/hborder.png) repeat-x scroll 0 -2003px;
+	border:1px solid #bbbbbb;
+	
+}
+.webclient-panelTitle {
+	padding-left: 10px;
+	padding-top:4px;
+	height: 22px;
+	background: #e9e9e9 url(images/utils_reiter.gif) no-repeat;
+}
+
+.webclient-PunchContent,
+.webclient-StatisticsContent {
+	background-color: #e8e8e8;
+	padding:5px;
+}
+
