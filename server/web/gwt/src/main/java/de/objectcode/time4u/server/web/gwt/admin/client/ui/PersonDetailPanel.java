@@ -1,10 +1,14 @@
 package de.objectcode.time4u.server.web.gwt.admin.client.ui;
 
+
+
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -12,7 +16,12 @@ import com.google.gwt.user.client.ui.Widget;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonService;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonServiceAsync;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.Person;
+import de.objectcode.time4u.server.web.gwt.admin.client.service.TeamSummary;
+import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.IFormatter;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLayoutPanel;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.DataTable;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 
 public class PersonDetailPanel extends Composite {
 	private static UI uiBinder = GWT.create(UI.class);
@@ -35,6 +44,18 @@ public class PersonDetailPanel extends Composite {
 	@UiField
 	TextBox email;
 
+	@UiField
+	CheckBox active;
+	
+	@UiField
+	UserAccountTable userAccounts;
+	
+	@UiField
+	TeamTable ownerOf;
+
+	@UiField
+	TeamTable memberOf;
+	
 	public PersonDetailPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
@@ -62,5 +83,35 @@ public class PersonDetailPanel extends Composite {
 		givenName.setValue(person.getGivenName());
 		surname.setValue(person.getSurname());
 		email.setValue(person.getEmail());
+		active.setValue(person.isActive());
+		
+		userAccounts.setRows(person.getUserAccounts());
+		ownerOf.setRows(person.getOwnerOf());
+		memberOf.setRows(person.getMemberOf());
 	}
+
+	public static class UserAccountTable extends DataTable<UserAccount> {
+		@SuppressWarnings("unchecked")
+		public UserAccountTable() {
+			super(new TextDataTableColumn<UserAccount>("UserId", "50%",
+					UserAccount.Projections.USERID),
+					new TextDataTableColumn<UserAccount>("Last Login", "50%",
+							UserAccount.Projections.LASTLOGIN,
+							new IFormatter.DateTimeFormatter(DateTimeFormat
+									.getMediumDateTimeFormat())));
+		}
+
+	}
+
+	public static class TeamTable extends DataTable<TeamSummary> {
+
+		@SuppressWarnings("unchecked")
+		public TeamTable() {
+			super(new TextDataTableColumn<TeamSummary>("Name", "50%",
+					TeamSummary.Projections.NAME),
+					new TextDataTableColumn<TeamSummary>("Description", "50%",
+							TeamSummary.Projections.DESCRIPTION));
+		}
+	}
+
 }

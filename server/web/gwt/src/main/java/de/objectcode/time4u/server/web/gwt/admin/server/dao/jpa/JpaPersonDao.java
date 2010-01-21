@@ -3,8 +3,10 @@ package de.objectcode.time4u.server.web.gwt.admin.server.dao.jpa;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,17 +16,22 @@ import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.Person;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.PersonSummary;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.TeamSummary;
+import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
 import de.objectcode.time4u.server.web.gwt.admin.server.dao.IPersonDao;
+import de.objectcode.time4u.server.web.gwt.admin.server.dao.IUserAccountDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
 
 @Repository("adminPersonDao")
 @Transactional(propagation = Propagation.MANDATORY)
 public class JpaPersonDao extends JpaDaoBase implements IPersonDao {
 
+	private IUserAccountDao userAccountDao;
+	
 	public Person findPerson(String personId) {
-PersonEntity personEntity =		entityManager.find(PersonEntity.class, personId);
+		PersonEntity personEntity = entityManager.find(PersonEntity.class,
+				personId);
 
-return toDTO(personEntity);
+		return toDTO(personEntity, userAccountDao.findUserAccountsOfPerson(personId));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -71,21 +78,28 @@ return toDTO(personEntity);
 				personEntity.getEmail(), personEntity.getLastSynchronize());
 	}
 
-	static Person toDTO(PersonEntity personEntity) {
+	static Person toDTO(PersonEntity personEntity,
+			List<UserAccount> userAccounts) {
 		List<TeamSummary> ownerOf = new ArrayList<TeamSummary>();
-		
-		for ( TeamEntity teamEntity : personEntity.getResponsibleFor())
+
+		for (TeamEntity teamEntity : personEntity.getResponsibleFor())
 			ownerOf.add(JpaTeamDao.toDTOSummary(teamEntity));
-		
+
 		List<TeamSummary> memberOf = new ArrayList<TeamSummary>();
 
-		for ( TeamEntity teamEntity : personEntity.getMemberOf())
+		for (TeamEntity teamEntity : personEntity.getMemberOf())
 			memberOf.add(JpaTeamDao.toDTOSummary(teamEntity));
 
 		return new Person(personEntity.getId(),
 				personEntity.getActive() == null || personEntity.getActive(),
 				personEntity.getGivenName(), personEntity.getSurname(),
 				personEntity.getEmail(), personEntity.getLastSynchronize(),
-				ownerOf, memberOf);
+				userAccounts, ownerOf, memberOf);
+	}
+
+	@Resource(name = "adminUserAccountDao")
+	@Required
+	public void setUserAccountDao(IUserAccountDao userAccountDao) {
+		this.userAccountDao = userAccountDao;
 	}
 }

@@ -1,6 +1,7 @@
 package de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -96,6 +97,13 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 				rowNum,
 				rowNum % 2 == 0 ? "utils-dataTable-row-even"
 						: "utils-dataTable-row-odd");
+	}
+	
+	public void setRows(Collection<RowClass> rows) {
+		removeAllRows();
+		
+		for ( RowClass row : rows)
+			addRow(row);
 	}
 
 	public void setFixedRowCount(int rowCount) {

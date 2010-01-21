@@ -64,9 +64,9 @@ public class TeamAdminPanel extends Composite {
 
 		@SuppressWarnings("unchecked")
 		public TeamTable() {
-			super(10, new TextDataTableColumn<TeamSummary>("Name", "20%",
+			super(10, new TextDataTableColumn<TeamSummary>("Name", "50%",
 					TeamSummary.Projections.NAME),
-					new TextDataTableColumn<TeamSummary>("Given name", "20%",
+					new TextDataTableColumn<TeamSummary>("Description", "50%",
 							TeamSummary.Projections.DESCRIPTION));
 
 			setColumnSorting(0, true, false);

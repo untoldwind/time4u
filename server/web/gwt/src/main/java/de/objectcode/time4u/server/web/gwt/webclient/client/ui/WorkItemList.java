@@ -5,6 +5,7 @@ import java.util.Date;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
@@ -55,15 +56,14 @@ public class WorkItemList extends Composite implements ISelectionChangeListener 
 
 			workItemService.getDayInfo(day, new AsyncCallback<DayInfo>() {
 				public void onSuccess(DayInfo result) {
-					workItemList.removeAllRows();
-
 					if (result != null)
-						for (WorkItem workItem : result.getWorkItems()) {
-							workItemList.addRow(workItem);
-						}
+						workItemList.setRows(result.getWorkItems());
+					else
+						workItemList.removeAllRows();
 				}
 
 				public void onFailure(Throwable caught) {
+					Window.alert("Server error: " + caught);
 				}
 			});
 		}

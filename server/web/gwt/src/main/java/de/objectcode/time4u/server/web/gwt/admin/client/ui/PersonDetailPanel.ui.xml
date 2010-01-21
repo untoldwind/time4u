@@ -7,28 +7,85 @@
 
 	<tu:LoadingLayoutPanel ui:field="loadingPanel">
 		<tu:layer>
-			<g:HTMLPanel>
-				<table>
-					<tr>
-						<td>Given Name:</td>
-						<td>
-							<g:TextBox ui:field="givenName" />
-						</td>
-					</tr>
-					<tr>
-						<td>Surname:</td>
-						<td>
-							<g:TextBox ui:field="surname" />
-						</td>
-					</tr>
-					<tr>
-						<td>Email:</td>
-						<td>
-							<g:TextBox ui:field="email" />
-						</td>
-					</tr>
-				</table>
-			</g:HTMLPanel>
+			<g:TabLayoutPanel barHeight="30">
+				<g:tab>
+					<g:header>Data</g:header>
+					<g:LayoutPanel>
+						<g:layer left="0" width="20em">
+							<g:HTMLPanel>
+								<table>
+									<tr>
+										<td>Given Name:</td>
+										<td>
+											<g:TextBox ui:field="givenName" />
+										</td>
+									</tr>
+									<tr>
+										<td>Surname:</td>
+										<td>
+											<g:TextBox ui:field="surname" />
+										</td>
+									</tr>
+									<tr>
+										<td>Email:</td>
+										<td>
+											<g:TextBox ui:field="email" />
+										</td>
+									</tr>
+									<tr>
+										<td>Active:</td>
+										<td>
+											<g:CheckBox ui:field="active" />
+										</td>
+									</tr>
+								</table>
+							</g:HTMLPanel>
+						</g:layer>
+						<g:layer left="20em" right="0">
+							<g:DockLayoutPanel unit="EM">
+								<g:north size="1.5">
+									<g:Label>User accounts</g:Label>
+								</g:north>
+								<g:center>
+									<g:ScrollPanel>
+										<ta:PersonDetailPanel.UserAccountTable
+											ui:field="userAccounts" width="100%" />
+									</g:ScrollPanel>
+								</g:center>
+							</g:DockLayoutPanel>
+						</g:layer>
+					</g:LayoutPanel>
+				</g:tab>
+				<g:tab>
+					<g:header>Teams</g:header>
+					<g:LayoutPanel>
+						<g:layer left="0" right="50%">
+							<g:DockLayoutPanel unit="EM">
+								<g:north size="1.5">
+									<g:Label>Owner of</g:Label>
+								</g:north>
+								<g:center>
+									<g:ScrollPanel>
+										<ta:PersonDetailPanel.TeamTable ui:field="ownerOf" width="100%"/>
+									</g:ScrollPanel>
+								</g:center>
+							</g:DockLayoutPanel>
+						</g:layer>
+						<g:layer left="50%" right="0">
+							<g:DockLayoutPanel unit="EM">
+								<g:north size="1.5">
+									<g:Label>Member of</g:Label>
+								</g:north>
+								<g:center>
+									<g:ScrollPanel>
+										<ta:PersonDetailPanel.TeamTable ui:field="memberOf" width="100%"/>
+									</g:ScrollPanel>
+								</g:center>
+							</g:DockLayoutPanel>
+						</g:layer>
+					</g:LayoutPanel>
+				</g:tab>
+			</g:TabLayoutPanel>
 		</tu:layer>
 	</tu:LoadingLayoutPanel>
 </ui:UiBinder>
