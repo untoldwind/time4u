@@ -1,52 +1,31 @@
 package de.objectcode.time4u.server.web.gwt.admin.client.service;
 
 import java.util.Date;
+import java.util.List;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-
-public class Person implements IsSerializable {
-	private String id;
-	private boolean active;
-	private String givenName;
-	private String surname;
-	private String email;
-	private Date lastSynchronized;
+public class Person extends PersonSummary {
+	List<TeamSummary> ownerOf;
+	List<TeamSummary> memberOf;
 
 	public Person() {
+		super();
 	}
 
 	public Person(String id, boolean active, String givenName, String surname,
-			String email, Date lastSynchronized) {
-		this.id = id;
-		this.active = active;
-		this.givenName = givenName;
-		this.surname = surname;
-		this.email = email;
-		this.lastSynchronized = lastSynchronized;
+			String email, Date lastSynchronized, List<TeamSummary> ownerOf,
+			List<TeamSummary> memberOf) {
+		super(id, active, givenName, surname, email, lastSynchronized);
+
+		this.ownerOf = ownerOf;
+		this.memberOf = memberOf;
 	}
 
-	public String getId() {
-		return id;
+	public List<TeamSummary> getOwnerOf() {
+		return ownerOf;
 	}
 
-	public boolean isActive() {
-		return active;
-	}
-
-	public String getGivenName() {
-		return givenName;
-	}
-
-	public String getSurname() {
-		return surname;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public Date getLastSynchronized() {
-		return lastSynchronized;
+	public List<TeamSummary> getMemberOf() {
+		return memberOf;
 	}
 
 }

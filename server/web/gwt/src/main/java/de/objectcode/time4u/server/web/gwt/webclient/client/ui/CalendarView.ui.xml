@@ -3,7 +3,10 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:gd="urn:import:com.google.gwt.user.datepicker.client"
 	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
 
-	<g:DockLayoutPanel>
+	<g:DockLayoutPanel unit="EM" styleName="webclient-panel">
+		<g:north size="2">
+			<g:Label styleName="webclient-panelTitle">Calendar</g:Label>
+		</g:north>
 		<g:center>
 			<tu:ExtendedDatePicker ui:field="calendar" width="100%" height="100%"/>
 		</g:center>

@@ -9,29 +9,28 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
-import de.objectcode.time4u.server.web.gwt.admin.client.service.Person;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
-import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccountPage;
 import de.objectcode.time4u.server.web.gwt.admin.server.dao.IUserAccountDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
 
-@Repository("userAccountDao")
+@Repository("adminUserAccountDao")
 @Transactional(propagation = Propagation.MANDATORY)
 public class JpaUserAccountDao extends JpaDaoBase implements IUserAccountDao {
 
 	@SuppressWarnings("unchecked")
-	public UserAccountPage findUserAccountPage(int pageNumber, int pageSize,
+	public UserAccount.Page findUserAccountPage(int pageNumber, int pageSize,
 			UserAccount.Projections sorting, boolean ascending) {
 		Query countQuery = entityManager.createQuery("select count(*) from "
-				+ UserAccountEntity.class.getName());
+				+ UserAccountEntity.class.getName()
+				+ " as u where u.person.deleted = false");
 
 		long count = (Long) countQuery.getSingleResult();
 
 		StringBuffer queryString = new StringBuffer("from ");
 		queryString.append(UserAccountEntity.class.getName()).append(
 				" as u left join fetch u.person");
+		queryString.append(" where u.person.deleted = false");
 		queryString.append(" order by");
 
 		if (sorting.isSortable()) {
@@ -55,19 +54,12 @@ public class JpaUserAccountDao extends JpaDaoBase implements IUserAccountDao {
 			ret.add(toDTO(userAccountEntity));
 		}
 
-		return new UserAccountPage(pageNumber, pageSize, (int) count, ret);
-	}
-
-	static Person toDTO(PersonEntity personEntity) {
-		return new Person(personEntity.getId(),
-				personEntity.getActive() == null || personEntity.getActive(),
-				personEntity.getGivenName(), personEntity.getSurname(),
-				personEntity.getEmail(), personEntity.getLastSynchronize());
+		return new UserAccount.Page(pageNumber, pageSize, (int) count, ret);
 	}
 
 	static UserAccount toDTO(UserAccountEntity userAccountEntity) {
-		return new UserAccount(userAccountEntity.getUserId(),
-				toDTO(userAccountEntity.getPerson()), userAccountEntity
-						.getLastLogin());
+		return new UserAccount(userAccountEntity.getUserId(), JpaPersonDao
+				.toDTOSummary(userAccountEntity.getPerson()), userAccountEntity
+				.getLastLogin());
 	}
 }

@@ -11,29 +11,27 @@ import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
 
 public class AccountDetailPanel extends Composite {
 
-	private static AccountDetailPanelUiBinder uiBinder = GWT
-			.create(AccountDetailPanelUiBinder.class);
+	private static UI uiBinder = GWT.create(UI.class);
 
-	interface AccountDetailPanelUiBinder extends
-			UiBinder<Widget, AccountDetailPanel> {
+	interface UI extends UiBinder<Widget, AccountDetailPanel> {
 	}
 
 	@UiField
 	TextBox userId;
-	
+
 	@UiField
 	TextBox givenName;
-	
+
 	@UiField
 	TextBox surname;
-	
+
 	@UiField
 	TextBox email;
-	
+
 	public AccountDetailPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-	
+
 	public void setUserAccount(UserAccount userAccount) {
 		userId.setText(userAccount.getUserId());
 		givenName.setText(userAccount.getPerson().getGivenName());

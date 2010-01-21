@@ -1,7 +1,6 @@
 package de.objectcode.time4u.server.web.gwt.admin.client.ui;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -13,7 +12,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonService;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonServiceAsync;
-import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
+import de.objectcode.time4u.server.web.gwt.admin.client.service.PersonSummary;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.ColumnSortEvent;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageEvent;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.IFormatter;
@@ -21,52 +20,41 @@ import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.BooleanData
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.PagedDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 
-public class AccountAdminPanel extends Composite {
-
+public class PersonAdminPanel extends Composite {
 	private static UI uiBinder = GWT.create(UI.class);
 
-	interface UI extends UiBinder<Widget, AccountAdminPanel> {
+	interface UI extends UiBinder<Widget, PersonAdminPanel> {
 	}
 
 	private final AdminPersonServiceAsync adminPersonService = GWT
 			.create(AdminPersonService.class);
 
 	@UiField
-	UserAccountTable userAccounts;
+	PersonTable persons;
 
-	@UiField
-	AccountDetailPanel userAccountDetail;
-
-	public AccountAdminPanel() {
+	public PersonAdminPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 
 		updateDataPage(0);
 	}
 
-	@UiHandler("userAccounts")
-	protected void onSelection(SelectionEvent<UserAccount> event) {
-		userAccountDetail.setVisible(true);
-		userAccountDetail.setUserAccount(event.getSelectedItem());
-	}
-
-	@UiHandler("userAccounts")
+	@UiHandler("persons")
 	protected void onDataPage(DataPageEvent event) {
 		updateDataPage(event.getPageNumber());
 	}
 
-	@UiHandler("userAccounts")
-	protected void onColumnSort(ColumnSortEvent<UserAccount> event) {
-		updateDataPage(userAccounts.getCurrentPage());
+	@UiHandler("persons")
+	protected void onColumnSort(ColumnSortEvent<PersonSummary> event) {
+		updateDataPage(persons.getCurrentPage());
 	}
 
 	private void updateDataPage(int pageNumber) {
-		adminPersonService.getUserAccounts(pageNumber, 10,
-				(UserAccount.Projections) userAccounts
-						.getCurrentSortingColumn().getProjection(),
-				userAccounts.isCurrentSortingAscending(),
-				new AsyncCallback<UserAccount.Page>() {
-					public void onSuccess(UserAccount.Page result) {
-						userAccounts.setDataPage(result);
+		adminPersonService.getPersonSummaries(pageNumber, 10,
+				(PersonSummary.Projections) persons.getCurrentSortingColumn()
+						.getProjection(), persons.isCurrentSortingAscending(),
+				new AsyncCallback<PersonSummary.Page>() {
+					public void onSuccess(PersonSummary.Page result) {
+						persons.setDataPage(result);
 					}
 
 					public void onFailure(Throwable caught) {
@@ -75,25 +63,25 @@ public class AccountAdminPanel extends Composite {
 				});
 	}
 
-	public static class UserAccountTable extends PagedDataTable<UserAccount> {
+	public static class PersonTable extends PagedDataTable<PersonSummary> {
 
 		@SuppressWarnings("unchecked")
-		public UserAccountTable() {
-			super(10, new BooleanDataTableColumn<UserAccount>("Active", "20px",
-					UserAccount.Projections.ACTIVE),
-					new TextDataTableColumn<UserAccount>("UserId", "20%",
-							UserAccount.Projections.USERID),
-					new TextDataTableColumn<UserAccount>("Name", "20%",
-							UserAccount.Projections.SURNAME),
-					new TextDataTableColumn<UserAccount>("EMail", "40%",
-							UserAccount.Projections.EMAIL),
-					new TextDataTableColumn<UserAccount>("Last Login", "100em",
-							UserAccount.Projections.LASTLOGIN,
+		public PersonTable() {
+			super(10, new BooleanDataTableColumn<PersonSummary>("Active",
+					"20px", PersonSummary.Projections.ACTIVE),
+					new TextDataTableColumn<PersonSummary>("Surname", "20%",
+							PersonSummary.Projections.SURNAME),
+					new TextDataTableColumn<PersonSummary>("Given name", "20%",
+							PersonSummary.Projections.GIVENNAME),
+					new TextDataTableColumn<PersonSummary>("EMail", "40%",
+							PersonSummary.Projections.EMAIL),
+					new TextDataTableColumn<PersonSummary>("Last Synchronize",
+							"100em",
+							PersonSummary.Projections.LASTSYNCHRONIZE,
 							new IFormatter.DateTimeFormatter(DateTimeFormat
 									.getMediumDateTimeFormat())));
 
 			setColumnSorting(1, true, false);
 		}
-
 	}
 }

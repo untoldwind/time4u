@@ -31,9 +31,6 @@ public class BooleanDataTableColumn<RowClass> extends
 		FlowPanel flow = (FlowPanel) widget;
 		Object value = row != null && projection != null ? projection.project(row) : row;
 
-		if ( value == null )
-			return;
-
 		if (value == null) {
 			flow.getWidget(0).setVisible(false);
 			flow.getWidget(1).setVisible(false);

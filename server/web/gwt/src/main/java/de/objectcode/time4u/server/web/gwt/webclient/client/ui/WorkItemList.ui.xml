@@ -7,23 +7,27 @@
 	<ui:with field="resources"
 		type="de.objectcode.time4u.server.web.gwt.webclient.client.WebClientBundle" />
 
-	<g:DockLayoutPanel>
-		<g:north size="25">
-			<g:HorizontalPanel>
-				<g:PushButton ui:field="newWorkItem">
-					<g:upFace image="{resources.newWorkItem}" />
-				</g:PushButton>
-				<g:PushButton ui:field="editWorkItem" enabled="false">
-					<g:upFace image="{resources.editWorkItem}" />
-				</g:PushButton>
-				<g:PushButton ui:field="deleteWorkItem" enabled="false">
-					<g:upFace image="{resources.deleteWorkItem}" />
-				</g:PushButton>
-			</g:HorizontalPanel>
+	<g:DockLayoutPanel unit="EM" styleName="webclient-panel">
+		<g:north size="4">
+			<g:VerticalPanel>
+				<g:Label styleName="webclient-panelTitle">WorkItems</g:Label>
+				<g:HorizontalPanel>
+					<g:PushButton ui:field="newWorkItem">
+						<g:upFace image="{resources.newWorkItem}" />
+					</g:PushButton>
+					<g:PushButton ui:field="editWorkItem" enabled="false">
+						<g:upFace image="{resources.editWorkItem}" />
+					</g:PushButton>
+					<g:PushButton ui:field="deleteWorkItem" enabled="false">
+						<g:upFace image="{resources.deleteWorkItem}" />
+					</g:PushButton>
+				</g:HorizontalPanel>
+			</g:VerticalPanel>
 		</g:north>
 		<g:center>
 			<g:ScrollPanel>
-				<wc:WorkItemList.WorkItemDataTable ui:field="workItemList" styleName="util-dataTable workItemTable" width="100%" />
+				<wc:WorkItemList.WorkItemDataTable
+					ui:field="workItemList" width="100%" styleName="util-dataTable webclient-workItemTable" />
 			</g:ScrollPanel>
 		</g:center>
 	</g:DockLayoutPanel>

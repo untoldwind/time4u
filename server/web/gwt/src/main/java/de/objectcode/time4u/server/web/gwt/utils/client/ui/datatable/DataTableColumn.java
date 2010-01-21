@@ -6,7 +6,6 @@ import de.objectcode.time4u.server.web.gwt.utils.client.ui.TableHeader;
 
 public abstract class DataTableColumn<RowClass> extends TableHeader {
 
-	private ColumnSorting sorting;
 	protected IProjection<RowClass> projection;
 	protected IFormatter formatter;
 
@@ -15,19 +14,10 @@ public abstract class DataTableColumn<RowClass> extends TableHeader {
 
 		this.projection = projection;
 		this.formatter = formatter;
-		this.sorting = ColumnSorting.NONE;
 	}
 
 	public boolean isSortable() {
 		return projection != null ? projection.isSortable() : false;
-	}
-
-	public ColumnSorting getSorting() {
-		return sorting;
-	}
-
-	public void setSorting(ColumnSorting sorting) {
-		this.sorting = sorting;
 	}
 
 	public IProjection<RowClass> getProjection() {

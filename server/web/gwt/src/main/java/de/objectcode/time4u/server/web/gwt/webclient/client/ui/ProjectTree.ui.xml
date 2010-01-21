@@ -6,23 +6,26 @@
 	<ui:with field="resources"
 		type="de.objectcode.time4u.server.web.gwt.webclient.client.WebClientBundle" />
 
-	<g:DockLayoutPanel>
-		<g:north size="25">
-			<g:HorizontalPanel>
-				<g:PushButton ui:field="newProject">
-					<g:upFace image="{resources.newProject}" />
-				</g:PushButton>
-				<g:PushButton ui:field="editProject" enabled="false">
-					<g:upFace image="{resources.editProject}" />
-				</g:PushButton>
-				<g:PushButton ui:field="deleteProject" enabled="false">
-					<g:upFace image="{resources.deleteProject}" />
-				</g:PushButton>
-			</g:HorizontalPanel>
+	<g:DockLayoutPanel unit="EM" styleName="webclient-panel">
+		<g:north size="4">
+			<g:VerticalPanel>
+				<g:Label styleName="webclient-panelTitle">Projects</g:Label>
+				<g:HorizontalPanel>
+					<g:PushButton ui:field="newProject">
+						<g:upFace image="{resources.newProject}" />
+					</g:PushButton>
+					<g:PushButton ui:field="editProject" enabled="false">
+						<g:upFace image="{resources.editProject}" />
+					</g:PushButton>
+					<g:PushButton ui:field="deleteProject" enabled="false">
+						<g:upFace image="{resources.deleteProject}" />
+					</g:PushButton>
+				</g:HorizontalPanel>
+			</g:VerticalPanel>
 		</g:north>
 		<g:center>
 			<g:ScrollPanel>
-				<tu:ExtendedTree ui:field="projectTree" width="100%" />
+				<tu:ExtendedTree ui:field="projectTree" width="100%" styleName="gwt-Tree webclient-projectTree"/>
 			</g:ScrollPanel>
 		</g:center>
 	</g:DockLayoutPanel>

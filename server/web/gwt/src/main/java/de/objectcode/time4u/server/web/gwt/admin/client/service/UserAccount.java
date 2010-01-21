@@ -1,9 +1,11 @@
 package de.objectcode.time4u.server.web.gwt.admin.client.service;
 
 import java.util.Date;
+import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+import de.objectcode.time4u.server.web.gwt.utils.client.service.BaseDataPage;
 import de.objectcode.time4u.server.web.gwt.utils.client.service.IProjection;
 
 public class UserAccount implements IsSerializable {
@@ -55,14 +57,34 @@ public class UserAccount implements IsSerializable {
 		}
 	}
 	
+	public static class Page extends BaseDataPage<UserAccount> {
+
+		public Page() {
+
+		}
+
+		public Page(int pageNumber, int pageSize, int totalNumber,
+				List<UserAccount> pageData) {
+			super(pageNumber, pageSize, totalNumber);
+
+			this.pageData = pageData;
+		}
+
+		private List<UserAccount> pageData;
+
+		public List<UserAccount> getPageData() {
+			return pageData;
+		}
+	}
+	
 	private String userId;
-	private Person person;
+	private PersonSummary person;
 	private Date lastLogin;
 
 	public UserAccount() {
 	}
 
-	public UserAccount(String userId, Person person, Date lastLogin) {
+	public UserAccount(String userId, PersonSummary person, Date lastLogin) {
 		this.userId = userId;
 		this.person = person;
 		this.lastLogin = lastLogin;
@@ -72,7 +94,7 @@ public class UserAccount implements IsSerializable {
 		return userId;
 	}
 
-	public Person getPerson() {
+	public PersonSummary getPerson() {
 		return person;
 	}
 
