@@ -8,7 +8,7 @@
 
 	<g:DockLayoutPanel unit="EM" styleName="webclient-panel">
 		<g:north size="4">
-			<g:VerticalPanel>
+			<g:HTMLPanel>
 				<g:Label styleName="webclient-panelTitle">Projects</g:Label>
 				<g:HorizontalPanel>
 					<g:PushButton ui:field="newProject">
@@ -21,11 +21,11 @@
 						<g:upFace image="{resources.deleteProject}" />
 					</g:PushButton>
 				</g:HorizontalPanel>
-			</g:VerticalPanel>
+			</g:HTMLPanel>
 		</g:north>
 		<g:center>
 			<g:ScrollPanel>
-				<tu:ExtendedTree ui:field="projectTree" width="100%" styleName="gwt-Tree webclient-projectTree"/>
+				<tu:ExtendedTree ui:field="projectTree" width="100%" styleName="gwt-Tree projectTree"/>
 			</g:ScrollPanel>
 		</g:center>
 	</g:DockLayoutPanel>

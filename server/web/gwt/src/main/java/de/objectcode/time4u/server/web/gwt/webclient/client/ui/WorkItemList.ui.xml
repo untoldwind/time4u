@@ -9,7 +9,7 @@
 
 	<g:DockLayoutPanel unit="EM" styleName="webclient-panel">
 		<g:north size="4">
-			<g:VerticalPanel>
+			<g:HTMLPanel>
 				<g:Label styleName="webclient-panelTitle">WorkItems</g:Label>
 				<g:HorizontalPanel>
 					<g:PushButton ui:field="newWorkItem">
@@ -22,12 +22,12 @@
 						<g:upFace image="{resources.deleteWorkItem}" />
 					</g:PushButton>
 				</g:HorizontalPanel>
-			</g:VerticalPanel>
+			</g:HTMLPanel>
 		</g:north>
 		<g:center>
 			<g:ScrollPanel>
 				<wc:WorkItemList.WorkItemDataTable
-					ui:field="workItemList" width="100%" styleName="util-dataTable webclient-workItemTable" />
+					ui:field="workItemList" width="100%" styleName="utils-dataTable workItemTable" />
 			</g:ScrollPanel>
 		</g:center>
 	</g:DockLayoutPanel>

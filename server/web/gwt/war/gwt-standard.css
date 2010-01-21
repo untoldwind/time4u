@@ -914,9 +914,16 @@ a, a:visited, a:hover {
   padding: 2px;
 }
 .gwt-TextBox-readonly {
-  color: #888;
+	border:0;
 }
-
+.gwt-ToggleButton {
+	background-color:white;
+	text-align:center;
+	background-color: #e0e0e0;
+}
+.gwt-ToggleButton .gwt-Image {
+	margin-top: 20px;
+}
 .gwt-ToggleButton-up,
 .gwt-ToggleButton-up-hovering,
 .gwt-ToggleButton-up-disabled,
@@ -925,7 +932,7 @@ a, a:visited, a:hover {
 .gwt-ToggleButton-down-disabled {
   margin: 0;
   text-decoration: none;
-  background: url("images/hborder.png") repeat-x 0px -27px;
+  
 }
 .gwt-ToggleButton-up,
 .gwt-ToggleButton-up-hovering,
@@ -942,6 +949,7 @@ a, a:visited, a:hover {
   border-color: #9cf #69e #69e #7af;
   cursor: pointer;
   cursor: hand;
+  background-color: #e9e9e9;
 }
 .gwt-ToggleButton-up-disabled {
   border: 1px outset #ccc;
@@ -967,6 +975,7 @@ a, a:visited, a:hover {
   border-color: #9cf #69e #69e #7af;
   cursor: pointer;
   cursor: hand;
+  background-color: #e9e9e9;
 }
 .gwt-ToggleButton-down-disabled {
   background-position: 0 -513px;
@@ -987,6 +996,16 @@ a, a:visited, a:hover {
   background-image: url(images/project_icon.gif);
   background-repeat: no-repeat;
 }
+
+.taskListTable .utils-dataTable-row td {
+	padding-left: 20px;
+	background-image: url(images/task_icon.gif);
+	background-repeat: no-repeat;
+}
+.taskListTable .utils-dataTable-row-selected td {
+	padding-left: 20px;
+}
+
 .gwt-Tree .gwt-TreeItem-selected {
   background: #93c2f1 url(images/hborder.png) repeat-x 0px -1463px;
 }
@@ -1009,7 +1028,7 @@ a, a:visited, a:hover {
 }
 
 .gwt-DatePicker {
-  border: 1px solid #A2BBDD;
+  border: 0;
   cursor: default;
 }
 .gwt-DatePicker td,
@@ -1030,9 +1049,10 @@ a, a:visited, a:hover {
 }
 .datePickerWeekdayLabel,
 .datePickerWeekendLabel {
-  background: #C3D9FF;
+  background: #f0f0f0;
   padding: 0px 4px 2px;
   cursor: default;
+  border-bottom: 1px solid #ccc;
 }
 .datePickerDay {
   padding: 4px;
@@ -1044,7 +1064,7 @@ a, a:visited, a:hover {
   padding: 3px;
 }
 .datePickerDayIsWeekend {
-  background: #EEEEEE;
+	background: #f1f1f1;
 }
 .datePickerDayIsFiller {
   color: #888888;
@@ -1057,14 +1077,15 @@ a, a:visited, a:hover {
   font-style: italic;
 }
 .datePickerDayIsHighlighted {
-  background: #F0E68C;
+	background: #cfcfcf;
 }
 .datePickerDayIsValueAndHighlighted {
   background: #bbddd9;
 }
 .datePickerMonthSelector {
-  background: #C3D9FF;
-  width: 100%;
+	background: #C3D9FF url(images/hborder.png) repeat-x scroll 0 -2003px;
+	width: 100%;
+	border-bottom: 1px solid #aaaaaa;
 }
 td.datePickerMonth {
   text-align: center;
@@ -1072,14 +1093,15 @@ td.datePickerMonth {
   white-space: nowrap;
   font-size: 70%;
   font-weight: bold;
-  color: blue;
 }
 .datePickerPreviousButton,
 .datePickerNextButton {
   font-size: 120%;
   line-height: 1em;
-  color: blue;
   cursor: hand;
   cursor: pointer;
   padding: 0px 4px;
+  font-weight: bold;
+  background-color: white;
+  border: 1px solid #888;
 }
