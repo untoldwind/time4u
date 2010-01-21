@@ -1,6 +1,7 @@
 package de.objectcode.time4u.server.web.gwt.admin.client.ui;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -32,10 +33,19 @@ public class PersonAdminPanel extends Composite {
 	@UiField
 	PersonTable persons;
 
+	@UiField
+	PersonDetailPanel personDetail;
+	
 	public PersonAdminPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 
 		updateDataPage(0);
+	}
+
+	@UiHandler("persons")
+	protected void onSelection(SelectionEvent<PersonSummary> event) {
+		personDetail.setVisible(true);
+		personDetail.setPersonId(event.getSelectedItem().getId());
 	}
 
 	@UiHandler("persons")

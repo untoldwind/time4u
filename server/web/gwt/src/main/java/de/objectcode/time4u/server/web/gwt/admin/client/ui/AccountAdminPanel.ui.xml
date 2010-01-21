@@ -4,9 +4,14 @@
 	xmlns:ta="urn:import:de.objectcode.time4u.server.web.gwt.admin.client.ui"
 	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
 
-	<g:VerticalPanel>
-		<ta:AccountAdminPanel.UserAccountTable
-			ui:field="userAccounts" />
-		<ta:AccountDetailPanel ui:field="userAccountDetail" visible="false"/>
-	</g:VerticalPanel>
+	<g:DockLayoutPanel unit="EM">
+		<g:north size="25">
+			<ta:AccountAdminPanel.UserAccountTable
+				ui:field="userAccounts" />
+		</g:north>
+		<g:center>
+			<ta:AccountDetailPanel ui:field="userAccountDetail"
+				visible="false" />
+		</g:center>
+	</g:DockLayoutPanel>
 </ui:UiBinder>
