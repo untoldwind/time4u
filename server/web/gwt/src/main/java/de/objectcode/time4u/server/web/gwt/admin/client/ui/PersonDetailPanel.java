@@ -22,6 +22,7 @@ import de.objectcode.time4u.server.web.gwt.utils.client.ui.IFormatter;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLayoutPanel;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.DataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.ToManyDataTable;
 
 public class PersonDetailPanel extends Composite {
 	private static UI uiBinder = GWT.create(UI.class);
@@ -85,9 +86,9 @@ public class PersonDetailPanel extends Composite {
 		email.setValue(person.getEmail());
 		active.setValue(person.isActive());
 		
-		userAccounts.setRows(person.getUserAccounts());
-		ownerOf.setRows(person.getOwnerOf());
-		memberOf.setRows(person.getMemberOf());
+		userAccounts.setData(person.getUserAccounts());
+		ownerOf.setData(person.getOwnerOf());
+		memberOf.setData(person.getMemberOf());
 	}
 
 	public static class UserAccountTable extends DataTable<UserAccount> {
@@ -103,7 +104,7 @@ public class PersonDetailPanel extends Composite {
 
 	}
 
-	public static class TeamTable extends DataTable<TeamSummary> {
+	public static class TeamTable extends ToManyDataTable<TeamSummary> {
 
 		@SuppressWarnings("unchecked")
 		public TeamTable() {

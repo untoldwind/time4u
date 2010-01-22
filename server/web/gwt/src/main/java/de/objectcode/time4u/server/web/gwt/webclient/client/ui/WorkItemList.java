@@ -57,7 +57,7 @@ public class WorkItemList extends Composite implements ISelectionChangeListener 
 			workItemService.getDayInfo(day, new AsyncCallback<DayInfo>() {
 				public void onSuccess(DayInfo result) {
 					if (result != null)
-						workItemList.setRows(result.getWorkItems());
+						workItemList.setData(result.getWorkItems());
 					else
 						workItemList.removeAllRows();
 				}

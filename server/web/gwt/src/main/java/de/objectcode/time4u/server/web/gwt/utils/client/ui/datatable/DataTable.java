@@ -25,7 +25,7 @@ import de.objectcode.time4u.server.web.gwt.utils.client.ui.ExtendedFlexTable;
 
 public class DataTable<RowClass> extends ExtendedFlexTable implements
 		HasSelectionHandlers<RowClass>, HasColumnSortHandlers<RowClass>,
-		HasDoubleClickHandlers, HasContextMenuHandlers {
+		HasDoubleClickHandlers, HasContextMenuHandlers,IDataView<RowClass> {
 
 	DataTableColumn<RowClass>[] columns;
 	List<RowClass> rows = new ArrayList<RowClass>();
@@ -99,7 +99,7 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 						: "utils-dataTable-row-odd");
 	}
 	
-	public void setRows(Collection<RowClass> rows) {
+	public void setData(Collection<RowClass> rows) {
 		removeAllRows();
 		
 		for ( RowClass row : rows)

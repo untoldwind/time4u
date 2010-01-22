@@ -65,9 +65,8 @@
 									<g:Label>Owner of</g:Label>
 								</g:north>
 								<g:center>
-									<g:ScrollPanel>
-										<ta:PersonDetailPanel.TeamTable ui:field="ownerOf" width="100%"/>
-									</g:ScrollPanel>
+									<ta:PersonDetailPanel.TeamTable
+										ui:field="ownerOf" width="100%" />
 								</g:center>
 							</g:DockLayoutPanel>
 						</g:layer>
@@ -77,9 +76,8 @@
 									<g:Label>Member of</g:Label>
 								</g:north>
 								<g:center>
-									<g:ScrollPanel>
-										<ta:PersonDetailPanel.TeamTable ui:field="memberOf" width="100%"/>
-									</g:ScrollPanel>
+									<ta:PersonDetailPanel.TeamTable
+										ui:field="memberOf" width="100%" />
 								</g:center>
 							</g:DockLayoutPanel>
 						</g:layer>
