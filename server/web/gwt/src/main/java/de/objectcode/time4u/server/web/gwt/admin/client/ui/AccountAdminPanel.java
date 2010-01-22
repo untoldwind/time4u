@@ -14,14 +14,15 @@ import com.google.gwt.user.client.ui.Widget;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonService;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonServiceAsync;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
-import de.objectcode.time4u.server.web.gwt.utils.client.event.ColumnSortEvent;
-import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageEvent;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.IFormatter;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.BooleanDataTableColumn;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.IPagedDataProvider;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.IPagedDataViewer;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.PagedDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 
-public class AccountAdminPanel extends Composite {
+public class AccountAdminPanel extends Composite implements
+		IPagedDataProvider<UserAccount> {
 
 	private static UI uiBinder = GWT.create(UI.class);
 
@@ -40,7 +41,7 @@ public class AccountAdminPanel extends Composite {
 	public AccountAdminPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 
-		updateDataPage(0);
+		userAccounts.setDataProvider(this);
 	}
 
 	@UiHandler("userAccounts")
@@ -49,24 +50,15 @@ public class AccountAdminPanel extends Composite {
 		userAccountDetail.setUserAccount(event.getSelectedItem());
 	}
 
-	@UiHandler("userAccounts")
-	protected void onDataPage(DataPageEvent event) {
-		updateDataPage(event.getPageNumber());
-	}
-
-	@UiHandler("userAccounts")
-	protected void onColumnSort(ColumnSortEvent<UserAccount> event) {
-		updateDataPage(userAccounts.getCurrentPage());
-	}
-
-	private void updateDataPage(int pageNumber) {
+	public void updateDataPage(int pageNumber,
+			final IPagedDataViewer<UserAccount> viewer) {
 		adminPersonService.getUserAccounts(pageNumber, 10,
 				(UserAccount.Projections) userAccounts
 						.getCurrentSortingColumn().getProjection(),
 				userAccounts.isCurrentSortingAscending(),
 				new AsyncCallback<UserAccount.Page>() {
 					public void onSuccess(UserAccount.Page result) {
-						userAccounts.setDataPage(result);
+						viewer.setDataPage(result);
 					}
 
 					public void onFailure(Throwable caught) {
@@ -96,4 +88,5 @@ public class AccountAdminPanel extends Composite {
 		}
 
 	}
+
 }

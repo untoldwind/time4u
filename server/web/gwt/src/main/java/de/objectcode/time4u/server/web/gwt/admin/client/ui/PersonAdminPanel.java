@@ -14,14 +14,14 @@ import com.google.gwt.user.client.ui.Widget;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonService;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonServiceAsync;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.PersonSummary;
-import de.objectcode.time4u.server.web.gwt.utils.client.event.ColumnSortEvent;
-import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageEvent;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.IFormatter;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.BooleanDataTableColumn;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.IPagedDataProvider;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.IPagedDataViewer;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.PagedDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 
-public class PersonAdminPanel extends Composite {
+public class PersonAdminPanel extends Composite implements IPagedDataProvider<PersonSummary>{
 	private static UI uiBinder = GWT.create(UI.class);
 
 	interface UI extends UiBinder<Widget, PersonAdminPanel> {
@@ -39,7 +39,7 @@ public class PersonAdminPanel extends Composite {
 	public PersonAdminPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 
-		updateDataPage(0);
+		persons.setDataProvider(this);
 	}
 
 	@UiHandler("persons")
@@ -47,24 +47,15 @@ public class PersonAdminPanel extends Composite {
 		personDetail.setVisible(true);
 		personDetail.setPersonId(event.getSelectedItem().getId());
 	}
-
-	@UiHandler("persons")
-	protected void onDataPage(DataPageEvent event) {
-		updateDataPage(event.getPageNumber());
-	}
-
-	@UiHandler("persons")
-	protected void onColumnSort(ColumnSortEvent<PersonSummary> event) {
-		updateDataPage(persons.getCurrentPage());
-	}
-
-	private void updateDataPage(int pageNumber) {
+	
+	public void updateDataPage(int pageNumber,
+			final IPagedDataViewer<PersonSummary> viewer) {
 		adminPersonService.getPersonSummaries(pageNumber, 10,
 				(PersonSummary.Projections) persons.getCurrentSortingColumn()
 						.getProjection(), persons.isCurrentSortingAscending(),
 				new AsyncCallback<PersonSummary.Page>() {
 					public void onSuccess(PersonSummary.Page result) {
-						persons.setDataPage(result);
+						viewer.setDataPage(result);
 					}
 
 					public void onFailure(Throwable caught) {
@@ -94,4 +85,5 @@ public class PersonAdminPanel extends Composite {
 			setColumnSorting(1, true, false);
 		}
 	}
+
 }
