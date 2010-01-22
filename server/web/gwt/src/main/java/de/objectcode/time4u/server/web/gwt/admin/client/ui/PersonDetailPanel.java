@@ -19,7 +19,6 @@ import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.IFormatter;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLayoutPanel;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.DataTable;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.IPagedDataViewer;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.ToManyDataTable;
 
@@ -58,6 +57,9 @@ public class PersonDetailPanel extends Composite {
 
 	public PersonDetailPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		ownerOf.setCandidatesDataProvider(new TeamDataProvider());
+		memberOf.setCandidatesDataProvider(new TeamDataProvider());
 	}
 
 	public void setPersonId(String personId) {
@@ -104,33 +106,12 @@ public class PersonDetailPanel extends Composite {
 	}
 
 	public static class TeamTable extends ToManyDataTable<TeamSummary> {
-		private final AdminPersonServiceAsync adminPersonService = GWT
-				.create(AdminPersonService.class);
-
 		@SuppressWarnings("unchecked")
 		public TeamTable() {
 			super(new TextDataTableColumn<TeamSummary>("Name", "50%",
 					TeamSummary.Projections.NAME),
 					new TextDataTableColumn<TeamSummary>("Description", "50%",
 							TeamSummary.Projections.DESCRIPTION));
-		}
-
-		@Override
-		protected void getCandidates(int pageNumber, int pageSize,
-				final IPagedDataViewer<TeamSummary> viewer) {
-			adminPersonService.getTeamSummaries(pageNumber, pageSize,
-					(TeamSummary.Projections) viewer.getCurrentSortingColumn()
-							.getProjection(), viewer
-							.isCurrentSortingAscending(),
-					new AsyncCallback<TeamSummary.Page>() {
-						public void onSuccess(TeamSummary.Page result) {
-							viewer.setDataPage(result);
-						}
-
-						public void onFailure(Throwable caught) {
-							Window.alert("Server error: " + caught);
-						}
-					});
 		}
 
 		@Override

@@ -59,11 +59,13 @@ public abstract class ToManyDataTable<RowClass> extends Composite implements
 		dataTable.setData(data);
 	}
 
+	public void setCandidatesDataProvider(IPagedDataProvider<RowClass> provider){
+		candidatesTable.setDataProvider(provider);
+	}
+	
 	@UiHandler("addButton")
 	protected void onAddClick(ClickEvent event) {
 		DialogBox addDialog = createAddDialog(candidatesTable);
-
-		getCandidates(0, 10, candidatesTable);
 
 		addDialog.center();
 		addDialog.show();
@@ -73,9 +75,6 @@ public abstract class ToManyDataTable<RowClass> extends Composite implements
 	protected void onRemoveClick(ClickEvent event) {
 
 	}
-
-	protected abstract void getCandidates(int pageNumber, int pageSize,
-			IPagedDataViewer<RowClass> viewer);
 
 	protected abstract void addCandidate(RowClass candidate);
 

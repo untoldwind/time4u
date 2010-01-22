@@ -6,29 +6,21 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonService;
-import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonServiceAsync;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.PersonSummary;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.IFormatter;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.BooleanDataTableColumn;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.IPagedDataProvider;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.IPagedDataViewer;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.PagedDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 
-public class PersonAdminPanel extends Composite implements IPagedDataProvider<PersonSummary>{
+public class PersonAdminPanel extends Composite {
 	private static UI uiBinder = GWT.create(UI.class);
 
 	interface UI extends UiBinder<Widget, PersonAdminPanel> {
 	}
 
-	private final AdminPersonServiceAsync adminPersonService = GWT
-			.create(AdminPersonService.class);
 
 	@UiField
 	PersonTable persons;
@@ -38,8 +30,6 @@ public class PersonAdminPanel extends Composite implements IPagedDataProvider<Pe
 	
 	public PersonAdminPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
-
-		persons.setDataProvider(this);
 	}
 
 	@UiHandler("persons")
@@ -48,21 +38,6 @@ public class PersonAdminPanel extends Composite implements IPagedDataProvider<Pe
 		personDetail.setPersonId(event.getSelectedItem().getId());
 	}
 	
-	public void updateDataPage(int pageNumber,
-			final IPagedDataViewer<PersonSummary> viewer) {
-		adminPersonService.getPersonSummaries(pageNumber, 10,
-				(PersonSummary.Projections) persons.getCurrentSortingColumn()
-						.getProjection(), persons.isCurrentSortingAscending(),
-				new AsyncCallback<PersonSummary.Page>() {
-					public void onSuccess(PersonSummary.Page result) {
-						viewer.setDataPage(result);
-					}
-
-					public void onFailure(Throwable caught) {
-						Window.alert("Server error: " + caught);
-					}
-				});
-	}
 
 	public static class PersonTable extends PagedDataTable<PersonSummary> {
 
@@ -82,7 +57,8 @@ public class PersonAdminPanel extends Composite implements IPagedDataProvider<Pe
 							new IFormatter.DateTimeFormatter(DateTimeFormat
 									.getMediumDateTimeFormat())));
 
-			setColumnSorting(1, true, false);
+
+			setDataProvider(new PersonDataProvider());
 		}
 	}
 
