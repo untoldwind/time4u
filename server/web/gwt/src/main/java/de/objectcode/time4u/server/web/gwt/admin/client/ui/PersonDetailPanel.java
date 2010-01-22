@@ -18,7 +18,7 @@ import de.objectcode.time4u.server.web.gwt.admin.client.service.TeamSummary;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.IFormatter;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLayoutPanel;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.DataTable;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.SingleSelDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.ToManyDataTable;
 
@@ -92,7 +92,7 @@ public class PersonDetailPanel extends Composite {
 		memberOf.setData(person.getMemberOf());
 	}
 
-	public static class UserAccountTable extends DataTable<UserAccount> {
+	public static class UserAccountTable extends SingleSelDataTable<UserAccount> {
 		@SuppressWarnings("unchecked")
 		public UserAccountTable() {
 			super(new TextDataTableColumn<UserAccount>("UserId", "50%",

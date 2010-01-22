@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.ContextMenu;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLabel;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.DataTable;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.SingleSelDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 import de.objectcode.time4u.server.web.gwt.webclient.client.ISelectionChangeListener;
 import de.objectcode.time4u.server.web.gwt.webclient.client.SelectionChangedEvent;
@@ -94,7 +94,7 @@ public class TaskList extends Composite implements ISelectionChangeListener {
 			SelectionManager.INSTANCE.selectTask(null);
 	}
 
-	public static class TaskDataTable extends DataTable<Task> {
+	public static class TaskDataTable extends SingleSelDataTable<Task> {
 		@SuppressWarnings("unchecked")
 		public TaskDataTable() {
 			super(false, new TextDataTableColumn<Task>("Task", "100%") {

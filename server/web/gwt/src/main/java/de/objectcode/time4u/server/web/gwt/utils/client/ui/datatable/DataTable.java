@@ -4,17 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ContextMenuEvent;
 import com.google.gwt.event.dom.client.ContextMenuHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.HasContextMenuHandlers;
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
-import com.google.gwt.event.logical.shared.HasSelectionHandlers;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 
 import de.objectcode.time4u.server.web.gwt.utils.client.event.ColumnSortEvent;
@@ -24,18 +19,15 @@ import de.objectcode.time4u.server.web.gwt.utils.client.ui.ContextMenu;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.ExtendedFlexTable;
 
 public class DataTable<RowClass> extends ExtendedFlexTable implements
-		HasSelectionHandlers<RowClass>, HasColumnSortHandlers<RowClass>,
-		HasDoubleClickHandlers, HasContextMenuHandlers,IDataViewer<RowClass> {
+		HasColumnSortHandlers<RowClass>, HasDoubleClickHandlers,
+		HasContextMenuHandlers, IDataViewer<RowClass> {
 
-	DataTableColumn<RowClass>[] columns;
-	List<RowClass> rows = new ArrayList<RowClass>();
-	RowClass currentSelection;
-	int currentSelectionRowIndex;
-	ContextMenu contextMenu;
-
-	int currentSortingIndex;
-	boolean currentSortingAscending;
-	DataTableColumn<RowClass> currentSortingColumn;
+	protected DataTableColumn<RowClass>[] columns;
+	protected List<RowClass> rows = new ArrayList<RowClass>();
+	protected int currentSortingIndex;
+	protected boolean currentSortingAscending;
+	protected DataTableColumn<RowClass> currentSortingColumn;
+	protected ContextMenu contextMenu;
 
 	public DataTable(DataTableColumn<RowClass>... columns) {
 		this(true, columns);
@@ -54,23 +46,6 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 				if (columns[i].isSortable())
 					setHeaderStyleName(i, "utils-dataTable-header-sortable");
 		}
-
-		addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				Cell cell = getCellForEvent(event);
-				if (cell != null) {
-					int rowNum = cell.getRowIndex();
-
-					if (rowNum == -1)
-						onSort(cell.getCellIndex());
-					else if (rowNum >= 0 && rowNum < rows.size()) {
-						RowClass row = rows.get(rowNum);
-
-						onSelection(row, rowNum, true);
-					}
-				}
-			}
-		});
 	}
 
 	public void addRow(RowClass row) {
@@ -98,11 +73,11 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 				rowNum % 2 == 0 ? "utils-dataTable-row-even"
 						: "utils-dataTable-row-odd");
 	}
-	
+
 	public void setData(Collection<RowClass> rows) {
 		removeAllRows();
-		
-		for ( RowClass row : rows)
+
+		for (RowClass row : rows)
 			addRow(row);
 	}
 
@@ -159,19 +134,6 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 		}
 	}
 
-	public void updateSelection() {
-		currentSelectionRowIndex = -1;
-
-		for (int i = 0; i < rows.size(); i++) {
-			RowClass row = rows.get(i);
-			if (row != null && row.equals(currentSelection)) {
-				getRowFormatter().setStyleName(i,
-						"utils-dataTable-row-selected");
-				currentSelectionRowIndex = i;
-			}
-		}
-	}
-
 	@Override
 	public void removeAllRows() {
 		super.removeAllRows();
@@ -186,7 +148,7 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 		if (currentSortingIndex >= 0 && currentSortingIndex < columns.length
 				&& columns[currentSortingIndex].isSortable()) {
 			currentSortingColumn = columns[currentSortingIndex];
-			
+
 			for (int i = 0; i < columns.length; i++) {
 				if (columns[i].isSortable()) {
 					if (i == currentSortingIndex) {
@@ -207,10 +169,6 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 
 	}
 
-	public RowClass getCurrentSelection() {
-		return currentSelection;
-	}
-
 	public int getCurrentSortingIndex() {
 		return currentSortingIndex;
 	}
@@ -221,24 +179,6 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 
 	public DataTableColumn<RowClass> getCurrentSortingColumn() {
 		return currentSortingColumn;
-	}
-
-	public HandlerRegistration addSelectionHandler(
-			SelectionHandler<RowClass> handler) {
-		return addHandler(handler, SelectionEvent.getType());
-	}
-
-	public HandlerRegistration addContextMenuHandler(ContextMenuHandler handler) {
-		return addDomHandler(handler, ContextMenuEvent.getType());
-	}
-
-	public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
-		return addDomHandler(handler, DoubleClickEvent.getType());
-	}
-
-	public HandlerRegistration addColumnSortHandler(
-			ColumnSortHandler<RowClass> handler) {
-		return addHandler(handler, ColumnSortEvent.getType());
 	}
 
 	public void setContextMenu(ContextMenu menu) {
@@ -258,31 +198,16 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 		}
 	}
 
-	private void onSelection(RowClass row, int rowIndex, boolean fireEvents) {
-		if (currentSelection != null && currentSelectionRowIndex >= 0) {
-			getRowFormatter().setStyleName(currentSelectionRowIndex,
-					"utils-dataTable-row");
-			getRowFormatter()
-					.addStyleName(
-							currentSelectionRowIndex,
-							currentSelectionRowIndex % 2 == 0 ? "utils-dataTable-row-even"
-									: "utils-dataTable-row-odd");
-		}
-		currentSelection = row;
-		currentSelectionRowIndex = rowIndex;
-
-		if (currentSelection != null) {
-			// Select the item and fire the selection event.
-			getRowFormatter().setStyleName(rowIndex,
-					"utils-dataTable-row-selected");
-			if (fireEvents) {
-				SelectionEvent.fire(this, currentSelection);
-			}
-		}
+	public HandlerRegistration addContextMenuHandler(ContextMenuHandler handler) {
+		return addDomHandler(handler, ContextMenuEvent.getType());
 	}
 
-	private void onSort(int columnIndex) {
-		setColumnSorting(columnIndex, currentSortingIndex != columnIndex
-				|| !currentSortingAscending, true);
+	public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
+		return addDomHandler(handler, DoubleClickEvent.getType());
+	}
+
+	public HandlerRegistration addColumnSortHandler(
+			ColumnSortHandler<RowClass> handler) {
+		return addHandler(handler, ColumnSortEvent.getType());
 	}
 }

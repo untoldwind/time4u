@@ -26,7 +26,7 @@ public abstract class ToManyDataTable<RowClass> extends Composite implements
 	interface UI extends UiBinder<Widget, ToManyDataTable> {
 	}
 
-	DataTable<RowClass> dataTable;
+	SingleSelDataTable<RowClass> dataTable;
 
 	PagedDataTable<RowClass> candidatesTable;
 
@@ -47,7 +47,7 @@ public abstract class ToManyDataTable<RowClass> extends Composite implements
 			DataTableColumn<RowClass>... columns) {
 		initWidget(uiBinder.createAndBindUi(this));
 
-		dataTable = new DataTable<RowClass>(showHeader, columns);
+		dataTable = new SingleSelDataTable<RowClass>(showHeader, columns);
 		dataTable.setWidth("100%");
 
 		candidatesTable = new PagedDataTable<RowClass>(10, columns);

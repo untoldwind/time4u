@@ -18,7 +18,7 @@ public class PagedDataTable<RowClass> extends Composite implements
 		HasDataPageHandlers, HasSelectionHandlers<RowClass>,
 		HasColumnSortHandlers<RowClass>, IPagedDataViewer<RowClass> {
 
-	private DataTable<RowClass> dataTable;
+	private SingleSelDataTable<RowClass> dataTable;
 	private DataPager dataPager;
 	private int pageSize;
 	private IPagedDataProvider<RowClass> dataProvider;
@@ -27,7 +27,7 @@ public class PagedDataTable<RowClass> extends Composite implements
 
 	public PagedDataTable(int pageSize, DataTableColumn<RowClass>... columns) {
 		this.pageSize = pageSize;
-		dataTable = new DataTable<RowClass>(columns);
+		dataTable = new SingleSelDataTable<RowClass>(columns);
 		dataTable.setFixedRowCount(pageSize);
 		dataPager = new DataPager();
 
