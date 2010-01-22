@@ -1,7 +1,5 @@
 package de.objectcode.time4u.server.web.gwt.admin.client.ui;
 
-
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -21,6 +19,7 @@ import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.IFormatter;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLayoutPanel;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.DataTable;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.IPagedDataViewer;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.ToManyDataTable;
 
@@ -47,16 +46,16 @@ public class PersonDetailPanel extends Composite {
 
 	@UiField
 	CheckBox active;
-	
+
 	@UiField
 	UserAccountTable userAccounts;
-	
+
 	@UiField
 	TeamTable ownerOf;
 
 	@UiField
 	TeamTable memberOf;
-	
+
 	public PersonDetailPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
@@ -85,7 +84,7 @@ public class PersonDetailPanel extends Composite {
 		surname.setValue(person.getSurname());
 		email.setValue(person.getEmail());
 		active.setValue(person.isActive());
-		
+
 		userAccounts.setData(person.getUserAccounts());
 		ownerOf.setData(person.getOwnerOf());
 		memberOf.setData(person.getMemberOf());
@@ -105,6 +104,8 @@ public class PersonDetailPanel extends Composite {
 	}
 
 	public static class TeamTable extends ToManyDataTable<TeamSummary> {
+		private final AdminPersonServiceAsync adminPersonService = GWT
+				.create(AdminPersonService.class);
 
 		@SuppressWarnings("unchecked")
 		public TeamTable() {
@@ -113,6 +114,31 @@ public class PersonDetailPanel extends Composite {
 					new TextDataTableColumn<TeamSummary>("Description", "50%",
 							TeamSummary.Projections.DESCRIPTION));
 		}
+
+		@Override
+		protected void getCandidates(int pageNumber, int pageSize,
+				final IPagedDataViewer<TeamSummary> viewer) {
+			adminPersonService.getTeamSummaries(pageNumber, pageSize,
+					(TeamSummary.Projections) viewer.getCurrentSortingColumn()
+							.getProjection(), viewer
+							.isCurrentSortingAscending(),
+					new AsyncCallback<TeamSummary.Page>() {
+						public void onSuccess(TeamSummary.Page result) {
+							viewer.setDataPage(result);
+						}
+
+						public void onFailure(Throwable caught) {
+							Window.alert("Server error: " + caught);
+						}
+					});
+		}
+
+		@Override
+		protected void addCandidate(TeamSummary candidate) {
+			// TODO
+			System.out.println(">>> " + candidate);
+		}
+
 	}
 
 }

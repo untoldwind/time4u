@@ -1,7 +1,5 @@
 package de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable;
 
-import java.util.Collection;
-
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -16,7 +14,7 @@ import de.objectcode.time4u.server.web.gwt.utils.client.service.IDataPage;
 
 public class PagedDataTable<RowClass> extends Composite implements
 		HasDataPageHandlers, HasSelectionHandlers<RowClass>,
-		HasColumnSortHandlers<RowClass>,IDataView<RowClass> {
+		HasColumnSortHandlers<RowClass>, IPagedDataViewer<RowClass> {
 
 	private DataTable<RowClass> dataTable;
 	private DataPager dataPager;
@@ -33,11 +31,18 @@ public class PagedDataTable<RowClass> extends Composite implements
 		panel.add(dataTable);
 		panel.add(dataPager);
 
+		for (int i = 0; i < columns.length; i++) {
+			if (columns[i].isSortable()) {
+				setColumnSorting(i, true, false);
+				break;
+			}
+		}
+
 		initWidget(panel);
 	}
 
-	public void setData(Collection<RowClass> data) {
-		dataTable.setData(data);
+	public RowClass getCurrentSelection() {
+		return dataTable.getCurrentSelection();
 	}
 
 	public int getCurrentPage() {
@@ -61,7 +66,7 @@ public class PagedDataTable<RowClass> extends Composite implements
 	@Override
 	public void setWidth(String width) {
 		super.setWidth(width);
-		
+
 		dataTable.setWidth(width);
 	}
 

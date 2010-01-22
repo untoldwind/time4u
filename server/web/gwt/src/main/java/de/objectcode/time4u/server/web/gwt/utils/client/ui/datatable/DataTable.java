@@ -25,7 +25,7 @@ import de.objectcode.time4u.server.web.gwt.utils.client.ui.ExtendedFlexTable;
 
 public class DataTable<RowClass> extends ExtendedFlexTable implements
 		HasSelectionHandlers<RowClass>, HasColumnSortHandlers<RowClass>,
-		HasDoubleClickHandlers, HasContextMenuHandlers,IDataView<RowClass> {
+		HasDoubleClickHandlers, HasContextMenuHandlers,IDataViewer<RowClass> {
 
 	DataTableColumn<RowClass>[] columns;
 	List<RowClass> rows = new ArrayList<RowClass>();
@@ -205,6 +205,10 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 						currentSortingAscending, currentSortingColumn);
 		}
 
+	}
+
+	public RowClass getCurrentSelection() {
+		return currentSelection;
 	}
 
 	public int getCurrentSortingIndex() {
