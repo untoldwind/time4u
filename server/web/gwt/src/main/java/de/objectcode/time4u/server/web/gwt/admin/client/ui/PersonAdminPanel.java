@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.Widget;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.PersonSummary;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.IFormatter;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.BooleanDataTableColumn;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.PagedDataTable;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.SingleSelPagedDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 
 public class PersonAdminPanel extends Composite {
@@ -39,7 +39,7 @@ public class PersonAdminPanel extends Composite {
 	}
 	
 
-	public static class PersonTable extends PagedDataTable<PersonSummary> {
+	public static class PersonTable extends SingleSelPagedDataTable<PersonSummary> {
 
 		@SuppressWarnings("unchecked")
 		public PersonTable() {

@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.admin.client.service.TeamSummary;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.PagedDataTable;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.SingleSelPagedDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 
 public class TeamAdminPanel extends Composite {
@@ -24,7 +24,7 @@ public class TeamAdminPanel extends Composite {
 	}
 
 
-	public static class TeamTable extends PagedDataTable<TeamSummary> {
+	public static class TeamTable extends SingleSelPagedDataTable<TeamSummary> {
 
 		@SuppressWarnings("unchecked")
 		public TeamTable() {

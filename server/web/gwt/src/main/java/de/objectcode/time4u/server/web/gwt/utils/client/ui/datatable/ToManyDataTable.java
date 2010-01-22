@@ -28,7 +28,7 @@ public abstract class ToManyDataTable<RowClass> extends Composite implements
 
 	SingleSelDataTable<RowClass> dataTable;
 
-	PagedDataTable<RowClass> candidatesTable;
+	SingleSelPagedDataTable<RowClass> candidatesTable;
 
 	@UiField
 	ScrollPanel scrollPanel;
@@ -50,7 +50,7 @@ public abstract class ToManyDataTable<RowClass> extends Composite implements
 		dataTable = new SingleSelDataTable<RowClass>(showHeader, columns);
 		dataTable.setWidth("100%");
 
-		candidatesTable = new PagedDataTable<RowClass>(10, columns);
+		candidatesTable = new SingleSelPagedDataTable<RowClass>(10, columns);
 
 		scrollPanel.add(dataTable);
 	}
@@ -79,7 +79,7 @@ public abstract class ToManyDataTable<RowClass> extends Composite implements
 	protected abstract void addCandidate(RowClass candidate);
 
 	protected DialogBox createAddDialog(
-			final PagedDataTable<RowClass> candidatesTable) {
+			final SingleSelPagedDataTable<RowClass> candidatesTable) {
 		final DialogBox addDialog = new DialogBox(true, true);
 		addDialog.setGlassEnabled(true);
 		addDialog.setAnimationEnabled(true);
