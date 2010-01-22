@@ -28,4 +28,8 @@ public interface WebClientBundle extends ClientBundle {
 	ImageResource punchedInBig();
 	
 	ImageResource punchedOutBig();
+	
+	ImageResource panelMax();
+	
+	ImageResource panelMin();
 }

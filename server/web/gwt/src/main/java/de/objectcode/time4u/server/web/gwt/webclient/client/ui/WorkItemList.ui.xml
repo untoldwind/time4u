@@ -10,7 +10,18 @@
 	<g:DockLayoutPanel unit="EM" styleName="webclient-panel">
 		<g:north size="4">
 			<g:HTMLPanel>
-				<g:Label styleName="webclient-panelTitle">WorkItems</g:Label>
+				<table width="100%" class="webclient-panelTitle">
+					<tr>
+						<td width="100%">WorkItems</td>
+						<td><g:PushButton enabled="true">
+						<g:upFace image="{resources.panelMin}" />
+						</g:PushButton></td>
+						<td><g:PushButton enabled="true">
+						<g:upFace image="{resources.panelMax}" />
+						</g:PushButton></td>
+					</tr>
+				</table>
+				
 				<g:HorizontalPanel>
 					<g:PushButton ui:field="newWorkItem">
 						<g:upFace image="{resources.newWorkItem}" />
