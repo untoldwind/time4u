@@ -5,8 +5,6 @@ import java.util.Collection;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -28,7 +26,7 @@ public abstract class ToManyDataTable<RowClass> extends Composite implements
 
 	SingleSelDataTable<RowClass> dataTable;
 
-	SingleSelPagedDataTable<RowClass> candidatesTable;
+	MultiSelPagedDataTable<RowClass> candidatesTable;
 
 	@UiField
 	ScrollPanel scrollPanel;
@@ -50,7 +48,7 @@ public abstract class ToManyDataTable<RowClass> extends Composite implements
 		dataTable = new SingleSelDataTable<RowClass>(showHeader, columns);
 		dataTable.setWidth("100%");
 
-		candidatesTable = new SingleSelPagedDataTable<RowClass>(10, columns);
+		candidatesTable = new MultiSelPagedDataTable<RowClass>(10, columns);
 
 		scrollPanel.add(dataTable);
 	}
@@ -67,6 +65,8 @@ public abstract class ToManyDataTable<RowClass> extends Composite implements
 	protected void onAddClick(ClickEvent event) {
 		DialogBox addDialog = createAddDialog(candidatesTable);
 
+		candidatesTable.setCurrentSelection(dataTable.getData(), false);
+		
 		addDialog.center();
 		addDialog.show();
 	}
@@ -76,10 +76,10 @@ public abstract class ToManyDataTable<RowClass> extends Composite implements
 
 	}
 
-	protected abstract void addCandidate(RowClass candidate);
+	protected abstract void updateData(Collection<RowClass> data);
 
 	protected DialogBox createAddDialog(
-			final SingleSelPagedDataTable<RowClass> candidatesTable) {
+			final MultiSelPagedDataTable<RowClass> candidatesTable) {
 		final DialogBox addDialog = new DialogBox(true, true);
 		addDialog.setGlassEnabled(true);
 		addDialog.setAnimationEnabled(true);
@@ -90,16 +90,16 @@ public abstract class ToManyDataTable<RowClass> extends Composite implements
 		dialogPanel.add(candidatesTable);
 		dialogPanel.add(buttonPanel);
 
-		final PushButton okButton = new PushButton("Add");
+		final PushButton okButton = new PushButton("Ok");
 
 		buttonPanel.add(okButton);
 		okButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				addCandidate(candidatesTable.getCurrentSelection());
+				updateData(candidatesTable.getCurrentSelection());
 				addDialog.hide();
 			}
+
 		});
-		okButton.setEnabled(false);
 
 		PushButton cancelButton = new PushButton("Cancel");
 
@@ -111,11 +111,6 @@ public abstract class ToManyDataTable<RowClass> extends Composite implements
 			}
 		});
 
-		candidatesTable.addSelectionHandler(new SelectionHandler<RowClass>() {
-			public void onSelection(SelectionEvent<RowClass> event) {
-				okButton.setEnabled(true);
-			}
-		});
 		addDialog.setWidget(dialogPanel);
 
 		return addDialog;

@@ -2,22 +2,16 @@ package de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasContextMenuHandlers;
-import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 
-import de.objectcode.time4u.server.web.gwt.utils.client.event.HasColumnSortHandlers;
-
 public class SingleSelDataTable<RowClass> extends DataTable<RowClass> implements
-		HasSelectionHandlers<RowClass>, HasColumnSortHandlers<RowClass>,
-		HasDoubleClickHandlers, HasContextMenuHandlers,IDataViewer<RowClass> {
+		HasSelectionHandlers<RowClass> {
 
 	RowClass currentSelection;
 	int currentSelectionRowIndex;
-
 
 	public SingleSelDataTable(DataTableColumn<RowClass>... columns) {
 		this(true, columns);
@@ -57,7 +51,6 @@ public class SingleSelDataTable<RowClass> extends DataTable<RowClass> implements
 		}
 	}
 
-
 	public HandlerRegistration addSelectionHandler(
 			SelectionHandler<RowClass> handler) {
 		return addHandler(handler, SelectionEvent.getType());
@@ -88,10 +81,5 @@ public class SingleSelDataTable<RowClass> extends DataTable<RowClass> implements
 				SelectionEvent.fire(this, currentSelection);
 			}
 		}
-	}
-
-	private void onSort(int columnIndex) {
-		setColumnSorting(columnIndex, currentSortingIndex != columnIndex
-				|| !currentSortingAscending, true);
 	}
 }

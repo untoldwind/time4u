@@ -74,6 +74,10 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 						: "utils-dataTable-row-odd");
 	}
 
+	public Collection<RowClass> getData() {
+		return rows;
+	}
+
 	public void setData(Collection<RowClass> rows) {
 		removeAllRows();
 
@@ -209,5 +213,10 @@ public class DataTable<RowClass> extends ExtendedFlexTable implements
 	public HandlerRegistration addColumnSortHandler(
 			ColumnSortHandler<RowClass> handler) {
 		return addHandler(handler, ColumnSortEvent.getType());
+	}
+
+	protected void onSort(int columnIndex) {
+		setColumnSorting(columnIndex, currentSortingIndex != columnIndex
+				|| !currentSortingAscending, true);
 	}
 }

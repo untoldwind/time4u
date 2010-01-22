@@ -1,5 +1,7 @@
 package de.objectcode.time4u.server.web.gwt.admin.client.ui;
 
+import java.util.Collection;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -108,18 +110,18 @@ public class PersonDetailPanel extends Composite {
 	public static class TeamTable extends ToManyDataTable<TeamSummary> {
 		@SuppressWarnings("unchecked")
 		public TeamTable() {
-			super(new TextDataTableColumn<TeamSummary>("Name", "50%",
+			super(new TextDataTableColumn<TeamSummary>("Name", "30em",
 					TeamSummary.Projections.NAME),
-					new TextDataTableColumn<TeamSummary>("Description", "50%",
+					new TextDataTableColumn<TeamSummary>("Description", "30em",
 							TeamSummary.Projections.DESCRIPTION));
 		}
 
 		@Override
-		protected void addCandidate(TeamSummary candidate) {
-			// TODO
-			System.out.println(">>> " + candidate);
+		protected void updateData(Collection<TeamSummary> data) {
+			System.out.println(">>> " + data);
+			
+			setData(data);
 		}
-
 	}
 
 }
