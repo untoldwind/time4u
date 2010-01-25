@@ -10,9 +10,9 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.ExtendedSplitLayoutPanel;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLabel;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.TimeBox;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.SingleSelDataTable;
@@ -74,18 +74,16 @@ public class WorkItemList extends Composite implements ISelectionChangeListener 
 
 	@UiHandler("panelMin")
 	protected void onPanelMinClick(ClickEvent event) {
-		SplitLayoutPanel parent = (SplitLayoutPanel) getParent();
+		ExtendedSplitLayoutPanel parent = (ExtendedSplitLayoutPanel) getParent();
 
-		for (int i = 0; i < parent.getWidgetCount(); i++) {
-
-			System.out.println("> " + i + " " + parent.getWidget(i));
-			System.out.println("> " + i + " " + parent.getWidget(i).getClass());
-		}
+		parent.minimizeChild(this);
 	}
 
 	@UiHandler("panelMax")
 	protected void onPanelMaxClick(ClickEvent event) {
+		ExtendedSplitLayoutPanel parent = (ExtendedSplitLayoutPanel) getParent();
 
+		parent.maximizeChild(this);
 	}
 
 	public static class WorkItemDataTable extends SingleSelDataTable<WorkItem> {

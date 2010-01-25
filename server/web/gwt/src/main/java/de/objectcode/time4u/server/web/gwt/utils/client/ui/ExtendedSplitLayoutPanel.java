@@ -11,7 +11,8 @@ import com.google.gwt.user.client.ui.Widget;
 public class ExtendedSplitLayoutPanel extends DockLayoutPanel {
 	private static final int SPLITTER_SIZE = 8;
 
-	protected int centerMinSize = 0;
+	protected int centerMinWidth = 0;
+	protected int centerMinHeight = 0;
 
 	public ExtendedSplitLayoutPanel() {
 		super(Unit.PX);
@@ -42,8 +43,9 @@ public class ExtendedSplitLayoutPanel extends DockLayoutPanel {
 		return false;
 	}
 
-	public void setCenterMinSize(int minSize) {
-		centerMinSize = minSize;
+	public void setCenterMinSize(int minWidth, int minHeight) {
+		centerMinWidth = minWidth;
+		centerMinHeight = minHeight;
 	}
 
 	public void setWidgetMinSize(Widget child, int minSize) {
@@ -60,12 +62,42 @@ public class ExtendedSplitLayoutPanel extends DockLayoutPanel {
 			for (int i = 1; i < getWidgetCount(); i += 2) {
 				Splitter splitter = (Splitter) getWidget(i);
 
-				splitter.minimize();
+				splitter.setSize(splitter.getMinSize());
 			}
 		} else {
 			Splitter splitter = getAssociatedSplitter(child);
-			
-			splitter.maximize();
+
+			if (splitter instanceof VSplitter) {
+				int height = getCenter().getOffsetHeight() - centerMinHeight;
+
+				for (int i = 1; i < getWidgetCount(); i += 2) {
+					Splitter otherSplitter = (Splitter) getWidget(i);
+
+					if (splitter != otherSplitter
+							&& otherSplitter instanceof VSplitter) {
+						height += otherSplitter.getSize()
+								- otherSplitter.getMinSize();
+						otherSplitter.setSize(otherSplitter.getMinSize());
+					}
+				}
+
+				splitter.setSize(splitter.getSize() + height);
+			} else {
+				int width = getCenter().getOffsetWidth() - centerMinWidth;
+
+				for (int i = 1; i < getWidgetCount(); i += 2) {
+					Splitter otherSplitter = (Splitter) getWidget(i);
+
+					if (splitter != otherSplitter
+							&& otherSplitter instanceof HSplitter) {
+						width += otherSplitter.getSize()
+								- otherSplitter.getMinSize();
+						otherSplitter.setSize(otherSplitter.getMinSize());
+					}
+				}
+
+				splitter.setSize(splitter.getSize() + width);
+			}
 		}
 
 		animate(200);
@@ -77,11 +109,34 @@ public class ExtendedSplitLayoutPanel extends DockLayoutPanel {
 		LayoutData layoutData = (LayoutData) child.getLayoutData();
 
 		if (layoutData.direction == Direction.CENTER) {
+			int wCount = 0;
+			int hCount = 0;
+			for (int i = 1; i < getWidgetCount(); i += 2) {
+				Splitter splitter = (Splitter) getWidget(i);
+
+				if (splitter instanceof VSplitter) {
+					hCount++;
+				} else {
+					wCount++;
+				}
+			}
+			int width = getCenter().getOffsetWidth() - centerMinWidth;
+			int height = getCenter().getOffsetHeight() - centerMinHeight;
+			for (int i = 1; i < getWidgetCount(); i += 2) {
+				Splitter splitter = (Splitter) getWidget(i);
+
+				if (splitter instanceof VSplitter) {
+					splitter.setSize(splitter.getSize() + height / hCount);
+				} else {
+					splitter.setSize(splitter.getSize() + width / wCount);
+				}
+			}
 
 		} else {
 			Splitter splitter = getAssociatedSplitter(child);
 
-			splitter.minimize();
+			splitter.setSize(splitter.getMinSize());
+
 		}
 		animate(200);
 
@@ -159,7 +214,7 @@ public class ExtendedSplitLayoutPanel extends DockLayoutPanel {
 				offset = getEventPosition(event) - getAbsolutePosition();
 				// maxSize = how much more the child is allowed to grow before
 				// center is too small
-				maxSize = getCenterSize() - centerMinSize + getTargetSize();
+				maxSize = getMaxSize();
 				Event.setCapture(getElement());
 				event.preventDefault();
 				break;
@@ -187,6 +242,10 @@ public class ExtendedSplitLayoutPanel extends DockLayoutPanel {
 			}
 		}
 
+		public int getMinSize() {
+			return minSize;
+		}
+
 		public void setMinSize(int minSize) {
 			this.minSize = minSize;
 			// Ignore max for this
@@ -208,7 +267,7 @@ public class ExtendedSplitLayoutPanel extends DockLayoutPanel {
 
 		protected abstract int getTargetSize();
 
-		protected abstract int getCenterSize();
+		protected abstract int getMaxSize();
 
 		private void setAssociatedWidgetSize(int size) {
 			if (size > maxSize)
@@ -238,16 +297,16 @@ public class ExtendedSplitLayoutPanel extends DockLayoutPanel {
 			}
 		}
 
-		protected void minimize() {
+		public int getSize() {
 			LayoutData layout = (LayoutData) target.getLayoutData();
 
-			layout.size = minSize;
+			return (int) layout.size;
 		}
 
-		protected void maximize() {
+		public void setSize(int size) {
 			LayoutData layout = (LayoutData) target.getLayoutData();
 
-			layout.size = getCenterSize() - centerMinSize + getTargetSize();
+			layout.size = size;
 		}
 	}
 
@@ -279,8 +338,9 @@ public class ExtendedSplitLayoutPanel extends DockLayoutPanel {
 		}
 
 		@Override
-		protected int getCenterSize() {
-			return getCenter().getOffsetWidth();
+		protected int getMaxSize() {
+			return getCenter().getOffsetWidth() - centerMinWidth
+					+ target.getOffsetWidth();
 		}
 	}
 
@@ -312,8 +372,9 @@ public class ExtendedSplitLayoutPanel extends DockLayoutPanel {
 		}
 
 		@Override
-		protected int getCenterSize() {
-			return getCenter().getOffsetHeight();
+		protected int getMaxSize() {
+			return getCenter().getOffsetHeight() - centerMinHeight
+					+ target.getOffsetHeight();
 		}
 	}
 

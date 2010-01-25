@@ -186,15 +186,19 @@ public class ProjectTree extends Composite {
 	@UiHandler("panelMin")
 	protected void onPanelMinClick(ClickEvent event) {
 		ExtendedSplitLayoutPanel parent = (ExtendedSplitLayoutPanel) getParent();
+		ExtendedSplitLayoutPanel parentParent = (ExtendedSplitLayoutPanel) parent.getParent();
 
 		parent.minimizeChild(this);
+		parentParent.minimizeChild(parent);
 	}
 
 	@UiHandler("panelMax")
 	protected void onPanelMaxClick(ClickEvent event) {
 		ExtendedSplitLayoutPanel parent = (ExtendedSplitLayoutPanel) getParent();
+		ExtendedSplitLayoutPanel parentParent = (ExtendedSplitLayoutPanel) parent.getParent();
 
 		parent.maximizeChild(this);
+		parentParent.maximizeChild(parent);
 	}
 
 	void refresh() {
