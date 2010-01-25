@@ -3,11 +3,14 @@ package de.objectcode.time4u.server.web.gwt.webclient.client.ui;
 import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLabel;
@@ -69,6 +72,22 @@ public class WorkItemList extends Composite implements ISelectionChangeListener 
 		}
 	}
 
+	@UiHandler("panelMin")
+	protected void onPanelMinClick(ClickEvent event) {
+		SplitLayoutPanel parent = (SplitLayoutPanel) getParent();
+
+		for (int i = 0; i < parent.getWidgetCount(); i++) {
+
+			System.out.println("> " + i + " " + parent.getWidget(i));
+			System.out.println("> " + i + " " + parent.getWidget(i).getClass());
+		}
+	}
+
+	@UiHandler("panelMax")
+	protected void onPanelMaxClick(ClickEvent event) {
+
+	}
+
 	public static class WorkItemDataTable extends SingleSelDataTable<WorkItem> {
 		@SuppressWarnings("unchecked")
 		public WorkItemDataTable() {
@@ -99,6 +118,5 @@ public class WorkItemList extends Composite implements ISelectionChangeListener 
 				}
 			});
 		}
-
 	}
 }
