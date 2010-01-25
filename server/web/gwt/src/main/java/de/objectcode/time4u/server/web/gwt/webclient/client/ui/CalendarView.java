@@ -1,6 +1,7 @@
 package de.objectcode.time4u.server.web.gwt.webclient.client.ui;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ShowRangeEvent;
 import com.google.gwt.event.logical.shared.ShowRangeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.ExtendedSplitLayoutPanel;
 import de.objectcode.time4u.server.web.gwt.webclient.client.SelectionManager;
 import de.objectcode.time4u.server.web.gwt.webclient.client.service.DayInfoSummary;
 import de.objectcode.time4u.server.web.gwt.webclient.client.service.WorkItemService;
@@ -79,5 +81,19 @@ public class CalendarView extends Composite {
 	@UiHandler("calendar")
 	void onCalendarValueChange(ValueChangeEvent<Date> event) {
 		SelectionManager.INSTANCE.selectedDate(event.getValue());
+	}
+
+	@UiHandler("panelMin")
+	protected void onPanelMinClick(ClickEvent event) {
+		ExtendedSplitLayoutPanel parent = (ExtendedSplitLayoutPanel) getParent();
+
+		parent.minimizeChild(this);
+	}
+
+	@UiHandler("panelMax")
+	protected void onPanelMaxClick(ClickEvent event) {
+		ExtendedSplitLayoutPanel parent = (ExtendedSplitLayoutPanel) getParent();
+
+		parent.maximizeChild(this);
 	}
 }

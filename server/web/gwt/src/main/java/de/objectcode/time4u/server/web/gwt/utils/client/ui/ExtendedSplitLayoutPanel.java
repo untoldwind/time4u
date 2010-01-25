@@ -51,6 +51,42 @@ public class ExtendedSplitLayoutPanel extends DockLayoutPanel {
 		splitter.setMinSize(minSize);
 	}
 
+	public void maximizeChild(Widget child) {
+		assert (child == null) || (child.getParent() == this) : "The specified widget is not a child of this panel";
+
+		LayoutData layoutData = (LayoutData) child.getLayoutData();
+
+		if (layoutData.direction == Direction.CENTER) {
+			for (int i = 1; i < getWidgetCount(); i += 2) {
+				Splitter splitter = (Splitter) getWidget(i);
+
+				splitter.minimize();
+			}
+		} else {
+			Splitter splitter = getAssociatedSplitter(child);
+			
+			splitter.maximize();
+		}
+
+		animate(200);
+	}
+
+	public void minimizeChild(Widget child) {
+		assert (child == null) || (child.getParent() == this) : "The specified widget is not a child of this panel";
+
+		LayoutData layoutData = (LayoutData) child.getLayoutData();
+
+		if (layoutData.direction == Direction.CENTER) {
+
+		} else {
+			Splitter splitter = getAssociatedSplitter(child);
+
+			splitter.minimize();
+		}
+		animate(200);
+
+	}
+
 	private Splitter getAssociatedSplitter(Widget child) {
 		// If a widget has a next sibling, it must be a splitter, because the
 		// only
@@ -104,6 +140,7 @@ public class ExtendedSplitLayoutPanel extends DockLayoutPanel {
 
 		private final boolean reverse;
 		private int minSize;
+		private int maxSize;
 
 		public Splitter(Widget target, boolean reverse) {
 			this.target = target;
@@ -120,6 +157,9 @@ public class ExtendedSplitLayoutPanel extends DockLayoutPanel {
 			case Event.ONMOUSEDOWN:
 				mouseDown = true;
 				offset = getEventPosition(event) - getAbsolutePosition();
+				// maxSize = how much more the child is allowed to grow before
+				// center is too small
+				maxSize = getCenterSize() - centerMinSize + getTargetSize();
 				Event.setCapture(getElement());
 				event.preventDefault();
 				break;
@@ -149,6 +189,9 @@ public class ExtendedSplitLayoutPanel extends DockLayoutPanel {
 
 		public void setMinSize(int minSize) {
 			this.minSize = minSize;
+			// Ignore max for this
+			this.maxSize = Integer.MAX_VALUE;
+
 			LayoutData layout = (LayoutData) target.getLayoutData();
 
 			// Try resetting the associated widget's size, which will enforce
@@ -168,18 +211,16 @@ public class ExtendedSplitLayoutPanel extends DockLayoutPanel {
 		protected abstract int getCenterSize();
 
 		private void setAssociatedWidgetSize(int size) {
-			LayoutData layout = (LayoutData) target.getLayoutData();
-			if (size == layout.size) {
-				return;
-			}
-
-			if (size > layout.size) {
-				if (getCenterSize() - (size - layout.size) < centerMinSize)
-					return;
-			}
+			if (size > maxSize)
+				size = maxSize;
 
 			if (size < minSize) {
 				size = minSize;
+			}
+
+			LayoutData layout = (LayoutData) target.getLayoutData();
+			if (size == layout.size) {
+				return;
 			}
 
 			layout.size = size;
@@ -195,6 +236,18 @@ public class ExtendedSplitLayoutPanel extends DockLayoutPanel {
 				};
 				DeferredCommand.addCommand(layoutCommand);
 			}
+		}
+
+		protected void minimize() {
+			LayoutData layout = (LayoutData) target.getLayoutData();
+
+			layout.size = minSize;
+		}
+
+		protected void maximize() {
+			LayoutData layout = (LayoutData) target.getLayoutData();
+
+			layout.size = getCenterSize() - centerMinSize + getTargetSize();
 		}
 	}
 

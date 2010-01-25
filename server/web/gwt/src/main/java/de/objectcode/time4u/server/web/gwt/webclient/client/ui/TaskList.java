@@ -3,6 +3,7 @@ package de.objectcode.time4u.server.web.gwt.webclient.client.ui;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -14,6 +15,7 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.ContextMenu;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.ExtendedSplitLayoutPanel;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLabel;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.SingleSelDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
@@ -92,6 +94,20 @@ public class TaskList extends Composite implements ISelectionChangeListener {
 			SelectionManager.INSTANCE.selectTask(row);
 		else
 			SelectionManager.INSTANCE.selectTask(null);
+	}
+
+	@UiHandler("panelMin")
+	protected void onPanelMinClick(ClickEvent event) {
+		ExtendedSplitLayoutPanel parent = (ExtendedSplitLayoutPanel) getParent();
+
+		parent.minimizeChild(this);
+	}
+
+	@UiHandler("panelMax")
+	protected void onPanelMaxClick(ClickEvent event) {
+		ExtendedSplitLayoutPanel parent = (ExtendedSplitLayoutPanel) getParent();
+
+		parent.maximizeChild(this);
 	}
 
 	public static class TaskDataTable extends SingleSelDataTable<Task> {

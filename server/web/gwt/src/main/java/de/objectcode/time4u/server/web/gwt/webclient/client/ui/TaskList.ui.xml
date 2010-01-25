@@ -13,10 +13,10 @@
 			<table width="100%" class="webclient-panelTitle">
 				<tr>
 					<td width="100%">Tasks</td>
-					<td><g:PushButton enabled="true">
+					<td><g:PushButton enabled="true" ui:field="panelMin">
 					<g:upFace image="{resources.panelMin}" />
 					</g:PushButton></td>
-					<td><g:PushButton enabled="true">
+					<td><g:PushButton enabled="true" ui:field="panelMax">
 					<g:upFace image="{resources.panelMax}" />
 					</g:PushButton></td>
 				</tr>

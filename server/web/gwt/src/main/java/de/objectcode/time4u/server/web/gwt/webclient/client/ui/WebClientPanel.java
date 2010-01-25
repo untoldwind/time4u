@@ -20,9 +20,9 @@ public class WebClientPanel extends Composite {
 
 		mainPanel.add(workItemList);
 
-		mainPanel.setCenterMinSize(300);
-		mainPanel.setWidgetMinSize(westPanel, 200);
-		mainPanel.setWidgetMinSize(southPanel, 200);
+		mainPanel.setCenterMinSize(180);
+		mainPanel.setWidgetMinSize(westPanel, 180);
+		mainPanel.setWidgetMinSize(southPanel, 24);
 
 		ProjectTree projectTree = new ProjectTree();
 
@@ -36,9 +36,9 @@ public class WebClientPanel extends Composite {
 
 		westPanel.add(taskList);
 
-		westPanel.setCenterMinSize(200);
-		westPanel.setWidgetMinSize(projectTree, 200);
-		westPanel.setWidgetMinSize(calendarView, 200);
+		westPanel.setCenterMinSize(24);
+		westPanel.setWidgetMinSize(projectTree, 24);
+		westPanel.setWidgetMinSize(calendarView, 24);
 		
 		PunchView punchView = new PunchView();
 
