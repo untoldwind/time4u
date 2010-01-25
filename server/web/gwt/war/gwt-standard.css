@@ -915,6 +915,7 @@ a, a:visited, a:hover {
 }
 .gwt-TextBox-readonly {
 	border:0;
+	background-color: transparent;
 }
 .gwt-ToggleButton {
 	background-color:white;

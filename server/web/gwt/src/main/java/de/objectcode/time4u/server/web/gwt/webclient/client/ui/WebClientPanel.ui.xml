@@ -13,7 +13,7 @@
 				<g:center>
 					<twc:TaskList ui:field="taskList" />
 				</g:center>
-				<g:south size="200">
+				<g:south size="210">
 					<twc:CalendarView ui:field="calendarView" />
 				</g:south>
 			</g:SplitLayoutPanel>
@@ -21,7 +21,7 @@
 		<g:center>
 			<twc:WorkItemList />
 		</g:center>
-		<g:south size="200">
+		<g:south size="210">
 			<g:SplitLayoutPanel>
 				<g:center>
 					<twc:StatisticsView />

@@ -3,9 +3,25 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
 
+	<ui:with field="resources"
+		type="de.objectcode.time4u.server.web.gwt.webclient.client.WebClientBundle" />
+		
 	<g:DockLayoutPanel unit="EM" styleName="webclient-panel">
 		<g:north size="2">
-			<g:Label styleName="webclient-panelTitle">Statistics</g:Label>
+			<g:HTMLPanel>
+				<table width="100%" class="webclient-panelTitle">
+					<tr>
+						<td width="100%">Statistics</td>
+						<td><g:PushButton enabled="true">
+						<g:upFace image="{resources.panelMin}" />
+						</g:PushButton></td>
+						<td><g:PushButton enabled="true">
+						<g:upFace image="{resources.panelMax}" />
+						</g:PushButton></td>
+					</tr>
+				</table>
+			</g:HTMLPanel>
+				
 		</g:north>
 		<g:center>
 			<g:HTMLPanel width="100%" height="100%" styleName="webclient-StatisticsContent">

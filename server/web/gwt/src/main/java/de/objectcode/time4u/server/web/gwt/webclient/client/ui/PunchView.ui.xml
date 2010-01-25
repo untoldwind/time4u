@@ -8,7 +8,20 @@
 
 	<g:DockLayoutPanel unit="EM" styleName="webclient-panel">
 		<g:north size="2">
-			<g:Label styleName="webclient-panelTitle">Punch</g:Label>
+			<g:HTMLPanel>
+				<table width="100%" class="webclient-panelTitle">
+					<tr>
+						<td width="100%">Punch</td>
+						<td><g:PushButton enabled="true">
+						<g:upFace image="{resources.panelMin}" />
+						</g:PushButton></td>
+						<td><g:PushButton enabled="true">
+						<g:upFace image="{resources.panelMax}" />
+						</g:PushButton></td>
+					</tr>
+				</table>
+			</g:HTMLPanel>
+			
 		</g:north>
 		<g:center>
 			<g:HTMLPanel width="100%" height="100%" styleName="webclient-PunchContent">
