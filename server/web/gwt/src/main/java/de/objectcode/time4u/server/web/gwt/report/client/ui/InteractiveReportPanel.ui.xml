@@ -1,26 +1,44 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:gd="urn:import:com.google.gwt.user.datepicker.client"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:gd="urn:import:com.google.gwt.user.datepicker.client"
 	xmlns:tr="urn:import:de.objectcode.time4u.server.web.gwt.report.client.ui"
 	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
 
-	<g:DockLayoutPanel>
-		<g:north size="40">
-			<g:VerticalPanel>
-				<g:HorizontalPanel>
-					<g:RadioButton name="personTeam">Person</g:RadioButton>
-					<g:RadioButton name="personTeam">Team</g:RadioButton>
-				</g:HorizontalPanel>
-				<g:HorizontalPanel>
-					<g:Label>From:</g:Label> <gd:DateBox/>
-					<g:Label>Until:</g:Label> <gd:DateBox/>
-				</g:HorizontalPanel>
-			</g:VerticalPanel>
+	<g:DockLayoutPanel unit="EM">
+		<g:north size="6">
+			<g:HTMLPanel>
+				<table>
+					<tr>
+						<td>From:</td>
+						<td>
+							<gd:DateBox ui:field="from" />
+						</td>
+						<td>Until:</td>
+						<td>
+							<gd:DateBox ui:field="until" />
+						</td>
+					</tr>
+					<tr>
+						<td>Rows:</td>
+						<td colspan="3">
+							<g:RadioButton name="personTeam">Person</g:RadioButton>
+							<g:RadioButton name="personTeam">Team</g:RadioButton>
+						</td>
+					</tr>
+					<tr>
+						<td>Columns:</td>
+						<td colspan="3">
+							<g:RadioButton name="projectTask">Project</g:RadioButton>
+							<g:RadioButton name="projectTask">Task</g:RadioButton>
+						</td>
+					</tr>
+				</table>
+			</g:HTMLPanel>
 		</g:north>
 		<g:center>
 			<g:ScrollPanel>
-				<tr:InteractiveReportPanel.InteractiveReportTable ui:field="reportTable" width="100%" />
+				<tr:InteractiveReportPanel.InteractiveReportTable
+					ui:field="reportTable" width="100%" />
 			</g:ScrollPanel>
 		</g:center>
 	</g:DockLayoutPanel>

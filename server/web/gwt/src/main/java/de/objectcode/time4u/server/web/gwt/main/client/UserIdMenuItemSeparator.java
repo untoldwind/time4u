@@ -24,10 +24,6 @@ public class UserIdMenuItemSeparator extends MenuItemSeparator {
 
 		setStyleName(span1, "mainMenu-userId-label");
 		setStyleName(span2, "mainMenu-userId-value");
-
-//		Element div2 = DOM.createDiv();
-//		DOM.appendChild(getElement(), div2);
-//		DOM.setInnerText(div2, userId);
 	}
 
 }

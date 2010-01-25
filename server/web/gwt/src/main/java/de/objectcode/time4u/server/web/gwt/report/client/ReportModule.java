@@ -41,17 +41,21 @@ public class ReportModule {
 		reportMenu.addItem("Interactive Report", new Command() {
 
 			public void execute() {
-				mainPanel.prepareSwitch();
-				
-				createAsync(new IModuleCallback<ReportModule>() {
-					public void onSuccess(ReportModule instance) {
-						mainPanel
-								.switchWidget(instance.getInteractiveReportPanel());
-					}
-				});
+				showInteractiveReportPanel(mainPanel);
 			}
 		});
 
 		return reportMenu;
+	}
+
+	public static void showInteractiveReportPanel(final SwitchableLayoutPanel mainPanel) {
+		mainPanel.prepareSwitch();
+
+		createAsync(new IModuleCallback<ReportModule>() {
+			public void onSuccess(ReportModule instance) {
+				mainPanel
+						.switchWidget(instance.getInteractiveReportPanel());
+			}
+		});
 	}
 }
