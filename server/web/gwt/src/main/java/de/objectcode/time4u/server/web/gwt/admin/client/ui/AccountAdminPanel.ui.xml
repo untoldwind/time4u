@@ -7,7 +7,7 @@
 	<g:DockLayoutPanel unit="EM">
 		<g:north size="25">
 			<ta:AccountAdminPanel.UserAccountTable
-				ui:field="userAccounts" />
+				ui:field="userAccounts" styleName="utils-dataTable-base" />
 		</g:north>
 		<g:center>
 			<ta:AccountDetailPanel ui:field="userAccountDetail"

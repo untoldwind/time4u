@@ -5,9 +5,9 @@
 	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
 
 	<g:DockLayoutPanel unit="EM">
-		<g:north size="22">
+		<g:north size="25">
 			<ta:PersonAdminPanel.PersonTable
-				ui:field="persons" />
+				ui:field="persons" styleName="utils-dataTable-base" />
 		</g:north>
 		<g:center>
 			<ta:PersonDetailPanel ui:field="personDetail"

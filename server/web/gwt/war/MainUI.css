@@ -97,3 +97,30 @@ table.utils-dataTable .utils-dataTable-header th {
 	padding:5px;
 }
 
+.gwt-TabLayoutPanelTabs {
+	border-bottom: 1px solid #ccc;
+}
+.gwt-TabLayoutPanelTab {
+	border: 1px solid #ccc;
+	border-bottom: 0;
+	background: #E3E8F3 url(images/hborder.png) repeat-x scroll 0 -2003px;
+	padding: 5px;
+	font-weight: normal;
+	width: 80px;
+	text-align: center;
+	cursor: pointer;
+	margin-left: 3px;
+}
+
+.gwt-TabLayoutPanelTab-selected {
+	border: 1px solid #ccc;
+	border-bottom: 0;
+	background: #93c2f1 url(images/hborder.png) repeat-x 0px -1463px;
+	font-weight: bold;
+}
+
+.dataDetailBox {
+	margin: 10px;
+	padding: 5px;
+	border: 1px solid #ccc;	
+}

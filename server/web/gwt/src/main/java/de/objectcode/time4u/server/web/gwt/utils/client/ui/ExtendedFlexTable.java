@@ -24,7 +24,8 @@ public class ExtendedFlexTable extends FlexTable {
 	}
 
 	public void setHeaderStyleName(int column, String styleName) {
-		Element th = DOM.getChild(DOM.getFirstChild(getTHeadElement()), column);
+		Element th = DOM.getChild(DOM.getFirstChild(getTHeadElement()),
+				column);
 		UIObject.setStyleName(th, styleName);
 	}
 
@@ -40,7 +41,7 @@ public class ExtendedFlexTable extends FlexTable {
 		DOM.setInnerHTML(DOM.getFirstChild(getTHeadElement()), "");
 
 		prepareHeaderCell(headers.length);
-
+		
 		for (int i = 0; i < headers.length; i++) {
 			TableHeader column = headers[i];
 
@@ -51,15 +52,18 @@ public class ExtendedFlexTable extends FlexTable {
 	public void setHeaderText(int column, String width, String text) {
 		prepareHeaderCell(column);
 
-		Element th = DOM.getChild(DOM.getFirstChild(getTHeadElement()), column);
+		Element th = DOM.getChild(DOM.getFirstChild(getTHeadElement()),
+				column);
 		internalClearCell(th, true);
-
-		DOM.setInnerText(th, text);
+		
+		Element span = DOM.createSpan();
+		DOM.appendChild(th, span);
+		DOM.setInnerText(span, text);
 
 		if (width != null)
 			DOM.setStyleAttribute(th, "width", width);
 	}
-
+	
 	public void setHeaderWidget(int column, String width, Widget widget) {
 		prepareHeaderCell(column);
 
@@ -86,7 +90,7 @@ public class ExtendedFlexTable extends FlexTable {
 			adopt(widget);
 		}
 	}
-
+	
 	@Override
 	public Cell getCellForEvent(ClickEvent event) {
 		Element tdorth = getEventTargetCell(Event.as(event.getNativeEvent()));
@@ -184,6 +188,6 @@ public class ExtendedFlexTable extends FlexTable {
 		protected ExtendedCell(int rowIndex, int cellIndex) {
 			super(rowIndex, cellIndex);
 		}
-
+		
 	}
 }

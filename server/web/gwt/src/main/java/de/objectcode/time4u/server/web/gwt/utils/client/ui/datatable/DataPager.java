@@ -91,6 +91,7 @@ public class DataPager extends Composite implements HasDataPageHandlers {
 			controlTable.removeAllRows();
 
 			controlTable.setWidget(0, 0, leftButton);
+			controlTable.getCellFormatter().setStyleName(0,0, "utils-dataPager-left");
 			for (int i = 0; i < numberOfPages; i++) {
 				final int pageNumber = i;
 				Anchor pageLink = new Anchor(String.valueOf(i + 1), "");
@@ -106,9 +107,10 @@ public class DataPager extends Composite implements HasDataPageHandlers {
 				});
 			}
 			controlTable.setWidget(0, numberOfPages + 1, rightButton);
+			controlTable.getCellFormatter().setStyleName(0,numberOfPages + 1, "utils-dataPager-right");
 		}
 		for (int i = 0; i < numberOfPages; i++) {
-			controlTable.getWidget(0, i + 1).setStyleName(
+			controlTable.getCellFormatter().setStyleName(0, i + 1,
 					i == currentPage ? "utils-dataPager-currentPage"
 							: "utils-dataPager-page");
 		}

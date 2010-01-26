@@ -4,8 +4,8 @@
 	xmlns:ta="urn:import:de.objectcode.time4u.server.web.gwt.admin.client.ui"
 	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
 	
-	<g:HTMLPanel>
-		<table>
+	<g:HTMLPanel styleName="dataDetailBox">
+		<table class="userDetailsInput">
 			<tr>
 				<td>UserId:</td>
 				<td><g:TextBox ui:field="userId"/></td>
