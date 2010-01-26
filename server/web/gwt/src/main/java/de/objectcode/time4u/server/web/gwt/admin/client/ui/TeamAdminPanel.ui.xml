@@ -6,6 +6,6 @@
 
 	<g:VerticalPanel width="100%">
 		<ta:TeamAdminPanel.TeamTable ui:field="teams"
-			width="100%" />
+			width="100%" styleName="utils-dataTable-base" />
 	</g:VerticalPanel>
 </ui:UiBinder>

@@ -11,9 +11,9 @@
 				<g:tab>
 					<g:header>Data</g:header>
 					<g:LayoutPanel>
-						<g:layer left="0" width="20em">
-							<g:HTMLPanel>
-								<table>
+						<g:layer left="0" width="30em">
+							<g:HTMLPanel styleName="dataDetailBox">
+								<table class="userDetailsInput">
 									<tr>
 										<td>Given Name:</td>
 										<td>
@@ -40,11 +40,19 @@
 									</tr>
 								</table>
 							</g:HTMLPanel>
+							
 						</g:layer>
-						<g:layer left="20em" right="0">
-							<g:DockLayoutPanel unit="EM">
-								<g:north size="1.5">
-									<g:Label>User accounts</g:Label>
+						<g:layer left="30em" right="0">
+							<g:DockLayoutPanel unit="EM" styleName="dataDetailBox">
+								<g:north size="2">
+									<g:HTMLPanel>
+										<table width="100%" class="webclient-panelTitle">
+											<tr>
+												<td width="100%">User account</td>
+											</tr>
+										</table>
+										<br />
+									</g:HTMLPanel>
 								</g:north>
 								<g:center>
 									<g:ScrollPanel>
@@ -56,13 +64,22 @@
 						</g:layer>
 					</g:LayoutPanel>
 				</g:tab>
+				
+				
 				<g:tab>
 					<g:header>Teams</g:header>
 					<g:LayoutPanel>
 						<g:layer left="0" right="50%">
-							<g:DockLayoutPanel unit="EM">
-								<g:north size="1.5">
-									<g:Label>Owner of</g:Label>
+							<g:DockLayoutPanel unit="EM" styleName="dataDetailBox">
+								<g:north size="2">
+									<g:HTMLPanel>
+										<table width="100%" class="webclient-panelTitle">
+											<tr>
+												<td width="100%">Owner of</td>
+											</tr>
+										</table>
+										<br />
+									</g:HTMLPanel>
 								</g:north>
 								<g:center>
 									<ta:PersonDetailPanel.TeamTable
@@ -71,9 +88,16 @@
 							</g:DockLayoutPanel>
 						</g:layer>
 						<g:layer left="50%" right="0">
-							<g:DockLayoutPanel unit="EM">
-								<g:north size="1.5">
-									<g:Label>Member of</g:Label>
+							<g:DockLayoutPanel unit="EM" styleName="dataDetailBox">
+								<g:north size="2">
+									<g:HTMLPanel>
+										<table width="100%" class="webclient-panelTitle">
+											<tr>
+												<td width="100%">Member of</td>
+											</tr>
+										</table>
+										<br />
+									</g:HTMLPanel>
 								</g:north>
 								<g:center>
 									<ta:PersonDetailPanel.TeamTable

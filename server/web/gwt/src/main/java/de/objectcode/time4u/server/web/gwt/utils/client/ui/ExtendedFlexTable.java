@@ -44,7 +44,9 @@ public class ExtendedFlexTable extends FlexTable {
 				column);
 		internalClearCell(th, true);
 		
-		DOM.setInnerText(th, text);
+		Element span = DOM.createSpan();
+		DOM.appendChild(th, span);
+		DOM.setInnerText(span, text);
 
 		if (width != null)
 			DOM.setStyleAttribute(th, "width", width);

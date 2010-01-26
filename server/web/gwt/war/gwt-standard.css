@@ -911,8 +911,16 @@ a, a:visited, a:hover {
 }
 
 .gwt-TextBox {
-  padding: 2px;
+	padding: 2px;
 }
+.userDetailsInput .gwt-TextBox {
+	width: 220px;
+	font-weight: normal;
+}
+.userDetailsInput {
+	font-weight: bold;	
+}
+
 .gwt-TextBox-readonly {
 	border:0;
 	background-color: transparent;
