@@ -3,11 +3,11 @@ package de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.HTMLTable.Cell;
 
 import de.objectcode.time4u.server.web.gwt.utils.client.UtilsClientBundle;
 import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageEvent;
@@ -52,6 +52,21 @@ public class DataPager extends Composite implements HasDataPageHandlers {
 			}
 		});
 
+		controlTable.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				Cell cell = controlTable.getCellForEvent(event);
+				if (cell != null) {
+					int rowNum = cell.getRowIndex();
+					int colNum = cell.getCellIndex();
+
+					if (rowNum == 0 && colNum > 0 && colNum <= numberOfPages) {
+						DataPageEvent.fire(DataPager.this, colNum - 1);
+					}
+				}
+			}
+		});
+
 		updateControls(true);
 	}
 
@@ -91,26 +106,19 @@ public class DataPager extends Composite implements HasDataPageHandlers {
 			controlTable.removeAllRows();
 
 			controlTable.setWidget(0, 0, leftButton);
-			controlTable.getCellFormatter().setStyleName(0,0, "utils-dataPager-left");
+			controlTable.getCellFormatter().setStyleName(0, 0,
+					"utils-dataPager-left");
 			for (int i = 0; i < numberOfPages; i++) {
-				final int pageNumber = i;
-				Anchor pageLink = new Anchor(String.valueOf(i + 1), "");
-
-				controlTable.setWidget(0, i + 1, pageLink);
-
-				pageLink.addClickHandler(new ClickHandler() {
-					public void onClick(ClickEvent event) {
-						event.preventDefault();
-
-						DataPageEvent.fire(DataPager.this, pageNumber);
-					}
-				});
+				controlTable.setText(0, i + 1, String.valueOf(i + 1));
 			}
 			controlTable.setWidget(0, numberOfPages + 1, rightButton);
-			controlTable.getCellFormatter().setStyleName(0,numberOfPages + 1, "utils-dataPager-right");
+			controlTable.getCellFormatter().setStyleName(0, numberOfPages + 1,
+					"utils-dataPager-right");
 		}
 		for (int i = 0; i < numberOfPages; i++) {
-			controlTable.getCellFormatter().setStyleName(0, i + 1,
+			controlTable.getCellFormatter().setStyleName(
+					0,
+					i + 1,
 					i == currentPage ? "utils-dataPager-currentPage"
 							: "utils-dataPager-page");
 		}
