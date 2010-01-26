@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.ExtendedSplitLayoutPanel;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLabel;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.TimeBox;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.TimeFormat;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.SingleSelDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 import de.objectcode.time4u.server.web.gwt.webclient.client.ISelectionChangeListener;
@@ -92,12 +92,12 @@ public class WorkItemList extends Composite implements ISelectionChangeListener 
 			super(new TextDataTableColumn<WorkItem>("Begin", "4em") {
 				@Override
 				public String getCellText(WorkItem row) {
-					return TimeBox.TimeFormat.format(row.getBegin());
+					return TimeFormat.format(row.getBegin());
 				}
 			}, new TextDataTableColumn<WorkItem>("End", "4em") {
 				@Override
 				public String getCellText(WorkItem row) {
-					return TimeBox.TimeFormat.format(row.getEnd());
+					return TimeFormat.format(row.getEnd());
 				}
 			}, new TextDataTableColumn<WorkItem>("Project", "20%") {
 				@Override

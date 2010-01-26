@@ -24,12 +24,13 @@ public class ExtendedFlexTable extends FlexTable {
 	}
 
 	public void setHeaderStyleName(int column, String styleName) {
-		Element th = DOM.getChild(DOM.getFirstChild(getTHeadElement()),
-				column);
+		Element th = DOM.getChild(DOM.getFirstChild(getTHeadElement()), column);
 		UIObject.setStyleName(th, styleName);
 	}
 
 	public void setHeaders(TableHeader... headers) {
+		prepareHeaderCell(headers.length, true);
+
 		for (int i = 0; i < headers.length; i++) {
 			TableHeader column = headers[i];
 
@@ -38,20 +39,19 @@ public class ExtendedFlexTable extends FlexTable {
 	}
 
 	public void setHeaderText(int column, String width, String text) {
-		prepareHeaderCell(column);
+		prepareHeaderCell(column, false);
 
-		Element th = DOM.getChild(DOM.getFirstChild(getTHeadElement()),
-				column);
+		Element th = DOM.getChild(DOM.getFirstChild(getTHeadElement()), column);
 		internalClearCell(th, true);
-		
+
 		DOM.setInnerText(th, text);
 
 		if (width != null)
 			DOM.setStyleAttribute(th, "width", width);
 	}
-	
+
 	public void setHeaderWidget(int column, String width, Widget widget) {
-		prepareHeaderCell(column);
+		prepareHeaderCell(column, false);
 
 		if (widget != null) {
 			widget.removeFromParent();
@@ -76,7 +76,7 @@ public class ExtendedFlexTable extends FlexTable {
 			adopt(widget);
 		}
 	}
-	
+
 	@Override
 	public Cell getCellForEvent(ClickEvent event) {
 		Element tdorth = getEventTargetCell(Event.as(event.getNativeEvent()));
@@ -129,7 +129,7 @@ public class ExtendedFlexTable extends FlexTable {
 
 	}
 
-	protected void prepareHeaderCell(int column) {
+	protected void prepareHeaderCell(int column, boolean remove) {
 		if (column < 0) {
 			throw new IndexOutOfBoundsException(
 					"Cannot create a column with a negative index: " + column);
@@ -141,6 +141,8 @@ public class ExtendedFlexTable extends FlexTable {
 					- DOM.getChildCount(DOM.getChild(getTHeadElement(), 0));
 			if (required > 0)
 				addHeaderCells(getTHeadElement(), required);
+			else if (remove)
+				removeHeaderCells(getTHeadElement(), -required);
 		}
 	}
 
@@ -169,11 +171,18 @@ public class ExtendedFlexTable extends FlexTable {
 		}
 	}-*/;
 
+	protected native void removeHeaderCells(Element tHead, int num) /*-{
+		var rowElem = tHead.rows[0];
+		for(var i = 0; i < num; i++){
+		  rowElem.removeChild(rowElem.lastChild);
+		}
+	}-*/;
+
 	public class ExtendedCell extends Cell {
 
 		protected ExtendedCell(int rowIndex, int cellIndex) {
 			super(rowIndex, cellIndex);
 		}
-		
+
 	}
 }

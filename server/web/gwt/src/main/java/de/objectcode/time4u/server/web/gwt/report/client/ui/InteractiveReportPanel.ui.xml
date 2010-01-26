@@ -21,15 +21,15 @@
 					<tr>
 						<td>Rows:</td>
 						<td colspan="3">
-							<g:RadioButton name="personTeam">Person</g:RadioButton>
-							<g:RadioButton name="personTeam">Team</g:RadioButton>
+							<g:RadioButton name="personTeam" ui:field="personTeamPerson">Person</g:RadioButton>
+							<g:RadioButton name="personTeam" ui:field="personTeamTeam">Team</g:RadioButton>
 						</td>
 					</tr>
 					<tr>
 						<td>Columns:</td>
 						<td colspan="3">
-							<g:RadioButton name="projectTask">Project</g:RadioButton>
-							<g:RadioButton name="projectTask">Task</g:RadioButton>
+							<g:RadioButton name="projectTask" ui:field="projectTaskProject">Project</g:RadioButton>
+							<g:RadioButton name="projectTask" ui:field="projectTaskTask">Task</g:RadioButton>
 						</td>
 					</tr>
 				</table>
@@ -37,7 +37,7 @@
 		</g:north>
 		<g:center>
 			<g:ScrollPanel>
-				<tr:InteractiveReportPanel.InteractiveReportTable
+				<tr:InteractiveReportTable
 					ui:field="reportTable" width="100%" />
 			</g:ScrollPanel>
 		</g:center>
