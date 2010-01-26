@@ -3,20 +3,20 @@ package de.objectcode.time4u.server.web.gwt.report.client.service;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class CrossTableRow implements IsSerializable {
-	IdValuePair rowHeader;
+	IdLabelPair rowHeader;
 	int[] data;
 	int rowAggregate;
 
 	public CrossTableRow() {
 	}
 
-	public CrossTableRow(IdValuePair rowHeader, int[] data, int rowAggregate) {
+	public CrossTableRow(IdLabelPair rowHeader, int[] data, int rowAggregate) {
 		this.rowHeader = rowHeader;
 		this.data = data;
 		this.rowAggregate = rowAggregate;
 	}
 
-	public IdValuePair getRowHeader() {
+	public IdLabelPair getRowHeader() {
 		return rowHeader;
 	}
 

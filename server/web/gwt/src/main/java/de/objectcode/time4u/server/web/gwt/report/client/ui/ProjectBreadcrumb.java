@@ -12,32 +12,32 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasValue;
 
-import de.objectcode.time4u.server.web.gwt.report.client.service.IdValuePair;
+import de.objectcode.time4u.server.web.gwt.report.client.service.IdLabelPair;
 
 public class ProjectBreadcrumb extends Composite implements
-		HasValue<LinkedList<IdValuePair>> {
+		HasValue<LinkedList<IdLabelPair>> {
 	FlexTable breadcrumpTable = new FlexTable();
 
-	LinkedList<IdValuePair> projectStack = new LinkedList<IdValuePair>();
+	LinkedList<IdLabelPair> projectStack = new LinkedList<IdLabelPair>();
 
 	public ProjectBreadcrumb() {
 		initWidget(breadcrumpTable);
 
-		append(new IdValuePair(null, "[Root]"));
+		append(new IdLabelPair(null, "[Root]"));
 	}
 
-	public LinkedList<IdValuePair> getProjectStack() {
+	public LinkedList<IdLabelPair> getProjectStack() {
 		return projectStack;
 	}
 
-	public IdValuePair getLastProject() {
+	public IdLabelPair getLastProject() {
 		return projectStack.getLast();
 	}
 	
-	public void setLastProject(IdValuePair project) {
-		LinkedList<IdValuePair> newStack = new LinkedList<IdValuePair>();
+	public void setLastProject(IdLabelPair project) {
+		LinkedList<IdLabelPair> newStack = new LinkedList<IdLabelPair>();
 
-		for ( IdValuePair element : projectStack ) {
+		for ( IdLabelPair element : projectStack ) {
 			newStack.add(element);
 			if ( element.equals(project))
 				break;
@@ -45,22 +45,22 @@ public class ProjectBreadcrumb extends Composite implements
 		setValue(newStack);
 	}
 
-	public LinkedList<IdValuePair> getValue() {
+	public LinkedList<IdLabelPair> getValue() {
 		return projectStack;
 	}
 
-	public void setValue(LinkedList<IdValuePair> value) {
+	public void setValue(LinkedList<IdLabelPair> value) {
 		setValue(value, true);
 	}
 
-	public void setValue(LinkedList<IdValuePair> value, boolean fireEvents) {
+	public void setValue(LinkedList<IdLabelPair> value, boolean fireEvents) {
 		breadcrumpTable.removeAllRows();
 
 		projectStack = value;
 
 		int i = 0;
 
-		for (final IdValuePair project : projectStack) {
+		for (final IdLabelPair project : projectStack) {
 			if (i > 0) {
 				breadcrumpTable.setText(0, i - 1, ">");
 			}
@@ -82,11 +82,11 @@ public class ProjectBreadcrumb extends Composite implements
 	}
 
 	public HandlerRegistration addValueChangeHandler(
-			ValueChangeHandler<LinkedList<IdValuePair>> handler) {
+			ValueChangeHandler<LinkedList<IdLabelPair>> handler) {
 		return addHandler(handler, ValueChangeEvent.getType());
 	}
 
-	public void append(final IdValuePair project) {
+	public void append(final IdLabelPair project) {
 
 		Anchor link = new Anchor(project.getLabel());
 		link.addClickHandler(new ClickHandler() {				

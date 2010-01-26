@@ -14,7 +14,7 @@ import de.objectcode.time4u.server.entities.ProjectEntity;
 import de.objectcode.time4u.server.entities.TaskEntity;
 import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
-import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTable;
+import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableData;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableColumnType;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableRowType;
 import de.objectcode.time4u.server.web.gwt.report.server.dao.IInteractiveReportDao;
@@ -25,7 +25,7 @@ import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
 public class JpaInteractiveReportDao extends JpaDaoBase implements
 		IInteractiveReportDao {
 
-	public CrossTable generateProjectPersonCrossTable(String mainProjectId,
+	public CrossTableData generateProjectPersonCrossTable(String mainProjectId,
 			Date from, Date until, String personId) {
 
 		final StringBuffer newQueryString = new StringBuffer();
@@ -80,7 +80,7 @@ public class JpaInteractiveReportDao extends JpaDaoBase implements
 		return dataCollector.getCrossTable(CrossTableColumnType.PROJECT, CrossTableRowType.PERSON);
 	}
 
-	public CrossTable generateProjectTeamCrossTable(String mainProjectId,
+	public CrossTableData generateProjectTeamCrossTable(String mainProjectId,
 			Date from, Date until, String personId) {
 
 		final StringBuffer newQueryString = new StringBuffer();
@@ -132,7 +132,7 @@ public class JpaInteractiveReportDao extends JpaDaoBase implements
 		return dataCollector.getCrossTable(CrossTableColumnType.PROJECT, CrossTableRowType.TEAM);
 	}
 
-	public CrossTable generateTaskPersonCrossTable(String lastProjectId,
+	public CrossTableData generateTaskPersonCrossTable(String lastProjectId,
 			Date from, Date until, String personId) {
 
 	    final StringBuffer newQueryString = new StringBuffer();
@@ -178,7 +178,7 @@ public class JpaInteractiveReportDao extends JpaDaoBase implements
 	    return dataCollector.getCrossTable(CrossTableColumnType.TASK, CrossTableRowType.PERSON);
 	}
 
-	public CrossTable generateTaskTeamCrossTable(String lastProjectId,
+	public CrossTableData generateTaskTeamCrossTable(String lastProjectId,
 			Date from, Date until, String personId) {
 
 	    final StringBuffer newQueryString = new StringBuffer();

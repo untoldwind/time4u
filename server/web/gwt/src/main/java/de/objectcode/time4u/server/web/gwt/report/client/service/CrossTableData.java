@@ -2,19 +2,19 @@ package de.objectcode.time4u.server.web.gwt.report.client.service;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class CrossTable implements IsSerializable {
+public class CrossTableData implements IsSerializable {
 	CrossTableColumnType columnType;
 	CrossTableRowType rowType;
-	IdValuePair[] columnHeaders;
+	IdLabelPair[] columnHeaders;
 	CrossTableRow[] rows;
 	int[] columnAggregates;
 	int totalAggregate;
 
-	public CrossTable() {
+	public CrossTableData() {
 	}
 
-	public CrossTable(CrossTableColumnType columnType,
-			CrossTableRowType rowType, IdValuePair[] columnHeaders,
+	public CrossTableData(CrossTableColumnType columnType,
+			CrossTableRowType rowType, IdLabelPair[] columnHeaders,
 			CrossTableRow[] rows, int[] columnAggregates, int totalAggregate) {
 		this.columnType = columnType;
 		this.rowType = rowType;
@@ -24,7 +24,7 @@ public class CrossTable implements IsSerializable {
 		this.totalAggregate = totalAggregate;
 	}
 
-	public IdValuePair[] getColumnHeaders() {
+	public IdLabelPair[] getColumnHeaders() {
 		return columnHeaders;
 	}
 

@@ -7,5 +7,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("report.service")
 public interface ReportService extends RemoteService {
-	CrossTable generateCrossTable(CrossTableColumnType columnType, CrossTableRowType rowType, String projectId, Date from, Date until);
+	CrossTableData generateCrossTable(CrossTableColumnType columnType, CrossTableRowType rowType, String projectId, Date from, Date until);
 }

@@ -7,11 +7,11 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import de.objectcode.time4u.server.entities.IdAndNameAwareEntity;
-import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTable;
+import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableData;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableColumnType;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableRow;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableRowType;
-import de.objectcode.time4u.server.web.gwt.report.client.service.IdValuePair;
+import de.objectcode.time4u.server.web.gwt.report.client.service.IdLabelPair;
 
 public class GenericCrosstableDataCollector<ColumnEntity extends IdAndNameAwareEntity, RowEntity extends IdAndNameAwareEntity> {
 	protected final SortedSet<ColumnEntity> m_sortedColumnEntities;
@@ -76,13 +76,13 @@ public class GenericCrosstableDataCollector<ColumnEntity extends IdAndNameAwareE
 
 	}
 
-	public CrossTable getCrossTable(CrossTableColumnType columnType, CrossTableRowType rowType) {
-		final IdValuePair columns[] = new IdValuePair[m_sortedColumnEntities
+	public CrossTableData getCrossTable(CrossTableColumnType columnType, CrossTableRowType rowType) {
+		final IdLabelPair columns[] = new IdLabelPair[m_sortedColumnEntities
 				.size()];
 		int columnCount = 0;
 
 		for (final ColumnEntity columnEntity : m_sortedColumnEntities) {
-			columns[columnCount++] = new IdValuePair(columnEntity.getId(),
+			columns[columnCount++] = new IdLabelPair(columnEntity.getId(),
 					getColumnLabel(columnEntity));
 		}
 
@@ -94,7 +94,7 @@ public class GenericCrosstableDataCollector<ColumnEntity extends IdAndNameAwareE
 		int totalAggregate = 0;
 
 		for (final RowEntity rowEntity : m_sortedRowEntities) {
-			final IdValuePair rowHeader = new IdValuePair(rowEntity.getId(),
+			final IdLabelPair rowHeader = new IdLabelPair(rowEntity.getId(),
 					getRowLabel(rowEntity));
 			final int[] data = new int[columns.length];
 			int i = 0;
@@ -120,7 +120,7 @@ public class GenericCrosstableDataCollector<ColumnEntity extends IdAndNameAwareE
 			rowCount++;
 		}
 
-		return new CrossTable(columnType, rowType, columns, rows, columnAggregates, totalAggregate);
+		return new CrossTableData(columnType, rowType, columns, rows, columnAggregates, totalAggregate);
 	}
 
 	protected String getColumnLabel(final ColumnEntity columnEntity) {

@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import de.objectcode.time4u.server.web.gwt.login.server.Time4UUserDetailsService.Time4UUserDetails;
-import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTable;
+import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableData;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableColumnType;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableRowType;
 import de.objectcode.time4u.server.web.gwt.report.client.service.ReportService;
@@ -29,7 +29,7 @@ public class ReportServiceImpl extends GwtController implements ReportService {
 
 	@Transactional(readOnly = true)
 	@RolesAllowed("ROLE_USER")
-	public CrossTable generateCrossTable(CrossTableColumnType columnType,
+	public CrossTableData generateCrossTable(CrossTableColumnType columnType,
 			CrossTableRowType rowType, String projectId, Date from, Date until) {
 		Time4UUserDetails userDetails = (Time4UUserDetails) SecurityContextHolder
 		.getContext().getAuthentication().getPrincipal();

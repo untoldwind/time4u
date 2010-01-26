@@ -7,6 +7,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface ReportServiceAsync {
 	void generateCrossTable(CrossTableColumnType columnType,
 			CrossTableRowType rowType, String projectId, Date from, Date until,
-			AsyncCallback<CrossTable> callback);
+			AsyncCallback<CrossTableData> callback);
 
 }

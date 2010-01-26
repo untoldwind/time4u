@@ -3,11 +3,11 @@ package de.objectcode.time4u.server.web.gwt.report.client.ui;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 
-import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTable;
+import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableData;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableColumnType;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableRow;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableRowType;
-import de.objectcode.time4u.server.web.gwt.report.client.service.IdValuePair;
+import de.objectcode.time4u.server.web.gwt.report.client.service.IdLabelPair;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.ExtendedFlexTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.TableHeader;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.TimeFormat;
@@ -16,8 +16,8 @@ public class InteractiveReportTable extends ExtendedFlexTable {
 	Callback callback;
 	CrossTableColumnType columnType;
 	CrossTableRowType rowType;
-	IdValuePair[] columnHeaders;
-	IdValuePair[] rowHeaders;
+	IdLabelPair[] columnHeaders;
+	IdLabelPair[] rowHeaders;
 	
 	public InteractiveReportTable() {
 		setStyleName("utils-dataTable");
@@ -48,7 +48,7 @@ public class InteractiveReportTable extends ExtendedFlexTable {
 		this.callback = callback;
 	}
 
-	public void setData(CrossTable crossTable) {
+	public void setData(CrossTableData crossTable) {
 		removeAllRows();
 
 		columnType = crossTable.getColumnType();
@@ -73,7 +73,7 @@ public class InteractiveReportTable extends ExtendedFlexTable {
 		setHeaders(headers);
 		setHeaderStyleName("utils-dataTable-header");
 
-		rowHeaders = new IdValuePair[rowCount];
+		rowHeaders = new IdLabelPair[rowCount];
 		
 		for (int i = 0; i < rowCount; i++) {
 			CrossTableRow row = crossTable.getRows()[i];
@@ -112,9 +112,9 @@ public class InteractiveReportTable extends ExtendedFlexTable {
 	public static interface Callback {
 
 		void onColumnHeaderClick(CrossTableColumnType columnType,
-				IdValuePair idValuePair);
+				IdLabelPair idValuePair);
 
-		void onRowHeaderClick(CrossTableRowType rowType, IdValuePair idValuePair);
+		void onRowHeaderClick(CrossTableRowType rowType, IdLabelPair idValuePair);
 		
 	}
 }

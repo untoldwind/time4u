@@ -17,10 +17,10 @@ import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
-import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTable;
+import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableData;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableColumnType;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableRowType;
-import de.objectcode.time4u.server.web.gwt.report.client.service.IdValuePair;
+import de.objectcode.time4u.server.web.gwt.report.client.service.IdLabelPair;
 import de.objectcode.time4u.server.web.gwt.report.client.service.ReportService;
 import de.objectcode.time4u.server.web.gwt.report.client.service.ReportServiceAsync;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLayoutPanel;
@@ -83,7 +83,7 @@ public class InteractiveReportPanel extends Composite {
 		reportTable.setCallback(new InteractiveReportTable.Callback() {
 
 			public void onColumnHeaderClick(CrossTableColumnType columnType,
-					IdValuePair idValuePair) {
+					IdLabelPair idValuePair) {
 
 				if ( columnType == CrossTableColumnType.PROJECT ) {
 					projectBreadcrumb.append(idValuePair);
@@ -91,11 +91,10 @@ public class InteractiveReportPanel extends Composite {
 			}
 
 			public void onRowHeaderClick(CrossTableRowType rowType,
-					IdValuePair idValuePair) {
+					IdLabelPair idValuePair) {
 				// TODO Auto-generated method stub
 				
-			}
-			
+			}			
 		});
 			
 		updateData();
@@ -153,7 +152,7 @@ public class InteractiveReportPanel extends Composite {
 	}
 
 	@UiHandler("projectBreadcrumb")
-	protected void onProjectChange(ValueChangeEvent<LinkedList<IdValuePair>> event) {
+	protected void onProjectChange(ValueChangeEvent<LinkedList<IdLabelPair>> event) {
 		updateData();
 	}
 	
@@ -172,8 +171,8 @@ public class InteractiveReportPanel extends Composite {
 
 		reportService.generateCrossTable(getColumnType(), getRowType(), projectBreadcrumb
 				.getLastProject().getId(), from.getValue(), until.getValue(),
-				new AsyncCallback<CrossTable>() {
-					public void onSuccess(CrossTable result) {
+				new AsyncCallback<CrossTableData>() {
+					public void onSuccess(CrossTableData result) {
 						try {
 							reportTable.setData(result);
 						} finally {
