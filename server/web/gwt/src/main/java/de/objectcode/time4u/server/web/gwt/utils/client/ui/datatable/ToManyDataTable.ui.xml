@@ -3,15 +3,16 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:ta="urn:import:de.objectcode.time4u.server.web.gwt.admin.client.ui"
 	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
-
+	
 	<g:DockLayoutPanel unit="EM">
-		<g:north size="25">
-			<ta:AccountAdminPanel.UserAccountTable
-				ui:field="userAccounts" />
-		</g:north>
 		<g:center>
-			<ta:AccountDetailPanel ui:field="userAccountDetail"
-				visible="false" />
+			<g:ScrollPanel ui:field="scrollPanel"/>
 		</g:center>
+		<g:east size="2">
+			<g:VerticalPanel>
+				<g:PushButton ui:field="addButton">+</g:PushButton>
+				<g:PushButton ui:field="removeButton">-</g:PushButton>
+			</g:VerticalPanel>
+		</g:east>
 	</g:DockLayoutPanel>
 </ui:UiBinder>

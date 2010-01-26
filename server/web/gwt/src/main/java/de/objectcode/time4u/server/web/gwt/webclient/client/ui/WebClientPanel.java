@@ -1,37 +1,56 @@
 package de.objectcode.time4u.server.web.gwt.webclient.client.ui;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.SplitLayoutPanel;
-import com.google.gwt.user.client.ui.Widget;
+
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.ExtendedSplitLayoutPanel;
 
 public class WebClientPanel extends Composite {
 
-	private static WebClientPanelUiBinder uiBinder = GWT
-			.create(WebClientPanelUiBinder.class);
-
-	interface WebClientPanelUiBinder extends UiBinder<Widget, WebClientPanel> {
-	}
-
-	@UiField
-	Widget projectTree;
-
-	@UiField
-	Widget taskList;
-	
-	@UiField
-	Widget calendarView;
-	
-	@UiField
-	Widget westPanel;
-	
 	public WebClientPanel() {
-		initWidget(uiBinder.createAndBindUi(this));
-		
-		((SplitLayoutPanel)projectTree.getParent()).setWidgetMinSize(projectTree, 200);
-		((SplitLayoutPanel)calendarView.getParent()).setWidgetMinSize(calendarView, 200);
-		((SplitLayoutPanel)westPanel.getParent()).setWidgetMinSize(westPanel, 200);
+		ExtendedSplitLayoutPanel mainPanel = new ExtendedSplitLayoutPanel();
+		ExtendedSplitLayoutPanel westPanel = new ExtendedSplitLayoutPanel();
+
+		mainPanel.addWest(westPanel, 300);
+
+		ExtendedSplitLayoutPanel southPanel = new ExtendedSplitLayoutPanel();
+
+		mainPanel.addSouth(southPanel, 210);
+
+		WorkItemList workItemList = new WorkItemList();
+
+		mainPanel.add(workItemList);
+
+		mainPanel.setCenterMinSize(180, 24);
+		mainPanel.setWidgetMinSize(westPanel, 180);
+		mainPanel.setWidgetMinSize(southPanel, 24);
+
+		ProjectTree projectTree = new ProjectTree();
+
+		westPanel.addNorth(projectTree, 200);
+
+		CalendarView calendarView = new CalendarView();
+
+		westPanel.addSouth(calendarView, 210);
+
+		TaskList taskList = new TaskList();
+
+		westPanel.add(taskList);
+
+		westPanel.setCenterMinSize(180, 24);
+		westPanel.setWidgetMinSize(projectTree, 24);
+		westPanel.setWidgetMinSize(calendarView, 24);
+
+		PunchView punchView = new PunchView();
+
+		southPanel.addEast(punchView, 200);
+
+		StatisticsView statisticsView = new StatisticsView();
+
+		southPanel.add(statisticsView);
+
+		southPanel.setCenterMinSize(150, 24);
+		southPanel.setWidgetMinSize(punchView, 150);
+
+		initWidget(mainPanel);
 	}
 }

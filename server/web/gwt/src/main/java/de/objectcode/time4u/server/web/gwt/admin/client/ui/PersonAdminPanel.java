@@ -1,23 +1,18 @@
 package de.objectcode.time4u.server.web.gwt.admin.client.ui;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonService;
-import de.objectcode.time4u.server.web.gwt.admin.client.service.AdminPersonServiceAsync;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.PersonSummary;
-import de.objectcode.time4u.server.web.gwt.utils.client.event.ColumnSortEvent;
-import de.objectcode.time4u.server.web.gwt.utils.client.event.DataPageEvent;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.IFormatter;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.BooleanDataTableColumn;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.PagedDataTable;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.SingleSelPagedDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 
 public class PersonAdminPanel extends Composite {
@@ -26,44 +21,25 @@ public class PersonAdminPanel extends Composite {
 	interface UI extends UiBinder<Widget, PersonAdminPanel> {
 	}
 
-	private final AdminPersonServiceAsync adminPersonService = GWT
-			.create(AdminPersonService.class);
 
 	@UiField
 	PersonTable persons;
 
+	@UiField
+	PersonDetailPanel personDetail;
+	
 	public PersonAdminPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
-
-		updateDataPage(0);
 	}
 
 	@UiHandler("persons")
-	protected void onDataPage(DataPageEvent event) {
-		updateDataPage(event.getPageNumber());
+	protected void onSelection(SelectionEvent<PersonSummary> event) {
+		personDetail.setVisible(true);
+		personDetail.setPersonId(event.getSelectedItem().getId());
 	}
+	
 
-	@UiHandler("persons")
-	protected void onColumnSort(ColumnSortEvent<PersonSummary> event) {
-		updateDataPage(persons.getCurrentPage());
-	}
-
-	private void updateDataPage(int pageNumber) {
-		adminPersonService.getPersonSummaries(pageNumber, 10,
-				(PersonSummary.Projections) persons.getCurrentSortingColumn()
-						.getProjection(), persons.isCurrentSortingAscending(),
-				new AsyncCallback<PersonSummary.Page>() {
-					public void onSuccess(PersonSummary.Page result) {
-						persons.setDataPage(result);
-					}
-
-					public void onFailure(Throwable caught) {
-						Window.alert("Server error: " + caught);
-					}
-				});
-	}
-
-	public static class PersonTable extends PagedDataTable<PersonSummary> {
+	public static class PersonTable extends SingleSelPagedDataTable<PersonSummary> {
 
 		@SuppressWarnings("unchecked")
 		public PersonTable() {
@@ -81,7 +57,9 @@ public class PersonAdminPanel extends Composite {
 							new IFormatter.DateTimeFormatter(DateTimeFormat
 									.getMediumDateTimeFormat())));
 
-			setColumnSorting(1, true, false);
+
+			setDataProvider(new PersonDataProvider());
 		}
 	}
+
 }

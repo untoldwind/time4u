@@ -3,15 +3,19 @@ package de.objectcode.time4u.server.web.gwt.webclient.client.ui;
 import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.ExtendedSplitLayoutPanel;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLabel;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.TimeBox;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.DataTable;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.SingleSelDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 import de.objectcode.time4u.server.web.gwt.webclient.client.ISelectionChangeListener;
 import de.objectcode.time4u.server.web.gwt.webclient.client.SelectionChangedEvent;
@@ -55,21 +59,34 @@ public class WorkItemList extends Composite implements ISelectionChangeListener 
 
 			workItemService.getDayInfo(day, new AsyncCallback<DayInfo>() {
 				public void onSuccess(DayInfo result) {
-					workItemList.removeAllRows();
-
 					if (result != null)
-						for (WorkItem workItem : result.getWorkItems()) {
-							workItemList.addRow(workItem);
-						}
+						workItemList.setData(result.getWorkItems());
+					else
+						workItemList.removeAllRows();
 				}
 
 				public void onFailure(Throwable caught) {
+					Window.alert("Server error: " + caught);
 				}
 			});
 		}
 	}
 
-	public static class WorkItemDataTable extends DataTable<WorkItem> {
+	@UiHandler("panelMin")
+	protected void onPanelMinClick(ClickEvent event) {
+		ExtendedSplitLayoutPanel parent = (ExtendedSplitLayoutPanel) getParent();
+
+		parent.minimizeChild(this);
+	}
+
+	@UiHandler("panelMax")
+	protected void onPanelMaxClick(ClickEvent event) {
+		ExtendedSplitLayoutPanel parent = (ExtendedSplitLayoutPanel) getParent();
+
+		parent.maximizeChild(this);
+	}
+
+	public static class WorkItemDataTable extends SingleSelDataTable<WorkItem> {
 		@SuppressWarnings("unchecked")
 		public WorkItemDataTable() {
 			super(new TextDataTableColumn<WorkItem>("Begin", "4em") {
@@ -99,6 +116,5 @@ public class WorkItemList extends Composite implements ISelectionChangeListener 
 				}
 			});
 		}
-
 	}
 }

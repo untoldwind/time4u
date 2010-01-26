@@ -57,6 +57,25 @@ public class JpaUserAccountDao extends JpaDaoBase implements IUserAccountDao {
 		return new UserAccount.Page(pageNumber, pageSize, (int) count, ret);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<UserAccount> findUserAccountsOfPerson(String personId) {
+		Query query = entityManager.createQuery("from "
+				+ UserAccountEntity.class.getName()
+				+ " as u where u.person.id = :personId order by u.id asc");
+
+		query.setParameter("personId", personId);
+
+		List<UserAccountEntity> result = query.getResultList();
+
+		List<UserAccount> ret = new ArrayList<UserAccount>();
+
+		for (UserAccountEntity userAccountEntity : result) {
+			ret.add(toDTO(userAccountEntity));
+		}
+
+		return ret;
+	}
+
 	static UserAccount toDTO(UserAccountEntity userAccountEntity) {
 		return new UserAccount(userAccountEntity.getUserId(), JpaPersonDao
 				.toDTOSummary(userAccountEntity.getPerson()), userAccountEntity

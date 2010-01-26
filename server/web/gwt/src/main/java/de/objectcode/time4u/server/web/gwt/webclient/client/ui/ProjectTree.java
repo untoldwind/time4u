@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.ContextMenu;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.ExtendedSplitLayoutPanel;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.ExtendedTree;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLabel;
 import de.objectcode.time4u.server.web.gwt.webclient.client.SelectionManager;
@@ -53,7 +54,7 @@ public class ProjectTree extends Composite {
 	PushButton deleteProject;
 
 	Map<String, Project> openedProjects = new HashMap<String, Project>();
-	
+
 	private final ProjectServiceAsync projectService = GWT
 			.create(ProjectService.class);
 
@@ -64,7 +65,7 @@ public class ProjectTree extends Composite {
 		projectTree.setAnimationEnabled(true);
 
 		ContextMenu contextMenu = new ContextMenu();
-		
+
 		contextMenu.addItem("New Project", new Command() {
 			public void execute() {
 				System.out.println(">>> new Project");
@@ -75,9 +76,9 @@ public class ProjectTree extends Composite {
 				System.out.println(">>> edit Project");
 			}
 		});
-		
+
 		projectTree.setContextMenu(contextMenu);
-		
+
 		refresh();
 	}
 
@@ -88,7 +89,7 @@ public class ProjectTree extends Composite {
 
 		if (project != null) {
 			openedProjects.put(project.getId(), project);
-			
+
 			projectService.getChildProjects(project.getId(),
 					new AsyncCallback<List<Project>>() {
 						public void onSuccess(List<Project> result) {
@@ -107,11 +108,15 @@ public class ProjectTree extends Composite {
 								if (project.isHasChildren())
 									subItem.addItem("");
 
-								if(openedProjects.containsKey(project.getId()))
+								if (openedProjects.containsKey(project.getId()))
 									subItem.setState(true, true);
 
-								if ( SelectionManager.INSTANCE.getSelectedProject() != null )
-									if ( project.getId().equals(SelectionManager.INSTANCE.getSelectedProject().getId()))
+								if (SelectionManager.INSTANCE
+										.getSelectedProject() != null)
+									if (project.getId().equals(
+											SelectionManager.INSTANCE
+													.getSelectedProject()
+													.getId()))
 										subItem.setSelected(true);
 							}
 						}
@@ -122,7 +127,7 @@ public class ProjectTree extends Composite {
 					});
 		}
 	}
-	
+
 	@UiHandler("projectTree")
 	public void onClose(CloseEvent<TreeItem> event) {
 		final TreeItem item = event.getTarget();
@@ -149,10 +154,10 @@ public class ProjectTree extends Composite {
 
 		ProjectDialog dialog = new ProjectDialog(item != null ? (Project) item
 				.getUserObject() : null, new IDialogCallback() {
-					public void onOk() {
-						refresh();
-					}
-				});
+			public void onOk() {
+				refresh();
+			}
+		});
 
 		dialog.center();
 		dialog.show();
@@ -178,6 +183,24 @@ public class ProjectTree extends Composite {
 		}
 	}
 
+	@UiHandler("panelMin")
+	protected void onPanelMinClick(ClickEvent event) {
+		ExtendedSplitLayoutPanel parent = (ExtendedSplitLayoutPanel) getParent();
+		ExtendedSplitLayoutPanel parentParent = (ExtendedSplitLayoutPanel) parent.getParent();
+
+		parent.minimizeChild(this);
+		parentParent.minimizeChild(parent);
+	}
+
+	@UiHandler("panelMax")
+	protected void onPanelMaxClick(ClickEvent event) {
+		ExtendedSplitLayoutPanel parent = (ExtendedSplitLayoutPanel) getParent();
+		ExtendedSplitLayoutPanel parentParent = (ExtendedSplitLayoutPanel) parent.getParent();
+
+		parent.maximizeChild(this);
+		parentParent.maximizeChild(parent);
+	}
+
 	void refresh() {
 		projectService.getRootProjects(new AsyncCallback<List<Project>>() {
 
@@ -194,12 +217,14 @@ public class ProjectTree extends Composite {
 					if (project.isHasChildren()) {
 						item.addItem(new LoadingLabel());
 					}
-					
-					if(openedProjects.containsKey(project.getId()))
+
+					if (openedProjects.containsKey(project.getId()))
 						item.setState(true, true);
-				
-					if ( SelectionManager.INSTANCE.getSelectedProject() != null )
-						if ( project.getId().equals(SelectionManager.INSTANCE.getSelectedProject().getId()))
+
+					if (SelectionManager.INSTANCE.getSelectedProject() != null)
+						if (project.getId().equals(
+								SelectionManager.INSTANCE.getSelectedProject()
+										.getId()))
 							item.setSelected(true);
 				}
 			}

@@ -17,8 +17,7 @@
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://gefion:3306/time4u" />
 		<property name="username" value="time4u" />
-		<property name="password" value="time4u" />
-		
+		<property name="password" value="time4u" />		
 	</bean>
 
 	<bean id="entityManagerFactory"

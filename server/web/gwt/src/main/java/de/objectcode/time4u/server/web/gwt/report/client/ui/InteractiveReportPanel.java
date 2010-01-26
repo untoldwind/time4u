@@ -6,7 +6,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.DataTable;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.SingleSelDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 
 public class InteractiveReportPanel extends Composite {
@@ -24,7 +24,7 @@ public class InteractiveReportPanel extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 	
-	public static class InteractiveReportTable extends DataTable<ReportRow> {
+	public static class InteractiveReportTable extends SingleSelDataTable<ReportRow> {
 
 		@SuppressWarnings("unchecked")
 		public InteractiveReportTable() {

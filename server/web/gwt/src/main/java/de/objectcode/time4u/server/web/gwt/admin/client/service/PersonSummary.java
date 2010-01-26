@@ -9,7 +9,7 @@ import de.objectcode.time4u.server.web.gwt.utils.client.service.BaseDataPage;
 import de.objectcode.time4u.server.web.gwt.utils.client.service.IProjection;
 
 public class PersonSummary implements IsSerializable {
-	
+
 	public static enum Projections implements IProjection<PersonSummary> {
 		ACTIVE("person.active", false) {
 			public Object project(PersonSummary dto) {
@@ -53,7 +53,7 @@ public class PersonSummary implements IsSerializable {
 			return sortable;
 		}
 	}
-	
+
 	public static class Page extends BaseDataPage<PersonSummary> {
 
 		public Page() {
@@ -73,7 +73,7 @@ public class PersonSummary implements IsSerializable {
 			return pageData;
 		}
 	}
-	
+
 	private String id;
 	private boolean active;
 	private String givenName;
@@ -84,8 +84,8 @@ public class PersonSummary implements IsSerializable {
 	public PersonSummary() {
 	}
 
-	public PersonSummary(String id, boolean active, String givenName, String surname,
-			String email, Date lastSynchronized) {
+	public PersonSummary(String id, boolean active, String givenName,
+			String surname, String email, Date lastSynchronized) {
 		this.id = id;
 		this.active = active;
 		this.givenName = givenName;
@@ -116,6 +116,28 @@ public class PersonSummary implements IsSerializable {
 
 	public Date getLastSynchronized() {
 		return lastSynchronized;
+	}
+
+	@Override
+	public int hashCode() {
+		return ((id == null) ? 0 : id.hashCode());
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PersonSummary other = (PersonSummary) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }

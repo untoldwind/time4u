@@ -3,6 +3,7 @@ package de.objectcode.time4u.server.web.gwt.webclient.client.ui;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -14,8 +15,9 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.ContextMenu;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.ExtendedSplitLayoutPanel;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLabel;
-import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.DataTable;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.SingleSelDataTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.datatable.TextDataTableColumn;
 import de.objectcode.time4u.server.web.gwt.webclient.client.ISelectionChangeListener;
 import de.objectcode.time4u.server.web.gwt.webclient.client.SelectionChangedEvent;
@@ -94,7 +96,25 @@ public class TaskList extends Composite implements ISelectionChangeListener {
 			SelectionManager.INSTANCE.selectTask(null);
 	}
 
-	public static class TaskDataTable extends DataTable<Task> {
+	@UiHandler("panelMin")
+	protected void onPanelMinClick(ClickEvent event) {
+		ExtendedSplitLayoutPanel parent = (ExtendedSplitLayoutPanel) getParent();
+		ExtendedSplitLayoutPanel parentParent = (ExtendedSplitLayoutPanel) parent.getParent();
+
+		parent.minimizeChild(this);
+		parentParent.minimizeChild(parent);
+	}
+
+	@UiHandler("panelMax")
+	protected void onPanelMaxClick(ClickEvent event) {
+		ExtendedSplitLayoutPanel parent = (ExtendedSplitLayoutPanel) getParent();
+		ExtendedSplitLayoutPanel parentParent = (ExtendedSplitLayoutPanel) parent.getParent();
+
+		parent.maximizeChild(this);
+		parentParent.maximizeChild(parent);
+	}
+
+	public static class TaskDataTable extends SingleSelDataTable<Task> {
 		@SuppressWarnings("unchecked")
 		public TaskDataTable() {
 			super(false, new TextDataTableColumn<Task>("Task", "100%") {

@@ -71,25 +71,31 @@ public class AdminModule {
 	}
 
 	public static void showAccountAdminPanel(final SwitchableLayoutPanel mainPanel) {
+		mainPanel.prepareSwitch();
+
 		createAsync(new IModuleCallback<AdminModule>() {
 			public void onSuccess(AdminModule instance) {
-				mainPanel.setChild(instance.getAccountAdminPanel());
+				mainPanel.switchWidget(instance.getAccountAdminPanel());
 			}
 		});
 	}
 
 	public static void showPersonAdminPanel(final SwitchableLayoutPanel mainPanel) {
+		mainPanel.prepareSwitch();
+		
 		createAsync(new IModuleCallback<AdminModule>() {
 			public void onSuccess(AdminModule instance) {
-				mainPanel.setChild(instance.getPersonAdminPanel());
+				mainPanel.switchWidget(instance.getPersonAdminPanel());
 			}
 		});
 	}
 
 	public static void showTeamAdminPanel(final SwitchableLayoutPanel mainPanel) {
+		mainPanel.prepareSwitch();
+		
 		createAsync(new IModuleCallback<AdminModule>() {
 			public void onSuccess(AdminModule instance) {
-				mainPanel.setChild(instance.getTeamAdminPanel());
+				mainPanel.switchWidget(instance.getTeamAdminPanel());
 			}
 		});
 	}

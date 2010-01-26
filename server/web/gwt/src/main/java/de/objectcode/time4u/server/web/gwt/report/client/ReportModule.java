@@ -41,10 +41,12 @@ public class ReportModule {
 		reportMenu.addItem("Interactive Report", new Command() {
 
 			public void execute() {
+				mainPanel.prepareSwitch();
+				
 				createAsync(new IModuleCallback<ReportModule>() {
 					public void onSuccess(ReportModule instance) {
 						mainPanel
-								.setChild(instance.getInteractiveReportPanel());
+								.switchWidget(instance.getInteractiveReportPanel());
 					}
 				});
 			}
