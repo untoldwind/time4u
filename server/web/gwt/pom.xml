@@ -21,7 +21,8 @@
 			<groupId>de.objectcode.time4u.server</groupId>
 			<artifactId>time4u-server-ejb</artifactId>
 			<version>${pom.version}</version>
-			<scope>provided</scope>
+			<scope>compile</scope>
+			<type>ejb</type>
 		</dependency>
 		<dependency>
 			<groupId>javax.xml.bind</groupId>

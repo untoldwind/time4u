@@ -2,28 +2,30 @@ package de.objectcode.time4u.server.web.gwt.report.client.service;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-import de.objectcode.time4u.server.ejb.seam.api.report.ColumnType;
 
 public class ReportColumnDefinition implements IsSerializable {
 	/** Column header. */
 	String m_header;
 	/** Column data type. */
-	ColumnType m_columnType;
+	ReportColumnType m_columnType;
 	/** Index of the column. */
 	int m_index;
 
-	public ReportColumnDefinition(final ColumnType columnType,
+	public ReportColumnDefinition() {		
+	}
+	
+	public ReportColumnDefinition(final ReportColumnType columnType,
 			final String header, final int index) {
 		m_columnType = columnType;
 		m_header = header;
 		m_index = index;
 	}
 
-	public ColumnType getColumnType() {
+	public ReportColumnType getColumnType() {
 		return m_columnType;
 	}
 
-	public void setColumnType(final ColumnType columnType) {
+	public void setColumnType(final ReportColumnType columnType) {
 		m_columnType = columnType;
 	}
 

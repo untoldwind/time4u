@@ -7,30 +7,30 @@ import java.util.TreeMap;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-import de.objectcode.time4u.server.ejb.seam.api.report.ColumnType;
-import de.objectcode.time4u.server.ejb.seam.api.report.ReportRow;
-
 public class ReportTableDataBase implements IsSerializable {
 	/** List of all column definitions. */
 	protected List<ReportColumnDefinition> m_columns;
 	/** List of all column definitions that have been used for group by. */
 	protected List<ReportColumnDefinition> m_groupByColumns;
 	/** List of report rows if there are no group-by. */
-	protected List<ReportRow> m_rows;
+	protected List<ReportRowData> m_rows;
 	/** Aggregated values to be displayed in the footer. */
-	protected int[] m_aggregates;
+	protected ReportValue[] m_aggregates;
 	/** Map of group-by sub-reports. */
 	protected Map<String, ReportTableGroupData> m_groups;
 
+	protected ReportTableDataBase() {		
+	}
+	
 	protected ReportTableDataBase(final List<ReportColumnDefinition> columns,
 			final List<ReportColumnDefinition> groupByColumns) {
 		m_columns = columns;
 		m_groupByColumns = groupByColumns;
-		m_rows = new ArrayList<ReportRow>();
+		m_rows = new ArrayList<ReportRowData>();
 		m_groups = new TreeMap<String, ReportTableGroupData>();
 	}
 
-	public void addColumn(final ColumnType columnType, final String header) {
+	public void addColumn(final ReportColumnType columnType, final String header) {
 		m_columns
 				.add(new ReportColumnDefinition(columnType, header, m_columns.size()));
 	}
@@ -39,7 +39,7 @@ public class ReportTableDataBase implements IsSerializable {
 		return m_columns;
 	}
 
-	public void addGroupByColumn(final ColumnType columnType,
+	public void addGroupByColumn(final ReportColumnType columnType,
 			final String header) {
 		m_groupByColumns.add(new ReportColumnDefinition(columnType, header,
 				m_groupByColumns.size()));
@@ -49,7 +49,7 @@ public class ReportTableDataBase implements IsSerializable {
 		return m_groupByColumns;
 	}
 
-	public List<ReportRow> getRows() {
+	public List<ReportRowData> getRows() {
 		return m_rows;
 	}
 
@@ -65,12 +65,12 @@ public class ReportTableDataBase implements IsSerializable {
 		return m_aggregates != null;
 	}
 
-	public int[] getAggregates() {
+	public ReportValue[] getAggregates() {
 		return m_aggregates;
 	}
 
 	public void setAggregates(final List<Object> groupKey,
-			final int[] aggregates) {
+			final ReportValue[] aggregates) {
 		if (groupKey == null) {
 			m_aggregates = aggregates;
 		} else {
@@ -93,15 +93,15 @@ public class ReportTableDataBase implements IsSerializable {
 		return new ArrayList<ReportTableGroupData>(m_groups.values());
 	}
 
-	public void addRow(final List<IdLabelPair> groups, final Object[] row) {
+	public void addRow(final List<IdLabelPair> groups, final ReportValue[] row) {
 		addRow(0, groups, row);
 	}
 
 	protected void addRow(final int depth, final List<IdLabelPair> groups,
-			final Object[] row) {
+			final ReportValue[] row) {
 		if (depth >= groups.size()) {
 			if (row != null) {
-				m_rows.add(new ReportRow(m_rows.size(), row));
+				m_rows.add(new ReportRowData(m_rows.size(), row));
 			}
 		} else {
 			final IdLabelPair top = groups.get(depth);

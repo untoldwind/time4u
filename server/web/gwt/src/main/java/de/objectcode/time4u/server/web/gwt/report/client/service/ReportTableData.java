@@ -3,11 +3,16 @@ package de.objectcode.time4u.server.web.gwt.report.client.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class ReportTableData extends ReportTableDataBase {
+
+public class ReportTableData extends ReportTableDataBase implements IsSerializable{
 	/** Name of the report. */
 	String m_name;
 
+	public ReportTableData() {
+	}
+	
 	public ReportTableData(final String name) {
 		super(new ArrayList<ReportColumnDefinition>(),
 				new ArrayList<ReportColumnDefinition>());

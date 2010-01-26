@@ -2,9 +2,15 @@ package de.objectcode.time4u.server.web.gwt.report.client.service;
 
 import java.util.List;
 
-public class ReportTableGroupData extends ReportTableDataBase {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class ReportTableGroupData extends ReportTableDataBase implements
+		IsSerializable {
 	String m_id;
 	String m_label;
+
+	public ReportTableGroupData() {
+	}
 
 	public ReportTableGroupData(final IdLabelPair valueLabel,
 			final List<ReportColumnDefinition> columns,

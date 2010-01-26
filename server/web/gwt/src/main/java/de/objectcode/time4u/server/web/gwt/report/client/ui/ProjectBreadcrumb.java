@@ -1,6 +1,8 @@
 package de.objectcode.time4u.server.web.gwt.report.client.ui;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -53,6 +55,14 @@ public class ProjectBreadcrumb extends Composite implements
 		setValue(value, true);
 	}
 
+	public List<String> getProjectPath() {
+		List<String> ret = new ArrayList<String>();
+		
+		for ( IdLabelPair project : projectStack )
+			ret.add(project.getId());
+		
+		return ret;
+	}
 	public void setValue(LinkedList<IdLabelPair> value, boolean fireEvents) {
 		breadcrumpTable.removeAllRows();
 
