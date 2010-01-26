@@ -1,8 +1,10 @@
 package de.objectcode.time4u.server.web.gwt.report.client.ui;
 
 import java.util.Date;
+import java.util.LinkedList;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -18,8 +20,10 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTable;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableColumnType;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableRowType;
+import de.objectcode.time4u.server.web.gwt.report.client.service.IdValuePair;
 import de.objectcode.time4u.server.web.gwt.report.client.service.ReportService;
 import de.objectcode.time4u.server.web.gwt.report.client.service.ReportServiceAsync;
+import de.objectcode.time4u.server.web.gwt.utils.client.ui.LoadingLayoutPanel;
 
 public class InteractiveReportPanel extends Composite {
 	private static InteractiveReportPanelUiBinder uiBinder = GWT
@@ -31,6 +35,9 @@ public class InteractiveReportPanel extends Composite {
 
 	private final ReportServiceAsync reportService = GWT
 			.create(ReportService.class);
+
+	@UiField
+	LoadingLayoutPanel loadingPanel;
 
 	@UiField
 	InteractiveReportTable reportTable;
@@ -46,6 +53,9 @@ public class InteractiveReportPanel extends Composite {
 
 	@UiField
 	RadioButton projectTaskProject;
+
+	@UiField
+	ProjectBreadcrumb projectBreadcrumb;
 
 	@SuppressWarnings("deprecation")
 	public InteractiveReportPanel() {
@@ -70,6 +80,24 @@ public class InteractiveReportPanel extends Composite {
 		personTeamPerson.setValue(true, false);
 		projectTaskProject.setValue(true, false);
 
+		reportTable.setCallback(new InteractiveReportTable.Callback() {
+
+			public void onColumnHeaderClick(CrossTableColumnType columnType,
+					IdValuePair idValuePair) {
+
+				if ( columnType == CrossTableColumnType.PROJECT ) {
+					projectBreadcrumb.append(idValuePair);
+				}
+			}
+
+			public void onRowHeaderClick(CrossTableRowType rowType,
+					IdValuePair idValuePair) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+			
 		updateData();
 	}
 
@@ -78,23 +106,84 @@ public class InteractiveReportPanel extends Composite {
 		updateData();
 	}
 
-	@UiHandler( { "personTeamPerson","personTeamTeam", "projectTaskProject","projectTaskTask" })
+	@UiHandler( { "personTeamPerson", "personTeamTeam", "projectTaskProject",
+			"projectTaskTask" })
 	protected void onBooleanValueChange(ValueChangeEvent<Boolean> event) {
 		updateData();
 	}
 
+	@SuppressWarnings("deprecation")
+	@UiHandler("prevMonth")
+	protected void onPrevMonth(ClickEvent event) {
+		Date fromDate = from.getValue();
+
+		from.setValue(new Date(fromDate.getYear()
+				- (fromDate.getMonth() == 1 ? 1 : 0),
+				fromDate.getMonth() == 1 ? 12 : fromDate.getMonth() - 1,
+				fromDate.getDate()), false);
+
+		Date untilDate = until.getValue();
+
+		until.setValue(new Date(untilDate.getYear()
+				- (untilDate.getMonth() == 1 ? 1 : 0),
+				untilDate.getMonth() == 1 ? 12 : untilDate.getMonth() - 1,
+				untilDate.getDate()), false);
+
+		updateData();
+	}
+
+	@SuppressWarnings("deprecation")
+	@UiHandler("nextMonth")
+	protected void onNextMonth(ClickEvent event) {
+		Date fromDate = from.getValue();
+
+		from.setValue(new Date(fromDate.getYear()
+				+ (fromDate.getMonth() == 12 ? 1 : 0),
+				fromDate.getMonth() == 12 ? 1 : fromDate.getMonth() + 1,
+				fromDate.getDate()), false);
+
+		Date untilDate = until.getValue();
+
+		until.setValue(new Date(untilDate.getYear()
+				+ (untilDate.getMonth() == 12 ? 1 : 0),
+				untilDate.getMonth() == 12 ? 1 : untilDate.getMonth() + 1,
+				untilDate.getDate()), false);
+
+		updateData();
+	}
+
+	@UiHandler("projectBreadcrumb")
+	protected void onProjectChange(ValueChangeEvent<LinkedList<IdValuePair>> event) {
+		updateData();
+	}
+	
+	protected CrossTableColumnType getColumnType() {
+		return projectTaskProject.getValue() ? CrossTableColumnType.PROJECT
+				: CrossTableColumnType.TASK;
+	}
+
+	protected CrossTableRowType getRowType() {
+		return personTeamPerson.getValue() ? CrossTableRowType.PERSON
+				: CrossTableRowType.TEAM;
+	}
+
 	protected void updateData() {
-		CrossTableColumnType columnType = projectTaskProject.getValue() ? CrossTableColumnType.PROJECT : CrossTableColumnType.TASK;
-		CrossTableRowType rowType = personTeamPerson.getValue() ? CrossTableRowType.PERSON : CrossTableRowType.TEAM;
+		loadingPanel.block();
 
-		reportService.generateCrossTable(columnType, rowType, null , from.getValue(), until.getValue(), new AsyncCallback<CrossTable>() {
-			public void onSuccess(CrossTable result) {
-				reportTable.setData(result);
-			}
+		reportService.generateCrossTable(getColumnType(), getRowType(), projectBreadcrumb
+				.getLastProject().getId(), from.getValue(), until.getValue(),
+				new AsyncCallback<CrossTable>() {
+					public void onSuccess(CrossTable result) {
+						try {
+							reportTable.setData(result);
+						} finally {
+							loadingPanel.unblock();
+						}
+					}
 
-			public void onFailure(Throwable caught) {
-				Window.alert("Server error: " + caught);
-			}
-		});
+					public void onFailure(Throwable caught) {
+						Window.alert("Server error: " + caught);
+					}
+				});
 	}
 }

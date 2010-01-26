@@ -29,7 +29,17 @@ public class ExtendedFlexTable extends FlexTable {
 	}
 
 	public void setHeaders(TableHeader... headers) {
-		prepareHeaderCell(headers.length, true);
+		if (headerWidgets != null) {
+			for (Widget widget : headerWidgets) {
+				if (widget != null) {
+					orphan(widget);
+				}
+			}
+			headerWidgets.clear();
+		}
+		DOM.setInnerHTML(DOM.getFirstChild(getTHeadElement()), "");
+
+		prepareHeaderCell(headers.length);
 
 		for (int i = 0; i < headers.length; i++) {
 			TableHeader column = headers[i];
@@ -39,7 +49,7 @@ public class ExtendedFlexTable extends FlexTable {
 	}
 
 	public void setHeaderText(int column, String width, String text) {
-		prepareHeaderCell(column, false);
+		prepareHeaderCell(column);
 
 		Element th = DOM.getChild(DOM.getFirstChild(getTHeadElement()), column);
 		internalClearCell(th, true);
@@ -51,7 +61,7 @@ public class ExtendedFlexTable extends FlexTable {
 	}
 
 	public void setHeaderWidget(int column, String width, Widget widget) {
-		prepareHeaderCell(column, false);
+		prepareHeaderCell(column);
 
 		if (widget != null) {
 			widget.removeFromParent();
@@ -129,7 +139,7 @@ public class ExtendedFlexTable extends FlexTable {
 
 	}
 
-	protected void prepareHeaderCell(int column, boolean remove) {
+	protected void prepareHeaderCell(int column) {
 		if (column < 0) {
 			throw new IndexOutOfBoundsException(
 					"Cannot create a column with a negative index: " + column);
@@ -141,8 +151,6 @@ public class ExtendedFlexTable extends FlexTable {
 					- DOM.getChildCount(DOM.getChild(getTHeadElement(), 0));
 			if (required > 0)
 				addHeaderCells(getTHeadElement(), required);
-			else if (remove)
-				removeHeaderCells(getTHeadElement(), -required);
 		}
 	}
 
@@ -168,13 +176,6 @@ public class ExtendedFlexTable extends FlexTable {
 		for(var i = 0; i < num; i++){
 		  var cell = $doc.createElement("th");
 		  rowElem.appendChild(cell);
-		}
-	}-*/;
-
-	protected native void removeHeaderCells(Element tHead, int num) /*-{
-		var rowElem = tHead.rows[0];
-		for(var i = 0; i < num; i++){
-		  rowElem.removeChild(rowElem.lastChild);
 		}
 	}-*/;
 

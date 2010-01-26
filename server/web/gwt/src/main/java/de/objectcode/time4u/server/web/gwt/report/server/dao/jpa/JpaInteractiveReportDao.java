@@ -15,6 +15,8 @@ import de.objectcode.time4u.server.entities.TaskEntity;
 import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTable;
+import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableColumnType;
+import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableRowType;
 import de.objectcode.time4u.server.web.gwt.report.server.dao.IInteractiveReportDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
 
@@ -75,7 +77,7 @@ public class JpaInteractiveReportDao extends JpaDaoBase implements
 		dataCollector.finish();
 		entityManager.clear();
 
-		return dataCollector.getCrossTable();
+		return dataCollector.getCrossTable(CrossTableColumnType.PROJECT, CrossTableRowType.PERSON);
 	}
 
 	public CrossTable generateProjectTeamCrossTable(String mainProjectId,
@@ -127,7 +129,7 @@ public class JpaInteractiveReportDao extends JpaDaoBase implements
 		dataCollector.finish();
 		entityManager.clear();
 
-		return dataCollector.getCrossTable();
+		return dataCollector.getCrossTable(CrossTableColumnType.PROJECT, CrossTableRowType.TEAM);
 	}
 
 	public CrossTable generateTaskPersonCrossTable(String lastProjectId,
@@ -173,7 +175,7 @@ public class JpaInteractiveReportDao extends JpaDaoBase implements
 	    dataCollector.finish();
 	    entityManager.clear();
 
-	    return dataCollector.getCrossTable();
+	    return dataCollector.getCrossTable(CrossTableColumnType.TASK, CrossTableRowType.PERSON);
 	}
 
 	public CrossTable generateTaskTeamCrossTable(String lastProjectId,
@@ -219,7 +221,7 @@ public class JpaInteractiveReportDao extends JpaDaoBase implements
 	    dataCollector.finish();
 	    entityManager.clear();
 
-	    return dataCollector.getCrossTable();
+	    return dataCollector.getCrossTable(CrossTableColumnType.TASK, CrossTableRowType.TEAM);
 	}
 
 	private static class PersonComparator implements Comparator<PersonEntity> {

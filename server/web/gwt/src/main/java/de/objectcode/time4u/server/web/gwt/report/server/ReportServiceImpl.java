@@ -35,7 +35,7 @@ public class ReportServiceImpl extends GwtController implements ReportService {
 		.getContext().getAuthentication().getPrincipal();
 
 		String personId = userDetails.getPersonId();
-		
+
 		switch (columnType) {
 		case PROJECT:
 			switch (rowType) {

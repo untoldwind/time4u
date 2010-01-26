@@ -8,7 +8,9 @@ import java.util.TreeSet;
 
 import de.objectcode.time4u.server.entities.IdAndNameAwareEntity;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTable;
+import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableColumnType;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableRow;
+import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableRowType;
 import de.objectcode.time4u.server.web.gwt.report.client.service.IdValuePair;
 
 public class GenericCrosstableDataCollector<ColumnEntity extends IdAndNameAwareEntity, RowEntity extends IdAndNameAwareEntity> {
@@ -74,7 +76,7 @@ public class GenericCrosstableDataCollector<ColumnEntity extends IdAndNameAwareE
 
 	}
 
-	public CrossTable getCrossTable() {
+	public CrossTable getCrossTable(CrossTableColumnType columnType, CrossTableRowType rowType) {
 		final IdValuePair columns[] = new IdValuePair[m_sortedColumnEntities
 				.size()];
 		int columnCount = 0;
@@ -118,7 +120,7 @@ public class GenericCrosstableDataCollector<ColumnEntity extends IdAndNameAwareE
 			rowCount++;
 		}
 
-		return new CrossTable(columns, rows, columnAggregates, totalAggregate);
+		return new CrossTable(columnType, rowType, columns, rows, columnAggregates, totalAggregate);
 	}
 
 	protected String getColumnLabel(final ColumnEntity columnEntity) {
