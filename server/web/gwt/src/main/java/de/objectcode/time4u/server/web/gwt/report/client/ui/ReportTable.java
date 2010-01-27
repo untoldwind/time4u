@@ -36,19 +36,21 @@ public class ReportTable extends ExtendedFlexTable {
 		setHeaders(headers);
 		setHeaderStyleName("utils-dataTable-header");
 		
+		String[] rowData = report.getRows();
 		int count = 0;
-		for (String[] row : report.getRows()) {			
+		int rowCount = 0;
+		while ( count < rowData.length ) {
 			for (int i = 0; i < columns.length; i++) {
-				String value=columns[i].getColumnType().formatValue(row[i]);
+				String value=columns[i].getColumnType().formatValue(rowData[count++]);
 				
-				setText(count, i, value);
+				setText(rowCount, i, value);
 			}
-			getRowFormatter().setStyleName(count, "utils-dataTable-row");
+			getRowFormatter().setStyleName(rowCount, "utils-dataTable-row");
 			getRowFormatter().addStyleName(
-					count,
-					count % 2 == 0 ? "utils-dataTable-row-even"
+					rowCount,
+					rowCount % 2 == 0 ? "utils-dataTable-row-even"
 							: "utils-dataTable-row-odd");
-			count++;
+			rowCount++;
 		}
 	}
 }

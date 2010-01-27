@@ -8,7 +8,7 @@ public class ReportTableDataBase implements IsSerializable {
 	/** List of all column definitions that have been used for group by. */
 	protected ReportColumnDefinition[] m_groupByColumns;
 	/** List of report rows if there are no group-by. */
-	protected String[][] m_rows;
+	protected String[] m_rows;
 	/** Aggregated values to be displayed in the footer. */
 	protected String[] m_aggregates;
 	/** Map of group-by sub-reports. */
@@ -18,7 +18,7 @@ public class ReportTableDataBase implements IsSerializable {
 	}
 
 	protected ReportTableDataBase(final ReportColumnDefinition[] columns,
-			final ReportColumnDefinition[] groupByColumns, final String[][] rows) {
+			final ReportColumnDefinition[] groupByColumns, final String[] rows) {
 		m_columns = columns;
 		m_groupByColumns = groupByColumns;
 		m_rows = rows;
@@ -33,7 +33,7 @@ public class ReportTableDataBase implements IsSerializable {
 		return m_groupByColumns;
 	}
 
-	public String[][] getRows() {
+	public String[] getRows() {
 		return m_rows;
 	}
 

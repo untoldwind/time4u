@@ -12,7 +12,7 @@ public class ReportTableGroupData extends ReportTableDataBase implements
 
 	public ReportTableGroupData(final IdLabelPair valueLabel,
 			final ReportColumnDefinition[] columns,
-			final ReportColumnDefinition[] groupByColumns, String[][] rows) {
+			final ReportColumnDefinition[] groupByColumns, String[] rows) {
 		super(columns, groupByColumns, rows);
 
 		m_id = valueLabel.getId();

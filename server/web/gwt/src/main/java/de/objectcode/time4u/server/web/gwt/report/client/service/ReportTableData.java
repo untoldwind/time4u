@@ -13,7 +13,7 @@ public class ReportTableData extends ReportTableDataBase implements IsSerializab
 
 	public ReportTableData(final String name,
 			final ReportColumnDefinition[] columns,
-			final ReportColumnDefinition[] groupByColumns, String[][] rows) {
+			final ReportColumnDefinition[] groupByColumns, String[] rows) {
 		super(columns, groupByColumns, rows);
 
 		m_name = name;

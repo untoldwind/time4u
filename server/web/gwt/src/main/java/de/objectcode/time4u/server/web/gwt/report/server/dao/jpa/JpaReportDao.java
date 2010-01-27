@@ -63,7 +63,7 @@ public class JpaReportDao extends JpaDaoBase implements IReportDao {
 			groupByColumns[i] = transform(reportResult.getGroupByColumns().get(i));
 		}
 
-		String[][] rows = transformRows( columns, Collections.<IdLabelPair>emptyList(), reportResult);
+		String[] rows = transformRows( columns, Collections.<IdLabelPair>emptyList(), reportResult);
 		
 		ReportTableData result = new ReportTableData(reportResult.getName(), columns,
 				groupByColumns, rows);
@@ -159,11 +159,12 @@ public class JpaReportDao extends JpaDaoBase implements IReportDao {
 		return dataCollector.getReportResult();
 	}
 	
-	protected static String[][] transformRows(ReportColumnDefinition[] columns,List<IdLabelPair> groups,  ReportResultBase reportResult) {
-		String[][] rows = new String[reportResult.getRows().size()][];
+	protected static String[] transformRows(ReportColumnDefinition[] columns,List<IdLabelPair> groups,  ReportResultBase reportResult) {
+		int rowCount = reportResult.getRows().size();
+		String[] rows = new String[ rowCount * columns.length];
 		
-		for ( int i = 0; i < rows.length; i++ ) {
-			rows[i] = transform(columns, reportResult.getRows().get(i));
+		for ( int i = 0; i < rowCount; i++ ) {
+			System.arraycopy(transform(columns, reportResult.getRows().get(i)), 0, rows, i * columns.length, columns.length);
 		}
 
 		return rows;
