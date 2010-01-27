@@ -1,6 +1,7 @@
 package de.objectcode.time4u.server.web.gwt.report.client.ui;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,13 +36,13 @@ public class ProjectBreadcrumb extends Composite implements
 	public IdLabelPair getLastProject() {
 		return projectStack.getLast();
 	}
-	
+
 	public void setLastProject(IdLabelPair project) {
 		LinkedList<IdLabelPair> newStack = new LinkedList<IdLabelPair>();
 
-		for ( IdLabelPair element : projectStack ) {
+		for (IdLabelPair element : projectStack) {
 			newStack.add(element);
-			if ( element.equals(project))
+			if (element.equals(project))
 				break;
 		}
 		setValue(newStack);
@@ -57,12 +58,19 @@ public class ProjectBreadcrumb extends Composite implements
 
 	public List<String> getProjectPath() {
 		List<String> ret = new ArrayList<String>();
-		
-		for ( IdLabelPair project : projectStack )
-			ret.add(project.getId());
+
+		Iterator<IdLabelPair> it = projectStack.iterator();
+
+		if (it.hasNext()) {
+			it.next();
+		}
+		while (it.hasNext()) {
+			ret.add(it.next().getId());
+		}
 		
 		return ret;
 	}
+
 	public void setValue(LinkedList<IdLabelPair> value, boolean fireEvents) {
 		breadcrumpTable.removeAllRows();
 
@@ -76,17 +84,17 @@ public class ProjectBreadcrumb extends Composite implements
 			}
 			Anchor link = new Anchor(project.getLabel());
 
-			link.addClickHandler(new ClickHandler() {				
+			link.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					setLastProject(project);
 				}
 			});
-			
+
 			breadcrumpTable.setWidget(0, i, link);
 			i += 2;
 		}
-		
-		if ( fireEvents ) {
+
+		if (fireEvents) {
 			ValueChangeEvent.fire(this, projectStack);
 		}
 	}
@@ -99,7 +107,7 @@ public class ProjectBreadcrumb extends Composite implements
 	public void append(final IdLabelPair project) {
 
 		Anchor link = new Anchor(project.getLabel());
-		link.addClickHandler(new ClickHandler() {				
+		link.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				setLastProject(project);
 			}

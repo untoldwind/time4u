@@ -10,6 +10,6 @@ public interface ReportServiceAsync {
 			CrossTableRowType rowType, String projectId, Date from, Date until,
 			AsyncCallback<CrossTableData> callback);
 
-	void generateWorkItemReport(String personId, List<String> projectPath,
+	void generatePersonWorkItemReport(String personId, List<String> projectPath,
 			Date from, Date until, AsyncCallback<ReportTableData> callback);
 }

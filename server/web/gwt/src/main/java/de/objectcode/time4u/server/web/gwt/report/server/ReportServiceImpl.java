@@ -46,19 +46,20 @@ public class ReportServiceImpl extends GwtController implements ReportService {
 
 	@Transactional(readOnly = true)
 	@RolesAllowed("ROLE_USER")
-	public ReportTableData generateWorkItemReport(String personId,
+	public ReportTableData generatePersonWorkItemReport(String personId,
 			List<String> projectPath, Date from, Date until) {
-		
+
 		Time4UUserDetails userDetails = (Time4UUserDetails) SecurityContextHolder
 				.getContext().getAuthentication().getPrincipal();
 
 		String authPersonId = userDetails.getPersonId();
 
-		WorkItemReportDefinition reportDefinition = createWorkitemReportDefinition(personId, projectPath, from, until);
-		
-		return reportDao.generateReport(reportDefinition, new HashMap<String, BaseParameterValue>(), authPersonId);
-	}
+		WorkItemReportDefinition reportDefinition = createPersonWorkitemReportDefinition(
+				personId, projectPath, from, until);
 
+		return reportDao.generateReport(reportDefinition,
+				new HashMap<String, BaseParameterValue>(), authPersonId);
+	}
 
 	@Transactional(readOnly = true)
 	@RolesAllowed("ROLE_USER")
@@ -93,7 +94,8 @@ public class ReportServiceImpl extends GwtController implements ReportService {
 
 		throw new RuntimeException("Unkown type: " + columnType + " " + rowType);
 	}
-	private WorkItemReportDefinition createWorkitemReportDefinition(
+
+	private WorkItemReportDefinition createPersonWorkitemReportDefinition(
 			String personId, List<String> projectPath, Date from, Date until) {
 
 		final WorkItemReportDefinition definition = new WorkItemReportDefinition();
@@ -134,7 +136,7 @@ public class ReportServiceImpl extends GwtController implements ReportService {
 
 		return definition;
 	}
-	
+
 	@Resource(name = "reportDao")
 	@Required
 	public void setReportDao(IReportDao reportDao) {

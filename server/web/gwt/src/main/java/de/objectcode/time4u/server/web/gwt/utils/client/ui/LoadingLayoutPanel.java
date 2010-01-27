@@ -34,6 +34,15 @@ public class LoadingLayoutPanel extends LayoutPanel {
 			timer.schedule(300);
 		}
 	}
+	
+	public void hardBlock() {
+		if ((blockCount++) == 0) {
+			loadingLabel.setStyleName("utils-loadingLabel");
+			add(loadingLabel);
+			setWidgetLeftRight(loadingLabel, 0, Unit.PX, 0, Unit.PX);
+			setWidgetTopBottom(loadingLabel, 0, Unit.PX, 0, Unit.PX);			
+		}
+	}
 
 	public void unblock() {
 		if (blockCount == 0)

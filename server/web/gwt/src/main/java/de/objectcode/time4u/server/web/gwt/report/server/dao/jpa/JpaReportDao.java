@@ -1,6 +1,8 @@
 package de.objectcode.time4u.server.web.gwt.report.server.dao.jpa;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +20,8 @@ import de.objectcode.time4u.server.ejb.seam.api.report.ColumnDefinition;
 import de.objectcode.time4u.server.ejb.seam.api.report.ColumnType;
 import de.objectcode.time4u.server.ejb.seam.api.report.IReportDataCollector;
 import de.objectcode.time4u.server.ejb.seam.api.report.ReportResult;
+import de.objectcode.time4u.server.ejb.seam.api.report.ReportResultBase;
+import de.objectcode.time4u.server.ejb.seam.api.report.ReportRow;
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.BaseParameterValue;
 import de.objectcode.time4u.server.ejb.seam.impl.DayInfoRowDataIterator;
 import de.objectcode.time4u.server.ejb.seam.impl.DayInfoRowDataIteratorWithFill;
@@ -30,9 +34,11 @@ import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.entities.TeamEntity;
 import de.objectcode.time4u.server.entities.TodoEntity;
 import de.objectcode.time4u.server.entities.WorkItemEntity;
+import de.objectcode.time4u.server.web.gwt.report.client.service.IdLabelPair;
 import de.objectcode.time4u.server.web.gwt.report.client.service.ReportColumnDefinition;
 import de.objectcode.time4u.server.web.gwt.report.client.service.ReportColumnType;
 import de.objectcode.time4u.server.web.gwt.report.client.service.ReportTableData;
+import de.objectcode.time4u.server.web.gwt.report.client.service.ReportValue;
 import de.objectcode.time4u.server.web.gwt.report.server.dao.IReportDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
 
@@ -60,11 +66,15 @@ public class JpaReportDao extends JpaDaoBase implements IReportDao {
 			groupByColumns.add(transform(columnDefinition));
 		}
 
-		// TODO:
-
-		return new ReportTableData(reportResult.getName(), columns,
+		ReportTableData result = new ReportTableData(reportResult.getName(), columns,
 				groupByColumns);
+		
+		transformGroups(result, reportResult);
+		transformRows(result, columns, Collections.<IdLabelPair>emptyList(), reportResult);
+		
+		return result;
 	}
+
 
 	@SuppressWarnings("unchecked")
 	protected ReportResult doGenerateReport(
@@ -150,7 +160,46 @@ public class JpaReportDao extends JpaDaoBase implements IReportDao {
 
 		return dataCollector.getReportResult();
 	}
+	
+	protected static void transformRows(ReportTableData result, List<ReportColumnDefinition> columns,List<IdLabelPair> groups,  ReportResultBase reportResult) {
+		for ( ReportRow row : reportResult.getRows()) {
+			result.addRow(groups, transform(columns, row));
+		}
+	}
 
+	protected static void transformGroups(ReportTableData result,
+			ReportResultBase reportResult) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	protected static ReportValue<?>[] transform(List<ReportColumnDefinition> columns, ReportRow row) {
+		ReportValue<?>[] data = new ReportValue[columns.size()];
+		
+		for (int i = 0; i< columns.size(); i++ ) {
+			switch (columns.get(i).getColumnType()) {
+			case TIMESTAMP:			
+			case DATE:
+				data[i] = new ReportValue.DateReportValue((Date)row.getData()[i]);
+				break;
+			case DESCRIPTION:
+			case NAME:
+				data[i] = new ReportValue.StringReportValue((String)row.getData()[i]);
+				break;
+			case INTEGER:
+			case TIME:
+				data[i] = new ReportValue.IntegerReportValue((Integer)row.getData()[i]);
+				break;
+			case NAME_ARRAY:
+				data[i] = new ReportValue.StringArrayReportValue((List<String>)row.getData()[i]);
+				break;
+			}
+		}
+		
+		return data;
+	}
+	
 	protected static ReportColumnDefinition transform(
 			ColumnDefinition columnDefinition) {
 		return new ReportColumnDefinition(transform(columnDefinition

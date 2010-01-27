@@ -6,9 +6,12 @@ public class ReportRowData implements IsSerializable {
 	/** The row index. */
 	int index;
 	/** The values of each column. */
-	ReportValue[] data;
+	ReportValue<?>[] data;
 
-	public ReportRowData(final int index, final ReportValue[] data) {
+	public ReportRowData() {		
+	}
+	
+	public ReportRowData(final int index, final ReportValue<?>[] data) {
 		this.index = index;
 		this.data = data;
 	}
@@ -21,11 +24,11 @@ public class ReportRowData implements IsSerializable {
 		this.index = index;
 	}
 
-	public Object[] getData() {
+	public ReportValue<?>[] getData() {
 		return data;
 	}
 
-	public void setData(final ReportValue[] data) {
+	public void setData(final ReportValue<?>[] data) {
 		this.data = data;
 	}
 

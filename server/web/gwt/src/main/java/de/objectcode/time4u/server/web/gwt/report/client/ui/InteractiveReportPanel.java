@@ -184,22 +184,29 @@ public class InteractiveReportPanel extends Composite {
 					}
 
 					public void onFailure(Throwable caught) {
+						loadingPanel.unblock();
 						Window.alert("Server error: " + caught);
 					}
 				});
 	}
 
 	protected void showPersonWorkItemReport(String personId) {
-		reportService.generateWorkItemReport(personId, projectBreadcrumb
+		final InteractiveReportDialog dialog = new InteractiveReportDialog();
+
+		dialog.setPopupPosition((int)(0.1 * Window.getClientWidth()), (int)(0.05 * Window.getClientHeight()));
+
+		dialog.show();
+		
+		reportService.generatePersonWorkItemReport(personId, projectBreadcrumb
 				.getProjectPath(), from.getValue(), until.getValue(),
 				new AsyncCallback<ReportTableData>() {
 
 					public void onSuccess(ReportTableData result) {
-						System.out.println(">> " + result.getName());
-						System.out.println(">> " + result.getColumns());
+						dialog.setData(result);
 					}
 
 					public void onFailure(Throwable caught) {
+						dialog.hide();
 						Window.alert("Server error: " + caught);
 					}
 				});
