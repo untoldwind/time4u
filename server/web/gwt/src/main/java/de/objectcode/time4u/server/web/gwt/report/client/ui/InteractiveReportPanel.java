@@ -196,7 +196,7 @@ public class InteractiveReportPanel extends Composite {
 		dialog.setPopupPosition((int)(0.1 * Window.getClientWidth()), (int)(0.05 * Window.getClientHeight()));
 
 		dialog.show();
-		
+
 		reportService.generatePersonWorkItemReport(personId, projectBreadcrumb
 				.getProjectPath(), from.getValue(), until.getValue(),
 				new AsyncCallback<ReportTableData>() {
