@@ -6,11 +6,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,7 +81,8 @@ public class JpaLocalIdGenerator extends JpaDaoBase implements
 		generators = Collections.unmodifiableMap(newGnerators);
 	}
 
-	@Autowired
+	@Resource(name="localIdDao")
+	@Required
 	public void setLocalIdDao(ILocalIdDao localIdDao) {
 		this.localIdDao = localIdDao;
 	}

@@ -3,7 +3,6 @@ package de.objectcode.time4u.server.web.gwt.report.client.ui;
 import java.util.List;
 
 import de.objectcode.time4u.server.web.gwt.report.client.service.ReportColumnDefinition;
-import de.objectcode.time4u.server.web.gwt.report.client.service.ReportRowData;
 import de.objectcode.time4u.server.web.gwt.report.client.service.ReportTableData;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.ExtendedFlexTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.TableHeader;
@@ -40,11 +39,9 @@ public class ReportTable extends ExtendedFlexTable {
 		setHeaderStyleName("utils-dataTable-header");
 		
 		int count = 0;
-		for (ReportRowData row : report.getRows()) {
-			String[] data  = row.getData();
-			
+		for (String[] row : report.getRows()) {			
 			for (int i = 0; i < columns.size(); i++) {
-				String value=columns.get(i).getColumnType().formatValue(data[i]);
+				String value=columns.get(i).getColumnType().formatValue(row[i]);
 				
 				setText(count, i, value);
 			}

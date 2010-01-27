@@ -172,7 +172,6 @@ public class JpaReportDao extends JpaDaoBase implements IReportDao {
 		
 	}
 
-	@SuppressWarnings("unchecked")
 	protected static String[] transform(List<ReportColumnDefinition> columns, ReportRow row) {
 		String[] data = new String[columns.size()];
 		

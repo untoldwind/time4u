@@ -3,9 +3,10 @@ package de.objectcode.time4u.server.web.gwt.webclient.server.dao.jpa;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.persistence.Query;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -120,12 +121,14 @@ public class JpaProjectDao extends JpaDaoBase implements IProjectDao {
 						.isActive(), subProjectCount > 0);
 	}
 
-	@Autowired
+	@Resource(name="revisionGenerator")
+	@Required
 	public void setRevisionGenerator(IRevisionGenerator revisionGenerator) {
 		this.revisionGenerator = revisionGenerator;
 	}
 
-	@Autowired
+	@Resource(name="localIdGenerator")
+	@Required
 	public void setLocalIdGenerator(ILocalIdGenerator localIdGenerator) {
 		this.localIdGenerator = localIdGenerator;
 	}

@@ -1,8 +1,9 @@
 package de.objectcode.time4u.server.web.gwt.webclient.server.dao.jpa;
 
+import javax.annotation.Resource;
 import javax.persistence.Query;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +61,8 @@ public class JpaRevisionGeneratorDao extends JpaDaoBase implements
 		return revisionEntity;
 	}
 
-	@Autowired
+	@Resource(name="revisionGeneratorCreatorDao")
+	@Required
 	public void setRevisionGeneratorCreatorDao(
 			IRevisionGeneratorCreatorDao revisionGeneratorCreatorDao) {
 		this.revisionGeneratorCreatorDao = revisionGeneratorCreatorDao;

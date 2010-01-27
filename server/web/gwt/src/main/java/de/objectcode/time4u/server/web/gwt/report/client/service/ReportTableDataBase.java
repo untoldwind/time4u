@@ -13,7 +13,7 @@ public class ReportTableDataBase implements IsSerializable {
 	/** List of all column definitions that have been used for group by. */
 	protected List<ReportColumnDefinition> m_groupByColumns;
 	/** List of report rows if there are no group-by. */
-	protected List<ReportRowData> m_rows;
+	protected List<String[]> m_rows;
 	/** Aggregated values to be displayed in the footer. */
 	protected String[] m_aggregates;
 	/** Map of group-by sub-reports. */
@@ -26,7 +26,7 @@ public class ReportTableDataBase implements IsSerializable {
 			final List<ReportColumnDefinition> groupByColumns) {
 		m_columns = columns;
 		m_groupByColumns = groupByColumns;
-		m_rows = new ArrayList<ReportRowData>();
+		m_rows = new ArrayList<String[]>();
 		m_groups = new TreeMap<String, ReportTableGroupData>();
 	}
 
@@ -49,7 +49,7 @@ public class ReportTableDataBase implements IsSerializable {
 		return m_groupByColumns;
 	}
 
-	public List<ReportRowData> getRows() {
+	public List<String[]> getRows() {
 		return m_rows;
 	}
 
@@ -101,7 +101,7 @@ public class ReportTableDataBase implements IsSerializable {
 			final String[] row) {
 		if (depth >= groups.size()) {
 			if (row != null) {
-				m_rows.add(new ReportRowData(m_rows.size(), row));
+				m_rows.add(row);
 			}
 		} else {
 			final IdLabelPair top = groups.get(depth);
