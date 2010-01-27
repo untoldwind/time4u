@@ -38,7 +38,6 @@ import de.objectcode.time4u.server.web.gwt.report.client.service.IdLabelPair;
 import de.objectcode.time4u.server.web.gwt.report.client.service.ReportColumnDefinition;
 import de.objectcode.time4u.server.web.gwt.report.client.service.ReportColumnType;
 import de.objectcode.time4u.server.web.gwt.report.client.service.ReportTableData;
-import de.objectcode.time4u.server.web.gwt.report.client.service.ReportValue;
 import de.objectcode.time4u.server.web.gwt.report.server.dao.IReportDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
 
@@ -174,25 +173,25 @@ public class JpaReportDao extends JpaDaoBase implements IReportDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected static ReportValue<?>[] transform(List<ReportColumnDefinition> columns, ReportRow row) {
-		ReportValue<?>[] data = new ReportValue[columns.size()];
+	protected static String[] transform(List<ReportColumnDefinition> columns, ReportRow row) {
+		String[] data = new String[columns.size()];
 		
 		for (int i = 0; i< columns.size(); i++ ) {
 			switch (columns.get(i).getColumnType()) {
 			case TIMESTAMP:			
 			case DATE:
-				data[i] = new ReportValue.DateReportValue((Date)row.getData()[i]);
+				data[i] = String.valueOf(((Date)row.getData()[i]).getTime());
 				break;
 			case DESCRIPTION:
 			case NAME:
-				data[i] = new ReportValue.StringReportValue((String)row.getData()[i]);
+				data[i] = (String)row.getData()[i];
 				break;
 			case INTEGER:
 			case TIME:
-				data[i] = new ReportValue.IntegerReportValue((Integer)row.getData()[i]);
+				data[i] = String.valueOf((Integer)row.getData()[i]);
 				break;
 			case NAME_ARRAY:
-				data[i] = new ReportValue.StringArrayReportValue((List<String>)row.getData()[i]);
+				data[i] = row.getData()[i].toString();
 				break;
 			}
 		}

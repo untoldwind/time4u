@@ -5,7 +5,6 @@ import java.util.List;
 import de.objectcode.time4u.server.web.gwt.report.client.service.ReportColumnDefinition;
 import de.objectcode.time4u.server.web.gwt.report.client.service.ReportRowData;
 import de.objectcode.time4u.server.web.gwt.report.client.service.ReportTableData;
-import de.objectcode.time4u.server.web.gwt.report.client.service.ReportValue;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.ExtendedFlexTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.TableHeader;
 
@@ -18,9 +17,6 @@ public class ReportTable extends ExtendedFlexTable {
 	}
 
 	public void setData(ReportTableData report) {
-		System.out.println(">>> Start" );
-		long start = System.currentTimeMillis();
-		
 		removeAllRows();
 
 		columns = report.getColumns();
@@ -42,12 +38,10 @@ public class ReportTable extends ExtendedFlexTable {
 
 		setHeaders(headers);
 		setHeaderStyleName("utils-dataTable-header");
-
 		
-		System.out.println(">>> " + (System.currentTimeMillis() - start));
 		int count = 0;
 		for (ReportRowData row : report.getRows()) {
-			ReportValue<?>[] data  = row.getData();
+			String[] data  = row.getData();
 			
 			for (int i = 0; i < columns.size(); i++) {
 				String value=columns.get(i).getColumnType().formatValue(data[i]);
@@ -61,6 +55,5 @@ public class ReportTable extends ExtendedFlexTable {
 							: "utils-dataTable-row-odd");
 			count++;
 		}
-		System.out.println("2>>> " + (System.currentTimeMillis() - start));
 	}
 }

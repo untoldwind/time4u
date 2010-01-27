@@ -15,7 +15,7 @@ public class ReportTableDataBase implements IsSerializable {
 	/** List of report rows if there are no group-by. */
 	protected List<ReportRowData> m_rows;
 	/** Aggregated values to be displayed in the footer. */
-	protected ReportValue<?>[] m_aggregates;
+	protected String[] m_aggregates;
 	/** Map of group-by sub-reports. */
 	protected Map<String, ReportTableGroupData> m_groups;
 
@@ -65,12 +65,12 @@ public class ReportTableDataBase implements IsSerializable {
 		return m_aggregates != null;
 	}
 
-	public ReportValue<?>[] getAggregates() {
+	public String[] getAggregates() {
 		return m_aggregates;
 	}
 
 	public void setAggregates(final List<Object> groupKey,
-			final ReportValue<?>[] aggregates) {
+			final String[] aggregates) {
 		if (groupKey == null) {
 			m_aggregates = aggregates;
 		} else {
@@ -93,12 +93,12 @@ public class ReportTableDataBase implements IsSerializable {
 		return new ArrayList<ReportTableGroupData>(m_groups.values());
 	}
 
-	public void addRow(final List<IdLabelPair> groups, final ReportValue<?>[] row) {
+	public void addRow(final List<IdLabelPair> groups, final String[] row) {
 		addRow(0, groups, row);
 	}
 
 	protected void addRow(final int depth, final List<IdLabelPair> groups,
-			final ReportValue<?>[] row) {
+			final String[] row) {
 		if (depth >= groups.size()) {
 			if (row != null) {
 				m_rows.add(new ReportRowData(m_rows.size(), row));

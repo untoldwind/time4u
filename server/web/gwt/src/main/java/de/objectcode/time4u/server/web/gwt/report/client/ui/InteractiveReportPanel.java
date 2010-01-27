@@ -191,18 +191,23 @@ public class InteractiveReportPanel extends Composite {
 	}
 
 	protected void showPersonWorkItemReport(String personId) {
+		System.out.println(">>>> Start");
+		final long start = System.currentTimeMillis();
 		final InteractiveReportDialog dialog = new InteractiveReportDialog();
 
 		dialog.setPopupPosition((int)(0.1 * Window.getClientWidth()), (int)(0.05 * Window.getClientHeight()));
 
 		dialog.show();
 
+		System.out.println(">>> 1 " + (System.currentTimeMillis() - start));
 		reportService.generatePersonWorkItemReport(personId, projectBreadcrumb
 				.getProjectPath(), from.getValue(), until.getValue(),
 				new AsyncCallback<ReportTableData>() {
 
 					public void onSuccess(ReportTableData result) {
+						System.out.println(">>> 2 " + (System.currentTimeMillis() - start));
 						dialog.setData(result);
+						System.out.println(">>> 3 " + (System.currentTimeMillis() - start));
 					}
 
 					public void onFailure(Throwable caught) {
