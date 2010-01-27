@@ -13,9 +13,9 @@ import de.objectcode.time4u.server.web.gwt.admin.client.service.PersonSummary;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.Team;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.TeamSummary;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
-import de.objectcode.time4u.server.web.gwt.admin.server.dao.IPersonDao;
-import de.objectcode.time4u.server.web.gwt.admin.server.dao.ITeamDao;
-import de.objectcode.time4u.server.web.gwt.admin.server.dao.IUserAccountDao;
+import de.objectcode.time4u.server.web.gwt.admin.server.dao.IAdminPersonDao;
+import de.objectcode.time4u.server.web.gwt.admin.server.dao.IAdminTeamDao;
+import de.objectcode.time4u.server.web.gwt.admin.server.dao.IAdminUserAccountDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.GwtController;
 
 @Controller
@@ -25,9 +25,9 @@ public class AdminPersonServiceImpl extends GwtController implements
 
 	private static final long serialVersionUID = 1L;
 
-	IUserAccountDao userAccountDao;
-	IPersonDao personDao;
-	ITeamDao teamDao;
+	IAdminUserAccountDao userAccountDao;
+	IAdminPersonDao personDao;
+	IAdminTeamDao teamDao;
 
 	@Transactional(readOnly = true)
 	public UserAccount.Page getUserAccounts(int pageNumber, int pageSize,
@@ -62,19 +62,19 @@ public class AdminPersonServiceImpl extends GwtController implements
 
 	@Resource(name = "adminUserAccountDao")
 	@Required
-	public void setUserAccountDao(IUserAccountDao userAccountDao) {
+	public void setUserAccountDao(IAdminUserAccountDao userAccountDao) {
 		this.userAccountDao = userAccountDao;
 	}
 
 	@Resource(name = "adminPersonDao")
 	@Required
-	public void setPersonDao(IPersonDao personDao) {
+	public void setPersonDao(IAdminPersonDao personDao) {
 		this.personDao = personDao;
 	}
 
 	@Resource(name = "adminTeamDao")
 	@Required
-	public void setTeamDao(ITeamDao teamDao) {
+	public void setTeamDao(IAdminTeamDao teamDao) {
 		this.teamDao = teamDao;
 	}
 

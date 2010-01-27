@@ -11,7 +11,7 @@
 					<tu:LoadingLayoutPanel ui:field="loadingPanel">
 						<tu:layer>
 							<g:ScrollPanel>
-								<tr:ReportTable ui:field="reportTable" />
+								<tr:ReportTable ui:field="reportTable" width="100%"/>
 							</g:ScrollPanel>
 						</tu:layer>
 					</tu:LoadingLayoutPanel>

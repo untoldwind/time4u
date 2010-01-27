@@ -11,12 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import de.objectcode.time4u.server.entities.account.UserAccountEntity;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
-import de.objectcode.time4u.server.web.gwt.admin.server.dao.IUserAccountDao;
+import de.objectcode.time4u.server.web.gwt.admin.server.dao.IAdminUserAccountDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
 
 @Repository("adminUserAccountDao")
 @Transactional(propagation = Propagation.MANDATORY)
-public class JpaUserAccountDao extends JpaDaoBase implements IUserAccountDao {
+public class JpaAdminUserAccountDao extends JpaDaoBase implements IAdminUserAccountDao {
 
 	@SuppressWarnings("unchecked")
 	public UserAccount.Page findUserAccountPage(int pageNumber, int pageSize,
@@ -77,7 +77,7 @@ public class JpaUserAccountDao extends JpaDaoBase implements IUserAccountDao {
 	}
 
 	static UserAccount toDTO(UserAccountEntity userAccountEntity) {
-		return new UserAccount(userAccountEntity.getUserId(), JpaPersonDao
+		return new UserAccount(userAccountEntity.getUserId(), JpaAdminPersonDao
 				.toDTOSummary(userAccountEntity.getPerson()), userAccountEntity
 				.getLastLogin());
 	}

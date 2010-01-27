@@ -18,13 +18,12 @@ import de.objectcode.time4u.server.ejb.seam.api.filter.DateRangeFilter;
 import de.objectcode.time4u.server.ejb.seam.api.filter.PersonFilter;
 import de.objectcode.time4u.server.ejb.seam.api.filter.ProjectPathFilter;
 import de.objectcode.time4u.server.ejb.seam.api.report.DayInfoProjection;
-import de.objectcode.time4u.server.ejb.seam.api.report.PersonProjection;
 import de.objectcode.time4u.server.ejb.seam.api.report.ProjectProjection;
 import de.objectcode.time4u.server.ejb.seam.api.report.TaskProjection;
-import de.objectcode.time4u.server.ejb.seam.api.report.TodoProjection;
 import de.objectcode.time4u.server.ejb.seam.api.report.WorkItemProjection;
 import de.objectcode.time4u.server.ejb.seam.api.report.WorkItemReportDefinition;
 import de.objectcode.time4u.server.ejb.seam.api.report.parameter.BaseParameterValue;
+import de.objectcode.time4u.server.entities.PersonEntity;
 import de.objectcode.time4u.server.web.gwt.login.server.Time4UUserDetailsService.Time4UUserDetails;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableColumnType;
 import de.objectcode.time4u.server.web.gwt.report.client.service.CrossTableData;
@@ -34,6 +33,7 @@ import de.objectcode.time4u.server.web.gwt.report.client.service.ReportTableData
 import de.objectcode.time4u.server.web.gwt.report.server.dao.IInteractiveReportDao;
 import de.objectcode.time4u.server.web.gwt.report.server.dao.IReportDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.GwtController;
+import de.objectcode.time4u.server.web.gwt.webclient.server.dao.IPersonDao;
 
 @Controller
 @RequestMapping( { "/MainUI/report.service" })
@@ -43,6 +43,7 @@ public class ReportServiceImpl extends GwtController implements ReportService {
 
 	IReportDao reportDao;
 	IInteractiveReportDao interactiveReportDao;
+	IPersonDao personDao;
 
 	@Transactional(readOnly = true)
 	@RolesAllowed("ROLE_USER")
@@ -98,15 +99,16 @@ public class ReportServiceImpl extends GwtController implements ReportService {
 	private WorkItemReportDefinition createPersonWorkitemReportDefinition(
 			String personId, List<String> projectPath, Date from, Date until) {
 
+		PersonEntity person = personDao.findPerson(personId);
+
 		final WorkItemReportDefinition definition = new WorkItemReportDefinition();
 
-		definition.setName("Interactive Report");
+		definition.setName(person.getGivenName() + " " + person.getSurname());
 		definition.setDescription("Interactive report");
 		final AndFilter filters = new AndFilter();
 		filters.add(new DateRangeFilter(from, until));
-		if (personId != null) {
-			filters.add(new PersonFilter(personId));
-		}
+		filters.add(new PersonFilter(personId));
+
 		if (!projectPath.isEmpty()) {
 			final StringBuffer buffer = new StringBuffer();
 			boolean first = true;
@@ -122,7 +124,6 @@ public class ReportServiceImpl extends GwtController implements ReportService {
 			filters.add(new ProjectPathFilter(buffer.toString()));
 		}
 		definition.setFilter(filters);
-		definition.addProjection(PersonProjection.NAME);
 		definition.addProjection(DayInfoProjection.DATE);
 		definition.addProjection(ProjectProjection.PATH);
 		definition.addProjection(TaskProjection.NAME);
@@ -130,11 +131,15 @@ public class ReportServiceImpl extends GwtController implements ReportService {
 		definition.addProjection(WorkItemProjection.END);
 		definition.addProjection(WorkItemProjection.DURATION);
 		definition.addProjection(WorkItemProjection.COMMENT);
-		definition.addProjection(TodoProjection.GROUPS);
-		definition.addProjection(TodoProjection.HEADER);
 		definition.setAggregate(true);
 
 		return definition;
+	}
+
+	@Resource(name = "personDao")
+	@Required
+	public void setPersonDao(IPersonDao personDao) {
+		this.personDao = personDao;
 	}
 
 	@Resource(name = "reportDao")

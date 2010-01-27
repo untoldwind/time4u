@@ -17,15 +17,15 @@ import de.objectcode.time4u.server.web.gwt.admin.client.service.Person;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.PersonSummary;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.TeamSummary;
 import de.objectcode.time4u.server.web.gwt.admin.client.service.UserAccount;
-import de.objectcode.time4u.server.web.gwt.admin.server.dao.IPersonDao;
-import de.objectcode.time4u.server.web.gwt.admin.server.dao.IUserAccountDao;
+import de.objectcode.time4u.server.web.gwt.admin.server.dao.IAdminPersonDao;
+import de.objectcode.time4u.server.web.gwt.admin.server.dao.IAdminUserAccountDao;
 import de.objectcode.time4u.server.web.gwt.utils.server.JpaDaoBase;
 
 @Repository("adminPersonDao")
 @Transactional(propagation = Propagation.MANDATORY)
-public class JpaPersonDao extends JpaDaoBase implements IPersonDao {
+public class JpaAdminPersonDao extends JpaDaoBase implements IAdminPersonDao {
 
-	private IUserAccountDao userAccountDao;
+	private IAdminUserAccountDao userAccountDao;
 	
 	public Person findPerson(String personId) {
 		PersonEntity personEntity = entityManager.find(PersonEntity.class,
@@ -83,12 +83,12 @@ public class JpaPersonDao extends JpaDaoBase implements IPersonDao {
 		List<TeamSummary> ownerOf = new ArrayList<TeamSummary>();
 
 		for (TeamEntity teamEntity : personEntity.getResponsibleFor())
-			ownerOf.add(JpaTeamDao.toDTOSummary(teamEntity));
+			ownerOf.add(JpaAdminTeamDao.toDTOSummary(teamEntity));
 
 		List<TeamSummary> memberOf = new ArrayList<TeamSummary>();
 
 		for (TeamEntity teamEntity : personEntity.getMemberOf())
-			memberOf.add(JpaTeamDao.toDTOSummary(teamEntity));
+			memberOf.add(JpaAdminTeamDao.toDTOSummary(teamEntity));
 
 		return new Person(personEntity.getId(),
 				personEntity.getActive() == null || personEntity.getActive(),
@@ -99,7 +99,7 @@ public class JpaPersonDao extends JpaDaoBase implements IPersonDao {
 
 	@Resource(name = "adminUserAccountDao")
 	@Required
-	public void setUserAccountDao(IUserAccountDao userAccountDao) {
+	public void setUserAccountDao(IAdminUserAccountDao userAccountDao) {
 		this.userAccountDao = userAccountDao;
 	}
 }
