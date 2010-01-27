@@ -1,15 +1,13 @@
 package de.objectcode.time4u.server.web.gwt.report.client.ui;
 
-import java.util.List;
-
 import de.objectcode.time4u.server.web.gwt.report.client.service.ReportColumnDefinition;
 import de.objectcode.time4u.server.web.gwt.report.client.service.ReportTableData;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.ExtendedFlexTable;
 import de.objectcode.time4u.server.web.gwt.utils.client.ui.TableHeader;
 
 public class ReportTable extends ExtendedFlexTable {
-	List<ReportColumnDefinition> columns;
-	List<ReportColumnDefinition> groupByColumns;
+	ReportColumnDefinition[] columns;
+	ReportColumnDefinition[] groupByColumns;
 
 	public ReportTable() {
 		setStyleName("utils-dataTable");
@@ -21,17 +19,17 @@ public class ReportTable extends ExtendedFlexTable {
 		columns = report.getColumns();
 		groupByColumns = report.getGroupByColumns();
 
-		TableHeader headers[] = new TableHeader[columns.size()
-				+ groupByColumns.size()];
+		TableHeader headers[] = new TableHeader[columns.length
+				+ groupByColumns.length];
 
 		int columnWidth = 100 / (headers.length > 0 ? headers.length : 1);
 
-		for (int i = 0; i < groupByColumns.size(); i++) {
-			headers[i] = new TableHeader(groupByColumns.get(i).getHeader(),
+		for (int i = 0; i < groupByColumns.length; i++) {
+			headers[i] = new TableHeader(groupByColumns[i].getHeader(),
 					columnWidth + "%");
 		}
-		for (int i = 0; i < columns.size(); i++) {
-			headers[i + groupByColumns.size()] = new TableHeader(columns.get(i)
+		for (int i = 0; i < columns.length; i++) {
+			headers[i + groupByColumns.length] = new TableHeader(columns[i]
 					.getHeader(), columnWidth + "%");
 		}
 
@@ -40,8 +38,8 @@ public class ReportTable extends ExtendedFlexTable {
 		
 		int count = 0;
 		for (String[] row : report.getRows()) {			
-			for (int i = 0; i < columns.size(); i++) {
-				String value=columns.get(i).getColumnType().formatValue(row[i]);
+			for (int i = 0; i < columns.length; i++) {
+				String value=columns[i].getColumnType().formatValue(row[i]);
 				
 				setText(count, i, value);
 			}

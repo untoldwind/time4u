@@ -1,7 +1,5 @@
 package de.objectcode.time4u.server.web.gwt.report.client.service;
 
-import java.util.List;
-
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class ReportTableGroupData extends ReportTableDataBase implements
@@ -13,9 +11,9 @@ public class ReportTableGroupData extends ReportTableDataBase implements
 	}
 
 	public ReportTableGroupData(final IdLabelPair valueLabel,
-			final List<ReportColumnDefinition> columns,
-			final List<ReportColumnDefinition> groupByColumns) {
-		super(columns, groupByColumns);
+			final ReportColumnDefinition[] columns,
+			final ReportColumnDefinition[] groupByColumns, String[][] rows) {
+		super(columns, groupByColumns, rows);
 
 		m_id = valueLabel.getId();
 		m_label = valueLabel.getLabel();

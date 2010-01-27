@@ -1,6 +1,5 @@
 package de.objectcode.time4u.server.web.gwt.report.server.dao.jpa;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -52,24 +51,24 @@ public class JpaReportDao extends JpaDaoBase implements IReportDao {
 		ReportResult reportResult = doGenerateReport(reportDefinition,
 				parameters, personId);
 
-		List<ReportColumnDefinition> columns = new ArrayList<ReportColumnDefinition>();
-
-		for (ColumnDefinition columnDefinition : reportResult.getColumns()) {
-			columns.add(transform(columnDefinition));
+		ReportColumnDefinition[] columns = new ReportColumnDefinition[reportResult.getColumns().size()];
+		
+		for ( int i = 0; i < columns.length; i++ ) {
+			columns[i] = transform(reportResult.getColumns().get(i));
 		}
 
-		List<ReportColumnDefinition> groupByColumns = new ArrayList<ReportColumnDefinition>();
+		ReportColumnDefinition[] groupByColumns = new ReportColumnDefinition[reportResult.getGroupByColumns().size()];
 
-		for (ColumnDefinition columnDefinition : reportResult
-				.getGroupByColumns()) {
-			groupByColumns.add(transform(columnDefinition));
+		for ( int i = 0; i < groupByColumns.length; i++ ) {
+			groupByColumns[i] = transform(reportResult.getGroupByColumns().get(i));
 		}
 
+		String[][] rows = transformRows( columns, Collections.<IdLabelPair>emptyList(), reportResult);
+		
 		ReportTableData result = new ReportTableData(reportResult.getName(), columns,
-				groupByColumns);
+				groupByColumns, rows);
 		
 		transformGroups(result, reportResult);
-		transformRows(result, columns, Collections.<IdLabelPair>emptyList(), reportResult);
 		
 		return result;
 	}
@@ -160,10 +159,14 @@ public class JpaReportDao extends JpaDaoBase implements IReportDao {
 		return dataCollector.getReportResult();
 	}
 	
-	protected static void transformRows(ReportTableData result, List<ReportColumnDefinition> columns,List<IdLabelPair> groups,  ReportResultBase reportResult) {
-		for ( ReportRow row : reportResult.getRows()) {
-			result.addRow(groups, transform(columns, row));
+	protected static String[][] transformRows(ReportColumnDefinition[] columns,List<IdLabelPair> groups,  ReportResultBase reportResult) {
+		String[][] rows = new String[reportResult.getRows().size()][];
+		
+		for ( int i = 0; i < rows.length; i++ ) {
+			rows[i] = transform(columns, reportResult.getRows().get(i));
 		}
+
+		return rows;
 	}
 
 	protected static void transformGroups(ReportTableData result,
@@ -172,11 +175,11 @@ public class JpaReportDao extends JpaDaoBase implements IReportDao {
 		
 	}
 
-	protected static String[] transform(List<ReportColumnDefinition> columns, ReportRow row) {
-		String[] data = new String[columns.size()];
+	protected static String[] transform(ReportColumnDefinition[] columns, ReportRow row) {
+		String[] data = new String[columns.length];
 		
-		for (int i = 0; i< columns.size(); i++ ) {
-			switch (columns.get(i).getColumnType()) {
+		for (int i = 0; i< columns.length; i++ ) {
+			switch (columns[i].getColumnType()) {
 			case TIMESTAMP:			
 			case DATE:
 				data[i] = String.valueOf(((Date)row.getData()[i]).getTime());
