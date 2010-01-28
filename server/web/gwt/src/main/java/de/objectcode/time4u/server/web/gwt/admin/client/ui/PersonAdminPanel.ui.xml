@@ -1,0 +1,17 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:ta="urn:import:de.objectcode.time4u.server.web.gwt.admin.client.ui"
+	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
+
+	<g:DockLayoutPanel unit="EM">
+		<g:north size="25">
+			<ta:PersonAdminPanel.PersonTable
+				ui:field="persons" styleName="utils-dataTable-base" />
+		</g:north>
+		<g:center>
+			<ta:PersonDetailPanel ui:field="personDetail"
+				visible="false" />
+		</g:center>
+	</g:DockLayoutPanel>
+</ui:UiBinder>

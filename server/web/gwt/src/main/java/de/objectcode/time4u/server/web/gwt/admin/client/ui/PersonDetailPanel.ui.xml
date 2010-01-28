@@ -1,0 +1,113 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:ta="urn:import:de.objectcode.time4u.server.web.gwt.admin.client.ui"
+	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
+
+
+	<tu:LoadingLayoutPanel ui:field="loadingPanel">
+		<tu:layer>
+			<g:TabLayoutPanel barHeight="30">
+				<g:tab>
+					<g:header>Data</g:header>
+					<g:LayoutPanel>
+						<g:layer left="0" width="30em">
+							<g:HTMLPanel styleName="dataDetailBox">
+								<table class="userDetailsInput">
+									<tr>
+										<td>Given Name:</td>
+										<td>
+											<g:TextBox ui:field="givenName" />
+										</td>
+									</tr>
+									<tr>
+										<td>Surname:</td>
+										<td>
+											<g:TextBox ui:field="surname" />
+										</td>
+									</tr>
+									<tr>
+										<td>Email:</td>
+										<td>
+											<g:TextBox ui:field="email" />
+										</td>
+									</tr>
+									<tr>
+										<td>Active:</td>
+										<td>
+											<g:CheckBox ui:field="active" />
+										</td>
+									</tr>
+								</table>
+							</g:HTMLPanel>
+							
+						</g:layer>
+						<g:layer left="30em" right="0">
+							<g:DockLayoutPanel unit="EM" styleName="dataDetailBox">
+								<g:north size="2">
+									<g:HTMLPanel>
+										<table width="100%" class="webclient-panelTitle">
+											<tr>
+												<td width="100%">User account</td>
+											</tr>
+										</table>
+										<br />
+									</g:HTMLPanel>
+								</g:north>
+								<g:center>
+									<g:ScrollPanel>
+										<ta:PersonDetailPanel.UserAccountTable
+											ui:field="userAccounts" width="100%" />
+									</g:ScrollPanel>
+								</g:center>
+							</g:DockLayoutPanel>
+						</g:layer>
+					</g:LayoutPanel>
+				</g:tab>
+				
+				
+				<g:tab>
+					<g:header>Teams</g:header>
+					<g:LayoutPanel>
+						<g:layer left="0" right="50%">
+							<g:DockLayoutPanel unit="EM" styleName="dataDetailBox">
+								<g:north size="2">
+									<g:HTMLPanel>
+										<table width="100%" class="webclient-panelTitle">
+											<tr>
+												<td width="100%">Owner of</td>
+											</tr>
+										</table>
+										<br />
+									</g:HTMLPanel>
+								</g:north>
+								<g:center>
+									<ta:PersonDetailPanel.TeamTable
+										ui:field="ownerOf" width="100%" />
+								</g:center>
+							</g:DockLayoutPanel>
+						</g:layer>
+						<g:layer left="50%" right="0">
+							<g:DockLayoutPanel unit="EM" styleName="dataDetailBox">
+								<g:north size="2">
+									<g:HTMLPanel>
+										<table width="100%" class="webclient-panelTitle">
+											<tr>
+												<td width="100%">Member of</td>
+											</tr>
+										</table>
+										<br />
+									</g:HTMLPanel>
+								</g:north>
+								<g:center>
+									<ta:PersonDetailPanel.TeamTable
+										ui:field="memberOf" width="100%" />
+								</g:center>
+							</g:DockLayoutPanel>
+						</g:layer>
+					</g:LayoutPanel>
+				</g:tab>
+			</g:TabLayoutPanel>
+		</tu:layer>
+	</tu:LoadingLayoutPanel>
+</ui:UiBinder>

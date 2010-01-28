@@ -1,0 +1,44 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
+
+	<ui:with field="resources"
+		type="de.objectcode.time4u.server.web.gwt.webclient.client.WebClientBundle" />
+
+	<g:DockLayoutPanel unit="EM" styleName="webclient-panel">
+		<g:north size="4">
+			<g:HTMLPanel>
+			<table width="100%" class="webclient-panelTitle">
+				<tr>
+					<td width="100%">Projects</td>
+					<td><g:PushButton enabled="true" ui:field="panelMin">
+						<g:upFace image="{resources.panelMin}" />
+					</g:PushButton></td>
+					<td><g:PushButton enabled="true" ui:field="panelMax">
+					<g:upFace image="{resources.panelMax}" />
+					</g:PushButton></td>
+				</tr>
+			</table>
+				<g:HorizontalPanel>
+					<g:PushButton ui:field="newProject">
+						<g:upFace image="{resources.newProject}" />
+					</g:PushButton>
+					<g:PushButton ui:field="editProject" enabled="false">
+						<g:upFace image="{resources.editProject}" />
+					</g:PushButton>
+					<g:PushButton ui:field="deleteProject" enabled="false">
+						<g:upFace image="{resources.deleteProject}" />
+					</g:PushButton>
+				</g:HorizontalPanel>
+			</g:HTMLPanel>
+		</g:north>
+		<g:center>
+			<g:ScrollPanel>
+				<tu:ExtendedTree ui:field="projectTree" width="100%" styleName="gwt-Tree projectTree"/>
+			</g:ScrollPanel>
+		</g:center>
+	</g:DockLayoutPanel>
+
+</ui:UiBinder>
+ 

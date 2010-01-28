@@ -1,0 +1,61 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:gd="urn:import:com.google.gwt.user.datepicker.client"
+	xmlns:tr="urn:import:de.objectcode.time4u.server.web.gwt.report.client.ui"
+	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
+
+	<g:DockLayoutPanel unit="EM">
+		<g:north size="8">
+			<g:HTMLPanel>
+				<table>
+					<tr>
+						<td>Date:</td>
+						<td>
+							<g:PushButton ui:field="prevMonth">&lt;&lt;</g:PushButton>
+						</td>
+						<td>
+							<gd:DateBox ui:field="from" />
+						</td>
+						<td>to</td>
+						<td>
+							<gd:DateBox ui:field="until" />
+						</td>
+						<td>
+							<g:PushButton ui:field="nextMonth">&gt;&gt;</g:PushButton>
+						</td>
+					</tr>
+					<tr>
+						<td>Rows:</td>
+						<td colspan="5">
+							<g:RadioButton name="personTeam" ui:field="personTeamPerson">Person</g:RadioButton>
+							<g:RadioButton name="personTeam" ui:field="personTeamTeam">Team</g:RadioButton>
+						</td>
+					</tr>
+					<tr>
+						<td>Columns:</td>
+						<td colspan="5">
+							<g:RadioButton name="projectTask" ui:field="projectTaskProject">Project</g:RadioButton>
+							<g:RadioButton name="projectTask" ui:field="projectTaskTask">Task</g:RadioButton>
+						</td>
+					</tr>
+					<tr>
+						<td>Project:</td>
+						<td colspan="5">
+							<tr:ProjectBreadcrumb ui:field="projectBreadcrumb" />
+						</td>
+					</tr>
+				</table>
+			</g:HTMLPanel>
+		</g:north>
+		<g:center>
+			<tu:LoadingLayoutPanel ui:field="loadingPanel">
+				<tu:layer>
+					<g:ScrollPanel>
+						<tr:InteractiveReportTable ui:field="reportTable"
+							width="100%" />
+					</g:ScrollPanel>
+				</tu:layer>
+			</tu:LoadingLayoutPanel>
+		</g:center>
+	</g:DockLayoutPanel>
+</ui:UiBinder>

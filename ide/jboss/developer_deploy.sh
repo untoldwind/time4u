@@ -32,6 +32,10 @@ WEB_WS=`ls time4u-server-web-ws-*.war`
 rm -rf $WEB_WS
 ln -s $CURRENT/../../server/web/ws/target/${WEB_WS%.war} $WEB_WS
 
+WEB_GWT=`ls time4u-server-web-gwt-*.war`
+rm -rf $WEB_GWT
+ln -s $CURRENT/../../server/web/gwt/target/${WEB_GWT%.war} $WEB_GWT
+
 ENTITIES=`ls time4u-server-entities-*.jar`
 
 rm -rf $ENTITIES

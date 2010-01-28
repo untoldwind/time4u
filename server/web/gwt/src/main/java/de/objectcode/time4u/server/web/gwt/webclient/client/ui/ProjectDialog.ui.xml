@@ -1,0 +1,39 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<g:HTMLPanel>
+		<table>
+			<tr>
+				<td>Parent:</td>
+				<td>
+					<g:TextBox ui:field="parent" readOnly="true"/>
+				</td>
+			</tr>
+			<tr>
+				<td>Name:</td>
+				<td>
+					<g:TextBox ui:field="name"/>
+				</td>
+			</tr>
+			<tr>
+				<td>Active:</td>
+				<td>
+					<g:CheckBox ui:field="active"/>
+				</td>
+			</tr>
+			<tr>
+				<td>Description:</td>
+				<td>
+					<g:TextArea ui:field="description"/>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<g:Button ui:field="okButton">Ok</g:Button>
+					<g:Button ui:field="cancelButton">Cancel</g:Button>
+				</td>
+			</tr>
+		</table>
+	</g:HTMLPanel>
+</ui:UiBinder>

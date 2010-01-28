@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!--
+		- Application context containing authentication, channel - security
+		and web URI beans. - - Only used by "filter" artifact. - - $Id:
+		applicationContext-acegi-security.xml 1425 2006-04-28 06:43:50Z
+		benalex $
+	-->
+
+<beans xmlns:security="http://www.springframework.org/schema/security"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+	<bean id="userDetailsService"
+		class="de.objectcode.time4u.server.web.gwt.login.server.Time4UUserDetailsService">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<bean id="passwordEncoder"
+		class="de.objectcode.time4u.server.web.gwt.login.server.PasswordEndcoderAdapter">
+		<property name="passwordEncoder">
+			<bean class="de.objectcode.time4u.server.utils.DefaultPasswordEncoder" />
+		</property>
+		<property name="allowAnyPassword" value="true" />
+	</bean>
+
+	<security:http realm="Contacts Realm" create-session="always">
+		<!--
+			security:intercept-url pattern="/"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" /> <security:intercept-url
+			pattern="/LoginUI.html" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+			<security:intercept-url pattern="/LoginUI/**"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" /
+		-->
+		<security:intercept-url pattern="/**"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:logout logout-success-url="/LoginUI.html" />
+		<security:anonymous />
+		<security:form-login login-page="/LoginUI.html"
+			authentication-failure-url="/failure" default-target-url="/MainUI.html" />
+	</security:http>
+
+	<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider
+			user-service-ref="userDetailsService">
+			<security:password-encoder ref="passwordEncoder" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+</beans>

@@ -1,0 +1,27 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:ta="urn:import:de.objectcode.time4u.server.web.gwt.admin.client.ui"
+	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
+	
+	<g:HTMLPanel styleName="dataDetailBox">
+		<table class="userDetailsInput">
+			<tr>
+				<td>UserId:</td>
+				<td><g:TextBox ui:field="userId"/></td>
+			</tr>
+			<tr>
+				<td>Given Name:</td>
+				<td><g:TextBox ui:field="givenName"/></td>
+			</tr>
+			<tr>
+				<td>Surname:</td>
+				<td><g:TextBox ui:field="surname"/></td>
+			</tr>
+			<tr>
+				<td>Email:</td>
+				<td><g:TextBox ui:field="email"/></td>
+			</tr>
+		</table>
+	</g:HTMLPanel>
+</ui:UiBinder>

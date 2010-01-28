@@ -1,0 +1,55 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
+
+	<ui:with field="resources"
+		type="de.objectcode.time4u.server.web.gwt.webclient.client.WebClientBundle" />
+
+	<g:DockLayoutPanel unit="EM" styleName="webclient-panel">
+		<g:north size="2">
+			<g:HTMLPanel>
+				<table width="100%" class="webclient-panelTitle">
+					<tr>
+						<td width="100%">Punch</td>
+						<td><g:PushButton enabled="true" ui:field="panelMin">
+						<g:upFace image="{resources.panelMin}" />
+						</g:PushButton></td>
+						<td><g:PushButton enabled="true" ui:field="panelMax">
+						<g:upFace image="{resources.panelMax}" />
+						</g:PushButton></td>
+					</tr>
+				</table>
+			</g:HTMLPanel>
+			
+		</g:north>
+		<g:center>
+			<g:HTMLPanel width="100%" height="100%" styleName="webclient-PunchContent">
+				<table style="width: 100%; height: 100%; padding: 10 20 10 10;">
+					<tr>
+						<td>Project:</td>
+						<td style="width: 100%">
+							<g:TextBox ui:field="projectLabel" readOnly="true"
+								width="100%" />
+						</td>
+					</tr>
+					<tr>
+						<td>Task:</td>
+						<td style="width: 100%">
+							<g:TextBox ui:field="taskLabel" readOnly="true" width="100%" />
+						</td>
+					</tr>
+					<tr style="height: 100%">
+						<td colspan="2">
+							<g:ToggleButton ui:field="punchButton" width="90%"
+								height="90%">
+								<g:upFace image="{resources.punchedOutBig}" />
+								<g:downFace image="{resources.punchedInBig}" />
+							</g:ToggleButton>
+						</td>
+					</tr>
+				</table>
+			</g:HTMLPanel>
+		</g:center>
+	</g:DockLayoutPanel>
+</ui:UiBinder>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.0.0//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.0.0/distro-source/core/src/gwt-module.dtd">
+<module rename-to='MainUI'>
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="com.google.gwt.i18n.I18N" />
+	<!-- inherits name='com.google.gwt.user.theme.standard.Standard' /-->
+	<inherits name="com.google.gwt.user.datepicker.DatePicker" />
+	<inherits name="com.google.gwt.resources.Resources" />
+	<inherits name="de.objectcode.time4u.server.web.gwt.utils.Utils" />
+	<inherits name="de.objectcode.time4u.server.web.gwt.login.Login" />
+	<inherits name="de.objectcode.time4u.server.web.gwt.webclient.WebClient" />
+	<inherits name="de.objectcode.time4u.server.web.gwt.report.Report" />
+	<inherits name="de.objectcode.time4u.server.web.gwt.admin.Admin" />
+
+	<source path="client" />
+
+	<entry-point class="de.objectcode.time4u.server.web.gwt.main.client.MainPage" />
+	
+	<!-- Internationalization support. -->
+	<extend-property name="locale" values="en" />
+	<extend-property name="locale" values="de" />
+	<set-property-fallback name="locale" value="en" />
+</module>

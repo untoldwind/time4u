@@ -1,0 +1,45 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:wc="urn:import:de.objectcode.time4u.server.web.gwt.webclient.client.ui"
+	xmlns:tu="urn:import:de.objectcode.time4u.server.web.gwt.utils.client.ui">
+
+	<ui:with field="resources"
+		type="de.objectcode.time4u.server.web.gwt.webclient.client.WebClientBundle" />
+
+	<g:DockLayoutPanel unit="EM" styleName="webclient-panel">
+		<g:north size="4">
+			<g:HTMLPanel>
+			<table width="100%" class="webclient-panelTitle">
+				<tr>
+					<td width="100%">Tasks</td>
+					<td><g:PushButton enabled="true" ui:field="panelMin">
+					<g:upFace image="{resources.panelMin}" />
+					</g:PushButton></td>
+					<td><g:PushButton enabled="true" ui:field="panelMax">
+					<g:upFace image="{resources.panelMax}" />
+					</g:PushButton></td>
+				</tr>
+			</table>
+				
+				<g:HorizontalPanel>
+					<g:PushButton ui:field="newTask">
+						<g:upFace image="{resources.newTask}" />
+					</g:PushButton>
+					<g:PushButton ui:field="editTask" enabled="false">
+						<g:upFace image="{resources.editTask}" />
+					</g:PushButton>
+					<g:PushButton ui:field="deleteTask" enabled="false">
+						<g:upFace image="{resources.deleteTask}" />
+					</g:PushButton>
+				</g:HorizontalPanel>
+			</g:HTMLPanel>
+		</g:north>
+		<g:center>
+			<g:ScrollPanel>
+				<wc:TaskList.TaskDataTable ui:field="taskList"
+					width="100%" styleName="util-dataTable taskListTable" />
+			</g:ScrollPanel>
+		</g:center>
+	</g:DockLayoutPanel>
+</ui:UiBinder>
